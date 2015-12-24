@@ -1,5 +1,7 @@
 ## 九次方-政府资源目录平台
+
 ### Project Introduction
+
 ### Technological Framework
 
 Tech | Name | Version
@@ -17,11 +19,13 @@ Cache Client    | Jeids    | 2.7.0
 Building Tools    | Gradle    | 2.3
 Code Manage Tools    | Git    | 2.5.4
 IDE    | IDEA or Eclipse    | Latest edition
+
 ### Install Gradle
 
 * The project used gradle to manage dependencies,source code compiled and so on.
 * Download gradle application,install it and configs the path.
 * On terminal,you can execute gradle command at anywhere.
+
 ### Quick Start
 
 * git clone http://gitlab.app/jusfoun/catalog.git
