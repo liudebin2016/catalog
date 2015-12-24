@@ -18,14 +18,16 @@ Building Tools    | Gradle    | 2.3
 Code Manage Tools    | Git    | 2.5.4
 IDE    | IDEA or Eclipse    | Latest edition
 ### Install Gradle
-The project used gradle to manage dependencies,source code compiled and so on.
-Download gradle application,install it and configs the path.
-On terminal,you can execute gradle command at anywhere.
+
+* The project used gradle to manage dependencies,source code compiled and so on.
+* Download gradle application,install it and configs the path.
+* On terminal,you can execute gradle command at anywhere.
 ### Quick Start
-git clone http://gitlab.app/jusfoun/catalog.git
-cd catalog
-gradle idea or gradle eclipse #generate IDE config file
-gradle apprun 
+
+* git clone http://gitlab.app/jusfoun/catalog.git
+* cd catalog
+* gradle idea or gradle eclipse #generate IDE config file
+* gradle apprun 
 
 
 
