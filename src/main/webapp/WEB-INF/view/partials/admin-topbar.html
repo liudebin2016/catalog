@@ -1,0 +1,56 @@
+<!-- start: TOPBAR -->
+<header class="topbar navbar navbar-inverse navbar-fixed-top inner">
+    <!-- start: TOPBAR CONTAINER -->
+    <div class="container" style="height: 50px;">
+        <div class="navbar-header">
+            <a class="sb-toggle-left hidden-md hidden-lg" href="#main-navbar">
+                <i class="fa fa-bars"></i>
+            </a>
+            <!-- start: LOGO -->
+            <a class="navbar-brand" href="/">
+                <!--<img src="assets/images/logo.png" alt="Rapido"/>-->
+                九次方政府资源目录平台
+            </a>
+            <!-- end: LOGO -->
+        </div>
+        <div class="topbar-tools">
+            <!-- start: TOP NAVIGATION MENU -->
+            <ul class="nav navbar-right">
+                <!-- start: USER DROPDOWN -->
+                <li class="dropdown current-user">
+                    <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
+                        <img src="/resources/assets/images/avatar-1-small.jpg" class="img-circle" alt="">
+                        <span class="username hidden-xs">${session.userName}</span>
+                        <i class="fa fa-caret-down "></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-dark">
+                        <li>
+                            <a href="pages_user_profile.html">
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="utility_lock_screen.html">
+                                锁屏
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/admin/logout">
+                                登出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- end: USER DROPDOWN -->
+                <li class="right-menu-toggle">
+                    <a href="/" class="sb-toggle-right">
+                       去前台
+                    </a>
+                </li>
+            </ul>
+            <!-- end: TOP NAVIGATION MENU -->
+        </div>
+    </div>
+    <!-- end: TOPBAR CONTAINER -->
+</header>
+<!-- end: TOPBAR -->

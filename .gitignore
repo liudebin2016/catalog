@@ -1,0 +1,14 @@
+.gradle
+.idea
+.DS_Store
+*.DS_Store
+.eclipse
+.bundle
+catalog.iml
+catalog.ipr
+catalog.iws
+/gradle
+/build
+/out
+Thumbs.db
+*Thumbs.db

@@ -1,0 +1,66 @@
+<%
+var cssPart = {
+%>
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<div class="container" style="width: 960px;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="" style="margin-top: 100px;height: 100%;">
+                <div class="">
+                    <h4 class="panel-title" style="text-align: center;"><span class="text-bold">九次方</span>·政府资源目录检索</h4>
+                </div>
+                <div class="panel-body" style="padding-bottom: 0px;">
+                    <div>
+                        <!--<label for="form-field-mask-1">-->
+                            <!--Date <small class="text-success">99/99/9999</small>-->
+                        <!--</label>-->
+                        <div class="input-group">
+                            <input type="text" id="" class="form-control">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-green">
+                                        搜索
+                                    </button>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body" style="padding-top: 0px;">
+                <div class="toolbar toolbar-tools pull-left" style="border:0px;">
+                    <ul class="nav navbar-right">
+                        <li class=""><a href="#">全部</a></li>
+                        <li class="dropdown"><a href="#">sks</a></li>
+                        <li class="dropdown"><a href="#">sks</a></li>
+                        <li class="dropdown"><a href="#">sks</a></li>
+                        <li class="dropdown"><a href="#">sks</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+</div>
+
+<%};
+include("/layouts/front.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

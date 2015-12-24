@@ -1,0 +1,37 @@
+<%
+var cssPart = {
+%>
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-lg-8">
+
+        </div>
+        <div class="col-lg-4">
+        </div>
+
+    </div>
+</div>
+
+<%};
+include("/layouts/default.html",{jsSecition:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

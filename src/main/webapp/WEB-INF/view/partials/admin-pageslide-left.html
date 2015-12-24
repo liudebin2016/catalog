@@ -1,0 +1,71 @@
+<!-- start: PAGESLIDE LEFT -->
+<a class="closedbar inner hidden-sm hidden-xs" href="#">
+</a>
+<nav id="pageslide-left" class="pageslide inner">
+    <div class="navbar-content">
+        <!-- start: SIDEBAR -->
+        <div class="main-navigation left-wrapper transition-left">
+            <div class="navigation-toggler hidden-sm hidden-xs">
+                <a href="#main-navbar" class="sb-toggle-left">
+                </a>
+            </div>
+            <!--<div class="user-profile border-top padding-horizontal-10 block">-->
+                <!--<div class="inline-block">-->
+                    <!--<img src="assets/images/avatar-1.jpg" alt="">-->
+                <!--</div>-->
+                <!--<div class="inline-block">-->
+                    <!--<h5 class="no-margin"> Welcome </h5>-->
+                    <!--<h4 class="no-margin"> Peter Clark </h4>-->
+                    <!--<a class="btn user-options sb_toggle">-->
+                        <!--<i class="fa fa-cog"></i>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!-- start: MAIN NAVIGATION MENU -->
+            <ul class="main-navigation-menu">
+                <li class="start">
+                    <a href="/admin/dashboard" onclick="">
+                        <i class="fa fa-home"></i>
+                        <span class="title">控制面板</span>
+                    </a>
+                </li>
+                <%for(menu in session.menuTree){ %>
+                <li>
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-desktop"></i>
+                        <span class="title">${menu.name}</span>
+                        <i class="icon-arrow"></i>
+                    </a>
+                    <%if(menu.children.~size > 0){%>
+                    <ul class="sub-menu">
+                        <%for(secMenu in menu.children){ %>
+                        <li onclick="changeBreadcrumb('${menu.name}','${secMenu.name}')">
+                            <a href="${secMenu.href}">
+                                <span class="title">${secMenu.name} </span>
+                            </a>
+                        </li>
+                        <%}%>
+                    </ul>
+                    <%}%>
+
+                </li>
+               <%}%>
+            </ul>
+            <!-- end: MAIN NAVIGATION MENU -->
+        </div>
+        <!-- end: SIDEBAR -->
+    </div>
+    <div class="slide-tools">
+        <div class="col-xs-6 text-left no-padding">
+            <a class="btn btn-sm status" href="#">
+                Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
+            </a>
+        </div>
+        <div class="col-xs-6 text-right no-padding">
+            <a class="btn btn-sm log-out text-right" href="login_login.html">
+                <i class="fa fa-power-off"></i> Log Out
+            </a>
+        </div>
+    </div>
+</nav>
+<!-- end: PAGESLIDE LEFT -->
