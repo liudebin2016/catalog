@@ -1,6 +1,5 @@
 package com.jusfoun.catalog.common.entity;
 
-import com.jusfoun.catalog.common.utils.StringUtils;
 import com.jusfoun.catalog.entity.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;

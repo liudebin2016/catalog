@@ -33,7 +33,7 @@
         <property name="securityManager" ref="securityManager" /><!--
 		<property name="loginUrl" value="${cas.server.url}?service=${cas.project.url}${adminPath}/cas" /> -->
         <property name="loginUrl" value="${adminPath}/login" />
-        <property name="successUrl" value="${adminPath}?login" />
+        <property name="successUrl" value="${adminPath}/dashboard" />
         <property name="filters">
             <map>
                 <entry key="cas" value-ref="casFilter"/>
@@ -85,7 +85,7 @@
     <!-- 		<property name="sessionKeyPrefix" value="${redis.keyPrefix}_session_" /> -->
     <!-- 	</bean> -->
     <bean id="sessionDAO" class="com.jusfoun.catalog.common.security.shiro.session.CacheSessionDAO">
-        <property name="sessionIdGenerator" ref="idGen" />
+        <property name="sessionIdGenerator" ref="idGenTool" />
         <property name="activeSessionsCacheName" value="activeSessionsCache" />
         <property name="cacheManager" ref="shiroCacheManager" />
     </bean>

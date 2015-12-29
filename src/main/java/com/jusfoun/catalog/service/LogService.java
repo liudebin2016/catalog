@@ -2,7 +2,7 @@ package com.jusfoun.catalog.service;
 
 //import com.jusfoun.catalog.common.persistence.Page;
 import com.jusfoun.catalog.common.service.CrudService;
-import com.jusfoun.catalog.common.utils.DateUtils;
+import com.jusfoun.catalog.common.tool.DateTool;
 import com.jusfoun.catalog.dao.LogDao;
 import com.jusfoun.catalog.entity.Log;
 import org.springframework.stereotype.Service;
@@ -23,10 +23,10 @@ public class LogService extends CrudService<LogDao, Log> {
 		
 		// 设置默认时间范围，默认当前月
 		if (log.getBeginDate() == null){
-			log.setBeginDate(DateUtils.setDays(DateUtils.parseDate(DateUtils.getDate()), 1));
+			log.setBeginDate(DateTool.setDays(DateTool.parseDate(DateTool.getDate()), 1));
 		}
 		if (log.getEndDate() == null){
-			log.setEndDate(DateUtils.addMonths(log.getBeginDate(), 1));
+			log.setEndDate(DateTool.addMonths(log.getBeginDate(), 1));
 		}
 		
 //		return super.findPage(page, log);

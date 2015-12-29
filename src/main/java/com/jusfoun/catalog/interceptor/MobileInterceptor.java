@@ -1,8 +1,8 @@
 package com.jusfoun.catalog.interceptor;
 
 import com.jusfoun.catalog.common.service.BaseService;
-import com.jusfoun.catalog.common.utils.StringUtils;
-import com.jusfoun.catalog.common.utils.UserAgentUtils;
+import com.jusfoun.catalog.common.tool.StringTool;
+import com.jusfoun.catalog.common.tool.UserAgentTool;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +27,7 @@ public class MobileInterceptor extends BaseService implements HandlerInterceptor
 			ModelAndView modelAndView) throws Exception {
 		if (modelAndView != null){
 			// 如果是手机或平板访问的话，则跳转到手机视图页面。
-			if(UserAgentUtils.isMobileOrTablet(request) && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")){
+			if(UserAgentTool.isMobileOrTablet(request) && !StringTool.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")){
 				modelAndView.setViewName("mobile/" + modelAndView.getViewName());
 			}
 		}

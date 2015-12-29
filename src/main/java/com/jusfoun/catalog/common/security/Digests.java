@@ -1,6 +1,6 @@
 package com.jusfoun.catalog.common.security;
 
-import com.jusfoun.catalog.common.utils.Exceptions;
+import com.jusfoun.catalog.common.tool.ExceptionTool;
 import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class Digests {
 			}
 			return result;
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 
@@ -111,7 +111,7 @@ public class Digests {
 
 			return messageDigest.digest();
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 	

@@ -1,9 +1,9 @@
 package com.jusfoun.catalog.common.security.shiro.session;
 
 import com.jusfoun.catalog.common.config.Global;
-import com.jusfoun.catalog.common.utils.DateUtils;
-import com.jusfoun.catalog.common.utils.StringUtils;
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.DateTool;
+import com.jusfoun.catalog.common.tool.StringTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.google.common.collect.Sets;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
@@ -37,16 +37,16 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
             return;
         }
     	
-    	HttpServletRequest request = Servlets.getRequest();
+    	HttpServletRequest request = ServletTool.getRequest();
 		if (request != null){
 			String uri = request.getServletPath();
 			// 如果是静态文件，则不更新SESSION
-			if (Servlets.isStaticFile(uri)){
+			if (ServletTool.isStaticFile(uri)){
 				return;
 			}
 			// 如果是视图文件，则不更新SESSION
-			if (StringUtils.startsWith(uri, Global.getConfig("web.view.prefix"))
-					&& StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))){
+			if (StringTool.startsWith(uri, Global.getConfig("web.view.prefix"))
+					&& StringTool.endsWith(uri, Global.getConfig("web.view.suffix"))){
 				return;
 			}
 			// 手动控制不更新SESSION
@@ -71,11 +71,11 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 
     @Override
     protected Serializable doCreate(Session session) {
-		HttpServletRequest request = Servlets.getRequest();
+		HttpServletRequest request = ServletTool.getRequest();
 		if (request != null){
 			String uri = request.getServletPath();
 			// 如果是静态文件，则不创建SESSION
-			if (Servlets.isStaticFile(uri)){
+			if (ServletTool.isStaticFile(uri)){
 		        return null;
 			}
 		}
@@ -93,11 +93,11 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
     public Session readSession(Serializable sessionId) throws UnknownSessionException {
     	try{
     		Session s = null;
-    		HttpServletRequest request = Servlets.getRequest();
+    		HttpServletRequest request = ServletTool.getRequest();
     		if (request != null){
     			String uri = request.getServletPath();
     			// 如果是静态文件，则不获取SESSION
-    			if (Servlets.isStaticFile(uri)){
+    			if (ServletTool.isStaticFile(uri)){
     				return null;
     			}
     			s = (Session)request.getAttribute("session_"+sessionId);
@@ -146,13 +146,13 @@ public class CacheSessionDAO extends EnterpriseCacheSessionDAO implements Sessio
 		for (Session session : getActiveSessions()){
 			boolean isActiveSession = false;
 			// 不包括离线并符合最后访问时间小于等于3分钟条件。
-			if (includeLeave || DateUtils.pastMinutes(session.getLastAccessTime()) <= 3){
+			if (includeLeave || DateTool.pastMinutes(session.getLastAccessTime()) <= 3){
 				isActiveSession = true;
 			}
 			// 符合登陆者条件。
 			if (principal != null){
 				PrincipalCollection pc = (PrincipalCollection)session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-				if (principal.toString().equals(pc != null ? pc.getPrimaryPrincipal().toString() : StringUtils.EMPTY)){
+				if (principal.toString().equals(pc != null ? pc.getPrimaryPrincipal().toString() : StringTool.EMPTY)){
 					isActiveSession = true;
 				}
 			}

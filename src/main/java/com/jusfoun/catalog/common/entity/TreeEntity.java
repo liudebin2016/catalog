@@ -1,7 +1,6 @@
 package com.jusfoun.catalog.common.entity;
 
-import com.jusfoun.catalog.common.utils.Reflections;
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.ReflectionTool;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.validator.constraints.Length;
 
@@ -73,7 +72,7 @@ public abstract class TreeEntity<T> extends DataEntity<T> {
 	public Integer getParentId() {
 		Integer id = 0;
 		if (parent != null){
-			id = (Integer)Reflections.getFieldValue(parent, "id");
+			id = (Integer) ReflectionTool.getFieldValue(parent, "id");
 		}
 		return id != null ? id : 0;
 	}

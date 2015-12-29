@@ -3,8 +3,7 @@ package com.jusfoun.catalog.common.service;
 import com.jusfoun.catalog.common.dao.TreeDao;
 import com.jusfoun.catalog.common.entity.TreeEntity;
 import com.jusfoun.catalog.common.exception.ServiceException;
-import com.jusfoun.catalog.common.utils.Reflections;
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.ReflectionTool;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>>
 	public void save(T entity) {
 		
 		@SuppressWarnings("unchecked")
-		Class<T> entityClass = Reflections.getClassGenricType(getClass(), 1);
+		Class<T> entityClass = ReflectionTool.getClassGenricType(getClass(), 1);
 		
 		// 如果没有设置父节点，则代表为跟节点，有则获取父节点实体
 		if ((entity.getParent() == null || entity.getParentId() != null) || 0 == entity.getParentId()) {

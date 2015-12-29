@@ -1,10 +1,10 @@
 package com.jusfoun.catalog.common.security.shiro.session;
 
 import com.jusfoun.catalog.common.config.Global;
-import com.jusfoun.catalog.common.utils.DateUtils;
-import com.jusfoun.catalog.common.utils.JedisUtils;
-import com.jusfoun.catalog.common.utils.StringUtils;
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.DateTool;
+import com.jusfoun.catalog.common.tool.JedisTool;
+import com.jusfoun.catalog.common.tool.StringTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.google.common.collect.Sets;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
@@ -40,16 +40,16 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
             return;
         }
 		
-		HttpServletRequest request = Servlets.getRequest();
+		HttpServletRequest request = ServletTool.getRequest();
 		if (request != null){
 			String uri = request.getServletPath();
 			// 如果是静态文件，则不更新SESSION
-			if (Servlets.isStaticFile(uri)){
+			if (ServletTool.isStaticFile(uri)){
 				return;
 			}
 			// 如果是视图文件，则不更新SESSION
-			if (StringUtils.startsWith(uri, Global.getConfig("web.view.prefix"))
-					&& StringUtils.endsWith(uri, Global.getConfig("web.view.suffix"))){
+			if (StringTool.startsWith(uri, Global.getConfig("web.view.prefix"))
+					&& StringTool.endsWith(uri, Global.getConfig("web.view.suffix"))){
 				return;
 			}
 			// 手动控制不更新SESSION
@@ -61,14 +61,14 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		Jedis jedis = null;
 		try {
 			
-			jedis = JedisUtils.getResource();
+			jedis = JedisTool.getResource();
 			
 			// 获取登录者编号
 			PrincipalCollection pc = (PrincipalCollection)session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-			String principalId = pc != null ? pc.getPrimaryPrincipal().toString() : StringUtils.EMPTY;
+			String principalId = pc != null ? pc.getPrimaryPrincipal().toString() : StringTool.EMPTY;
 			
 			jedis.hset(sessionKeyPrefix, session.getId().toString(), principalId + "|" + session.getTimeout() + "|" + session.getLastAccessTime().getTime());
-			jedis.set(JedisUtils.getBytesKey(sessionKeyPrefix + session.getId()), JedisUtils.toBytes(session));
+			jedis.set(JedisTool.getBytesKey(sessionKeyPrefix + session.getId()), JedisTool.toBytes(session));
 			
 			// 设置超期时间
 			int timeoutSeconds = (int)(session.getTimeout() / 1000);
@@ -78,7 +78,7 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		} catch (Exception e) {
 			logger.error("update {} {}", session.getId(), request != null ? request.getRequestURI() : "", e);
 		} finally {
-			JedisUtils.returnResource(jedis);
+			JedisTool.returnResource(jedis);
 		}
 	}
 
@@ -90,16 +90,16 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		
 		Jedis jedis = null;
 		try {
-			jedis = JedisUtils.getResource();
+			jedis = JedisTool.getResource();
 			
-			jedis.hdel(JedisUtils.getBytesKey(sessionKeyPrefix), JedisUtils.getBytesKey(session.getId().toString()));
-			jedis.del(JedisUtils.getBytesKey(sessionKeyPrefix + session.getId()));
+			jedis.hdel(JedisTool.getBytesKey(sessionKeyPrefix), JedisTool.getBytesKey(session.getId().toString()));
+			jedis.del(JedisTool.getBytesKey(sessionKeyPrefix + session.getId()));
 
 			logger.debug("delete {} ", session.getId());
 		} catch (Exception e) {
 			logger.error("delete {} ", session.getId(), e);
 		} finally {
-			JedisUtils.returnResource(jedis);
+			JedisTool.returnResource(jedis);
 		}
 	}
 	
@@ -131,14 +131,14 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		
 		Jedis jedis = null;
 		try {
-			jedis = JedisUtils.getResource();
+			jedis = JedisTool.getResource();
 			Map<String, String> map = jedis.hgetAll(sessionKeyPrefix);
 			for (Map.Entry<String, String> e : map.entrySet()){
-				if (StringUtils.isNotBlank(e.getKey()) && StringUtils.isNotBlank(e.getValue())){
+				if (StringTool.isNotBlank(e.getKey()) && StringTool.isNotBlank(e.getValue())){
 					
-					String[] ss = StringUtils.split(e.getValue(), "|");
+					String[] ss = StringTool.split(e.getValue(), "|");
 					if (ss != null && ss.length == 3){// jedis.exists(sessionKeyPrefix + e.getKey())){
-						// Session session = (Session)JedisUtils.toObject(jedis.get(JedisUtils.getBytesKey(sessionKeyPrefix + e.getKey())));
+						// Session session = (Session)JedisTool.toObject(jedis.get(JedisTool.getBytesKey(sessionKeyPrefix + e.getKey())));
 						SimpleSession session = new SimpleSession();
 						session.setId(e.getKey());
 						session.setAttribute("principalId", ss[0]);
@@ -150,13 +150,13 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 							
 							boolean isActiveSession = false;
 							// 不包括离线并符合最后访问时间小于等于3分钟条件。
-							if (includeLeave || DateUtils.pastMinutes(session.getLastAccessTime()) <= 3){
+							if (includeLeave || DateTool.pastMinutes(session.getLastAccessTime()) <= 3){
 								isActiveSession = true;
 							}
 							// 符合登陆者条件。
 							if (principal != null){
 								PrincipalCollection pc = (PrincipalCollection)session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
-								if (principal.toString().equals(pc != null ? pc.getPrimaryPrincipal().toString() : StringUtils.EMPTY)){
+								if (principal.toString().equals(pc != null ? pc.getPrimaryPrincipal().toString() : StringTool.EMPTY)){
 									isActiveSession = true;
 								}
 							}
@@ -180,7 +180,7 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 					}
 				}
 				// 存储的SESSION无Value
-				else if (StringUtils.isNotBlank(e.getKey())){
+				else if (StringTool.isNotBlank(e.getKey())){
 					jedis.hdel(sessionKeyPrefix, e.getKey());
 				}
 			}
@@ -188,18 +188,18 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		} catch (Exception e) {
 			logger.error("getActiveSessions", e);
 		} finally {
-			JedisUtils.returnResource(jedis);
+			JedisTool.returnResource(jedis);
 		}
 		return sessions;
 	}
 
 	@Override
 	protected Serializable doCreate(Session session) {
-		HttpServletRequest request = Servlets.getRequest();
+		HttpServletRequest request = ServletTool.getRequest();
 		if (request != null){
 			String uri = request.getServletPath();
 			// 如果是静态文件，则不创建SESSION
-			if (Servlets.isStaticFile(uri)){
+			if (ServletTool.isStaticFile(uri)){
 		        return null;
 			}
 		}
@@ -213,11 +213,11 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 	protected Session doReadSession(Serializable sessionId) {
 
 		Session s = null;
-		HttpServletRequest request = Servlets.getRequest();
+		HttpServletRequest request = ServletTool.getRequest();
 		if (request != null){
 			String uri = request.getServletPath();
 			// 如果是静态文件，则不获取SESSION
-			if (Servlets.isStaticFile(uri)){
+			if (ServletTool.isStaticFile(uri)){
 				return null;
 			}
 			s = (Session)request.getAttribute("session_"+sessionId);
@@ -229,16 +229,16 @@ public class JedisSessionDAO extends AbstractSessionDAO implements SessionDAO {
 		Session session = null;
 		Jedis jedis = null;
 		try {
-			jedis = JedisUtils.getResource();
+			jedis = JedisTool.getResource();
 //			if (jedis.exists(sessionKeyPrefix + sessionId)){
-				session = (Session)JedisUtils.toObject(jedis.get(
-						JedisUtils.getBytesKey(sessionKeyPrefix + sessionId)));
+				session = (Session) JedisTool.toObject(jedis.get(
+						JedisTool.getBytesKey(sessionKeyPrefix + sessionId)));
 //			}
 			logger.debug("doReadSession {} {}", sessionId, request != null ? request.getRequestURI() : "");
 		} catch (Exception e) {
 			logger.error("doReadSession {} {}", sessionId, request != null ? request.getRequestURI() : "", e);
 		} finally {
-			JedisUtils.returnResource(jedis);
+			JedisTool.returnResource(jedis);
 		}
 		
 		if (request != null && session != null){

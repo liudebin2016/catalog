@@ -185,7 +185,7 @@ public class Role extends DataEntity<Role> {
 	public void setMenuIds(String menuIds) {
 		menuList = Lists.newArrayList();
 //		if (menuIds != null){
-//			String[] ids = StringUtils.split(menuIds, ",");
+//			String[] ids = StringTool.split(menuIds, ",");
 //			setMenuIdList(Lists.newArrayList(ids));
 //		}
 	}
@@ -222,7 +222,7 @@ public class Role extends DataEntity<Role> {
 	public void setOfficeIds(String officeIds) {
 		officeList = Lists.newArrayList();
 //		if (officeIds != null){
-//			String[] ids = StringUtils.split(officeIds, ",");
+//			String[] ids = StringTool.split(officeIds, ",");
 //			setOfficeIdList(Lists.newArrayList(ids));
 //		}
 	}
@@ -262,6 +262,6 @@ public class Role extends DataEntity<Role> {
 //		for (Menu menu : menuList) {
 //			menuNameList.add(menu.getName());
 //		}
-//		return StringUtils.join(menuNameList, ",");
+//		return StringTool.join(menuNameList, ",");
 //	}
 }

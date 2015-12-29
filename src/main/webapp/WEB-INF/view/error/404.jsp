@@ -1,9 +1,9 @@
-<%@page import="com.jusfoun.catalog.common.web.Servlets"%>
+<%@page import="com.jusfoun.catalog.common.tool.ServletTool"%>
 <%
 response.setStatus(404);
 
 // 如果是异步请求或是手机端，则直接返回信息
-if (Servlets.isAjaxRequest(request)) {
+if (ServletTool.isAjaxRequest(request)) {
 	out.print("页面不存在.");
 }
 

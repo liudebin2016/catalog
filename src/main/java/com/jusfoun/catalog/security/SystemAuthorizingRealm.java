@@ -2,9 +2,9 @@ package com.jusfoun.catalog.security;
 
 import com.jusfoun.catalog.common.config.Global;
 import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
-import com.jusfoun.catalog.common.utils.Encodes;
-import com.jusfoun.catalog.common.utils.SpringContextHolder;
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.EncodeTool;
+import com.jusfoun.catalog.common.tool.SpringContextHolderTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.controller.LoginController;
 import com.jusfoun.catalog.entity.Menu;
 import com.jusfoun.catalog.entity.Role;
@@ -73,7 +73,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
             if (Global.NO.equals(user.getLoginFlag())){
                 throw new AuthenticationException("msg:该已帐号禁止登录.");
             }
-            byte[] salt = Encodes.decodeHex(user.getPassword().substring(0, 16));
+            byte[] salt = EncodeTool.decodeHex(user.getPassword().substring(0, 16));
             return new SimpleAuthenticationInfo(new Principal(user, token.isMobileLogin()),
                     user.getPassword().substring(16), ByteSource.Util.bytes(salt), getName());
         } else {
@@ -125,7 +125,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
             // 更新登录IP和时间
             getSystemService().updateUserLoginInfo(user);
             // 记录登录日志
-            LogUtils.saveLog(Servlets.getRequest(), "系统登录");
+            LogUtils.saveLog(ServletTool.getRequest(), "系统登录");
             return info;
         } else {
             return null;
@@ -209,7 +209,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
      */
     public SystemService getSystemService() {
         if (systemService == null){
-            systemService = SpringContextHolder.getBean(SystemService.class);
+            systemService = SpringContextHolderTool.getBean(SystemService.class);
         }
         return systemService;
     }

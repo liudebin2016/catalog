@@ -1,6 +1,6 @@
 package com.jusfoun.catalog.security;
 
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.StringTool;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -36,7 +36,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		}
 		System.out.println(username +"....."+password);
 		boolean rememberMe = isRememberMe(request);
-		String host = StringUtils.getRemoteAddr((HttpServletRequest)request);
+		String host = StringTool.getRemoteAddr((HttpServletRequest)request);
 		String captcha = getCaptcha(request);
 		boolean mobile = isMobileLogin(request);
 		return new UsernamePasswordToken(username, password.toCharArray(), rememberMe, host, captcha, mobile);
@@ -90,8 +90,8 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 				|| UnknownAccountException.class.getName().equals(className)){
 			message = "用户或密码错误, 请重试.";
 		}
-		else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")){
-			message = StringUtils.replace(e.getMessage(), "msg:", "");
+		else if (e.getMessage() != null && StringTool.startsWith(e.getMessage(), "msg:")){
+			message = StringTool.replace(e.getMessage(), "msg:", "");
 		}
 		else{
 			message = "系统出现点问题，请稍后再试！";

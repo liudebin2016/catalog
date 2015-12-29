@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.common.config;
 
-import com.jusfoun.catalog.common.utils.PropertiesLoader;
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.PropertiesLoader;
+import com.jusfoun.catalog.common.tool.StringTool;
 import com.google.common.collect.Maps;
 import org.springframework.core.io.DefaultResourceLoader;
 
@@ -71,7 +71,7 @@ public class Global {
 		String value = map.get(key);
 		if (value == null){
 			value = loader.getProperty(key);
-			map.put(key, value != null ? value : StringUtils.EMPTY);
+			map.put(key, value != null ? value : StringTool.EMPTY);
 		}
 		return value;
 	}
@@ -132,7 +132,7 @@ public class Global {
 	 */
 	public static String getUserfilesBaseDir() {
 		String dir = getConfig("userfiles.basedir");
-		if (StringUtils.isBlank(dir)){
+		if (StringTool.isBlank(dir)){
 			try {
 //				dir = ServletContextFactory.getServletContext().getRealPath("/");
 			} catch (Exception e) {
@@ -153,7 +153,7 @@ public class Global {
     public static String getProjectPath(){
     	// 如果配置了工程路径，则直接返回，否则自动获取。
 		String projectPath = Global.getConfig("projectPath");
-		if (StringUtils.isNotBlank(projectPath)){
+		if (StringTool.isNotBlank(projectPath)){
 			return projectPath;
 		}
 		try {

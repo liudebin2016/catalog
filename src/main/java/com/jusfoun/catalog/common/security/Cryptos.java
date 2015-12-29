@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.common.security;
 
-import com.jusfoun.catalog.common.utils.Encodes;
-import com.jusfoun.catalog.common.utils.Exceptions;
+import com.jusfoun.catalog.common.tool.EncodeTool;
+import com.jusfoun.catalog.common.tool.ExceptionTool;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -50,7 +50,7 @@ public class Cryptos {
 			mac.init(secretKey);
 			return mac.doFinal(input);
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class Cryptos {
 			SecretKey secretKey = keyGenerator.generateKey();
 			return secretKey.getEncoded();
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class Cryptos {
 	 */
 	public static String aesEncrypt(String input) {
 		try {
-			return Encodes.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), DEFAULT_KEY));
+			return EncodeTool.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), DEFAULT_KEY));
 		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
@@ -104,7 +104,7 @@ public class Cryptos {
 	 */
 	public static String aesEncrypt(String input, String key) {
 		try {
-			return Encodes.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), Encodes.decodeHex(key)));
+			return EncodeTool.encodeHex(aesEncrypt(input.getBytes(DEFAULT_URL_ENCODING), EncodeTool.decodeHex(key)));
 		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
@@ -138,7 +138,7 @@ public class Cryptos {
 	 */
 	public static String aesDecrypt(String input) {
 		try {
-			return new String(aesDecrypt(Encodes.decodeHex(input), DEFAULT_KEY), DEFAULT_URL_ENCODING);
+			return new String(aesDecrypt(EncodeTool.decodeHex(input), DEFAULT_KEY), DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
@@ -152,7 +152,7 @@ public class Cryptos {
 	 */
 	public static String aesDecrypt(String input, String key) {
 		try {
-			return new String(aesDecrypt(Encodes.decodeHex(input), Encodes.decodeHex(key)), DEFAULT_URL_ENCODING);
+			return new String(aesDecrypt(EncodeTool.decodeHex(input), EncodeTool.decodeHex(key)), DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {
 			return "";
 		}
@@ -193,7 +193,7 @@ public class Cryptos {
 			cipher.init(mode, secretKey);
 			return cipher.doFinal(input);
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Cryptos {
 			cipher.init(mode, secretKey, ivSpec);
 			return cipher.doFinal(input);
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 
@@ -221,7 +221,7 @@ public class Cryptos {
 	 * 生成AES密钥,返回字节数组, 默认长度为128位(16字节).
 	 */
 	public static String generateAesKeyString() {
-		return Encodes.encodeHex(generateAesKey(DEFAULT_AES_KEYSIZE));
+		return EncodeTool.encodeHex(generateAesKey(DEFAULT_AES_KEYSIZE));
 	}
 	
 	/**
@@ -241,7 +241,7 @@ public class Cryptos {
 			SecretKey secretKey = keyGenerator.generateKey();
 			return secretKey.getEncoded();
 		} catch (GeneralSecurityException e) {
-			throw Exceptions.unchecked(e);
+			throw ExceptionTool.unchecked(e);
 		}
 	}
 

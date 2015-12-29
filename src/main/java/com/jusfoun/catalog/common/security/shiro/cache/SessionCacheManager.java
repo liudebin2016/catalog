@@ -1,6 +1,6 @@
 package com.jusfoun.catalog.common.security.shiro.cache;
 
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.google.common.collect.Sets;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
@@ -67,7 +67,7 @@ public class SessionCacheManager implements CacheManager {
 			}
 			
 			V v = null;
-			HttpServletRequest request = Servlets.getRequest();
+			HttpServletRequest request = ServletTool.getRequest();
 			if (request != null){
 				v = (V)request.getAttribute(cacheKeyName);
 				if (v != null){
@@ -94,7 +94,7 @@ public class SessionCacheManager implements CacheManager {
 			getSession().setAttribute(cacheKeyName, value);
 			
 			if (logger.isDebugEnabled()){
-				HttpServletRequest request = Servlets.getRequest();
+				HttpServletRequest request = ServletTool.getRequest();
 				logger.debug("put {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "");
 			}
 			

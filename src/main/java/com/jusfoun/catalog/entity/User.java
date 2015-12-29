@@ -4,10 +4,10 @@ import com.google.common.collect.Lists;
 import com.jusfoun.catalog.common.config.Global;
 import com.jusfoun.catalog.common.entity.DataEntity;
 //import com.jusfoun.catalog.common.supcan.annotation.treelist.cols.SupCol;
-import com.jusfoun.catalog.common.utils.excel.annotation.ExcelField;
+import com.jusfoun.catalog.common.tool.excel.annotation.ExcelField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jusfoun.catalog.common.utils.excel.fieldtype.RoleListType;
+import com.jusfoun.catalog.common.tool.excel.fieldtype.RoleListType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public class User extends DataEntity<User> {
 
 	private static final long serialVersionUID = 1L;
-//	private Office company;		// 归属公司
+	private Office company;		// 归属公司
 	private Office office;		// 归属部门
 	private String loginName;	// 登录名
 	private String password;	// 密码
@@ -89,16 +89,16 @@ public class User extends DataEntity<User> {
 		return id;
 	}
 
-//	@JsonIgnore
-//	@NotNull(message="归属公司不能为空")
-//	@ExcelField(title="归属公司", align=2, sort=20)
-//	public Office getCompany() {
-//		return company;
-//	}
+	@JsonIgnore
+	@NotNull(message="归属公司不能为空")
+	@ExcelField(title="归属公司", align=2, sort=20)
+	public Office getCompany() {
+		return company;
+	}
 
-//	public void setCompany(Office company) {
-//		this.company = company;
-//	}
+	public void setCompany(Office company) {
+		this.company = company;
+	}
 	
 	@JsonIgnore
 	@NotNull(message="归属部门不能为空")
@@ -260,13 +260,13 @@ public class User extends DataEntity<User> {
 		this.oldLoginDate = oldLoginDate;
 	}
 
-//	public Role getRole() {
-//		return role;
-//	}
+	public Role getRole() {
+		return role;
+	}
 
-//	public void setRole(Role role) {
-//		this.role = role;
-//	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	@JsonIgnore
 	@ExcelField(title="拥有角色", align=1, sort=800, fieldType=RoleListType.class)

@@ -6,10 +6,10 @@ import com.jusfoun.catalog.common.security.Digests;
 import com.jusfoun.catalog.common.security.shiro.session.SessionDAO;
 import com.jusfoun.catalog.common.service.BaseService;
 import com.jusfoun.catalog.common.exception.ServiceException;
-import com.jusfoun.catalog.common.utils.CacheUtils;
-import com.jusfoun.catalog.common.utils.Encodes;
-import com.jusfoun.catalog.common.utils.StringUtils;
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.CacheTool;
+import com.jusfoun.catalog.common.tool.EncodeTool;
+import com.jusfoun.catalog.common.tool.StringTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.dao.MenuDao;
 import com.jusfoun.catalog.dao.RoleDao;
 import com.jusfoun.catalog.dao.UserDao;
@@ -113,12 +113,12 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<User> findUserByOfficeId(Integer officeId) {
-		List<User> list = (List<User>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId);
+		List<User> list = (List<User>) CacheTool.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId);
 		if (list == null){
 			User user = new User();
 			user.setOffice(new Office(officeId));
 			list = userDao.findUserByOfficeId(user);
-			CacheUtils.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId, list);
+			CacheTool.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + officeId, list);
 		}
 		return list;
 	}
@@ -132,7 +132,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			// 清除原用户机构用户缓存
 			User oldUser = userDao.get(user.getId());
 			if (oldUser.getOffice() != null && oldUser.getOffice().getId() != null){
-				CacheUtils.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + oldUser.getOffice().getId());
+				CacheTool.remove(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_ + oldUser.getOffice().getId());
 			}
 			// 更新用户数据
 			user.preUpdate();
@@ -194,7 +194,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		user.setOldLoginIp(user.getLoginIp());
 		user.setOldLoginDate(user.getLoginDate());
 		// 更新本次登录信息
-		user.setLoginIp(StringUtils.getRemoteAddr(Servlets.getRequest()));
+		user.setLoginIp(StringTool.getRemoteAddr(ServletTool.getRequest()));
 		user.setLoginDate(new Date());
 		userDao.updateLoginInfo(user);
 	}
@@ -205,7 +205,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	public static String entryptPassword(String plainPassword) {
 		byte[] salt = Digests.generateSalt(SALT_SIZE);
 		byte[] hashPassword = Digests.sha1(plainPassword.getBytes(), salt, HASH_INTERATIONS);
-		return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
+		return EncodeTool.encodeHex(salt)+ EncodeTool.encodeHex(hashPassword);
 	}
 	
 	/**
@@ -215,9 +215,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	 * @return 验证成功返回true
 	 */
 	public static boolean validatePassword(String plainPassword, String password) {
-		byte[] salt = Encodes.decodeHex(password.substring(0,16));
+		byte[] salt = EncodeTool.decodeHex(password.substring(0,16));
 		byte[] hashPassword = Digests.sha1(plainPassword.getBytes(), salt, HASH_INTERATIONS);
-		return password.equals(Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword));
+		return password.equals(EncodeTool.encodeHex(salt)+ EncodeTool.encodeHex(hashPassword));
 	}
 	
 	/**
@@ -365,7 +365,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
+		CacheTool.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
 
 	@Transactional(readOnly = false)
@@ -376,7 +376,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
+		CacheTool.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
 
 	@Transactional(readOnly = false)
@@ -387,7 +387,7 @@ public class SystemService extends BaseService implements InitializingBean {
 //		// 清除权限缓存
 //		systemRealm.clearAllCachedAuthorizationInfo();
 		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
+		CacheTool.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
 	}
 	
 	/**
@@ -443,7 +443,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		String groupId = role.getEnname();
 
 		// 如果修改了英文名，则删除原Activiti角色
-//		if (StringUtils.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
+//		if (StringTool.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
 //			identityService.deleteGroup(role.getOldEnname());
 //		}
 
@@ -464,15 +464,15 @@ public class SystemService extends BaseService implements InitializingBean {
 		// 创建用户与用户组关系
 //		List<User> userList = findUser(new User(new Role(role.getId())));
 //		for (User e : userList){
-//			String userId = e.getLoginName();//ObjectUtils.toString(user.getId());
+//			String userId = e.getLoginName();//ObjectTool.toString(user.getId());
 			// 如果该用户不存在，则创建一个
 //			org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
 //			if (activitiUser == null){
 //				activitiUser = identityService.newUser(userId);
 //				activitiUser.setFirstName(e.getName());
-//				activitiUser.setLastName(StringUtils.EMPTY);
+//				activitiUser.setLastName(StringTool.EMPTY);
 //				activitiUser.setEmail(e.getEmail());
-//				activitiUser.setPassword(StringUtils.EMPTY);
+//				activitiUser.setPassword(StringTool.EMPTY);
 //				identityService.saveUser(activitiUser);
 //			}
 //			identityService.createMembership(userId, groupId);
@@ -493,15 +493,15 @@ public class SystemService extends BaseService implements InitializingBean {
 		if (!Global.isSynActivitiIndetity()){
 			return;
 		}
-		String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
+		String userId = user.getLoginName();//ObjectTool.toString(user.getId());
 //		org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
 //		if (activitiUser == null) {
 //			activitiUser = identityService.newUser(userId);
 //		}
 //		activitiUser.setFirstName(user.getName());
-//		activitiUser.setLastName(StringUtils.EMPTY);
+//		activitiUser.setLastName(StringTool.EMPTY);
 //		activitiUser.setEmail(user.getEmail());
-//		activitiUser.setPassword(StringUtils.EMPTY);
+//		activitiUser.setPassword(StringTool.EMPTY);
 //		identityService.saveUser(activitiUser);
 //
 //		// 删除用户与用户组关系
@@ -529,7 +529,7 @@ public class SystemService extends BaseService implements InitializingBean {
 			return;
 		}
 		if(user!=null) {
-			String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
+			String userId = user.getLoginName();//ObjectTool.toString(user.getId());
 //			identityService.deleteUser(userId);
 		}
 	}

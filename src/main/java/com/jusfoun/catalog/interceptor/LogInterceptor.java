@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.interceptor;
 
 import com.jusfoun.catalog.common.service.BaseService;
-import com.jusfoun.catalog.common.utils.DateUtils;
+import com.jusfoun.catalog.common.tool.DateTool;
 import com.jusfoun.catalog.utils.LogUtils;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -53,7 +53,7 @@ public class LogInterceptor extends BaseService implements HandlerInterceptor {
 			long beginTime = startTimeThreadLocal.get();//得到线程绑定的局部变量（开始时间）  
 			long endTime = System.currentTimeMillis(); 	//2、结束时间  
 	        logger.debug("计时结束：{}  耗时：{}  URI: {}  最大内存: {}m  已分配内存: {}m  已分配内存中的剩余空间: {}m  最大可用内存: {}m",
-	        		new SimpleDateFormat("hh:mm:ss.SSS").format(endTime), DateUtils.formatDateTime(endTime - beginTime),
+	        		new SimpleDateFormat("hh:mm:ss.SSS").format(endTime), DateTool.formatDateTime(endTime - beginTime),
 					request.getRequestURI(), Runtime.getRuntime().maxMemory()/1024/1024, Runtime.getRuntime().totalMemory()/1024/1024, Runtime.getRuntime().freeMemory()/1024/1024, 
 					(Runtime.getRuntime().maxMemory()-Runtime.getRuntime().totalMemory()+Runtime.getRuntime().freeMemory())/1024/1024); 
 		}

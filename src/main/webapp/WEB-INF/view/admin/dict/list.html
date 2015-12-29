@@ -1,0 +1,158 @@
+<%
+var cssPart = {
+%>
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start: MAIN CONTAINER -->
+<div class="main-container inner">
+    <!-- start: PAGE -->
+    <div class="main-content">
+
+        <!-- end: SPANEL CONFIGURATION MODAL FORM -->
+        <div class="container">
+            <div class="row" style="height: 41px;color:#dddddd;background-color: #ffffff;line-height: 41px;">
+                <div class="col-sm-6">
+                    <ol class="breadcrumb" style="padding: 0px;margin: 0px;">
+                        <li class="active">
+                            当前位置:
+                        </li>
+                        <li>
+                            <a href="#">
+                                系统管理
+                            </a>
+                        </li>
+                        <li class="active">
+                            字典管理
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-white">
+                        <div class="panel-heading" style="background: #E6E8E8;">
+                            <h4 class="panel-title">检索量</h4>
+                        </div>
+                        <div class="panel-body">
+                            <img src="/resources/images/echart01.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 40px;">
+                <div class="col-sm-6">
+                    <div class="panel panel-white panel-tabs">
+                        <div class="panel-heading" style="background: #ffffff;">
+                            <h4 class="panel-title">Top10 热词排行</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#panel_tab_example1">
+                                            本周
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#panel_tab_example2">
+                                            本月
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#panel_tab_example3">
+                                            本年
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="panel_tab_example1" class="tab-pane fade in active">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                    <div id="panel_tab_example2" class="tab-pane fade">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                    <div id="panel_tab_example3" class="tab-pane fade">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-white panel-tabs">
+                        <div class="panel-heading" style="background: #ffffff;">
+                            <h4 class="panel-title">Top10 热门机构</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="tabbable">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a data-toggle="tab" href="#panel_tab_example1">
+                                            本周
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#panel_tab_example2">
+                                            本月
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#panel_tab_example3">
+                                            本年
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="panel_tab_example1" class="tab-pane fade in active">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                    <div id="panel_tab_example2" class="tab-pane fade">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                    <div id="panel_tab_example3" class="tab-pane fade">
+                                        <img src="/resources/images/hot_words.jpg" width="300">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- start: AJAX CONTENT -->
+            <div id="ajax-content" class="animated">
+                <!-- HERE WILL BE LOADED AN AJAX CONTENT -->
+
+            </div>
+            <!-- end: AJAX CONTENT-->
+        </div>
+        <div class="subviews">
+            <div class="subviews-container">
+            </div>
+        </div>
+    </div>
+    <!-- end: PAGE -->
+</div>
+<!-- end: MAIN CONTAINER -->
+
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

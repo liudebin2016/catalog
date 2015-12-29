@@ -4,17 +4,16 @@ import com.jusfoun.catalog.common.config.Global;
 import com.jusfoun.catalog.common.security.shiro.session.SessionDAO;
 //import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
 import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
-import com.jusfoun.catalog.common.utils.CacheUtils;
-import com.jusfoun.catalog.common.utils.CookieUtils;
-import com.jusfoun.catalog.common.utils.IdGen;
-import com.jusfoun.catalog.common.utils.StringUtils;
-import com.jusfoun.catalog.common.web.BaseController;
+import com.jusfoun.catalog.common.tool.CacheTool;
+import com.jusfoun.catalog.common.tool.CookieTool;
+import com.jusfoun.catalog.common.tool.IdGenTool;
+import com.jusfoun.catalog.common.tool.StringTool;
+import com.jusfoun.catalog.common.controller.BaseController;
 //import com.jusfoun.catalog.modules.sys.security.FormAuthenticationFilter;
 import com.jusfoun.catalog.security.FormAuthenticationFilter;
 import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
 //import com.jusfoun.catalog.modules.sys.utils.UserUtils;
 import com.google.common.collect.Maps;
-import com.jusfoun.catalog.security.SystemAuthorizingRealm;
 import com.jusfoun.catalog.utils.UserUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -50,9 +49,9 @@ public class LoginController extends BaseController{
 		Principal principal = UserUtils.getPrincipal();
 
 		// 默认页签模式
-		String tabmode = CookieUtils.getCookie(request, "tabmode");
+		String tabmode = CookieTool.getCookie(request, "tabmode");
 		if (tabmode == null){
-			CookieUtils.setCookie(response, "tabmode", "1");
+			CookieTool.setCookie(response, "tabmode", "1");
 		}
 		
 		if (logger.isDebugEnabled()){
@@ -61,7 +60,7 @@ public class LoginController extends BaseController{
 		
 		// 如果已登录，再次访问主页，则退出原账号。
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
-			CookieUtils.setCookie(response, "LOGINED", "false");
+			CookieTool.setCookie(response, "LOGINED", "false");
 		}
 		
 		// 如果已经登录，则跳转到管理首页
@@ -96,7 +95,7 @@ public class LoginController extends BaseController{
 		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
 
 
-		if (StringUtils.isBlank(message) || StringUtils.equals(message, "null")){
+		if (StringTool.isBlank(message) || StringTool.equals(message, "null")){
 			message = "用户或密码错误, 请重试.";
 		}
 
@@ -117,7 +116,7 @@ public class LoginController extends BaseController{
 		}
 
 		// 验证失败清空验证码
-		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGen.uuid());
+		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGenTool.uuid());
 
 		// 如果是手机登录，则返回JSON字符串
 //		if (mobile){
@@ -144,10 +143,10 @@ public class LoginController extends BaseController{
 
 		// 如果已登录，再次访问主页，则退出原账号。
 		if (Global.TRUE.equals(Global.getConfig("notAllowRefreshIndex"))){
-			String logined = CookieUtils.getCookie(request, "LOGINED");
-			if (StringUtils.isBlank(logined) || "false".equals(logined)){
-				CookieUtils.setCookie(response, "LOGINED", "true");
-			}else if (StringUtils.equals(logined, "true")){
+			String logined = CookieTool.getCookie(request, "LOGINED");
+			if (StringTool.isBlank(logined) || "false".equals(logined)){
+				CookieTool.setCookie(response, "LOGINED", "true");
+			}else if (StringTool.equals(logined, "true")){
 				UserUtils.getSubject().logout();
 				return new ModelAndView("redirect:" + adminPath + "/login");
 			}
@@ -165,12 +164,12 @@ public class LoginController extends BaseController{
 //		}
 		
 //		// 登录成功后，获取上次登录的当前站点ID
-//		UserUtils.putCache("siteId", StringUtils.toLong(CookieUtils.getCookie(request, "siteId")));
+//		UserUtils.putCache("siteId", StringTool.toLong(CookieTool.getCookie(request, "siteId")));
 
 //		System.out.println("==========================a");
 //		try {
-//			byte[] bytes = com.thinkgem.jeesite.common.utils.FileUtils.readFileToByteArray(
-//					com.thinkgem.jeesite.common.utils.FileUtils.getFile("c:\\sxt.dmp"));
+//			byte[] bytes = com.thinkgem.jeesite.common.utils.FileTool.readFileToByteArray(
+//					com.thinkgem.jeesite.common.utils.FileTool.getFile("c:\\sxt.dmp"));
 //			UserUtils.getSession().setAttribute("kkk", bytes);
 //			UserUtils.getSession().setAttribute("kkk2", bytes);
 //		} catch (Exception e) {
@@ -190,10 +189,10 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(value = "/theme/{theme}")
 	public String getThemeInCookie(@PathVariable String theme, HttpServletRequest request, HttpServletResponse response){
-		if (StringUtils.isNotBlank(theme)){
-			CookieUtils.setCookie(response, "theme", theme);
+		if (StringTool.isNotBlank(theme)){
+			CookieTool.setCookie(response, "theme", theme);
 		}else{
-			theme = CookieUtils.getCookie(request, "theme");
+			theme = CookieTool.getCookie(request, "theme");
 		}
 		return "redirect:"+request.getParameter("url");
 	}
@@ -207,10 +206,10 @@ public class LoginController extends BaseController{
 	 */
 	@SuppressWarnings("unchecked")
 	public static boolean isValidateCodeLogin(String useruame, boolean isFail, boolean clean){
-		Map<String, Integer> loginFailMap = (Map<String, Integer>)CacheUtils.get("loginFailMap");
+		Map<String, Integer> loginFailMap = (Map<String, Integer>) CacheTool.get("loginFailMap");
 		if (loginFailMap==null){
 			loginFailMap = Maps.newHashMap();
-			CacheUtils.put("loginFailMap", loginFailMap);
+			CacheTool.put("loginFailMap", loginFailMap);
 		}
 		Integer loginFailNum = loginFailMap.get(useruame);
 		if (loginFailNum==null){

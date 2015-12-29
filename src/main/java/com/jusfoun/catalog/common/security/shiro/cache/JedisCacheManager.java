@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.common.security.shiro.cache;
 
-import com.jusfoun.catalog.common.utils.JedisUtils;
-import com.jusfoun.catalog.common.web.Servlets;
+import com.jusfoun.catalog.common.tool.JedisTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.google.common.collect.Sets;
 import org.apache.shiro.cache.Cache;
 import org.apache.shiro.cache.CacheException;
@@ -50,9 +50,9 @@ public class JedisCacheManager implements CacheManager {
 
 		public JedisCache(String cacheKeyName) {
 			this.cacheKeyName = cacheKeyName;
-//			if (!JedisUtils.exists(cacheKeyName)){
+//			if (!JedisTool.exists(cacheKeyName)){
 //				Map<String, Object> map = Maps.newHashMap();
-//				JedisUtils.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
+//				JedisTool.setObjectMap(cacheKeyName, map, 60 * 60 * 24);
 //			}
 //			logger.debug("Init: cacheKeyName {} ", cacheKeyName);
 		}
@@ -65,7 +65,7 @@ public class JedisCacheManager implements CacheManager {
 			}
 			
 			V v = null;
-			HttpServletRequest request = Servlets.getRequest();
+			HttpServletRequest request = ServletTool.getRequest();
 			if (request != null){
 				v = (V)request.getAttribute(cacheKeyName);
 				if (v != null){
@@ -76,13 +76,13 @@ public class JedisCacheManager implements CacheManager {
 			V value = null;
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				value = (V)JedisUtils.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
+				jedis = JedisTool.getResource();
+				value = (V) JedisTool.toObject(jedis.hget(JedisTool.getBytesKey(cacheKeyName), JedisTool.getBytesKey(key)));
 				logger.debug("get {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "");
 			} catch (Exception e) {
 				logger.error("get {} {} {}", cacheKeyName, key, request != null ? request.getRequestURI() : "", e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			
 			if (request != null && value != null){
@@ -100,13 +100,13 @@ public class JedisCacheManager implements CacheManager {
 			
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				jedis.hset(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key), JedisUtils.toBytes(value));
+				jedis = JedisTool.getResource();
+				jedis.hset(JedisTool.getBytesKey(cacheKeyName), JedisTool.getBytesKey(key), JedisTool.toBytes(value));
 				logger.debug("put {} {} = {}", cacheKeyName, key, value);
 			} catch (Exception e) {
 				logger.error("put {} {}", cacheKeyName, key, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			return value;
 		}
@@ -117,14 +117,14 @@ public class JedisCacheManager implements CacheManager {
 			V value = null;
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				value = (V)JedisUtils.toObject(jedis.hget(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key)));
-				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName), JedisUtils.getBytesKey(key));
+				jedis = JedisTool.getResource();
+				value = (V) JedisTool.toObject(jedis.hget(JedisTool.getBytesKey(cacheKeyName), JedisTool.getBytesKey(key)));
+				jedis.hdel(JedisTool.getBytesKey(cacheKeyName), JedisTool.getBytesKey(key));
 				logger.debug("remove {} {}", cacheKeyName, key);
 			} catch (Exception e) {
 				logger.warn("remove {} {}", cacheKeyName, key, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			return value;
 		}
@@ -133,13 +133,13 @@ public class JedisCacheManager implements CacheManager {
 		public void clear() throws CacheException {
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				jedis.hdel(JedisUtils.getBytesKey(cacheKeyName));
+				jedis = JedisTool.getResource();
+				jedis.hdel(JedisTool.getBytesKey(cacheKeyName));
 				logger.debug("clear {}", cacheKeyName);
 			} catch (Exception e) {
 				logger.error("clear {}", cacheKeyName, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 		}
 
@@ -148,14 +148,14 @@ public class JedisCacheManager implements CacheManager {
 			int size = 0;
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				size = jedis.hlen(JedisUtils.getBytesKey(cacheKeyName)).intValue();
+				jedis = JedisTool.getResource();
+				size = jedis.hlen(JedisTool.getBytesKey(cacheKeyName)).intValue();
 				logger.debug("size {} {} ", cacheKeyName, size);
 				return size;
 			} catch (Exception e) {
 				logger.error("clear {}",  cacheKeyName, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			return size;
 		}
@@ -166,8 +166,8 @@ public class JedisCacheManager implements CacheManager {
 			Set<K> keys = Sets.newHashSet();
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				Set<byte[]> set = jedis.hkeys(JedisUtils.getBytesKey(cacheKeyName));
+				jedis = JedisTool.getResource();
+				Set<byte[]> set = jedis.hkeys(JedisTool.getBytesKey(cacheKeyName));
 				for(byte[] key : set){
 					keys.add((K)key);
 	        	}
@@ -176,7 +176,7 @@ public class JedisCacheManager implements CacheManager {
 			} catch (Exception e) {
 				logger.error("keys {}", cacheKeyName, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			return keys;
 		}
@@ -187,8 +187,8 @@ public class JedisCacheManager implements CacheManager {
 			Collection<V> vals = Collections.emptyList();;
 			Jedis jedis = null;
 			try {
-				jedis = JedisUtils.getResource();
-				Collection<byte[]> col = jedis.hvals(JedisUtils.getBytesKey(cacheKeyName));
+				jedis = JedisTool.getResource();
+				Collection<byte[]> col = jedis.hvals(JedisTool.getBytesKey(cacheKeyName));
 				for(byte[] val : col){
 					vals.add((V)val);
 	        	}
@@ -197,7 +197,7 @@ public class JedisCacheManager implements CacheManager {
 			} catch (Exception e) {
 				logger.error("values {}",  cacheKeyName, e);
 			} finally {
-				JedisUtils.returnResource(jedis);
+				JedisTool.returnResource(jedis);
 			}
 			return vals;
 		}

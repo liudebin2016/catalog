@@ -1,6 +1,6 @@
 package com.jusfoun.catalog.common.security.shiro.session;
 
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.StringTool;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
@@ -36,7 +36,7 @@ public class SessionManager extends DefaultWebSessionManager {
 	protected Serializable getSessionId(ServletRequest request, ServletResponse response) {
 		// 如果参数中包含“__sid”参数，则使用此sid会话。 例如：http://localhost/project?__sid=xxx&__cookie=true
 		String sid = request.getParameter("__sid");
-		if (StringUtils.isNotBlank(sid)) {
+		if (StringTool.isNotBlank(sid)) {
 			// 是否将sid保存到cookie，浏览器模式下使用此参数。
 			if (WebUtils.isTrue(request, "__cookie")){
 		        HttpServletRequest rq = (HttpServletRequest)request;

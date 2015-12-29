@@ -1,4 +1,5 @@
-## 九次方-政府资源目录平台
+## Jusfoun-Government Resources Catalog Platform
+九次方-政府资源目录平台
 
 ### Project Introduction
 
@@ -8,15 +9,15 @@ Tech | Name | Version
 -----|------|----
 JDK    | Oracle JDK    | 1.8
 Web Container    | Tomcat    | 8.0
-MVC Framework   | Spring MVC    | 4.1.6
+MVC Framework   | Spring MVC    | 4.2.4
 View TempLate    | Beetl    | 2.2.5
 Authority Framework    | Shiro    | 1.2.3
 DB    | MySQL    | 5.7.10
 DB Connection Pool    | Druid    | 1.0.13
 ORM    | MyBatis    | 3.1.8
-Cache    | Redis    | 2.7.0
-Cache Client    | Jeids    | 2.7.0
-Building Tools    | Gradle    | 2.3
+Cache    | Redis    | 3.0.6
+Cache Client    | Jedis    | 2.7.0
+Building Tools    | Gradle    | 2.10
 Code Manage Tools    | Git    | 2.5.4
 IDE    | IDEA or Eclipse    | Latest edition
 

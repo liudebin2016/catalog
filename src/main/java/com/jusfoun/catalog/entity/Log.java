@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.entity;
 
 import com.jusfoun.catalog.common.entity.DataEntity;
-import com.jusfoun.catalog.common.utils.StringUtils;
+import com.jusfoun.catalog.common.tool.StringTool;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import java.util.Date;
@@ -133,7 +133,7 @@ public class Log extends DataEntity<Log> {
 		for (Map.Entry<String, String[]> param : ((Map<String, String[]>)paramMap).entrySet()){
 			params.append(("".equals(params.toString()) ? "" : "&") + param.getKey() + "=");
 			String paramValue = (param.getValue() != null && param.getValue().length > 0 ? param.getValue()[0] : "");
-			params.append(StringUtils.abbr(StringUtils.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue, 100));
+			params.append(StringTool.abbr(StringTool.endsWithIgnoreCase(param.getKey(), "password") ? "" : paramValue, 100));
 		}
 		this.params = params.toString();
 	}

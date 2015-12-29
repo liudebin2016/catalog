@@ -1,7 +1,7 @@
 package com.jusfoun.catalog.service;
 
 import com.jusfoun.catalog.common.service.CrudService;
-import com.jusfoun.catalog.common.utils.CacheUtils;
+import com.jusfoun.catalog.common.tool.CacheTool;
 import com.jusfoun.catalog.dao.DictDao;
 import com.jusfoun.catalog.entity.Dict;
 import com.jusfoun.catalog.utils.DictUtils;
@@ -30,13 +30,13 @@ public class DictService extends CrudService<DictDao, Dict> {
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
 		super.save(dict);
-		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+		CacheTool.remove(DictUtils.CACHE_DICT_MAP);
 	}
 
 	@Transactional(readOnly = false)
 	public void delete(Dict dict) {
 		super.delete(dict);
-		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
+		CacheTool.remove(DictUtils.CACHE_DICT_MAP);
 	}
 
 }

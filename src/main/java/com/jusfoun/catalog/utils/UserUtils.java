@@ -1,8 +1,7 @@
 package com.jusfoun.catalog.utils;
 
-import com.jusfoun.catalog.common.service.BaseService;
-import com.jusfoun.catalog.common.utils.CacheUtils;
-import com.jusfoun.catalog.common.utils.SpringContextHolder;
+import com.jusfoun.catalog.common.tool.CacheTool;
+import com.jusfoun.catalog.common.tool.SpringContextHolderTool;
 import com.jusfoun.catalog.dao.*;
 import com.jusfoun.catalog.entity.*;
 import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
@@ -12,7 +11,6 @@ import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +20,11 @@ import java.util.List;
  */
 public class UserUtils {
 
-	private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
-	private static RoleDao roleDao = SpringContextHolder.getBean(RoleDao.class);
-	private static MenuDao menuDao = SpringContextHolder.getBean(MenuDao.class);
-	private static AreaDao areaDao = SpringContextHolder.getBean(AreaDao.class);
-	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
+	private static UserDao userDao = SpringContextHolderTool.getBean(UserDao.class);
+	private static RoleDao roleDao = SpringContextHolderTool.getBean(RoleDao.class);
+	private static MenuDao menuDao = SpringContextHolderTool.getBean(MenuDao.class);
+	private static AreaDao areaDao = SpringContextHolderTool.getBean(AreaDao.class);
+	private static OfficeDao officeDao = SpringContextHolderTool.getBean(OfficeDao.class);
 
 	public static final String USER_CACHE = "userCache";
 	public static final String USER_CACHE_ID_ = "id_";
@@ -46,40 +44,41 @@ public class UserUtils {
 	 * @return 取不到返回null
 	 */
 	public static User get(Integer id){
-		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_ID_ + id);
+		User user = (User)CacheTool.get(USER_CACHE, USER_CACHE_ID_ + id);
 		if (user ==  null){
 			user = userDao.get(id);
 			if (user == null){
 				return null;
 			}
 			user.setRoleList(roleDao.findList(new Role(user)));
-			CacheUtils.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
-			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
+			CacheTool.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
+			CacheTool.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
 		}
 		return user;
 	}
-	
+
 	/**
 	 * 根据登录名获取用户
 	 * @param loginName
 	 * @return 取不到返回null
 	 */
 	public static User getByLoginName(String loginName){
-		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
+		User user = (User)CacheTool.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
 		if (user == null){
 			user = userDao.getByLoginName(new User(null, loginName));
 			if (user == null){
 				return null;
 			}
 			user.setRoleList(roleDao.findList(new Role(user)));
-			CacheUtils.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
-			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
+			CacheTool.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
+			CacheTool.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
 			putCache("userName", user.getName());
+			System.out.println("=========================="+user.getName());
 			putCache("userId", user.getId());
 		}
 		return user;
 	}
-	
+
 	/**
 	 * 清除当前用户缓存
 	 */
@@ -91,20 +90,20 @@ public class UserUtils {
 		removeCache(CACHE_OFFICE_ALL_LIST);
 		UserUtils.clearCache(getUser());
 	}
-	
+
 	/**
 	 * 清除指定用户缓存
 	 * @param user
 	 */
 	public static void clearCache(User user){
-		CacheUtils.remove(USER_CACHE, USER_CACHE_ID_ + user.getId());
-		CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName());
-		CacheUtils.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getOldLoginName());
+		CacheTool.remove(USER_CACHE, USER_CACHE_ID_ + user.getId());
+		CacheTool.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName());
+		CacheTool.remove(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getOldLoginName());
 		if (user.getOffice() != null && user.getOffice().getId() != null){
-			CacheUtils.remove(USER_CACHE, USER_CACHE_LIST_BY_OFFICE_ID_ + user.getOffice().getId());
+			CacheTool.remove(USER_CACHE, USER_CACHE_LIST_BY_OFFICE_ID_ + user.getOffice().getId());
 		}
 	}
-	
+
 	/**
 	 * 获取当前用户
 	 * @return 取不到返回 new User()
@@ -142,7 +141,7 @@ public class UserUtils {
 		}
 		return roleList;
 	}
-	
+
 	/**
 	 * 获取当前用户授权菜单
 	 * @return
@@ -166,7 +165,7 @@ public class UserUtils {
 		}
 		return menuList;
 	}
-	
+
 	/**
 	 * 获取当前用户授权的区域
 	 * @return
@@ -180,7 +179,7 @@ public class UserUtils {
 		}
 		return areaList;
 	}
-	
+
 	/**
 	 * 获取当前用户有权限访问的部门
 	 * @return
@@ -214,14 +213,14 @@ public class UserUtils {
 		}
 		return officeList;
 	}
-	
+
 	/**
 	 * 获取授权主要对象
 	 */
 	public static Subject getSubject(){
 		return SecurityUtils.getSubject();
 	}
-	
+
 	/**
 	 * 获取当前登录者对象
 	 */
@@ -234,13 +233,13 @@ public class UserUtils {
 			}
 //			subject.logout();
 		}catch (UnavailableSecurityManagerException e) {
-			
+
 		}catch (InvalidSessionException e){
-			
+
 		}
 		return null;
 	}
-	
+
 	public static Session getSession(){
 		try{
 			Subject subject = SecurityUtils.getSubject();
@@ -253,17 +252,17 @@ public class UserUtils {
 			}
 //			subject.logout();
 		}catch (InvalidSessionException e){
-			
+
 		}
 		return null;
 	}
-	
+
 	// ============== User Cache ==============
-	
+
 	public static Object getCache(String key) {
 		return getCache(key, null);
 	}
-	
+
 	public static Object getCache(String key, Object defaultValue) {
 //		Object obj = getCacheMap().get(key);
 		Object obj = getSession().getAttribute(key);
@@ -279,7 +278,7 @@ public class UserUtils {
 //		getCacheMap().remove(key);
 		getSession().removeAttribute(key);
 	}
-	
+
 //	public static Map<String, Object> getCacheMap(){
 //		Principal principal = getPrincipal();
 //		if(principal!=null){
@@ -287,5 +286,5 @@ public class UserUtils {
 //		}
 //		return new HashMap<String, Object>();
 //	}
-	
+
 }
