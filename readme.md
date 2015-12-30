@@ -2,7 +2,7 @@
 九次方-政府资源目录平台
 
 ### Project Introduction
-
+Project info in the doc directory. 
 ### Technological Framework
 
 Tech | Name | Version
@@ -24,15 +24,15 @@ IDE    | IDEA or Eclipse    | Latest edition
 ### Install Gradle
 
 * The project used gradle to manage dependencies,source code compiled and so on.
-* Download gradle application,install it and configs the path.
+* Download [gradle](http://gradle.org) to install and configs the path.
 * On terminal,you can execute gradle command at anywhere.
 
 ### Quick Start
-
-* git clone http://gitlab.app/jusfoun/catalog.git
-* cd catalog
-* gradle idea or gradle eclipse #generate IDE config file
-* gradle apprun 
+* `git clone http://gitlab.app/jusfoun/catalog.git`
+* In your MySQL to create `catalog` database.
+* Execute `catalog/db/init.sql` to create tables and initial datas.
+* In the root of project directory execute `gradle idea` or `gradle eclipse` to generate IDE config file.
+* execute `gradle apprun` to launch project.
 
 
 
