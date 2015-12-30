@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="description" content="test">
+        <meta name="keywords" content="test">
+        <title>机构职责维护</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+       
+
+    </head>
+    <body>
+    	<!-- header -->
+    	<div class="header">
+        	<div class="wrap">
+            	<a href="#" class="logo"></a>
+                <div class="fr">
+                	<p>部门管理员，欢迎您！<a href="#">退出</a></p>
+                    <ul>
+                    	<li><a href="#">我的控制台</a></li>
+                    	<li><a href="#">节点管理</a></li>
+                    	<li><a href="#">服务管理</a></li>
+                    	<li class="active"><a href="#">系统管理</a></li>
+                    	<li><a href="#">日志管理</a></li>
+                    	<li><a href="#">统计分析</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- content -->
+        <div class="content">
+        	<h2 class="compile-title mt40">机构职责维护</h2>
+        	<span class="imaginary-line mb20"></span>
+        	<script id="editor" type="text/plain" style="width:1000px;height:195px;" class="mb20"></script>
+        	<div class="compile-form">
+    			<span class="warning-box fl">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
+    			<div class="mb20 clearfix"></div>
+        		<div class="last-modified-time fl">
+        			<span>当前状态：已注册</span>
+        			<span>最后操作时间：2015年12月2日 12:00:00</span>
+        		</div>
+        		<div class="mb50 clearfix"></div>
+				<div class="btn-box fl mb20">
+					<button class="btns fl mr20" type="提交">申请注册</button>
+					<a class="btns-gray fl mr20" href="javascript:;">保存</a>
+					<a class="btns-gray fl" href="javascript:;">取消</a>
+				</div>
+        	</div>
+        	
+        	
+        </div>
+        <!-- footer -->
+        <div class="footer">
+        	<p>Copyright ©2015 北京九次方财富资讯有限公司版权所有.</p>
+            <p>京ICP备11011334号-1</p>
+        </div>
+        <script src="js/jquery-1.11.3.min.js"></script> 
+<script src="js/main.js"></script>
+	    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor/ueditor.all.min.js"> </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="ueditor/lang/zh-cn/zh-cn.js"></script>    	
+        <script>
+			$(document).ready(function() {
+            
+	         var ue = UE.getEditor('editor');               
+	         
+    	});
+        </script>
+    </body>
+</html>
