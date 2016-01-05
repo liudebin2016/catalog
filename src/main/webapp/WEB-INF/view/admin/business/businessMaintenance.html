@@ -1,0 +1,169 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start:content -->
+<div class="content">
+   <h3 class="h3tit mt30">业务信息维护</h3>
+	<div class="form-list top-search">
+    	<ul class="li-fl">
+        	<li>
+            	<label>岗位名称/职位</label>
+                <input class="form-control inp noradius" type="text" placeholder="">
+            </li>
+        	<li class="w-state">
+            	<label>当前状态</label>
+                <select class="form-control sels wd148 noradius" name="">
+                  <option>未提交</option>
+                  <option>提交</option>
+                </select>
+                
+            </li>
+        	<li>
+            	<button class="btns mlt30" type="button">检索</button>
+                <input class="nobg mlt10" name="清空" type="reset" value="清空">                                       
+            </li>
+        </ul>
+    </div>
+    <div class="search-sel">
+    	<a class="btns-gray" href="javascript:;">新建业务</a>
+    	<a class="btns-gray" href="javascript:;">申请注册</a>
+    	<a class="btns-gray" href="javascript:;">申请注销</a> 
+    </div>           
+    <table class="table table-hover ntable mt20">
+        <thead>
+            <tr>
+                <th class="tc"  width="40"><i class="ico-check"></i></th>
+                <th class="tc" width="60">序号</th>
+                <th>业务事项名称</th>
+                <th>共享范围</th>
+                <th>当前状态</th>                       
+                <th width="98">操作</th>
+            </tr>
+        </thead>
+        <tbody>                                                                             
+            <tr>
+                <td class="tc"><i class="ico-check ico-checked"></i></td>
+                <td class="tc">1</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>所有人员</td>
+                <td>未注册</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>                                                                    
+            <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">2</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>注册中</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+             <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">3</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>已注册</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+            <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">4</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>未通过</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+             <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">5</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>删除中</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>   
+             <tr>
+                <td class="tc"><i class="ico-check ico-checked"></i></td>
+                <td class="tc">6</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>所有人员</td>
+                <td>未注册</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>                                                                    
+            <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">7</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>注册中</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+             <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">8</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>已注册</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+            <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">9</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>未通过</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>  
+             <tr>
+                <td class="tc"><i class="ico-check"></i></td>
+                <td class="tc">10</td>
+                <td>Here display business information maintenance business matters</td>
+                <td>部门人员</td>
+                <td>删除中</td>
+                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
+            </tr>                         
+        </tbody>
+    </table>
+    <div class="page-box">
+        <ul class="pagination">
+            <li><a class="arrows-left" href="javascript:;" ></a></li>
+            <li class="active"><a>1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">6</a></li>
+            <li><a href="#">7</a></li>
+            <li><a href="#">8</a></li>
+            <li><a href="#">9</a></li>
+             <li><a href="#">10</a></li>
+            <li><a class="arrows-right" href="javascript:;"></a></li>
+        </ul>
+    </div>
+</div>
+<!-- end:content -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

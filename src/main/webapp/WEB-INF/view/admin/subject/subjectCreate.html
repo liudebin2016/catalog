@@ -1,0 +1,72 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start:content -->
+<div class="content">
+	<h2 class="compile-title mt40">主题信息维护</h2>
+	<span class="imaginary-line"></span>
+	<div class="compile-form">
+		<div class="c-formbox">
+	        <label class="compile-form-title fl">主题名称</label>
+			<input class="form-control inp fl c-f-width540" type="text" placeholder="">
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title fl">主题描述</label>
+			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title fl">共享范围</label>
+			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title fl">共享状态</label>
+			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title fl">主题状态</label>
+			<select class="form-control c-f-width540">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="btn-box fr mb20">
+			<button class="btns fl mr20" type="提交">提交</button>
+			<a class="btns-gray fl" href="javascript:;">取消</a>
+		</div>
+	</div>
+</div>
+<!-- end:content -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

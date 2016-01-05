@@ -22,133 +22,136 @@ var jsPart = {
 var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
-<div class="main-container inner">
-    <!-- start: PAGE -->
-    <div class="main-content">
-
-        <!-- end: SPANEL CONFIGURATION MODAL FORM -->
-        <div class="container">
-            <div class="row" style="height: 41px;color:#dddddd;background-color: #ffffff;line-height: 41px;">
-                <div class="col-sm-6">
-                    <ol class="breadcrumb" style="padding: 0px;margin: 0px;">
-                        <li class="active">
-                            当前位置:
-                        </li>
-                        <li>
-                            <a href="#">
-                                系统管理
-                            </a>
-                        </li>
-                        <li class="active">
-                            字典管理
-                        </li>
-                    </ol>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-white">
-                        <div class="panel-heading" style="background: #E6E8E8;">
-                            <h4 class="panel-title">检索量</h4>
-                        </div>
-                        <div class="panel-body">
-                            <img src="/resources/images/echart01.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 40px;">
-                <div class="col-sm-6">
-                    <div class="panel panel-white panel-tabs">
-                        <div class="panel-heading" style="background: #ffffff;">
-                            <h4 class="panel-title">Top10 热词排行</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="tabbable">
-                                <ul class="nav nav-tabs">
-                                    <li class="active">
-                                        <a data-toggle="tab" href="#panel_tab_example1">
-                                            本周
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#panel_tab_example2">
-                                            本月
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#panel_tab_example3">
-                                            本年
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div id="panel_tab_example1" class="tab-pane fade in active">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                    <div id="panel_tab_example2" class="tab-pane fade">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                    <div id="panel_tab_example3" class="tab-pane fade">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-white panel-tabs">
-                        <div class="panel-heading" style="background: #ffffff;">
-                            <h4 class="panel-title">Top10 热门机构</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="tabbable">
-                                <ul class="nav nav-tabs">
-                                    <li class="active">
-                                        <a data-toggle="tab" href="#panel_tab_example1">
-                                            本周
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#panel_tab_example2">
-                                            本月
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#panel_tab_example3">
-                                            本年
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div id="panel_tab_example1" class="tab-pane fade in active">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                    <div id="panel_tab_example2" class="tab-pane fade">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                    <div id="panel_tab_example3" class="tab-pane fade">
-                                        <img src="/resources/images/hot_words.jpg" width="300">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- start: AJAX CONTENT -->
-            <div id="ajax-content" class="animated">
-                <!-- HERE WILL BE LOADED AN AJAX CONTENT -->
-
-            </div>
-            <!-- end: AJAX CONTENT-->
-        </div>
-        <div class="subviews">
-            <div class="subviews-container">
-            </div>
-        </div>
-    </div>
+<div class="content">
+  <h3 class="h3tit mt30">字典管理</h3>
+  <div class="form-list top-search">
+    <ul class="li-fl">
+      <li>
+        <label>字典名称</label>
+        <input class="form-control inp noradius " type="text" placeholder="">
+      </li>
+      <li>
+        <label>字典编码</label>
+        <input class="form-control inp noradius " type="text" placeholder="">
+      </li>
+      <li>
+        <button class="btns mlt30" type="button">检索</button>
+        <input class="nobg mlt10" name="清空" type="reset" value="清空">
+      </li>
+    </ul>
+  </div>
+ 
+  <table class="table table-hover ntable mt20">
+    <thead>
+      <tr>
+        <th class="tc" width="40"><i class="ico-check"></i></th>
+        <th width="60" class="tc">序号</th>
+        <th>字典名称</th>
+        <th>字典编码</th>
+        <th width="100">备注</th>  
+        <th width="100">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">1</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+        <td class="tc"><i class="ico-check ico-checked"></i></td>
+        <td class="tc">2</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+        <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">3</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+       <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">4</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+      <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">5</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+        <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">6</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+       <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">7</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+      <tr>
+        <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">8</td>
+        <td>九次方政府资源目录平台</td>
+        <td>所有人员</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">查看</a><a href="javascript:;">编辑</a></td>
+      </tr>     
+      <tr>
+       <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">9</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+       <tr>
+       <td class="tc"><i class="ico-check"></i></td>
+        <td class="tc">10</td>
+        <td>九次方政府资源目录平台</td>
+        <td>机构职责</td>
+        <td>未注册</td>       
+        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="page-box">
+    <ul class="pagination">
+      <li><a class="arrows-left" href="javascript:;" ></a></li>
+      <li class="active"><a>1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a href="#">8</a></li>
+      <li><a href="#">9</a></li>
+      <li><a href="#">10</a></li>
+      <li><a class="arrows-right" href="javascript:;"></a></li>
+    </ul>
+  </div>
+</div>
     <!-- end: PAGE -->
 </div>
 <!-- end: MAIN CONTAINER -->

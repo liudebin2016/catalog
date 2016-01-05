@@ -1,0 +1,72 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start:content -->
+<div class="content">
+  <h3 class="h3tit mt30">机构目录管理</h3>
+  <div class="search-sel mt20"> <a class="btns-gray fr" href="javascript:;">导出</a><a class="btns-gray fr" href="javascript:;">导入</a> <a class="btns-gray wd fr" href="javascript:;">导入模块下载</a>
+    <div class="search-inp "> <a href="#" class="btns-gray"><i class="all-icon circle-icon-bule-br"></i>新增主题</a><a href="#" class="btns-gray"><i class="all-icon circle-icon-orage-br"></i>新增子主题</a>
+      <input class="form-control inp wd180" type="text" placeholder="检索">
+      <i class="glyphicon glyphicon-search search-ico "></i> </div>
+  </div>
+  <div class="ml-wrap mt20 mb30">    
+    <div class="ml-content ml-content1">
+      <ul class="ml-list">
+        <li>
+          <div><a href=""><i class="all-icon circle-icon-bule"></i>主题1</a>            
+               <ul class="ml-list04 ml-list-last mt020">
+                    <li class="hover">
+                      <div>使用<span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-bule-left"></i></a><a href="#"><i class="all-icon jt-bule-right"></i></a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
+                    </li> 
+                  </ul>
+          </div>
+          <ul class="ml-list01">
+            <li>
+              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>
+              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>
+              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>              
+            </li>            
+          </ul>
+          
+        </li>
+        <li><div class="active"><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a>
+           <ul class="ml-list04 ml-list-last mt020">
+                    <li class="active">
+                      <div><span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-white-left"></i></a><a href="#"><i class="all-icon jt-white-right"></i></a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
+                    </li> 
+                  </ul>
+        </div></li>
+        <li><div><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a></div></li>
+        <li><div><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a></div></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end:content -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

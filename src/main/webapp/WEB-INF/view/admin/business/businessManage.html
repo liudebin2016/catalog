@@ -1,0 +1,77 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+
+<style type="text/css">
+
+</style>
+
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start:content -->
+<div class="content">
+  <h3 class="h3tit mt30">机构目录管理</h3>
+  <div class="search-sel mt20"> <a class="btns-gray fr mr0" href="javascript:;">导出</a>
+    <div class="search-inp ">
+      <input class="form-control inp wd180 inp-h30" type="text" placeholder="检索">
+      <i class="glyphicon glyphicon-search search-ico "></i> </div>
+  </div>
+  <div class="ml-wrap mt20 mb40">
+    <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>业务</span></div>
+    <div class="ml-content"> 
+       
+      <ul class="ml-list">
+        <li>
+          <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>苏州市</a></div>
+          <ul class="ml-list01">
+            <li>
+              <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>吴中区</a></div>
+              <ul class="ml-list02">
+                <li>
+                  <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div>
+                  <ul class="ml-list03 ml-list-last">
+                    <li class="hover">
+                      <div>业务1<span><a href="#">注销</a><a href="#">废止</a><a href="#">查看</a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
+                    </li>
+                    <li><div>业务2</div></li>
+                    <li class="active">
+                      <div>业务3<span><a href="#">注销</a><a href="#">废止</a><a href="#">查看</a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
+                    </li>
+                  </ul> 
+                  </li> 
+                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>
+                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>
+                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>                                                  
+              </ul>
+            </li>
+            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>金阊区</a></div></li>
+            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>平江区</a></div></li>
+            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>沧浪区</a></div></li>
+            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>虎丘区</a></div> </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- end:content -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>
