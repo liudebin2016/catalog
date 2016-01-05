@@ -1,0 +1,216 @@
+<% var cssPart = { %>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<style type="text/css">
+</style>
+
+<%};%> <% var jsPart = { %>
+<script type="text/javascript">
+	
+</script>
+
+<%};%> <% var htmlPart = { %>
+<!-- start: MAIN CONTAINER -->
+<div class="wrap clearfix">
+	<h2 class="compile-title mt40">资源信息编辑</h2>
+	<span class="imaginary-line"></span>
+	<div class="compile-form">
+		<div class="c-formbox">
+	        <label class="compile-form-title2 fl">资源名称</label>
+			<input class="form-control inp fl c-f-width485" type="text" placeholder="">
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">所属业务事项名称</label>
+			<label class="has-ico-radio mr20">
+				<i class="ico-radio ico-radio-on fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_0">新建业务
+			</label>
+			<label class="has-ico-radio">
+				<i class="ico-radio fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_1">已有业务
+			</label>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">所属业务事项名称</label>
+			<label class="has-ico-radio mr20">
+				<i class="ico-radio ico-radio-on fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_2">所需材料
+			</label>
+			<label class="has-ico-radio">
+				<i class="ico-radio fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_3">生产材料
+			</label>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">信息资源编码</label>
+			<div class="coding-box c-f-width485 fl">
+				<span class="fl b-gray cr-gray"></span>
+				<span class="fl">
+					<input class="form-control inp coding-width100f" type="text" placeholder="">
+				</span>
+			</div>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源描述</label>
+			<textarea class="form-control c-f-width485" rows="3"></textarea>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源责任方</label>
+			<input class="form-control inp fl c-f-width485" type="text" placeholder="">
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">责任方属性</label>
+			<label class="has-ico-radio mr20">
+				<i class="ico-radio ico-radio-on fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_0">委（局）内
+			</label>
+			<label class="has-ico-radio mr20">
+				<i class="ico-radio fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_1">委办局
+			</label>
+			<label class="has-ico-radio">
+				<i class="ico-radio fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_1">其他
+			</label>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox mb0">
+			<label class="compile-form-title2 fl">责任方联系方式</label>
+			<textarea class="form-control c-f-width485" rows="3" placeholder="文字说明"></textarea>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源采集途径</label>
+			<select class="form-control c-f-width485">
+			  <option>非行政执法类</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">更新周期</label>
+			<input class="form-control inp fl c-f-width485" type="text" placeholder="">
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源安全级别</label>
+			<select class="form-control c-f-width485">
+			  <option>非行政执法类</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">信息字段</label>
+			<div class="add-material c-f-width485 fl">
+				<a class="btns-gray fl mb20 btn-auto" href="javascript:;">添加所需材料</a>
+				<table class="table table-bordered">
+			      <thead>
+			        <tr class="active">
+			          <th class="tc" width="50">序号</th>
+			          <th>字段名称</th>
+			          <th width="124">操作</th>
+			        </tr>
+			      </thead>
+			      <tbody>
+			        <tr>
+			          <td class="tc">1</td>
+			          <td>Mark</td>
+			          <td><a class="mr20" href="javascript:;">修改</a><a href="javascript:;">删除</a></td>
+			        </tr>
+			      </tbody>
+			    </table>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">涉及的数据库支撑</label>
+			<label class="has-ico-radio mr20">
+				<i class="ico-radio ico-radio-on fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_0">有
+			</label>
+			<label class="has-ico-radio">
+				<i class="ico-radio fl"></i>
+				<input class="hidden" type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_1">无
+			</label>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">备注</label>
+			<textarea class="form-control c-f-width485" rows="3" placeholder=""></textarea>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源共享范围</label>
+			<div class="c-f-width485 fl">
+				<ul class="choosable-box">
+					<li>
+						<span></span>所有人员
+					</li>
+					<li>
+						<span></span>国家部委
+					</li>
+					<li>
+						<span></span>市领导
+					</li>
+					<li>
+						<span></span>委办局
+					</li>
+					<li>
+						<span></span>委（局）内
+					</li>
+					<li>
+						<span></span>本部门专员
+					</li>
+					<li>
+						<span></span>其他
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="c-formbox">
+			<label class="compile-form-title2 fl">资源共享范围</label>
+			<div class="c-f-width485 fl">
+				<ul class="choosable-box">
+					<li>
+						<span></span>网上发布
+					</li>
+					<li>
+						<span></span>介质交流（纸制报表，电子文档等）
+					</li>
+					<li>
+						<span></span>委（局）内
+					</li>
+					<li>
+						<span></span>系统接口
+                    </li>
+					<li>
+						<span></span>其他
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="mb20 clearfix"></div>
+		<div class="btn-box fr mb40">
+			<button class="btns fl mr20 ml-reg" type="提交">申请注册</button>
+			<a class="btns-gray fl mr20" href="javascript:;">保存</a>
+			<a class="btns-gray fl" href="javascript:;">取消</a>
+		</div>
+	</div>
+</div>
+<!-- end: MAIN CONTAINER -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>
