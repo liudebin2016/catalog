@@ -1,0 +1,145 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<style type="text/css">
+
+</style>
+
+<%};%>
+<%
+var jsPart = {
+%>
+<script type="text/javascript">
+
+
+</script>
+
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start: MAIN CONTAINER -->
+<div class="content">
+	<h3 class="h3tit mt30">机构目录管理</h3>
+	<div class="search-sel mt20">
+		<a class="btns-gray fr" href="javascript:;">导出</a><a
+			class="btns-gray fr" href="javascript:;">导入</a> <a
+			class="btns-gray wd fr" href="javascript:;">导入模块下载</a>
+		<div class="search-inp ">
+			<a href="#" class="btns-gray"><i class="all-icon xjaear-icon fl"></i>新增域</a><a
+				href="#" class="btns-gray"><i class="all-icon xjbm-icon fl"></i>新增部门</a>
+			<input class="form-control inp wd180" type="text" placeholder="检索">
+			<i class="glyphicon glyphicon-search search-ico "></i>
+		</div>
+	</div>
+	<div class="ml-wrap mt20 mb30">
+		<div class="top-title">
+			<span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>国际代码</span>
+		</div>
+		<div class="ml-content">
+			<ul class="ml-list">
+				<li>
+					<div>
+						<a href=""><i class="all-icon jt-gry-down"></i><i
+							class="all-icon wjj-icon"></i>苏州市</a>
+					</div>
+					<ul class="ml-list01">
+						<li>
+							<div>
+								<a href=""><i class="all-icon jt-gry-down"></i><i
+									class="all-icon wjj-icon"></i>吴中区</a>
+							</div>
+							<ul class="ml-list02">
+								<li>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>经信局</a>
+									</div>
+									<ul class="ml-list04 ml-list-last">
+										<li class="hover">
+											<div>
+												GB12345<span><a href="#">删除</a><a href="#">废止</a><a
+													href="#">编辑</a><a href="#"><i
+														class="all-icon jt-bule-left"></i></a><a href="#"><i
+														class="all-icon jt-bule-right"></i></a><a href="#"><i
+														class="all-icon jt-bule-down"></i></a><a href="#"><i
+														class="all-icon jt-bule-up"></i></a></span>
+											</div>
+										</li>
+										<li>
+											<div>GB12345</div>
+										</li>
+										<li class="active">
+											<div>
+												GB12345<span><a href="#">删除</a><a href="#">废止</a><a
+													href="#">编辑</a><a href="#"><i
+														class="all-icon jt-white-left"></i></a><a href="#"><i
+														class="all-icon jt-white-right"></i></a><a href="#"><i
+														class="all-icon jt-white-down"></i></a><a href="#"><i
+														class="all-icon jt-white-up"></i></a></span>
+											</div>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>财政局</a>
+									</div>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>审计局</a>
+									</div>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>环保局</a>
+									</div>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>经信局</a>
+									</div>
+									<div>
+										<a href=""><i class="all-icon jt-gry-down"></i><i
+											class="all-icon wj-icon"></i>财政局</a>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<div>
+								<a href=""><i class="all-icon jt-gry-down"></i><i
+									class="all-icon wjj-icon"></i>金阊区</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href=""><i class="all-icon jt-gry-down"></i><i
+									class="all-icon wjj-icon"></i>平江区</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href=""><i class="all-icon jt-gry-down"></i><i
+									class="all-icon wjj-icon"></i>沧浪区</a>
+							</div>
+						</li>
+						<li>
+							<div>
+								<a href=""><i class="all-icon jt-gry-down"></i><i
+									class="all-icon wjj-icon"></i>虎丘区</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- end: MAIN CONTAINER -->
+
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

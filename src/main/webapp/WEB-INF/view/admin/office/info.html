@@ -1,0 +1,91 @@
+<% var cssPart = { %>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<style type="text/css">
+</style>
+
+<%};%> <% var jsPart = { %>
+<script type="text/javascript">
+	
+</script>
+
+<%};%> <% var htmlPart = { %>
+<!-- start: MAIN CONTAINER -->
+<div class="main-container inner">
+	<!-- start: PAGE -->
+	<div class="main-content">
+		<!-- end: SPANEL CONFIGURATION MODAL FORM -->
+		<div class="container">
+			<div class="row"
+				style="height: 1px; color: #dddddd; background-color: #ffffff; line-height: 31px;">
+				<div class="col-sm-6">
+<!-- 					<ol class="breadcrumb" style="padding: 0px; margin: 0px;"> -->
+<!-- 						<li class="active">当前位置:</li> -->
+<!-- 						<li><a href="#"> 系统管理 </a></li> -->
+<!-- 						<li class="active">信息统计</li> -->
+<!-- 					</ol> -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="col1">
+						<h3 class="h3tit1">业务目录信息</h3>
+						<div>
+							<input class="form-control noradius wd120" type="text"
+								placeholder="检索">
+						</div>
+						<ul class="menu mt10">
+							<li><a href="#" class="active"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>吴中区</a>
+								<ul>
+									<li><a href="#"><i
+											class="glyphicon glyphicon-triangle-bottom"></i>经信局</a>
+										<ul>
+											<li><a href="#"></i>业务1</a></li>
+											<li><a href="#" class="current"></i>业务2</a></li>
+											<li><a href="#">业务3</a></li>
+										</ul></li>
+									<li><a href="#"><i
+											class="glyphicon glyphicon-triangle-right"></i>财政局</a></li>
+									<li><a href="#"><i
+											class="glyphicon glyphicon-triangle-right"></i>审计局</a></li>
+								</ul></li>
+							<li><a href="#"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>相城区</a></li>
+							<li><a href="#"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>金闾区</a></li>
+							<li><a href="#"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>平江区</a></li>
+							<li><a href="#"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>沧浪区</a></li>
+							<li><a href="#"><i
+									class="glyphicon glyphicon-triangle-bottom"></i>虎丘区</a></li>
+						</ul>
+					</div>
+					<div class="col2">
+						<h3 class="h3tit">吴中区经信局</h3>
+						<div class="text-warp">
+							<h5 class="h4tit">主要职能</h5>
+							<p>1、贯彻执行国家、省和国民经济和社会发展的战略方针、政策；组织编制全市国民经济和社会发展的中长期规划和年度计划，研究提出总量平衡、发展速度和结构调整的调节目标及调节政策，协调、衔接和平衡各主要行业规划和相关的政策措施。</p>
+							<p>2、研究分析国际和国内经济形势和发展情况，对本市经济运行情况分析、预测，提出经济持续、快速、健康发展的政策建议，综合协调经济社会发展。</p>
+							<p>3、研究全市经济体制改革重大问题，组织拟订综合性经济体制改革方案。指导和协调股份制改革和企业上市工作；协调有关专项经济体制改革方案，对改革方案实施过程进行跟踪、调查，协调方案实施中的有关问题，指导和推进经济体制改革。</p>
+							<p>
+								4、提出全市社会固定资产投资总规模与投资方向，规划重大项目的布局；编制全市固定资产投资计划及重点建设项目计划；负责安排或转报漳平市重大建设项目和按管理权限审批建设项目；组织向上争取项目资金；负责全市重大建设项目的审批、可研、开工报告、后评价等的管理和协调，会同市有关主管部门审查项目初步设计；组织重大项目稽查工作。
+							</p>
+							<p>
+								5、负责本市内工程建设项目招标投标工作的指导和协调，会同有关部门联合开展招标投标执法大检查活动，监督和规范招标投标和公共资源市场化配置工作管理。跟踪、监督上级发改部门下拨补助资金的项目建设，严格按工程进度建议财政拨付，并做到专款专用；抓好工程质量关，督促工程进度，使每个项目能尽快按要求组织实施。组织、指导、监督有关业务部门的经营性收费项目管理，协同处理全市行政事业性、经营性收费方面的争议。
+							</p>
+							<p>
+								6、会同有关部门研究提出全市利用外资的发展战略、总量平衡与结构优化的目标及政策；提出全市利用外资的总规模和投向；参与境内外招商引资工作。按权限审批或审核转报外商直接投资项目。组织有关部门审核上报利用国外贷款项目和境外投资项目。
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end: MAIN CONTAINER -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>
