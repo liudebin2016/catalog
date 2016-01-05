@@ -59,9 +59,9 @@ table{border-collapse:collapse;border-spacing:0}
 .content1{width:100%;}
 
 /* icon */
-button.btns, button.btns-gray,a.btns-gray,.ico-checked,.arrows-left,.arrows-right,.inp-date,.ico-radio{ background:url(../images/sprites.png) no-repeat;}
+button.btns, button.btns-gray,a.btns-gray,.ico-checked,.arrows-left,.arrows-right,.inp-date,.ico-radio{ background:url(../../images/sprites.png) no-repeat;}
 
-.home-icon-01,.home-icon-02,.home-icon-03,.all-icon{ background:url(../images/sprites1.png) no-repeat;}
+.home-icon-01,.home-icon-02,.home-icon-03,.all-icon{ background:url(../../images/sprites1.png) no-repeat;}
 
 
 /*button.btns-gray{border:1px solid #ccc;}*/
@@ -109,7 +109,7 @@ a.btns-gray:active,button.btns-gray:active{background-position:0 -427px}
 .header:before,.header:after{ position:absolute;left:0;width:100%; z-index:-1; content:''; display:block;}
 .header:before{top:0;height:55px; background:#0A75C0;}
 .header:after{ top:55px;height:44px; background:#BFD2DA;}
-.header a.logo{ display:block;float:left;width:225px;height:106px; background:url(../images/logo.png); line-height:106em; overflow:hidden;}
+.header a.logo{ display:block;float:left;width:225px;height:106px; background:url(../../images/logo.png); line-height:106em; overflow:hidden;}
 .header .fr{width:762px; padding-right:20px;}
 .header .fr p{ text-align:right; line-height:55px; color:#FFF;}
 .header .fr p  a{ margin-left:15px; color:#FFF;}
@@ -158,7 +158,7 @@ border-radius:0;}
 .tag-list li a{ display:inline-block;width:94px;height:39px; border:1px solid #DDD; background:#F5F5F5; text-align:center; line-height:39px; color:#333;}
 .tag-list li.active a{ border-top-width:3px; border-color:#0A75C0 #DDD #FFF #DDD; background:#FFF; color:#0a75c0; line-height:37px;}
 .tag-list li a:hover{ text-decoration:none;color:#0a75c0;}
-.h3tit,.h3tit1{height:40px;font-size:20px; line-height:40px; background:url(../images/dott.png) repeat-x bottom;}
+.h3tit,.h3tit1{height:40px;font-size:20px; line-height:40px; background:url(../../images/dott.png) repeat-x bottom;}
 .h3tit1{ background:none;}
 .h4tit{ margin:10px 0 -10px ; font-size:18px; line-height:30px;}
 .col1{ float:left;width:194px; padding:30px 0;}
@@ -225,12 +225,12 @@ border-radius:0;}
 .home .more a{color:#000;}
 
 .ntable thead tr th.br-wd0{border-right:0;}
-.table-bj tr{ background:url(../images/ml-line_03.png) repeat-y;}
+.table-bj tr{ background:url(../../images/ml-line_03.png) repeat-y;}
 .ml-wrap{width:100%;border:1px solid #e1e1e1;}
 .ml-wrap .top-title{width:100%;height:40px; background:#f5f5f5;border-bottom:1px solid #e1e1e1;}
 .ml-wrap .top-title span{ float:left; display:block;width:130px;line-height:40px; text-align:left;margin-left:10px;}
-.ml-content{ padding:5px 0 10px; background:url(../images/ml-line_03.png) repeat-y; line-height:30px;}
-.ml-content1{background:url(../images/ml-line1.png) repeat-y; }
+.ml-content{ padding:5px 0 10px; background:url(../../images/ml-line_03.png) repeat-y; line-height:30px;}
+.ml-content1{background:url(../../images/ml-line1.png) repeat-y; }
 .ml-list div{padding-left:10px;}
 .ml-list01 div{padding-left:140px;height:30px; line-height:30px;}
 .ml-list02 div{padding-left:270px;height:30px; line-height:30px;}
@@ -351,7 +351,7 @@ a.btns-gray:hover{ text-decoration:none;}
 .search-string{border: 1px solid #ff9100;height: 40px;line-height: 40px;width: 578px;margin: 15px 0 45px 0 ;}
 .search-string input{width: 450px;height: 38px;border: 0;}
 .search-string span{cursor: pointer; color: #fff;background: #ff9100;width: 115px;height: 39px;line-height: 39px;display: block;float: right;font-size: 20px;}
-.search-string span i{width: 19px;height: 21px;background:url(../images/sprites.png) no-repeat 0 -224px;display: block;margin: 8px 10px 0 22px; float: left; }
+.search-string span i{width: 19px;height: 21px;background:url(../../images/sprites.png) no-repeat 0 -224px;display: block;margin: 8px 10px 0 22px; float: left; }
 .search-contenbox{
 	width: 100%;
 	height: auto;
@@ -359,7 +359,7 @@ a.btns-gray:hover{ text-decoration:none;}
 }
 .rc-search{padding: 10px 20px;overflow: hidden;height: 50px;position: relative;background: #F5F5F5;}
 .rc-search .m-inp{width: 200px;height: 30px;}
-.rc-search i{width: 15px;height: 15px;display: block;background: url(../images/sprites.png) no-repeat 0 -203px;position: absolute;top: 18px;left: 195px;cursor: pointer;}
+.rc-search i{width: 15px;height: 15px;display: block;background: url(../../images/sprites.png) no-repeat 0 -203px;position: absolute;top: 18px;left: 195px;cursor: pointer;}
 .search-message{
 	height: 268px;
 	width: 100%;
@@ -557,7 +557,7 @@ a.btns-gray:hover{ text-decoration:none;}
 .logbg {
 	height: 860px;
 	width: 100%;
-	background: #0a75c0 url(../images/login_bg.jpg) no-repeat center center;
+	background: #0a75c0 url(../../images/login_bg.jpg) no-repeat center center;
 	overflow: hidden;
 	zoom: 1;
 }
@@ -570,7 +570,7 @@ a.btns-gray:hover{ text-decoration:none;}
 	width: 330px;
 	height: 278px;
 	margin: 280px auto;
-	background: url(../images/login_title.png) no-repeat center -76px;
+	background: url(../../images/login_title.png) no-repeat center -76px;
 	overflow: hidden;
 	zoom: 1;
 }
@@ -580,7 +580,7 @@ a.btns-gray:hover{ text-decoration:none;}
 	margin-top: 64px;
 	text-indent: 32px;
 	font-size: 16px;
-	background: #fff url(../images/user_key.png) no-repeat 16px top;
+	background: #fff url(../../images/user_key.png) no-repeat 16px top;
 }
 .logkey {
 	width: 330px;
@@ -588,7 +588,7 @@ a.btns-gray:hover{ text-decoration:none;}
 	margin-top: 16px;
 	text-indent: 32px;
 	font-size: 16px;
-	background: #fff url(../images/user_key.png) no-repeat 16px -38px;
+	background: #fff url(../../images/user_key.png) no-repeat 16px -38px;
 }
 .identyarea {
 	width: 330px;
@@ -625,10 +625,10 @@ a.btns-gray:hover{ text-decoration:none;}
 	font-size: 20px;
 	font-weight: bold;
 	color: #fff;
-	background: url(../images/login_title.png) no-repeat left -38px;
+	background: url(../../images/login_title.png) no-repeat left -38px;
 }
 .login-btn:hover {
-	background: url(../images/login_title.png) no-repeat;
+	background: url(../../images/login_title.png) no-repeat;
 }
 
 
@@ -704,10 +704,10 @@ a.btns-gray:hover{ text-decoration:none;}
 	margin-left: 74px;
 }
 .img-area-l {
-	background: url(../images/hot_words.jpg) no-repeat left -7px;
+	background: url(../../images/hot_words.jpg) no-repeat left -7px;
 }
 .img-area-r {
-	background: url(../images/hot_institutions.jpg) no-repeat left -7px;
+	background: url(../../images/hot_institutions.jpg) no-repeat left -7px;
 }
 
 .w-state{width:210px; margin:0 21px 0 28px;}
