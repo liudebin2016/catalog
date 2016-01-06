@@ -314,4 +314,137 @@ BEGIN;
 INSERT INTO `sys_user_role` VALUES ('1', '1'), ('1', '2'), ('2', '1'), ('3', '2'), ('4', '3'), ('5', '4'), ('6', '5'), ('7', '2'), ('7', '7'), ('8', '2'), ('9', '1'), ('10', '2'), ('11', '3'), ('12', '4'), ('13', '5'), ('14', '6');
 COMMIT;
 
+CREATE TABLE `catalog_info` (
+  `id` int(11) NOT NULL COMMENT '目录id',
+  `type` int(11) DEFAULT NULL COMMENT '目录类型：资源、主题、机构、岗位、业务',
+  `type_value` varchar(100) DEFAULT NULL COMMENT '目录类型值',
+  `office_id` int(11) DEFAULT NULL COMMENT '机构id',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(11) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` int(11) DEFAULT NULL COMMENT '更新人',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目录信息表';
+
+CREATE TABLE `office_info` (
+  `id` int(11) NOT NULL COMMENT '机构id',
+  `name` varchar(45) NOT NULL COMMENT '机构名',
+  `parent_id` varchar(45) DEFAULT NULL COMMENT '父机构id',
+  `parent_name` varchar(45) DEFAULT NULL COMMENT '父机构名',
+  `duty` text COMMENT '机构职责',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(11) DEFAULT NULL COMMENT '创建人',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` int(11) DEFAULT NULL COMMENT '更新人',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='机构信息';
+
+CREATE TABLE `resource_info` (
+  `id` int(11) NOT NULL COMMENT '资源id',
+  `name` varchar(145) DEFAULT NULL COMMENT '资源名称',
+  `of_business` int(11) DEFAULT NULL COMMENT '所属业务',
+  `type` int(11) DEFAULT NULL COMMENT '资源类型',
+  `code` varchar(145) DEFAULT NULL COMMENT '资源编码',
+  `describe` text COMMENT '资源描述',
+  `response_party` varchar(145) DEFAULT NULL COMMENT '资源责任方',
+  `response_attr` int(11) DEFAULT NULL COMMENT '责任属性',
+  `response_cu` varchar(145) DEFAULT NULL COMMENT '责任方联系方式',
+  `collect_way` int(11) DEFAULT NULL COMMENT '收集方式',
+  `security_level` int(11) DEFAULT NULL COMMENT '资源安全级别',
+  `info_field` varchar(200) DEFAULT NULL COMMENT '信息字段',
+  `is_db_support` int(11) DEFAULT NULL COMMENT '是否数据库支撑',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `share_region` varchar(45) DEFAULT NULL COMMENT '共享范围',
+  `share_mode` varchar(45) DEFAULT NULL COMMENT '共享方式',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_by` int(11) DEFAULT NULL COMMENT '创建者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_by` int(11) DEFAULT NULL COMMENT '更新者',
+  `update_cycle` varchar(45) DEFAULT NULL COMMENT '更新周期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源信息表';
+
+CREATE TABLE `subject_info` (
+  `id` int(11) NOT NULL COMMENT '节点ID',
+  `name` varchar(100) NOT NULL COMMENT '节点名称',
+  `parent_id` int(11) DEFAULT NULL COMMENT '父节点ID',
+  `parent_name` varchar(100) DEFAULT NULL COMMENT '父节点名称',
+  `describe` varchar(400) DEFAULT NULL COMMENT '描述',
+  `share_region` varchar(200) DEFAULT NULL COMMENT '共享范围',
+  `share_mode` varchar(200) DEFAULT NULL COMMENT '共享方式',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `create_date` datetime DEFAULT NULL COMMENT '创建日期',
+  `create_by` int(11) DEFAULT NULL COMMENT '创建者',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
+  `update_by` int(11) DEFAULT NULL COMMENT '更新者',
+  `remark` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主题信息表';
+
+create table business
+(
+   id                   bigint not null comment '业务id',
+   name                 varchar(128) not null comment '业务事项名称',
+   name_ref             varchar(64) comment '业务事项名称填写依据',
+   first_name           varchar(128) comment '一级子项名称',
+   second_name          varchar(128) comment '二级子项名称',
+   third_name           varchar(128) comment '三级子项名称',
+   code                 varchar(128) comment '业务事项编码',
+   type                 varchar(64) comment '业务事项分类',
+   basis                varchar(64) comment '业务事项办理依据',
+   flow                 varchar(512) comment '业务事项办理流程',
+   summary              varchar(512) comment '业务事项简述',
+   time_limit           varchar(64) comment '总时限',
+   charge_basis         varchar(256) comment '收费依据',
+   charge_office_id     bigint comment '业务事项主管单位',
+   impl_office_id       bigint comment '业务事项实施单位',
+   workload             varchar(64) comment '业务量/工作量',
+   relate_office        varchar(64) comment '业务事项办理涉及的其他相关单位',
+   need_data            varchar(512) comment '业务事项所需材料',
+   produce_data         varchar(512) comment '业务事项产生材料',
+   is_use               bit(1) comment '业务事项应用系统',
+   remark               text comment '备注',
+   share_with           varchar(64) comment '资源共享范围',
+   create_by            varchar(0) not null comment '创建者',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment '创建时间',
+   update_by            bigint comment '更新者',
+   update_date          datetime comment '更新日期',
+   del_flag             bit(1) not null default 0 comment '是否删除',
+   primary key (id)
+);
+
+create table job
+(
+   id                   bigint not null comment '岗位id',
+   name                 varchar(128) not null comment '岗位名称/职位',
+   duty                 varchar(512) not null comment '岗位职责',
+   type                 bit(2) comment '岗位属性',
+   create_by            bigint not null comment '创建者',
+   create_date          datetime not null default CURRENT_TIMESTAMP comment '创建日期',
+   update_by            bigint comment '更新者',
+   update_date          datetime comment '更新日期',
+   remark               text comment '备注',
+   del_flag             bit(1) not null default 0 comment '是否删除',
+   primary key (id)
+);
+
+create table job_business
+(
+   job_id               bigint not null comment '岗位id',
+   business_id          bigint not null comment '业务id',
+   primary key (job_id, business_id)
+);
+
+create table job_office
+(
+   job_id               bigint not null comment '岗位id',
+   office_id            bigint not null comment '组织机构id',
+   primary key (job_id, office_id)
+);
+
 SET FOREIGN_KEY_CHECKS = 1;
