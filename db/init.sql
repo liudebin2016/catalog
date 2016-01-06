@@ -314,6 +314,9 @@ BEGIN;
 INSERT INTO `sys_user_role` VALUES ('1', '1'), ('1', '2'), ('2', '1'), ('3', '2'), ('4', '3'), ('5', '4'), ('6', '5'), ('7', '2'), ('7', '7'), ('8', '2'), ('9', '1'), ('10', '2'), ('11', '3'), ('12', '4'), ('13', '5'), ('14', '6');
 COMMIT;
 
+-- ----------------------------
+--  Table structure for `catalog_info`
+-- ----------------------------
 CREATE TABLE `catalog_info` (
   `id` int(11) NOT NULL COMMENT '目录id',
   `type` int(11) DEFAULT NULL COMMENT '目录类型：资源、主题、机构、岗位、业务',
@@ -328,6 +331,9 @@ CREATE TABLE `catalog_info` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目录信息表';
 
+-- ----------------------------
+--  Table structure for `office_info`
+-- ----------------------------
 CREATE TABLE `office_info` (
   `id` int(11) NOT NULL COMMENT '机构id',
   `name` varchar(45) NOT NULL COMMENT '机构名',
@@ -343,6 +349,9 @@ CREATE TABLE `office_info` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='机构信息';
 
+-- ----------------------------
+--  Table structure for `resource_info`
+-- ----------------------------
 CREATE TABLE `resource_info` (
   `id` int(11) NOT NULL COMMENT '资源id',
   `name` varchar(145) DEFAULT NULL COMMENT '资源名称',
@@ -368,6 +377,9 @@ CREATE TABLE `resource_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源信息表';
 
+-- ----------------------------
+--  Table structure for `subject_info`
+-- ----------------------------
 CREATE TABLE `subject_info` (
   `id` int(11) NOT NULL COMMENT '节点ID',
   `name` varchar(100) NOT NULL COMMENT '节点名称',
@@ -386,6 +398,9 @@ CREATE TABLE `subject_info` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='主题信息表';
 
+-- ----------------------------
+--  Table structure for `business`
+-- ----------------------------
 create table business
 (
    id                   bigint not null comment '业务id',
@@ -418,6 +433,9 @@ create table business
    primary key (id)
 );
 
+-- ----------------------------
+--  Table structure for `job`
+-- ----------------------------
 create table job
 (
    id                   bigint not null comment '岗位id',
@@ -433,6 +451,9 @@ create table job
    primary key (id)
 );
 
+-- ----------------------------
+--  Table structure for `job_business`
+-- ----------------------------
 create table job_business
 (
    job_id               bigint not null comment '岗位id',
@@ -440,6 +461,9 @@ create table job_business
    primary key (job_id, business_id)
 );
 
+-- ----------------------------
+--  Table structure for `job_office`
+-- ----------------------------
 create table job_office
 (
    job_id               bigint not null comment '岗位id',
