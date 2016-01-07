@@ -345,6 +345,7 @@ CREATE TABLE `office_info` (
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(11) DEFAULT NULL COMMENT '更新人',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `del_flag` bit(1) DEFAULT 0 COMMENT '是否删除',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='机构信息';
