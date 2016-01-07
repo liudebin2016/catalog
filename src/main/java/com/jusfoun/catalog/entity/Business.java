@@ -2,14 +2,17 @@ package com.jusfoun.catalog.entity;
 
 import java.util.Date;
 
+import com.jusfoun.catalog.common.entity.DataEntity;
+
 /**
  * 业务Entity
  * @author liudebin
  *
  */
-public class Business {
+public class Business extends DataEntity<Business>{
 	
-    private Long id;//主键
+	private static final long serialVersionUID = 1L;
+	
     private String name;//业务名称
     private String nameRef;//业务事项名称填写依据
     private String firstName;//一级子项名称
@@ -28,23 +31,9 @@ public class Business {
     private String relateOffice;//业务事项办理涉及的其他相关单位
     private String needData;//业务事项所需材料
     private String produceData;//业务事项产生材料
-    private Boolean isUse;//业务事项应用系统
+    private String isUse;//业务事项应用系统
     private String shareWith;//资源共享范围
-    private String createBy;//创建者
-    private Date createDate;//创建时间
-    private Long updateBy;//更新者
-    private Date updateDate;//更新日期
-    private Boolean delFlag;//是否删除
-    private String remark;//备注
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -189,11 +178,11 @@ public class Business {
         this.produceData = produceData;
     }
 
-    public Boolean getIsUse() {
+    public String getIsUse() {
         return isUse;
     }
 
-    public void setIsUse(Boolean isUse) {
+    public void setIsUse(String isUse) {
         this.isUse = isUse;
     }
 
@@ -205,13 +194,6 @@ public class Business {
         this.shareWith = shareWith;
     }
 
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
 
     public Date getCreateDate() {
         return createDate;
@@ -219,14 +201,6 @@ public class Business {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
     }
 
     public Date getUpdateDate() {
@@ -237,19 +211,4 @@ public class Business {
         this.updateDate = updateDate;
     }
 
-    public Boolean getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Boolean delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

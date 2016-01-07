@@ -26,45 +26,47 @@ var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
-	<h2 class="compile-title mt40">主题信息维护</h2>
-	<span class="imaginary-line"></span>
-	<div class="compile-form">
-		<div class="c-formbox">
-	        <label class="compile-form-title fl">主题名称</label>
-			<input class="form-control inp fl c-f-width540" type="text" placeholder="">
+	<form action="/admin/subject/doCreate.do" method="post">
+		<h2 class="compile-title mt40">主题信息维护</h2>
+		<span class="imaginary-line"></span>
+		<div class="compile-form">
+			<div class="c-formbox">
+		        <label class="compile-form-title fl">主题名称</label>
+				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name">
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">主题描述</label>
+				<textarea class="form-control fl c-f-width540" rows="3" name="descr"></textarea>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">共享范围</label>
+				<textarea class="form-control fl c-f-width540" rows="3" name="shareRegion"></textarea>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">共享状态</label>
+				<textarea class="form-control fl c-f-width540" rows="3" name="shareMode"></textarea>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">主题状态</label>
+				<select class="form-control c-f-width540" name="status">
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				</select>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="btn-box fr mb20">
+				<button class="btns fl mr20" type="submit">提交</button>
+				<a class="btns-gray fl" href="javascript:;">取消</a>
+			</div>
 		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">主题描述</label>
-			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">共享范围</label>
-			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">共享状态</label>
-			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">主题状态</label>
-			<select class="form-control c-f-width540">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>5</option>
-			</select>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="btn-box fr mb20">
-			<button class="btns fl mr20" type="提交">提交</button>
-			<a class="btns-gray fl" href="javascript:;">取消</a>
-		</div>
-	</div>
+	</form>
 </div>
 <!-- end:content -->
 <%};

@@ -1,43 +1,30 @@
 package com.jusfoun.catalog.entity;
 
-import java.util.Date;
+import com.jusfoun.catalog.common.entity.DataEntity;
 
 /**
  * 资源Entity
  * @author liudebin
  *
  */
-public class ResourceInfo {
+public class ResourceInfo extends DataEntity<ResourceInfo>{
    
-    private Integer id;//
-    private String name;//
-    private Integer ofBusiness;//
-    private Integer type;//
-    private String code;//
-    private String responseParty;//
-    private Integer responseAttr;//
-    private String responseCu;//
-    private Integer collectWay;//
-    private Integer securityLevel;//
-    private String infoField;//
-    private Integer isDbSupport;//
-    private String remark;//
-    private String shareRegion;//
-    private String shareMode;//
-    private Date createDate;//
-    private Integer createBy;//
-    private Date updateDate;//
-    private Integer updateBy;//
-    private String updateCycle;//
-    private String descr;//
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	private static final long serialVersionUID = 1L;
+	
+	private String name;//资源名称
+    private Integer ofBusiness;//所属业务
+    private Integer type;//资源类型
+    private String code;//资源编码
+    private String responseParty;//资源责任方
+    private Integer responseAttr;//责任属性
+    private String responseCu;//责任方联系方式
+    private Integer collectWay;//收集方式
+    private Integer securityLevel;//资源安全级别
+    private String infoField;//信息字段
+    private Integer isDbSupport;//是否数据库支撑
+    private String shareRegion;//共享范围
+    private String shareMode;//共享方式
+    private String descr;//资源描述
 
     public String getName() {
         return name;
@@ -127,14 +114,6 @@ public class ResourceInfo {
         this.isDbSupport = isDbSupport;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public String getShareRegion() {
         return shareRegion;
     }
@@ -149,46 +128,6 @@ public class ResourceInfo {
 
     public void setShareMode(String shareMode) {
         this.shareMode = shareMode;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public String getUpdateCycle() {
-        return updateCycle;
-    }
-
-    public void setUpdateCycle(String updateCycle) {
-        this.updateCycle = updateCycle;
     }
 
     public String getDescr() {

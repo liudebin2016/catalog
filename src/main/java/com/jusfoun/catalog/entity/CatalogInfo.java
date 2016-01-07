@@ -2,30 +2,20 @@ package com.jusfoun.catalog.entity;
 
 import java.util.Date;
 
+import com.jusfoun.catalog.common.entity.DataEntity;
+
 /**
  * 目录Entity
  * @author liudebin
  *
  */
-public class CatalogInfo {
+public class CatalogInfo extends DataEntity<CatalogInfo>{
     
-    private Integer id;//主键
-    private Integer type;//目录类型
+	private static final long serialVersionUID = 1L;
+	
+	private Integer type;//目录类型
     private String typeValue;//类型值
     private Integer officeId;//机构Id
-    private Date createDate;//创建日期
-    private Integer createBy;//创建者
-    private Date updateDate;//更新日期
-    private Integer updateBy;//更新者
-    private String remark;//备注
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getType() {
         return type;
@@ -59,35 +49,4 @@ public class CatalogInfo {
         this.createDate = createDate;
     }
 
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

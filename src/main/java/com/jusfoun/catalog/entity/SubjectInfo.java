@@ -1,35 +1,23 @@
 package com.jusfoun.catalog.entity;
 
-import java.util.Date;
+import com.jusfoun.catalog.common.entity.DataEntity;
 
 /**
  * 主题Entity
  * @author liudebin
  *
  */
-public class SubjectInfo {
+public class SubjectInfo extends DataEntity<SubjectInfo>{
 	
-    private Integer id;//主题ID
-    private String name;//主题名称
+	private static final long serialVersionUID = 1L;
+	
+	private String name;//主题名称
     private Integer parentId;//父主题ID
     private String parentName;//父主题名称
     private String descr;//主题描述
     private String shareRegion;//共享范围
     private String shareMode;//共享方式
     private Integer status;//主题状态
-    private Date createDate;//创建日期
-    private Integer createBy;//创建人
-    private Date updateDate;//更新日期
-    private Integer updateBy;//更新人
-    private String remark;//备注
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -87,43 +75,4 @@ public class SubjectInfo {
         this.status = status;
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
-    public Integer getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Integer updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }
