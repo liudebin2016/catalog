@@ -9,6 +9,7 @@
         a.area_id AS "area.id",
         a.code,
         a.name,
+        a.duty,
         a.sort,
         a.type,
         a.grade,
@@ -87,6 +88,7 @@
         area_id,
         code,
         name,
+        duty,
         sort,
         type,
         grade,
@@ -112,6 +114,7 @@
         #{area.id},
         #{code},
         #{name},
+        #{duty},
         #{sort},
         #{type},
         #{grade},
@@ -145,6 +148,7 @@
         address = #{address},
         zip_code = #{zipCode},
         master = #{master},
+        duty=#{duty},
         phone = #{phone},
         fax = #{fax},
         email = #{email},
@@ -152,7 +156,7 @@
         update_date = #{updateDate},
         remarks = #{remarks},
         useable=#{useable},
-        primary_person=#{primaryPerson.id},
+        primary_person=#{primaryPerson.id},        
         deputy_person=#{deputyPerson.id}
         WHERE id = #{id}
     </update>

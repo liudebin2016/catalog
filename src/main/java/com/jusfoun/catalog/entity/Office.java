@@ -19,6 +19,7 @@ public class Office extends TreeEntity<Office> {
 	private Area area;			// 归属区域
 	private String code; 		// 机构编码
 	private String name; 		// 机构名称
+	private String duty;        // 机构职责
 	private Integer sort;		// 排序
 	private String type; 		// 机构类型（1：公司；2：部门；3：小组）
 	private String grade; 		// 机构等级（1：一级；2：二级；3：三级；4：四级）
@@ -208,5 +209,29 @@ public class Office extends TreeEntity<Office> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDuty() {
+		return duty;
+	}
+
+	public void setDuty(String duty) {
+		this.duty = duty;
+	}
+
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 }
