@@ -53,7 +53,7 @@ table{border-collapse:collapse;border-spacing:0}
 /* public */
 
 .wrap{width:1000px;margin:0 auto; min-height:550px;}
-.content{margin:0 auto;width:1000px;*zoom:1}
+.content{margin:110px auto;width:1000px;*zoom:1}
 .content:before,.content:after{display:table;content:"";line-height:0}
 .content:after{clear:both;}
 .content1{width:100%;}
