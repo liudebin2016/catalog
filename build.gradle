@@ -61,11 +61,11 @@ gretty {
     servletContainer = 'jetty9'
     scanInterval = 1
     inplaceMode = 'hard'
-    debugSuspend = false
+    debugSuspend = true
 }
 
 dependencies {
-    compile(
+    compile(    		
             "org.springframework:spring-core:${springVersion}",
             "org.springframework:spring-jdbc:${springVersion}",
             "org.springframework:spring-webmvc:${springVersion}",
@@ -76,6 +76,7 @@ dependencies {
             "org.springframework:spring-core:${springVersion}",
             "org.springframework:spring-aspects:${springVersion}",
             "org.springframework:spring-beans:${springVersion}",
+            "org.springframework:spring-test:${springVersion}",
 //                'org.springframework.security:spring-security-web:4.0.0.RELEASE'
 //                'org.springframework.security:spring-security-config:4.0.0.RELEASE'
             'org.springframework.session:spring-session:1.0.0.RELEASE',
