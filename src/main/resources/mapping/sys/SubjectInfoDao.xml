@@ -68,7 +68,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   
-  <!-- 删除用户和角色关联表数据 -->
+  <!-- 根据主键删除主题信息 -->
   <delete id="delete" parameterType="com.jusfoun.catalog.entity.SubjectInfo">
 	  DELETE FROM subject_info WHERE id = #{id}
   </delete>
