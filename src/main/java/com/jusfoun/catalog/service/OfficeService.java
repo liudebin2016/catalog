@@ -4,6 +4,7 @@ import com.jusfoun.catalog.common.service.TreeService;
 import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.utils.UserUtils;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	public List<Office> findAll(){
 		return UserUtils.getOfficeList();
 	}
-
+	
 	public List<Office> findList(Boolean isAll){
 		if (isAll != null && isAll){
 			return UserUtils.getOfficeAllList();
@@ -48,5 +49,4 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		super.delete(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
-	
 }

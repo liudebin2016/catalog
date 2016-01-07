@@ -1,17 +1,27 @@
 package com.jusfoun.catalog.utils;
 
-import com.jusfoun.catalog.common.tool.CacheTool;
-import com.jusfoun.catalog.common.tool.SpringContextHolderTool;
-import com.jusfoun.catalog.dao.*;
-import com.jusfoun.catalog.entity.*;
-import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
+import java.util.List;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
-import java.util.List;
+import com.jusfoun.catalog.common.service.BaseService;
+import com.jusfoun.catalog.common.tool.CacheTool;
+import com.jusfoun.catalog.common.tool.SpringContextHolderTool;
+import com.jusfoun.catalog.dao.AreaDao;
+import com.jusfoun.catalog.dao.MenuDao;
+import com.jusfoun.catalog.dao.OfficeDao;
+import com.jusfoun.catalog.dao.RoleDao;
+import com.jusfoun.catalog.dao.UserDao;
+import com.jusfoun.catalog.entity.Area;
+import com.jusfoun.catalog.entity.Menu;
+import com.jusfoun.catalog.entity.Office;
+import com.jusfoun.catalog.entity.Role;
+import com.jusfoun.catalog.entity.User;
+import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
 
 /**
  * 用户工具类
@@ -193,7 +203,7 @@ public class UserUtils {
 				officeList = officeDao.findAllList(new Office());
 			}else{
 				Office office = new Office();
-//				office.getSqlMap().put("dsf", BaseService.dataScopeFilter(user, "a", ""));
+				office.getSqlMap().put("dsf", BaseService.dataScopeFilter(user, "a", ""));
 				officeList = officeDao.findList(office);
 			}
 			putCache(CACHE_OFFICE_LIST, officeList);

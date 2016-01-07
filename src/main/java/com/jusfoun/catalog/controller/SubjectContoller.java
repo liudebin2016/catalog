@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.security.shiro.session.SessionDAO;
+import com.jusfoun.catalog.dao.SubjectInfoDao;
 
 /**
  * 主题目录
