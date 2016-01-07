@@ -165,6 +165,7 @@ CREATE TABLE `sys_office` (
   `parent_id` int(11) NOT NULL COMMENT '父级编号',
   `parent_ids` varchar(2000) NOT NULL COMMENT '所有父级编号',
   `name` varchar(100) NOT NULL COMMENT '名称',
+  `duty` text COMMENT '机构职责',
   `sort` decimal(10,0) NOT NULL COMMENT '排序',
   `area_id` varchar(64) NOT NULL COMMENT '归属区域',
   `code` varchar(100) DEFAULT NULL COMMENT '区域编码',
