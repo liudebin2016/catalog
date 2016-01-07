@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 机构Controller
- * @author admin
+ * @author xuym
  *
  */
 @Controller

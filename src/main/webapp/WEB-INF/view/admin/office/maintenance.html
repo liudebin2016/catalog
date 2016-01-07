@@ -1,42 +1,55 @@
-<%
-var cssPart = {
-%>
+<% var cssPart = { %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-<%};%>
-<%
-var jsPart = {
-%>
-<%};%>
+<%};%> <% var jsPart = { %> <%};%>
 <script src="/resources/assets/js/ueditor/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/resources/assets/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="/resources/assets/js/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="/resources/assets/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8"
+	src="/resources/assets/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8"
+	src="/resources/assets/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8"
+	src="/resources/assets/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    var ue = UE.getEditor('editor');               
-});
+	$(document).ready(function() {
+		var ue = UE.getEditor('editor');
+	});
 </script>
-<%
-var htmlPart = {
-%>
+<% var htmlPart = { %>
 <!-- start: MAIN CONTAINER -->
-<div class="content">
-	<h2 class="compile-title mt40">机构职责维护</h2>
-	<span class="imaginary-line mb20"></span>
-	<script id="editor" type="text/plain"
-		style="width: 1000px; height: 195px;" class="mb20"></script>
-	<div class="compile-form">
-		<span class="warning-box fl">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
-		<div class="mb20 clearfix"></div>
-		<div class="last-modified-time fl">
-			<span>当前状态：已注册</span> <span>最后操作时间：2015年12月2日 12:00:00</span>
-		</div>
-		<div class="mb50 clearfix"></div>
-		<div class="btn-box fl mb20">
-			<button class="btns fl mr20" type="提交">申请注册</button>
-			<a class="btns-gray fl mr20" href="javascript:;">保存</a> <a
-				class="btns-gray fl" href="javascript:;">取消</a>
+<div class="main-container inner">
+	<div class="main-content">
+		<div class="container">
+			<div class="row"
+				style="height: 1px; color: #dddddd; background-color: #ffffff; line-height: 31px;">
+				<div class="col-sm-6">
+					<!-- 					<ol class="breadcrumb" style="padding: 0px; margin: 0px;"> -->
+					<!-- 						<li class="active">当前位置:</li> -->
+					<!-- 						<li><a href="#"> 系统管理 </a></li> -->
+					<!-- 						<li class="active">信息统计</li> -->
+					<!-- 					</ol> -->
+				</div>
+			</div>
+			<div class="row">
+				<div class="content">
+					<h2 class="compile-title mt40">机构职责维护</h2>
+					<span class="imaginary-line mb20"></span>
+					<script id="editor" type="text/plain"
+						style="width: 1000px; height: 195px;" class="mb20"></script>
+					<div class="compile-form">
+						<span class="warning-box fl">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
+						<div class="mb20 clearfix"></div>
+						<div class="last-modified-time fl">
+							<span>当前状态：已注册</span> <span>最后操作时间：2015年12月2日 12:00:00</span>
+						</div>
+						<div class="mb30 clearfix"></div>
+						<div class="btn-box fl mb20">
+							<button class="btns fl mr20" type="提交">申请注册</button>
+							<a class="btns-gray fl mr20" href="javascript:;">保存</a> <a
+								class="btns-gray fl" href="javascript:;">取消</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
