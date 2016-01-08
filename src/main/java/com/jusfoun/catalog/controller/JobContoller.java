@@ -42,6 +42,18 @@ public class JobContoller extends BaseController {
 	}
 	
 	/**
+	 * 部门岗位创建
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/create", method = RequestMethod.GET)
+	public String getJobCreate(HttpServletRequest request, HttpServletResponse response){
+		
+		return "admin/job/jobMaintenance";
+	}
+	
+	/**
 	 * 岗位目录管理
 	 * @param request
 	 * @param response
