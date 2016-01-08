@@ -37,6 +37,16 @@
   <sql id="Blob_Column_List" >
     descr
   </sql>
+  
+  <select id="findRscClList" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
+  	select
+  		o.id,o.parent_id,o.name,c.type_value
+  	from 
+  		sys_office o,catalog_info c
+  	where 
+    	o.id=c.office_id and c.type=1
+  </select>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
