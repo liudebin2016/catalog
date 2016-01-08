@@ -13,6 +13,12 @@ public class CatalogInfo extends DataEntity<CatalogInfo>{
     
 	private static final long serialVersionUID = 1L;
 	
+	public static final int TYPE_RESOURCE = 1;
+	public static final int TYPE_SUBJECT =2;
+	public static final int TYPE_OFFICE = 3;
+	public static final int TYPE_JOB = 4;
+	public static final int TYPE_BUSINESS = 5;
+	
 	private Integer type;//目录类型
     private String typeValue;//类型值
     private Integer officeId;//机构Id
