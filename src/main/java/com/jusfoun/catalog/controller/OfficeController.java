@@ -33,6 +33,13 @@ public class OfficeController extends BaseController {
         return "admin/office/info";
     }
     
+    @ResponseBody
+    @RequestMapping(value = "${adminPath}/office/updateDuty")
+    public String updateDuty(@RequestParam(value="content")String content) {
+    	System.out.println(content);
+        return "success";
+    }
+    
     @RequestMapping(value = "${adminPath}/office/manage", method = RequestMethod.GET)
     public String manage(){
     	return "admin/office/manage";
