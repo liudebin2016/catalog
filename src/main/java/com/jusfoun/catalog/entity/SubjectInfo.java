@@ -17,7 +17,7 @@ public class SubjectInfo extends DataEntity<SubjectInfo>{
     private String descr;//主题描述
     private String shareRegion;//共享范围
     private String shareMode;//共享方式
-    private Integer status;//主题状态
+    private Integer status;//主题状态：1-使用、2-草案、3-废止、4-标准
 
     public String getName() {
         return name;

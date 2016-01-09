@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jusfoun.catalog.dao.SubjectInfoDao" >
-<!--
+  
+  <resultMap id="CatalogTreeRm" type="com.jusfoun.catalog.entity.SubjectInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+    <result column="descr" property="descr" jdbcType="VARCHAR" />
+    <result column="share_region" property="shareRegion" jdbcType="VARCHAR" />
+    <result column="share_mode" property="shareMode" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />    
+  </resultMap>
+  
+  <!-- 得到主题列表 -->
+  <select id="findAllList" parameterType="com.jusfoun.catalog.entity.SubjectInfo" resultMap="CatalogTreeRm">
+  	select 
+    	id, name, parent_id, parent_name, descr, share_region, share_mode, status
+    from 
+    	subject_info
+  </select>
+  <!-- 根据Id得到主题列表 -->
+  <select id="get" parameterType="java.lang.Integer" resultMap="CatalogTreeRm">
+    select 
+    	id, name, parent_id, parent_name, descr, share_region, share_mode, status
+    from 
+    	subject_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 根据Id删除主题 -->
+  <delete id="delete" parameterType="com.jusfoun.catalog.entity.SubjectInfo" >
+    delete from subject_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <!--  
   <resultMap id="BaseResultMap" type="com.jusfoun.catalog.entity.SubjectInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -36,6 +69,7 @@
     from subject_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from subject_info
     where id = #{id,jdbcType=INTEGER}
