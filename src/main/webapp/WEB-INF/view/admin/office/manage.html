@@ -1,21 +1,26 @@
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
-var jq1_4 = $.noConflict(true);
+	var jq1_4 = $.noConflict(true);
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
-
 <script type="text/javascript">
-
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+		// modal window
+		$(".modal").on("hidden.bs.modal", function() {
+		    $(this).removeData("bs.modal");
+		});
+		// regionSubmit
+		$('#regionSubmit').on('click',regionSubmit);
+	});
 	var setting = {
 	    view: {
-	        addHoverDom: addHoverDom,
 	        removeHoverDom: removeHoverDom,
 	        selectedMulti: false
-	    },
-	    check: {
-	        //enable: true
 	    },
 	    data: {
 	        simpleData: {
@@ -28,7 +33,7 @@ var jq1_4 = $.noConflict(true);
 	    async: {
 			enable: true,
 			url:"tree",
-			autoParam:["id", "name=n", "level=lv"],
+			autoParam:["id", "name", "level"],
 			otherParam:{"otherParam":"zTreeAsyncTest"},
 			dataFilter: filter,
 			dataType:"json",
@@ -38,54 +43,36 @@ var jq1_4 = $.noConflict(true);
 // 			beforeAsync: beforeAsync,
 // 			onAsyncError: onAsyncError,
 // 			onAsyncSuccess: onAsyncSuccess
+			beforeRemove: beforeRemove
+// 			onRemove: onRemove
 		}
 	};
-	
-	var zNodes =[
-	    { id:1, pId:0, name:"父节点1", open:true},
-	    { id:11, pId:1, name:"父节点11"},
-	    { id:111, pId:11, name:"叶子节点111"},
-	    { id:112, pId:11, name:"叶子节点112"},
-	    { id:12, pId:1, name:"父节点12"},
-	    { id:121, pId:12, name:"叶子节点121"},
-	    { id:122, pId:12, name:"叶子节点122"},
-	    { id:123, pId:12, name:"叶子节点123"},
-	    { id:13, pId:1, name:"父节点13", isParent:true},
-	    { id:2, pId:0, name:"父节点2"},
-	    { id:21, pId:2, name:"父节点21", open:true},
-	    { id:211, pId:21, name:"叶子节点211"},
-	    { id:212, pId:21, name:"叶子节点212"},
-	    { id:213, pId:21, name:"叶子节点213"},
-	    { id:214, pId:21, name:"叶子节点214"},
-	    { id:22, pId:2, name:"父节点22"},
-	    { id:221, pId:22, name:"叶子节点221"},
-	    { id:222, pId:22, name:"叶子节点222"},
-	    { id:223, pId:22, name:"叶子节点223"},
-	    { id:224, pId:22, name:"叶子节点224"},
-	    { id:3, pId:0, name:"父节点3", isParent:true}
-	];
-	
-	jq1_4(document).ready(function(){
-// 		jq1_4.fn.zTree.init(jq1_4("#treeDemo"), setting, zNodes);
-		jq1_4.fn.zTree.init(jq1_4("#treeDemo"), setting);
-	});
-	
-	var newCount = 1;
-	function addHoverDom(treeId, treeNode) {
-	    var sObj = jq1_4("#" + treeNode.tId + "_span");
-	    if (treeNode.editNameFlag || jq1_4("#addBtn_"+treeNode.tId).length>0) return;
-	    var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
-	        + "' title='add node' onfocus='this.blur();'></span>";
-	    sObj.after(addStr);
-	    var btn = jq1_4("#addBtn_"+treeNode.tId);
-	    if (btn) btn.bind("click", function(){
-	        var zTree = jq1_4.fn.zTree.getZTreeObj("treeDemo");
-	        zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:"new node" + (newCount++)});
-	        return false;
-	    });
+	function beforeRemove(treeId, treeNode){
+		var flag = false;
+		$.ajax({
+			type:'post',
+			async:false,
+			url:'delete',
+			data:{'id':treeNode.id},
+			dataType:'json',
+			success:function(data){
+				flag = true;
+			}
+		});
+		var txt = '<div class="alert alert-danger">'
+			+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+			+'删除操作失败，请重试！</div>';
+		if(flag){
+			txt = '<div class="alert alert-success">'
+				+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+				+'删除操作成功！</div>';
+		}
+		$('#_alert').html(txt);
+		$('#_alert').show();
+		return flag;
 	};
 	function removeHoverDom(treeId, treeNode) {
-	    jq1_4("#addBtn_"+treeNode.tId).unbind().remove();
+		jq1_4("#addBtn_"+treeNode.tId).unbind().remove();
 	};
 	function filter(treeId, parentNode, childNodes) {
 		if (!childNodes) return null;
@@ -106,23 +93,71 @@ margin-left: 0px;
 .ztree li{
 margin-left: 120px;
 }
+.modal-dialog{
+ 	margin: 10% auto;
+}
 </style>
 <%};%>
 <% var jsPart = { %>
-
+<script type="text/javascript">
+	function addRegionCheck(){
+		var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
+		if(treeObj == null)
+			return;
+		var nodes = treeObj.getSelectedNodes();
+		var parentId = 0;
+		if (nodes.length > 0) {
+			if (nodes[0].level >= 1) {
+				$('#_alert').html('<div class="alert alert-warning">'
+						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+						+'选中项下不可新建域，请重新选择!</div>');
+				$('#_alert').show();
+				return false;
+			}
+			parentId = nodes[0].id;
+		}
+		$('#parentRegionId').val(parentId);
+		$('#addRegion').modal('show');
+	}
+	function regionSubmit(){
+		if($.trim($('#regionName').val()) == ''){
+			$('<div class="alert alert-warning">'
+					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+'请输入域名称！</div>').insertBefore($('#regionBtn'));
+			return;
+		}
+		$.post('save',$('#regionForm').serialize(),function(obj){
+			if(obj.succ==1){
+				$('#_alert').html('<div class="alert alert-success">'
+						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+						+obj.msg
+						+'</div>');
+				$('#_alert').show();
+				var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
+				if(treeObj == null)
+					return;
+				treeObj.reAsyncChildNodes(treeObj.getSelectedNodes()[0], "refresh");
+				$('#addRegion').modal('hide');
+			}
+		},"json");
+	}
+</script>
 <%};%>
 
 <% var htmlPart = { %>
 <!-- start: MAIN CONTAINER -->
 <div class="content">
 	<h3 class="h3tit mt30">机构目录管理</h3>
+	<div id="_alert" style="display: none;"></div>
 	<div class="search-sel mt20">
 		<a class="btns-gray fr" href="javascript:;">导出</a><a
 			class="btns-gray fr" href="javascript:;">导入</a> <a
 			class="btns-gray wd fr" href="javascript:;">导入模块下载</a>
 		<div class="search-inp ">
-			<a href="#" class="btns-gray"><i class="all-icon xjaear-icon fl"></i>新增域</a><a
-				href="#" class="btns-gray"><i class="all-icon xjbm-icon fl"></i>新增部门</a>
+			<a href="javascript:void(0);" class="btns-gray" data-toggle="modal" role="button" onclick="addRegionCheck();">
+				<i class="all-icon xjaear-icon fl" ></i>新增域
+			</a>
+			<a href="#addDept" class="btns-gray" data-toggle="modal" role="button"><i class="all-icon xjbm-icon fl"></i>新增部门</a>
 			<input class="form-control inp wd180" type="text" placeholder="检索">
 			<i class="glyphicon glyphicon-search search-ico "></i>
 		</div>
@@ -133,11 +168,101 @@ margin-left: 120px;
 		</div>
 		<!-- 组织机构树 start -->
 		<div class="zTreeDemoBackground left">
-			<ul id="treeDemo" class="ztree"></ul>
+			<ul id="officeTree" class="ztree"></ul>
 		</div>
 		<!-- 组织机构树 end -->
 	</div>
 </div>
+
+<!-- 模态框start -->
+<div class="modal fade" id="addRegion" tabindex="-1" role="dialog" 
+   aria-labelledby="regionLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="regionLabel">
+               新增域
+            </h4>
+         </div>
+			<form role="form" id="regionForm">
+				<div class="modal-body">
+					<input type="hidden" name="parentId" id="parentRegionId"/>
+					<div class="form-group">
+						<label for="regionName">域名称*</label> 
+						<input type="text"  name="name" class="form-control" id="regionName" placeholder="请输入域名称">
+					</div>
+					<div class="form-group">
+						<label for="regionCode">国际代码</label>
+						<input type="text" name="code" class="form-control" id="regionCode" placeholder="请输入国际代码">
+					</div>
+				</div>
+				<div class="modal-footer" id="regionBtn">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" id="regionSubmit" class="btn btn-primary">提交</button>
+				</div>
+			</form>
+		</div>
+</div>
+</div>
+<div class="modal fade" id="addDept" tabindex="-1" role="dialog" 
+   aria-labelledby="deptLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="deptLabel">
+               新增部门
+            </h4>
+         </div>
+         <div class="modal-body">
+            在这里添加一些文本
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" class="btn btn-primary">
+               提交
+            </button>
+         </div>
+      </div>
+</div>
+</div>
+<div class="modal fade" id="deleteNode" tabindex="-1" role="dialog" 
+   aria-labelledby="deleteNodeLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="deleteNodeLabel">
+               新增部门
+            </h4>
+         </div>
+         <div class="modal-body">
+            在这里添加一些文本
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" 
+               data-dismiss="modal">关闭
+            </button>
+            <button type="button" class="btn btn-primary">
+               提交
+            </button>
+         </div>
+      </div>
+</div>
+</div>
+<!-- 模态框end -->
 <!-- end: MAIN CONTAINER -->
 <%};
 include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}

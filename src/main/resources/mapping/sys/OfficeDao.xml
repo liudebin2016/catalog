@@ -82,7 +82,6 @@
 
     <insert id="insert">
         INSERT INTO sys_office(
-        id,
         parent_id,
         parent_ids,
         area_id,
@@ -108,7 +107,6 @@
         primary_person,
         deputy_person
         ) VALUES (
-        #{id},
         #{parent.id},
         #{parentIds},
         #{area.id},
