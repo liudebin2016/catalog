@@ -15,8 +15,6 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript">
-
-
 </script>
 
 <%};%>
@@ -29,50 +27,57 @@ var htmlPart = {
    	<h2 class="compile-title mt40">岗位信息维护</h2>
    	<span class="imaginary-line"></span>
    	<div class="compile-form">
-		<div class="c-formbox">
-	        <label class="compile-form-title fl">岗位名称/职位</label>
-			<input class="form-control inp fl c-f-width540" type="text" placeholder="">
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">岗位职责</label>
-			<textarea class="form-control fl c-f-width540" rows="3"></textarea>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-	        <label class="compile-form-title fl">岗位所属单位</label>
-			<input class="form-control inp fl c-f-width450" type="text" placeholder="">
-			<span class="btn-select fr">选择</span>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">相关业务</label>
-			<textarea class="form-control fl c-f-width450" rows="3"></textarea>
-			<span class="btn-select fr">选择</span>
-		</div>
-		<div class="mb20 clearfix"></div>
-		<div class="c-formbox">
-			<label class="compile-form-title fl">岗位属性</label>
-			<select class="form-control c-f-width540">
-			  <option>1</option>
-			  <option>2</option>
-			  <option>3</option>
-			  <option>4</option>
-			  <option>5</option>
-			</select>
-		</div>
-		<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
-		<div class="mb20 clearfix"></div>
-   		<div class="last-modified-time fr">
-   			<span>当前状态：已注册</span>
-   			<span>最后操作时间：2015年12月2日 12:00:00</span>
-   		</div>
-   		<div class="mb20 clearfix"></div>
-   		<div class="btn-box fr mb20">
-   			<button class="btns  fl mr20">申请注册</button>
-   			<button class="btns-gray fl mr20">保存</button>
-   			<button class="btns-gray fl">取消</button>
-   		</div>
+   <%if(job.id==null){%>
+   	<form action="/admin/job/create" method="post">
+   <% }else{ %>
+   		<form action="/admin/job/doedit" method="post">
+   	<%}%>
+   			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
+			<div class="c-formbox">
+		        <label class="compile-form-title fl">岗位名称/职位</label>
+				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name" value="${job.id==''?'':job.name}">
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">岗位职责</label>
+				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job.id==''?'':job.duty}</textarea>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+		        <label class="compile-form-title fl">岗位所属单位</label>
+				<input class="form-control inp fl c-f-width450" type="text" placeholder="" value="${job.id==''?'':job.type}">
+				<span class="btn-select fr">选择</span>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">相关业务</label>
+				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
+				<span class="btn-select fr">选择</span>
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">岗位属性</label>
+				<select class="form-control c-f-width540" name="type">
+				  <option>1</option>
+				  <option>2</option>
+				  <option>3</option>
+				  <option>4</option>
+				  <option>5</option>
+				</select>
+			</div>
+			<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
+			<div class="mb20 clearfix"></div>
+	   		<div class="last-modified-time fr">
+	   			<span>当前状态：已注册</span>
+	   			<span>最后操作时间：2015年12月2日 12:00:00</span>
+	   		</div>
+	   		<div class="mb20 clearfix"></div>
+	   		<div class="btn-box fr mb20">
+	   			<button class="btns  fl mr20">申请注册</button>
+	   			<button class="btns-gray fl mr20" type="submit">保存</button>
+	   			<button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
+	   		</div>
+   		</form>
    	</div>
 </div>
 <!-- end:content -->

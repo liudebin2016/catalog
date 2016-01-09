@@ -175,4 +175,58 @@
       del_flag = #{delFlag,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <insert id="createJob" parameterType="com.jusfoun.catalog.entity.Job" useGeneratedKeys="true" keyProperty="id">
+  <selectKey keyProperty="id" resultType="int" order="BEFORE">
+         SELECT LAST_INSERT_ID()
+     </selectKey>
+    insert into job (name, duty, 
+      type, create_by, create_date, 
+      update_by, update_date, del_flag)
+    values (#{name,jdbcType=VARCHAR}, #{duty,jdbcType=VARCHAR}, 
+      #{type,jdbcType=CHAR}, #{createBy.id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy.id,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <select id="findJobList" resultType="Job">
+  	select * from job order by id DESC 
+  </select>
+  <select id="selectById" parameterType="java.lang.String" resultType="com.jusfoun.catalog.entity.Job">
+    select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag
+    from job
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <update id="updateById" parameterType="com.jusfoun.catalog.entity.Job" >
+    update job
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        duty = #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy.id,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy.id,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 </mapper>

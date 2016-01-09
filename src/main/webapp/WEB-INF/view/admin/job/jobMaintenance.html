@@ -27,26 +27,28 @@ var htmlPart = {
 <!-- start:content -->
 <div class="content">
   <h3 class="h3tit mt30">岗位信息维护</h3>
-  <div class="form-list top-search">
-    <ul class="li-fl">
-      <li>
-        <label>岗位名称/职位</label>
-        <input class="form-control inp noradius" type="text" placeholder="">
-      </li>
-      <li>
-        <label>当前状态</label>
-        <select class="form-control sels wd148 noradius" name="">
-          <option>未提交</option>
-          <option>提交</option>
-        </select>
-      </li>
-      <li>
-        <button class="btns mlt30" type="button">检索</button>
-        <input class="nobg mlt10" name="清空" type="reset" value="清空">
-      </li>
-    </ul>
-  </div>
-  <div class="search-sel"> <a class="btns-gray" href="javascript:;">新建岗位</a> <a class="btns-gray" href="javascript:;">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
+  	<form action="" method="POST">
+	  <div class="form-list top-search">
+	    <ul class="li-fl">
+	      <li>
+	        <label>岗位名称/职位</label>
+	        <input class="form-control inp noradius" type="text" placeholder="">
+	      </li>
+	      <li>
+	        <label>当前状态</label>
+	        <select class="form-control sels wd148 noradius" name="">
+	          <option>未提交</option>
+	          <option>提交</option>
+	        </select>
+	      </li>
+	      <li>
+	        <button class="btns mlt30" type="submit">检索</button>
+	        <input class="nobg mlt10" name="清空" type="reset" value="清空">
+	      </li>
+	    </ul>
+	  </div>
+	</form>
+  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
   <table class="table table-hover ntable mt20">
     <thead>
       <tr>
@@ -62,17 +64,20 @@ var htmlPart = {
       </tr>
     </thead>
     <tbody>
+     <%for(entry in jobList){ %>
       <tr>
         <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">1</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
+        <td class="tc"> ${entry.id}</td>
+        <td> ${entry.name}</td>
+        <td>${entry.duty}</td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td>未注册</td>
-        <td><a href="javascript:;">编辑</a></td>
+        <td><a href="/admin/job/edit?id=${entry.id}">编辑</a></td>
       </tr>
+       <%}%>
+      <!-- 
       <tr>
         <td class="tc"><i class="ico-check ico-checked"></i></td>
         <td class="tc">2</td>
@@ -172,6 +177,7 @@ var htmlPart = {
         <td>未注册</td>
         <td><a href="javascript:;">查看</a></td>
       </tr>
+       -->
     </tbody>
   </table>
   <div class="page-box">
