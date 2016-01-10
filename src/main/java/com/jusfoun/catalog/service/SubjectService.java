@@ -3,7 +3,6 @@ package com.jusfoun.catalog.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +19,9 @@ import com.jusfoun.catalog.vo.CatalogTree;
 @Service
 public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 	
-	@Autowired
-	private SubjectInfoDao subjectInfoDao;
-	
 	@Transactional(readOnly = false)
 	public boolean saveSubjectInfo(SubjectInfo subjectInfo){
-		int num=subjectInfoDao.insert(subjectInfo);
+		int num=dao.insert(subjectInfo);
 		if(num>0){
 			return true;
 		}
@@ -40,7 +36,7 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 	@Transactional(readOnly = true)
 	public List<CatalogTree> getSubjectCatalogTree(SubjectInfo subjectInfo){
 		List<CatalogTree> ctList=new ArrayList<CatalogTree>();
-		List<SubjectInfo> siList=subjectInfoDao.findAllList(subjectInfo);
+		List<SubjectInfo> siList=dao.findAllList(subjectInfo);
 		if(null!=siList&&siList.size()>0){
 			for(SubjectInfo si:siList){
 				CatalogTree ct=new CatalogTree();
@@ -64,7 +60,7 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 	 * @return
 	 */
 	public boolean update(SubjectInfo si) {
-		int ucount=subjectInfoDao.update(si);
+		int ucount=dao.update(si);
 		if(ucount>0){
 			return true;
 		}

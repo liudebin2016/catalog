@@ -2,6 +2,8 @@ package com.jusfoun.catalog.common.service;
 
 import com.jusfoun.catalog.common.dao.CrudDao;
 import com.jusfoun.catalog.common.entity.DataEntity;
+import com.jusfoun.catalog.common.entity.Page;
+
 //import com.jusfoun.catalog.common.persistence.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,11 +57,11 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @param entity
 	 * @return
 	 */
-//	public Page<T> findPage(Page<T> page, T entity) {
-//		entity.setPage(page);
-//		page.setList(dao.findList(entity));
-//		return page;
-//	}
+	public Page<T> findPage(Page<T> page, T entity) {
+		entity.setPage(page);
+		page.setList(dao.findList(entity));
+		return page;
+	}
 
 	/**
 	 * 保存数据（插入或更新）
@@ -67,13 +69,13 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 */
 	@Transactional(readOnly = false)
 	public void save(T entity) {
-//		if (entity.getIsNewRecord()){
-//			entity.preInsert();
-//			dao.insert(entity);
-//		}else{
-//			entity.preUpdate();
-//			dao.update(entity);
-//		}
+		if (entity.getIsNewRecord()){
+			entity.preInsert();
+			dao.insert(entity);
+		}else{
+			entity.preUpdate();
+			dao.update(entity);
+		}
 	}
 	
 	/**

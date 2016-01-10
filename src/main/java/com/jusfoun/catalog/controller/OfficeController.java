@@ -38,10 +38,19 @@ public class OfficeController extends BaseController {
         return "admin/office/info";
     }
     
+    /**
+     * 更新机构职责
+     * @param id
+     * @param content
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "${adminPath}/office/updateDuty")
-    public String updateDuty(@RequestParam(value="content")String content) {
-    	System.out.println(content);
+    public String updateDuty(@RequestParam(value="id")Integer id,@RequestParam(value="content")String content) {
+    	Office office=new Office();
+    	office.setId(id);
+    	office.setDuty(content);
+    	officeService.updateOfficeById(id,content);
         return "success";
     }
     

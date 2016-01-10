@@ -16,9 +16,9 @@
 	function sendContent(){
 		var content=ueditor.getContent();
 		$.get("/admin/office/updateDuty.do", 
-			{ content: content},
+			{ id:10,content: content},
 		  	function(data){
-		    	alert("Data Loaded: " + data);
+		    	alert("职责添加成功！");
 		  	}
 		);
 	}

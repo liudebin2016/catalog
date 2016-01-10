@@ -47,6 +47,13 @@
     	o.id=c.office_id and c.type=1
   </select>
   
+  <select id="findList" resultType="ResourceInfo">
+  	SELECT 
+  		r.name,r.share_region   	
+  	FROM 
+  		resource_info r ${sqlMap.dsf}
+  </select>
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
