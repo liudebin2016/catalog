@@ -1,155 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jusfoun.catalog.dao.CatalogInfoDao" >
-<!-- 
-  <resultMap id="BaseResultMap" type="com.jusfoun.catalog.entity.CatalogInfo" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="type_value" property="typeValue" jdbcType="VARCHAR" />
-    <result column="office_id" property="officeId" jdbcType="INTEGER" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="create_by" property="createBy" jdbcType="INTEGER" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
-    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
-    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
-  </resultMap>
- --> 
-  <sql id="Base_Column_List" >
-    id, type, type_value, office_id, create_date, create_by as "createBy.id", update_date, update_by as "updateBy.id", 
-    remarks, del_flag
-  </sql>
-  <select id="selectByPrimaryKey"  parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from catalog_info
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from catalog_info
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+	<sql id="catalogInfoColumns" >
+		a.id,
+		a.type,
+		a.type_value,
+		a.office_id,
+		a.create_date,
+		a.create_by as "createBy.id",
+		a.update_date,
+		a.update_by as "updateBy.id",
+		a.remarks,
+		a.del_flag
+	</sql>
+  
+	<select id="get" resultType="CatalogInfo">
+		SELECT
+		<include refid="catalogInfoColumns"/>
+		FROM catalog_info a
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null">
+			and a.type = #{type} 
+		</if>
+		<if test="officeId != null">
+			and a.office_id = #{officeId}
+		</if>
+	</select>
+    
+  <!-- 根据officeid和type删除记录 -->
+	<update id="delete">
+		UPDATE catalog_info
+		SET del_flag = #{DEL_FLAG_DELETE}
+		WHERE office_id = #{officeId} and type = #{type}
+	</update>
+   
   <insert id="insert" parameterType="com.jusfoun.catalog.entity.CatalogInfo" >
-    insert into catalog_info (id, type, type_value, 
+    insert into catalog_info (type, type_value, 
       office_id, create_date, create_by, 
       update_date, update_by, remarks, 
       del_flag)
-    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{typeValue,jdbcType=VARCHAR}, 
+    values (#{type,jdbcType=INTEGER}, #{typeValue,jdbcType=VARCHAR}, 
       #{officeId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{createBy.id,jdbcType=INTEGER}, 
       #{updateDate,jdbcType=TIMESTAMP}, #{updateBy.id,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
       #{delFlag,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.jusfoun.catalog.entity.CatalogInfo" >
-    insert into catalog_info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="type != null" >
-        type,
-      </if>
-      <if test="typeValue != null" >
-        type_value,
-      </if>
-      <if test="officeId != null" >
-        office_id,
-      </if>
-      <if test="createDate != null" >
-        create_date,
-      </if>
-      <if test="createBy != null" >
-        create_by,
-      </if>
-      <if test="updateDate != null" >
-        update_date,
-      </if>
-      <if test="updateBy != null" >
-        update_by,
-      </if>
-      <if test="remarks != null" >
-        remarks,
-      </if>
-      <if test="delFlag != null" >
-        del_flag,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="typeValue != null" >
-        #{typeValue,jdbcType=VARCHAR},
-      </if>
-      <if test="officeId != null" >
-        #{officeId,jdbcType=INTEGER},
-      </if>
-      <if test="createDate != null" >
-        #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        #{createBy.id,jdbcType=INTEGER},
-      </if>
-      <if test="updateDate != null" >
-        #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        #{updateBy.id,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null" >
-        #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null" >
-        #{delFlag,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jusfoun.catalog.entity.CatalogInfo" >
-    update catalog_info
-    <set >
-      <if test="type != null" >
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="typeValue != null" >
-        type_value = #{typeValue,jdbcType=VARCHAR},
-      </if>
-      <if test="officeId != null" >
-        office_id = #{officeId,jdbcType=INTEGER},
-      </if>
-      <if test="createDate != null" >
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createBy != null" >
-        create_by = #{createBy.id,jdbcType=INTEGER},
-      </if>
-      <if test="updateDate != null" >
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null" >
-        update_by = #{updateBy.id,jdbcType=INTEGER},
-      </if>
-      <if test="remarks != null" >
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null" >
-        del_flag = #{delFlag,jdbcType=CHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.jusfoun.catalog.entity.CatalogInfo" >
-    update catalog_info
-    set type = #{type,jdbcType=INTEGER},
-      type_value = #{typeValue,jdbcType=VARCHAR},
-      office_id = #{officeId,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      create_by = #{createBy.id,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy.id,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=CHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  <!-- 根据officeId 和 type 更新记录 -->
+	<update id="update">
+		UPDATE catalog_info SET
+		type_value = #{typeValue},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate}
+		WHERE type = #{type} and office_id = #{officeId}
+	</update>
 </mapper>

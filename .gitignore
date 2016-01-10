@@ -1,3 +1,7 @@
+.classpath
+.myumldata
+.project
+.settings
 .gradle
 .idea
 .DS_Store

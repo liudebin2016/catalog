@@ -14,72 +14,89 @@
 		$(".modal").on("hidden.bs.modal", function() {
 		    $(this).removeData("bs.modal");
 		});
-		// regionSubmit
-		$('#regionSubmit').on('click',regionSubmit);
+		// areaSubmit
+		$('#areaSubmit').on('click', areaSubmit);
+		// officeSubmit
+		$('#officeSubmit').on('click', officeSubmit);
 	});
 	var setting = {
-	    view: {
-	        removeHoverDom: removeHoverDom,
-	        selectedMulti: false
-	    },
-	    data: {
-	        simpleData: {
-	            enable: true
-	        }
-	    },
-	    edit: {
-	        enable: true
-	    },
-	    async: {
-			enable: true,
-			url:"tree",
-			autoParam:["id", "name", "level"],
-			otherParam:{"otherParam":"zTreeAsyncTest"},
-			dataFilter: filter,
-			dataType:"json",
+		view : {
+			removeHoverDom : removeHoverDom,
+			selectedMulti : false
 		},
-		callback: {
-// 			beforeClick: beforeClick,
-// 			beforeAsync: beforeAsync,
-// 			onAsyncError: onAsyncError,
-// 			onAsyncSuccess: onAsyncSuccess
-			beforeRemove: beforeRemove
-// 			onRemove: onRemove
+		data : {simpleData : {enable : true}},
+		edit : {enable : true},
+		async : {
+			enable : true,
+			url : "tree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			onClick:onClick,
+			beforeRemove:beforeRemove,
+			beforeEditName:beforeEditName
 		}
 	};
-	function beforeRemove(treeId, treeNode){
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'catalogInfo',
+			data : {'officeId':treeNode.id},
+			dataType : 'json',
+			success : function(obj) {
+				$('#'+treeNode.tId).prepend('<span style="position:absolute;left:835px;" class="gcode">'+obj.data.typeValue+'</span>');
+			}
+		});
+		return true;
+    };
+	function removeHoverDom(treeId, treeNode) {
+		jq1_4("#addBtn_" + treeNode.tId).unbind().remove();
+		$('#'+treeNode.tId).children('.gcode').remove();
+	};
+	function beforeRemove(treeId, treeNode) {
 		var flag = false;
 		$.ajax({
-			type:'post',
-			async:false,
-			url:'delete',
-			data:{'id':treeNode.id},
-			dataType:'json',
-			success:function(data){
+			type : 'post',
+			async : false,
+			url : 'delete',
+			data : {'id' : treeNode.id},
+			dataType : 'json',
+			success : function(data) {
 				flag = true;
 			}
 		});
 		var txt = '<div class="alert alert-danger">'
-			+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-			+'删除操作失败，请重试！</div>';
-		if(flag){
+				+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+				+ '删除操作失败，请重试！</div>';
+		if (flag) {
 			txt = '<div class="alert alert-success">'
-				+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-				+'删除操作成功！</div>';
+					+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+ '删除操作成功！</div>';
 		}
-		$('#_alert').html(txt);
-		$('#_alert').show();
+		$('#_alert').html(txt).show();
 		return flag;
 	};
-	function removeHoverDom(treeId, treeNode) {
-		jq1_4("#addBtn_"+treeNode.tId).unbind().remove();
-	};
-	function filter(treeId, parentNode, childNodes) {
-		if (!childNodes) return null;
-		for (var i=0, l=childNodes.length; i<l; i++) {
-			childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');
+	function beforeEditName(treeId, treeNode){
+		if(treeNode.level <= 1){
+			$.post('catalogInfo',{'officeId':treeNode.id},function(obj){
+				$('#addArea').modal('show');
+				$('#area_type').val(1);
+				$('#parentAreaId').val(treeNode.id);
+				$('#areaName').val(treeNode.name);
+				$('#areaCode').val(obj.data.typeValue);
+			},'json');
+		}else if(treeNode.level <= 3){
+			$.post('catalogInfo',{'officeId':treeNode.id},function(obj){
+				$('#addOffice').modal('show');
+				$('#office_type').val(1);
+				$('#parentOfficeId').val(treeNode.id);
+				$('#officeName').val(treeNode.name);
+				$('#officeCode').val(obj.data.typeValue);
+			},'json');
 		}
-		return childNodes;
+		return false;
 	}
 </script>
 <% var cssPart = { %>
@@ -100,7 +117,7 @@ margin-left: 120px;
 <%};%>
 <% var jsPart = { %>
 <script type="text/javascript">
-	function addRegionCheck(){
+	function addAreaCheck(){
 		var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
 		if(treeObj == null)
 			return;
@@ -110,34 +127,93 @@ margin-left: 120px;
 			if (nodes[0].level >= 1) {
 				$('#_alert').html('<div class="alert alert-warning">'
 						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-						+'选中项下不可新建域，请重新选择!</div>');
-				$('#_alert').show();
+						+'选中项下不可新建域，请重新选择！</div>').show();
 				return false;
 			}
 			parentId = nodes[0].id;
 		}
-		$('#parentRegionId').val(parentId);
-		$('#addRegion').modal('show');
+		$('#parentAreaId').val(parentId);
+		$('#areaName').val('');
+		$('#areaCode').val('');
+		$('#area_type').val(0);
+		$('#addArea').modal('show');
 	}
-	function regionSubmit(){
-		if($.trim($('#regionName').val()) == ''){
+	function addOfficeCheck(){
+		var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
+		if(treeObj == null)
+			return;
+		var nodes = treeObj.getSelectedNodes();
+		if(nodes.length==0){
+			$('#_alert').html('<div class="alert alert-warning">'
+					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+'请先指定部门所在的域！</div>').show();
+			return false;
+		}
+		if(nodes[0].level>=3){
+			$('#_alert').html('<div class="alert alert-warning">'
+					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+'选中项下不可新建部门，请重新选择！</div>').show();
+			return false;
+		}
+		$('#parentOfficeId').val(nodes[0].id);
+		$('#officeName').val('');
+		$('#officeCode').val('');
+		$('#office_type').val(0);
+		$('#addOffice').modal('show');
+	}
+	function areaSubmit(){
+		if($.trim($('#areaName').val()) == ''){
 			$('<div class="alert alert-warning">'
 					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-					+'请输入域名称！</div>').insertBefore($('#regionBtn'));
+					+'请输入域名称！</div>').insertBefore($('#areaBtn'));
 			return;
 		}
-		$.post('save',$('#regionForm').serialize(),function(obj){
+		var _t = $('#area_type').val();
+		$.post(_t==1?'update':'save',$('#areaForm').serialize(),function(obj){
 			if(obj.succ==1){
 				$('#_alert').html('<div class="alert alert-success">'
 						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
 						+obj.msg
-						+'</div>');
-				$('#_alert').show();
+						+'</div>').show();
 				var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
 				if(treeObj == null)
 					return;
-				treeObj.reAsyncChildNodes(treeObj.getSelectedNodes()[0], "refresh");
-				$('#addRegion').modal('hide');
+				var selectedNode = treeObj.getNodeByParam("id", $('#parentAreaId').val(), null);
+				if(_t == 1){
+					selectedNode.name = obj.name;
+					treeObj.updateNode(selectedNode);
+				} else{
+					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+				}
+				$('#addArea').modal('hide');
+			}
+		},"json");
+	}
+	function officeSubmit(){
+		if($.trim($('#officeName').val()) == ''){
+			$('<div class="alert alert-warning">'
+					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+'请输入部门名称！</div>').insertBefore($('#areaBtn'));
+			return;
+		}
+		var _t = $('#office_type').val();
+		$.post(_t==1?'update':'save',$('#officeForm').serialize(),function(obj){
+			if(obj.succ==1){
+				$('#_alert').html('<div class="alert alert-success">'
+						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+						+obj.msg
+						+'</div>').show();
+				var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
+				if(treeObj == null)
+					return;
+				var selectedNode = treeObj.getNodeByParam("id", $('#parentOfficeId').val(), null);
+				if(_t == 1){
+					selectedNode.name = obj.name;
+					treeObj.updateNode(selectedNode);
+				} else{
+					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+				}
+				$('#addOffice').modal('hide');
 			}
 		},"json");
 	}
@@ -154,10 +230,12 @@ margin-left: 120px;
 			class="btns-gray fr" href="javascript:;">导入</a> <a
 			class="btns-gray wd fr" href="javascript:;">导入模块下载</a>
 		<div class="search-inp ">
-			<a href="javascript:void(0);" class="btns-gray" data-toggle="modal" role="button" onclick="addRegionCheck();">
+			<a href="javascript:void(0);" class="btns-gray" data-toggle="modal" role="button" onclick="addAreaCheck();">
 				<i class="all-icon xjaear-icon fl" ></i>新增域
 			</a>
-			<a href="#addDept" class="btns-gray" data-toggle="modal" role="button"><i class="all-icon xjbm-icon fl"></i>新增部门</a>
+			<a href="javascript:void(0);" class="btns-gray" data-toggle="modal" role="button" onclick="addOfficeCheck();">
+				<i class="all-icon xjbm-icon fl"></i>新增部门
+			</a>
 			<input class="form-control inp wd180" type="text" placeholder="检索">
 			<i class="glyphicon glyphicon-search search-ico "></i>
 		</div>
@@ -175,8 +253,8 @@ margin-left: 120px;
 </div>
 
 <!-- 模态框start -->
-<div class="modal fade" id="addRegion" tabindex="-1" role="dialog" 
-   aria-labelledby="regionLabel" aria-hidden="true">
+<div class="modal fade" id="addArea" tabindex="-1" role="dialog" 
+   aria-labelledby="areaLabel" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
@@ -184,32 +262,33 @@ margin-left: 120px;
                data-dismiss="modal" aria-hidden="true">
                   &times;
             </button>
-            <h4 class="modal-title" id="regionLabel">
+            <h4 class="modal-title" id="areaLabel">
                新增域
             </h4>
          </div>
-			<form role="form" id="regionForm">
+			<form role="form" id="areaForm">
 				<div class="modal-body">
-					<input type="hidden" name="parentId" id="parentRegionId"/>
+					<input type="hidden" name="parentId" id="parentAreaId"/>
+					<input type="hidden" id="area_type"/>
 					<div class="form-group">
-						<label for="regionName">域名称*</label> 
-						<input type="text"  name="name" class="form-control" id="regionName" placeholder="请输入域名称">
+						<label for="areaName">域名称*</label> 
+						<input type="text"  name="name" class="form-control" id="areaName" placeholder="请输入域名称">
 					</div>
 					<div class="form-group">
-						<label for="regionCode">国际代码</label>
-						<input type="text" name="code" class="form-control" id="regionCode" placeholder="请输入国际代码">
+						<label for="areaCode">国际代码</label>
+						<input type="text" name="code" class="form-control" id="areaCode" placeholder="请输入国际代码">
 					</div>
 				</div>
-				<div class="modal-footer" id="regionBtn">
+				<div class="modal-footer" id="areaBtn">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" id="regionSubmit" class="btn btn-primary">提交</button>
+					<button type="button" id="areaSubmit" class="btn btn-primary">提交</button>
 				</div>
 			</form>
 		</div>
+	</div>
 </div>
-</div>
-<div class="modal fade" id="addDept" tabindex="-1" role="dialog" 
-   aria-labelledby="deptLabel" aria-hidden="true">
+<div class="modal fade" id="addOffice" tabindex="-1" role="dialog" 
+   aria-labelledby="officeLabel" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
@@ -217,23 +296,30 @@ margin-left: 120px;
                data-dismiss="modal" aria-hidden="true">
                   &times;
             </button>
-            <h4 class="modal-title" id="deptLabel">
+            <h4 class="modal-title" id="officeLabel">
                新增部门
             </h4>
          </div>
-         <div class="modal-body">
-            在这里添加一些文本
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" 
-               data-dismiss="modal">关闭
-            </button>
-            <button type="button" class="btn btn-primary">
-               提交
-            </button>
-         </div>
-      </div>
-</div>
+			<form role="form" id="officeForm">
+				<div class="modal-body">
+					<input type="hidden" name="parentId" id="parentOfficeId"/>
+					<input type="hidden" id="office_type"/>
+					<div class="form-group">
+						<label for="officeName">部门名称*</label> 
+						<input type="text"  name="name" class="form-control" id="officeName" placeholder="请输入域名称">
+					</div>
+					<div class="form-group">
+						<label for="officeCode">国际代码</label>
+						<input type="text" name="code" class="form-control" id="officeCode" placeholder="请输入国际代码">
+					</div>
+				</div>
+				<div class="modal-footer" id="officeBtn">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" id="officeSubmit" class="btn btn-primary">提交</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 <div class="modal fade" id="deleteNode" tabindex="-1" role="dialog" 
    aria-labelledby="deleteNodeLabel" aria-hidden="true">
