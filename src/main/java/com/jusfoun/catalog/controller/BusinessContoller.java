@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +36,17 @@ public class BusinessContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/business/index", method = RequestMethod.GET)
-	public String getBusinessInfoList(HttpServletRequest request, HttpServletResponse response){
+	public String getBusinessInfoList(HttpServletRequest request){
+		String name=WebUtils.getCleanParam(request,"name");
+		String status=WebUtils.getCleanParam(request,"status");
+		Business biz=new Business();
+		biz.setName(name);
+		biz.setStatus();
+		if(null!=name&&null!=status){
+			
+		}
 		
+		businessService.findPage(page, entity);
 		return "admin/business/businessIndex";
 	}
 	
