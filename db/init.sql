@@ -329,7 +329,7 @@ COMMIT;
 --  Table structure for `catalog_info`
 -- ----------------------------
 CREATE TABLE `catalog_info` (
-  `id` int(11) NOT NULL COMMENT '目录id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '目录id',
   `type` int(11) DEFAULT NULL COMMENT '目录类型：资源、主题、机构、岗位、业务',
   `type_value` varchar(100) DEFAULT NULL COMMENT '目录类型值',
   `office_id` int(11) DEFAULT NULL COMMENT '机构id',
@@ -337,7 +337,8 @@ CREATE TABLE `catalog_info` (
   `create_by` int(11) DEFAULT NULL COMMENT '创建人',
   `update_date` datetime DEFAULT NULL COMMENT '更新时间',
   `update_by` int(11) DEFAULT NULL COMMENT '更新人',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `remarks` varchar(200) DEFAULT NULL COMMENT '备注',
+  `del_flag` char(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目录信息表';

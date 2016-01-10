@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.service.CatalogInfoService;
 import com.jusfoun.catalog.service.OfficeService;
@@ -87,7 +88,7 @@ public class OfficeController extends BaseController {
 			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
 			sb.append("{ id:" + office.getId() + ", pId:"
 					+ office.getParentId() + ", name:'" + office.getName()
-					+ (level.intValue() < 2 ? "', isParent:true}" : ""));
+					+ (level.intValue() < 2 ? "', isParent:true}" : "'}"));
 		}
 		sb.substring(0, sb.length() - 1);
 		sb.append("]");
@@ -105,21 +106,47 @@ public class OfficeController extends BaseController {
 		officeService.insert(parentId, name.trim(), code.trim());
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("succ", 1);
-		result.put("msg", "新增域成功!");
-		return JSONObject.toJSON(result);
+		result.put("msg", "新增操作成功!");
+		return result;
 	}
     
     @RequestMapping(value = "${adminPath}/office/delete", method = RequestMethod.POST)
     @ResponseBody
     public Object delete(
     		@RequestParam(name = "id", required = true) Integer id) {
-    	Office office = new Office();
-    	office.setId(id);
-    	officeService.delete(office);
+    	officeService.delete(id);
     	Map<String,Object> result = new HashMap<String, Object>();
     	result.put("succ", 1);
-    	result.put("msg", "删除域成功!");
-    	return JSONObject.toJSON(result);
+    	result.put("msg", "删除操作成功!");
+    	return result;
     }
     
+    @RequestMapping(value = "${adminPath}/office/catalogInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object catalogInfo(
+    		@RequestParam(name = "officeId", required = true) Integer officeId) {
+    	CatalogInfo catalog = new CatalogInfo();
+    	catalog.setOfficeId(officeId);
+    	catalog.setType(CatalogInfo.TYPE_OFFICE);
+    	CatalogInfo c = catalogInfoService.get(catalog);
+    	Map<String,Object> result = new HashMap<String, Object>();
+    	result.put("data", c);
+    	return result;
+    }
+    
+    @RequestMapping(value = "${adminPath}/office/update", method = RequestMethod.POST)
+    @ResponseBody
+	public Object update(
+			@RequestParam(name = "parentId", required = true) Integer id, 
+			@RequestParam(name = "name", required = true) String name, 
+			@RequestParam(name = "code", required = false) String code) {
+    	if(StringUtils.isEmpty(name))
+    		return null;
+		officeService.update(id,name.trim(),code.trim());
+		Map<String,Object> result = new HashMap<String, Object>();
+		result.put("succ", 1);
+		result.put("msg", "更新操作成功!");
+		result.put("name", name);
+		return result;
+	}
 }

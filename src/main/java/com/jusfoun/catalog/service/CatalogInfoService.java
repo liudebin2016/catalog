@@ -18,6 +18,11 @@ public class CatalogInfoService extends CrudService<CatalogInfoDao, CatalogInfo>
 	@Resource
 	private CatalogInfoDao catalogInfoDao;
 
+	/**
+	 * @param type	类型
+	 * @param typeValue 类型值
+	 * @param officeId 机构id
+	 */
 	public void insert(int type, String typeValue, Integer officeId) {
 		CatalogInfo catalog = new CatalogInfo();
 		catalog.setType(type);
@@ -26,6 +31,20 @@ public class CatalogInfoService extends CrudService<CatalogInfoDao, CatalogInfo>
 		catalog.setCreateBy(UserUtils.getUser());
 		catalog.setCreateDate(new Date());
 		catalogInfoDao.insert(catalog);
+	}
+
+	/**
+	 * @param id 机构id
+	 * @param type	类型
+	 */
+	public void delete(Integer id, int type) {
+		if (id == null || id.intValue() == 0) {
+			return;
+		}
+		CatalogInfo catalog = new CatalogInfo();
+		catalog.setOfficeId(id);
+		catalog.setType(type);
+		super.delete(catalog);
 	}
 
 }
