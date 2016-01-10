@@ -5,8 +5,6 @@ import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
 import com.jusfoun.catalog.vo.CatalogTree;
-import com.jusfoun.catalog.vo.ResourceVo;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
