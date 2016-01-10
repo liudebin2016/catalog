@@ -2,8 +2,10 @@ package com.jusfoun.catalog.controller;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
 import com.jusfoun.catalog.vo.CatalogTree;
+import com.jusfoun.catalog.vo.ResourceVo;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -43,8 +46,21 @@ public class ResourceController extends BaseController {
     }
     
     @RequestMapping(value = "${adminPath}/resource/edit", method = RequestMethod.GET)
-    public String edit() {
-    	return "admin/resource/edit";
+    public ModelAndView edit(@RequestParam("type")String type) {
+    	ModelAndView mav=new ModelAndView("admin/resource/edit");
+    	if(null!=null&&!"".equals(type)){
+    		if(!type.equals("create")){
+    			
+    		}
+    	}
+    	return mav;
+    }
+    
+    @RequestMapping(value = "${adminPath}/resource/doCreate", method = RequestMethod.POST)
+    public String rscDoCreate(ResourceInfo rsc) {
+    	System.out.println(4535);
+    	resourceService.save(rsc);
+    	return adminPath+"/resource/maintenance";
     }
     
     @RequestMapping(value = "${adminPath}/resource/maintenance", method = RequestMethod.GET)

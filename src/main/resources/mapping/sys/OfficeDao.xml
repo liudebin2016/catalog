@@ -165,6 +165,12 @@
         parent_ids = #{parentIds}
         WHERE id = #{id}
     </update>
+    
+    <update id="updateOfficeById" >
+    	 UPDATE sys_office SET
+    	 duty=#{param2}
+    	 WHERE id= #{param1}
+    </update>
 
     <update id="delete">
         UPDATE sys_office SET
@@ -174,5 +180,17 @@
         <if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
         <if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
     </update>
+    
+    <select id="findPageList" parameterType="Office">
+    	select * from sys_office
+    	<choose>
+			<when test="page !=null and page.pageNo != null and page.pageSize != null">
+				limit ${page.pageNo},${page.pageSize}
+			</when>
+			<otherwise>
+				limit 0,3
+			</otherwise>
+		</choose>
+    </select>
 
 </mapper>

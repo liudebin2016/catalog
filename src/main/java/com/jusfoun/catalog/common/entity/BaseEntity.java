@@ -120,7 +120,7 @@ public abstract class BaseEntity<T> implements Serializable {
      * @return
      */
     public boolean getIsNewRecord() {
-        return isNewRecord || getId() == 0;
+        return isNewRecord|| getId()== null || getId() == 0 ;
     }
 
     /**

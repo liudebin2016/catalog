@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.jusfoun.catalog.common.entity.Page;
 import com.jusfoun.catalog.common.service.TreeService;
 import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.entity.Office;
@@ -75,5 +76,19 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		office.setCreateDate(new Date());
 		dao.insert(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+	}
+	
+	@Transactional(readOnly = false)
+	public void updateOfficeById(int id,String content) {
+		dao.updateOfficeById(id,content);
+		
+	}
+	
+	public Page<Office> findPage(Page<Office> page, Office office) {
+		office.setDelFlag("0");
+		office.getSqlMap().put("dsf", "limit "+page.getPageNo()+","+page.getPageSize());
+		office.setPage(page);
+		page.setList(dao.findList(office));
+		return page;
 	}
 }

@@ -24,6 +24,7 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
     private Integer isDbSupport;//是否数据库支撑
     private String shareRegion;//共享范围
     private String shareMode;//共享方式
+    private String updateCycle;//更新周期
     private String descr;//资源描述
 
     public String getName() {
@@ -137,4 +138,13 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
     public void setDescr(String descr) {
         this.descr = descr;
     }
+
+	public String getUpdateCycle() {
+		return updateCycle;
+	}
+
+	public void setUpdateCycle(String updateCycle) {
+		this.updateCycle = updateCycle;
+	}
+    
 }
