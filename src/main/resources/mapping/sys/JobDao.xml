@@ -229,4 +229,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="getJobSearch" resultType="Job">
+  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag from job 
+  	<where>
+  		<if test="name!=null"> AND name LIKE CONCAT('%', #{name}, '%')</if>
+  	</where>
+  	 order by id DESC 
+  </select>
 </mapper>
