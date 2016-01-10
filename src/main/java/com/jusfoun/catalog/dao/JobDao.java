@@ -22,4 +22,6 @@ public interface JobDao extends CrudDao<Job>{
 
 	public int updateById(Job job);
 
+	public List<Job> getJobSearch(Job job);
+
 }
