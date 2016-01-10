@@ -130,4 +130,17 @@ public class JobContoller extends BaseController {
 		boolean flag = jobService.updateById(job);
 		return getJobMaintenance(request, response, model);
 	}
+	
+	/**
+	 * 部门岗位搜索
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/search", method = RequestMethod.POST)
+	public String getJobSearch(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
+		List<Job>jobList = jobService.getJobSearch(job);
+		model.addAttribute("jobList", jobList);
+		return "admin/job/jobMaintenance";
+	}
 }
