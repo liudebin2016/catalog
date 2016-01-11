@@ -33,6 +33,7 @@ public class Business extends DataEntity<Business>{
     private String produceData;//业务事项产生材料
     private String isUse;//业务事项应用系统
     private String shareWith;//资源共享范围
+    private String status;//业务状态：0-未注册，1-注册中，2-已注册，3-未通过，3-删除中
     
     public String getName() {
         return name;
@@ -210,5 +211,13 @@ public class Business extends DataEntity<Business>{
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 }

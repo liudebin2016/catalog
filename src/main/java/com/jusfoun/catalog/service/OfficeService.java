@@ -152,4 +152,28 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		page.setList(dao.findList(office));
 		return page;
 	}
+
+	/**
+	 * @param id	被拖拽节点id
+	 * @param targetId 目标节点id
+	 * @param moveType 拖拽类型
+	 */
+	@Transactional(readOnly = false)
+	public void drag(Integer id, Integer targetId, String moveType) {
+		Office parent = new Office();
+		if("inner".equals(moveType)){
+			parent.setId(targetId);
+		}else{
+			Office target = dao.get(targetId);
+			parent.setId(target.getParentId());
+		}
+		Office office = dao.get(id);
+		office.setParent(parent);
+		office.setUpdateBy(UserUtils.getUser());
+		office.setUpdateDate(new Date());
+		dao.updateParentIds(office);
+		dao.update(office);
+		// remove cache
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+	}
 }

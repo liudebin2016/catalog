@@ -146,7 +146,19 @@ public class OfficeController extends BaseController {
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("succ", 1);
 		result.put("msg", "更新操作成功!");
-		result.put("name", name);
 		return result;
 	}
+    
+    @RequestMapping(value = "${adminPath}/office/drag", method = RequestMethod.POST)
+    @ResponseBody
+    public Object drag(
+    		@RequestParam(name = "id", required = true) Integer id, 
+    		@RequestParam(name = "targetId", required = true) Integer targetId, 
+    		@RequestParam(name = "mt", required = true) String moveType) {
+		officeService.drag(id, targetId, moveType);
+    	Map<String,Object> result = new HashMap<String, Object>();
+    	result.put("succ", 1);
+    	result.put("msg", "更新操作成功!");
+    	return result;
+    }
 }

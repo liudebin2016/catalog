@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.entity.Page;
 import com.jusfoun.catalog.entity.Business;
 import com.jusfoun.catalog.service.BusinessService;
 import com.jusfoun.catalog.utils.UserUtils;
@@ -37,16 +38,7 @@ public class BusinessContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/business/index", method = RequestMethod.GET)
 	public String getBusinessInfoList(HttpServletRequest request){
-		String name=WebUtils.getCleanParam(request,"name");
-		String status=WebUtils.getCleanParam(request,"status");
-		Business biz=new Business();
-		biz.setName(name);
-		biz.setStatus();
-		if(null!=name&&null!=status){
-			
-		}
 		
-		businessService.findPage(page, entity);
 		return "admin/business/businessIndex";
 	}
 	
@@ -57,9 +49,21 @@ public class BusinessContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/business/maintenance", method = RequestMethod.GET)
-	public String getBusinessMaintenance(HttpServletRequest request, HttpServletResponse response){
-		
-		return "admin/business/businessMaintenance";
+	public ModelAndView getBusinessMaintenance(HttpServletRequest request){
+		ModelAndView mav=new ModelAndView("admin/business/businessMaintenance");
+		String name=WebUtils.getCleanParam(request,"name");
+		String status=WebUtils.getCleanParam(request,"status");
+		Business biz=new Business();
+		if(null!=name&&null!=status){
+			biz.setName(name);
+			biz.setStatus(status);
+		}
+		Page<Business> bPage=new Page<Business>();
+		bPage.setPageSize(5);
+		biz.getSqlMap().put("dsf", "limit "+bPage.getPageNo()+","+bPage.getPageSize());
+		Page<Business> bizPage=businessService.findPage(bPage, biz);
+		mav.addObject("page", bizPage);
+		return mav;
 	}
 	
 	/**

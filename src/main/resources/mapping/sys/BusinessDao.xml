@@ -37,20 +37,44 @@
   <sql id="Base_Column_List" >
     id, name, name_ref, first_name, second_name, third_name, code, type, basis, flow, 
     summary, time_limit, charge_basis, charge_office_id, impl_office_id, workload, relate_office, 
-    need_data, produce_data, is_use, share_with, create_by AS "createBy.id", create_date, update_by AS "updateBy.id", update_date, 
+    need_data, produce_data, is_use, share_with,
+<!--      create_by AS "createBy.id",  -->
+     create_date, 
+<!--      update_by AS "updateBy.id", -->
+      update_date, 
     del_flag
   </sql>
   <sql id="Blob_Column_List" >
     remarks
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
-    select 
+    SELECT 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from business
-    where id = #{id,jdbcType=INTEGER}
+    FROM business
+    WHERE id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <select id="findList" parameterType="Business" resultType="Business">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM business
+    <trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name= #{name} 
+	    </if>  
+	    <if test="status!= null and status!= 0 ">  
+	        AND status = #{status}  
+	    </if>  
+	</trim>
+    ${sqlMap.dsf}
+    
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from business
     where id = #{id,jdbcType=INTEGER}

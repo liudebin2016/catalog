@@ -451,12 +451,12 @@ create table business
 -- ----------------------------
 create table job
 (
-   id                   bigint not null comment '岗位id',
+   id                   bigint not null AUTO_INCREMENT comment '岗位id',
    name                 varchar(128) not null comment '岗位名称/职位',
    duty                 varchar(512) not null comment '岗位职责',
    type                 bit(2) comment '岗位属性',
    create_by            bigint not null comment '创建者',
-   create_date          datetime not null default CURRENT_TIMESTAMP comment '创建日期',
+   create_date          datetime not null comment '创建日期',
    update_by            bigint comment '更新者',
    update_date          datetime comment '更新日期',
    remark               text comment '备注',

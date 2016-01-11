@@ -12,7 +12,7 @@ import java.util.List;
  * @version 2015-12-18
  */
 public class Office extends TreeEntity<Office> {
-
+	
 	private static final long serialVersionUID = 1L;
 //	private Office parent;		// 父级编号
 //	private String parentIds; 	// 所有父级编号

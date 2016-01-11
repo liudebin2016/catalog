@@ -168,10 +168,10 @@ public abstract class BaseEntity<T> implements Serializable {
     }
 
     /**
-     * 删除标记（0：正常；1：删除；2：审核；）
+     * 状态标记（0：启用状态；1：废止状态；2：删除(注销)状态；）
      */
     public static final String DEL_FLAG_NORMAL = "0";
-    public static final String DEL_FLAG_DELETE = "1";
-    public static final String DEL_FLAG_AUDIT = "2";
+    public static final String DEL_FLAG_ABOLISH = "1";
+    public static final String DEL_FLAG_DELETE  = "2";
 
 }
