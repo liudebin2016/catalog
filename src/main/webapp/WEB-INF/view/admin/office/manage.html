@@ -33,27 +33,60 @@
 			dataType : "json"
 		},
 		callback : {
-			onClick:onClick,
-			beforeRemove:beforeRemove,
-			beforeEditName:beforeEditName
+			beforeDrop : beforeDrop,
+			onClick : onClick,
+			beforeRemove : beforeRemove,
+			beforeEditName : beforeEditName
 		}
 	};
+	function beforeDrop(treeId, treeNodes, targetNode, moveType){
+		var flag = false;
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'drag',
+			data : {
+				'id' : treeNodes[0].id,
+				'targetId' : targetNode.id,
+				'mt' : moveType
+			},
+			dataType : 'json',
+			success : function(obj) {
+				var txt = '<div class="alert alert-success">'
+					+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+ '删除操作成功！</div>';
+				$('#_alert').html(txt).show();
+				flag = true;
+			},
+			error : function(){
+				var txt = '<div class="alert alert-danger">'
+					+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+					+ '删除操作失败，请重试！</div>';
+				$('#_alert').html(txt).show();
+			}
+		});
+		return flag;
+	}
 	function onClick(event, treeId, treeNode) {
 		$.ajax({
 			type : 'post',
 			async : false,
 			url : 'catalogInfo',
-			data : {'officeId':treeNode.id},
+			data : {
+				'officeId' : treeNode.id
+			},
 			dataType : 'json',
 			success : function(obj) {
-				$('#'+treeNode.tId).prepend('<span style="position:absolute;left:835px;" class="gcode">'+obj.data.typeValue+'</span>');
+				$('#' + treeNode.tId).prepend(
+						'<span style="position:absolute;left:835px;" class="gcode">'
+								+ obj.data.typeValue + '</span>');
 			}
 		});
 		return true;
-    };
+	};
 	function removeHoverDom(treeId, treeNode) {
 		jq1_4("#addBtn_" + treeNode.tId).unbind().remove();
-		$('#'+treeNode.tId).children('.gcode').remove();
+		$('#' + treeNode.tId).children('.gcode').remove();
 	};
 	function beforeRemove(treeId, treeNode) {
 		var flag = false;
@@ -61,7 +94,9 @@
 			type : 'post',
 			async : false,
 			url : 'delete',
-			data : {'id' : treeNode.id},
+			data : {
+				'id' : treeNode.id
+			},
 			dataType : 'json',
 			success : function(data) {
 				flag = true;
@@ -78,23 +113,29 @@
 		$('#_alert').html(txt).show();
 		return flag;
 	};
-	function beforeEditName(treeId, treeNode){
-		if(treeNode.level <= 1){
-			$.post('catalogInfo',{'officeId':treeNode.id},function(obj){
-				$('#addArea').modal('show');
+	function beforeEditName(treeId, treeNode) {
+		if (treeNode.level <= 1) {
+			$.post('catalogInfo', {
+				'officeId' : treeNode.id
+			}, function(obj) {
 				$('#area_type').val(1);
 				$('#parentAreaId').val(treeNode.id);
 				$('#areaName').val(treeNode.name);
 				$('#areaCode').val(obj.data.typeValue);
-			},'json');
-		}else if(treeNode.level <= 3){
-			$.post('catalogInfo',{'officeId':treeNode.id},function(obj){
-				$('#addOffice').modal('show');
+				$('.areaAlert').remove();
+				$('#addArea').modal('show');
+			}, 'json');
+		} else if (treeNode.level <= 3) {
+			$.post('catalogInfo', {
+				'officeId' : treeNode.id
+			}, function(obj) {
 				$('#office_type').val(1);
 				$('#parentOfficeId').val(treeNode.id);
 				$('#officeName').val(treeNode.name);
 				$('#officeCode').val(obj.data.typeValue);
-			},'json');
+				$('.officeAlert').remove();
+				$('#addOffice').modal('show');
+			}, 'json');
 		}
 		return false;
 	}
@@ -111,7 +152,8 @@ margin-left: 0px;
 margin-left: 120px;
 }
 .modal-dialog{
- 	margin: 10% auto;
+/*  	margin: 10% auto; */
+/* 	top:300px; */
 }
 </style>
 <%};%>
@@ -136,6 +178,7 @@ margin-left: 120px;
 		$('#areaName').val('');
 		$('#areaCode').val('');
 		$('#area_type').val(0);
+		$('.areaAlert').remove();
 		$('#addArea').modal('show');
 	}
 	function addOfficeCheck(){
@@ -159,11 +202,12 @@ margin-left: 120px;
 		$('#officeName').val('');
 		$('#officeCode').val('');
 		$('#office_type').val(0);
+		$('.officeAlert').remove();
 		$('#addOffice').modal('show');
 	}
 	function areaSubmit(){
 		if($.trim($('#areaName').val()) == ''){
-			$('<div class="alert alert-warning">'
+			$('<div class="alert alert-warning areaAlert">'
 					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
 					+'请输入域名称！</div>').insertBefore($('#areaBtn'));
 			return;
@@ -171,7 +215,7 @@ margin-left: 120px;
 		var _t = $('#area_type').val();
 		$.post(_t==1?'update':'save',$('#areaForm').serialize(),function(obj){
 			if(obj.succ==1){
-				$('#_alert').html('<div class="alert alert-success">'
+				$('#_alert').html('<div class="alert alert-success areaAlert">'
 						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
 						+obj.msg
 						+'</div>').show();
@@ -180,8 +224,9 @@ margin-left: 120px;
 					return;
 				var selectedNode = treeObj.getNodeByParam("id", $('#parentAreaId').val(), null);
 				if(_t == 1){
-					selectedNode.name = obj.name;
+					selectedNode.name = $('#areaName').val();
 					treeObj.updateNode(selectedNode);
+					$('#'+selectedNode.tId).children('.gcode').html($('#areaCode').val());
 				} else{
 					treeObj.reAsyncChildNodes(selectedNode, "refresh");
 				}
@@ -191,15 +236,15 @@ margin-left: 120px;
 	}
 	function officeSubmit(){
 		if($.trim($('#officeName').val()) == ''){
-			$('<div class="alert alert-warning">'
+			$('<div class="alert alert-warning officeAlert">'
 					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-					+'请输入部门名称！</div>').insertBefore($('#areaBtn'));
+					+'请输入部门名称！</div>').insertBefore($('#officeBtn'));
 			return;
 		}
 		var _t = $('#office_type').val();
 		$.post(_t==1?'update':'save',$('#officeForm').serialize(),function(obj){
 			if(obj.succ==1){
-				$('#_alert').html('<div class="alert alert-success">'
+				$('#_alert').html('<div class="alert alert-success officeAlert">'
 						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
 						+obj.msg
 						+'</div>').show();
@@ -208,8 +253,9 @@ margin-left: 120px;
 					return;
 				var selectedNode = treeObj.getNodeByParam("id", $('#parentOfficeId').val(), null);
 				if(_t == 1){
-					selectedNode.name = obj.name;
+					selectedNode.name = $('#officeName').val();
 					treeObj.updateNode(selectedNode);
+					$('#'+selectedNode.tId).children('.gcode').html($('#officeCode').val());
 				} else{
 					treeObj.reAsyncChildNodes(selectedNode, "refresh");
 				}
