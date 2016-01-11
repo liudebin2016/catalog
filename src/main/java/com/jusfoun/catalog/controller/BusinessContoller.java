@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
@@ -48,17 +49,20 @@ public class BusinessContoller extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "${adminPath}/business/maintenance", method = RequestMethod.GET)
+	@RequestMapping(value = "${adminPath}/business/maintenance")
 	public ModelAndView getBusinessMaintenance(HttpServletRequest request){
 		ModelAndView mav=new ModelAndView("admin/business/businessMaintenance");
 		String name=WebUtils.getCleanParam(request,"name");
 		String status=WebUtils.getCleanParam(request,"status");
 		Business biz=new Business();
-		if(null!=name&&null!=status){
-			biz.setName(name);
+		if(null!=name||null!=status){
+			if(null!=name){
+				biz.setName("%"+name+"%");
+			}
 			biz.setStatus(status);
 		}
 		Page<Business> bPage=new Page<Business>();
+		bPage.setPageNo(0);
 		bPage.setPageSize(5);
 		biz.getSqlMap().put("dsf", "limit "+bPage.getPageNo()+","+bPage.getPageSize());
 		Page<Business> bizPage=businessService.findPage(bPage, biz);
@@ -117,11 +121,24 @@ public class BusinessContoller extends BaseController {
 	 * 更新业务
 	 * @param biz
 	 * @return
-	 */
+	 */	
 	@RequestMapping(value = "${adminPath}/business/updateBiz", method = RequestMethod.POST)
 	public String updateBiz(Business biz){
-		
-		return "";
+		businessService.updateBiz(biz);		
+		return "redirect:"+adminPath+"/business/maintenance";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "${adminPath}/business/delBiz", method = RequestMethod.GET)
+	public String delBiz(@RequestParam("id")Integer id){
+		String delFlag="fail";
+		if(null!=id){
+			Business biz=new Business();
+			biz.setId(id);
+			businessService.delete(biz);
+			delFlag="success";
+		}
+		return delFlag;
 	}
 	
 	

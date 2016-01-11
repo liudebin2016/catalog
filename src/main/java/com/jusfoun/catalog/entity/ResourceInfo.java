@@ -26,6 +26,7 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
     private String shareMode;//共享方式
     private String updateCycle;//更新周期
     private String descr;//资源描述
+    private String status;//资源状态
 
     public String getName() {
         return name;
@@ -145,6 +146,14 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
 
 	public void setUpdateCycle(String updateCycle) {
 		this.updateCycle = updateCycle;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
     
 }

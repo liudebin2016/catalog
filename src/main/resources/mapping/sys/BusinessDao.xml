@@ -42,12 +42,12 @@
      create_date, 
 <!--      update_by AS "updateBy.id", -->
       update_date, 
-    del_flag
+    del_flag,status
   </sql>
   <sql id="Blob_Column_List" >
     remarks
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
+  <select id="get" parameterType="java.lang.Integer" resultType="Business">
     SELECT 
     <include refid="Base_Column_List" />
     ,
@@ -64,10 +64,10 @@
     FROM business
     <trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
-	        name= #{name} 
+	        name like #{name}
 	    </if>  
-	    <if test="status!= null and status!= 0 ">  
-	        AND status = #{status}  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
 	    </if>  
 	</trim>
     ${sqlMap.dsf}
@@ -75,10 +75,13 @@
   </select>
   
   
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from business
-    where id = #{id,jdbcType=INTEGER}
+  <delete id="delete" parameterType="Business" >
+    DELETE FROM 
+    	business
+    WHERE 
+    	id = #{id,jdbcType=INTEGER}
   </delete>
+  
   <insert id="insert" parameterType="com.jusfoun.catalog.entity.Business" >
     insert into business (id, name, name_ref, 
       first_name, second_name, third_name, 
@@ -270,7 +273,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jusfoun.catalog.entity.Business" >
+  <update id="update" parameterType="Business" >
     update business
     <set >
       <if test="name != null" >

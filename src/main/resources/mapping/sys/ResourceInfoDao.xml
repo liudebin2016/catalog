@@ -32,7 +32,7 @@
   <sql id="Base_Column_List" >
     id, name, of_business, type, code, response_party, response_attr, response_cu, collect_way, 
     security_level, info_field, is_db_support, remarks, share_region, share_mode, create_date, 
-    create_by as "createBy.id", update_date, update_by as "updateBy.id", update_cycle, del_flag
+    create_by , update_date, update_by , update_cycle, del_flag,status
   </sql>
   <sql id="Blob_Column_List" >
     descr
@@ -49,9 +49,20 @@
   
   <select id="findList" resultType="ResourceInfo">
   	SELECT 
-  		r.name,r.share_region   	
+  		<include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />	
   	FROM 
-  		resource_info r ${sqlMap.dsf}
+  		resource_info r 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if>  
+	</trim>	
+  		${sqlMap.dsf}
   </select>
   
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
@@ -62,7 +73,7 @@
     from resource_info
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="delete" parameterType="ResourceInfo" >
     delete from resource_info
     where id = #{id,jdbcType=INTEGER}
   </delete>

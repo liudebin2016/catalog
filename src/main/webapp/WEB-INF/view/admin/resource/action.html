@@ -16,28 +16,31 @@
 	<span class="imaginary-line"></span>
 	<div class="compile-form">
 		<form action="/admin/resource/doCreate.do" method="post">
+		<%if(rsc!=null){%>
+	    <input type="hidden" name="id" value='${rsc.id}'>
+	    <%}%>
 		<div class="c-formbox">
 	        <label class="compile-form-title2 fl">资源名称</label>
-			<input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="">
+			<input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${rsc==null?"":rsc.name}'>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">所属业务事项名称</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="ofBusiness" value="0" id="RadioGroup1_0" >新建业务
+				<input type="radio" name="ofBusiness" value="0" id="ofBusiness_0" ${rsc==null?'':rsc.basis == "0"?checked="checked":checked=""}>新建业务
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="ofBusiness" value="1" id="RadioGroup1_1">已有业务
+				<input type="radio" name="ofBusiness" value="1" id="ofBusiness_1" ${rsc==null?'':rsc.basis == "1"?checked="checked":checked=""}>已有业务
 			</label>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源类别</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="type" value="1" id="RadioGroup1_2">所需材料
+				<input type="radio" name="type" value="1" id="type_1" ${rsc==null?'':rsc.type == "1"?checked="checked":checked=""}>所需材料
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="type" value="2" id="RadioGroup1_3">生产材料
+				<input type="radio" name="type" value="2" id="type_2" ${rsc==null?'':rsc.type == "2"?checked="checked":checked=""}>生产材料
 			</label>
 		</div>
 		<div class="clearfix"></div>
@@ -46,47 +49,47 @@
 			<div class="coding-box c-f-width485 fl">
 				<span class="fl b-gray cr-gray"></span>
 				<span class="fl">
-					<input class="form-control inp coding-width100f" type="text" name="code" placeholder="">
+					<input class="form-control inp coding-width100f" type="text" name="code" placeholder="" value='${rsc==null?"":rsc.code}'>
 				</span>
 			</div>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源描述</label>
-			<textarea class="form-control c-f-width485" rows="3" name="descr"></textarea>
+			<textarea class="form-control c-f-width485" rows="3" name="descr">${rsc==null?"":rsc.descr}</textarea>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源责任方</label>
-			<input class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="">
+			<input class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="" ${rsc==null?"":rsc.responseParty}>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">责任方属性</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="responseAttr" value="1" id="RadioGroup1_0">委（局）内
+				<input type="radio" name="responseAttr" value="1" id="responseAttr_1" ${rsc==null?'':rsc.responseAttr == "1"?checked="checked":checked=""}>委（局）内
 			</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="responseAttr" value="2" id="RadioGroup1_1">委办局
+				<input type="radio" name="responseAttr" value="2" id="responseAttr_2" ${rsc==null?'':rsc.responseAttr == "2"?checked="checked":checked=""}>委办局
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="responseAttr" value="3" id="RadioGroup1_1">其他
+				<input type="radio" name="responseAttr" value="3" id="responseAttr_3" ${rsc==null?'':rsc.responseAttr == "3"?checked="checked":checked=""}>其他
 			</label>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox mb0">
 			<label class="compile-form-title2 fl">责任方联系方式</label>
-			<textarea class="form-control c-f-width485" rows="3" name="responseCu" placeholder="文字说明"></textarea>
+			<textarea class="form-control c-f-width485" rows="3" name="responseCu" placeholder="文字说明">${rsc==null?"":rsc.responseCu}</textarea>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源采集途径</label>
 			<select class="form-control c-f-width485" name="collectWay">
-			  <option value="1">非行政执法类</option>
-			  <option value="2">2</option>
-			  <option value="3">3</option>
-			  <option value="4">4</option>
-			  <option value="5">5</option>
+			  <option value="1" ${rsc==null?'':rsc.collectWay == 1?selected="selected":selected=""}>非行政执法类</option>
+			  <option value="2" ${rsc==null?'':rsc.collectWay == 2?selected="selected":selected=""}>2</option>
+			  <option value="3" ${rsc==null?'':rsc.collectWay == 3?selected="selected":selected=""}>3</option>
+			  <option value="4" ${rsc==null?'':rsc.collectWay == 4?selected="selected":selected=""}>4</option>
+			  <option value="5" ${rsc==null?'':rsc.collectWay == 5?selected="selected":selected=""}>5</option>
 			</select>
 		</div>
 		<div class="c-formbox">

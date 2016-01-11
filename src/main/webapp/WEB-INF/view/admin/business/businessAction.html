@@ -30,59 +30,62 @@ var htmlPart = {
   <span class="imaginary-line"></span>
   <div class="compile-form">
   	<form action='/admin/business/${business==null?"createBiz":"updateBiz"}.do' method="post">
+    <%if(business!=null){%>
+    <input type="hidden" name="id" value='${business.id}'>
+    <%}%>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项名称</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${business==null?"":business.name}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项名称填写依据</label>
       <div class="c-f-width485 fl">
         <ul class="choosable-box">
-          <li> <input name="nameRef" type="checkbox" value="1" /> “三定方案”中的核心业务 </li>
-          <li> <input name="nameRef" type="checkbox" value="2" /> 行政审批、行政许可事项 </li>
-          <li> <input name="nameRef" type="checkbox" value="3" /> 委办局党组决定事项 </li>
-          <li> <input name="nameRef" type="checkbox" value="4" /> 可共享的科技信息资源 </li>
-          <li> <input name="nameRef" type="checkbox" value="5" /> 单位日常工作 </li>
+          <li> <input name="nameRef" type="checkbox" value="1" ${business==null?'':business.nameRef == "1"?checked="checked"checked=""}/> “三定方案”中的核心业务 </li>
+          <li> <input name="nameRef" type="checkbox" value="2" ${business==null?'':business.nameRef == "2"?checked="checked"checked=""}/> 行政审批、行政许可事项 </li>
+          <li> <input name="nameRef" type="checkbox" value="3" ${business==null?'':business.nameRef == "3"?checked="checked"checked=""}/> 委办局党组决定事项 </li>
+          <li> <input name="nameRef" type="checkbox" value="4" ${business==null?'':business.nameRef == "4"?checked="checked"checked=""}/> 可共享的科技信息资源 </li>
+          <li> <input name="nameRef" type="checkbox" value="5" ${business==null?'':business.nameRef == "5"?checked="checked"checked=""}/> 单位日常工作 </li>
         </ul>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">一级子项名称</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="firstName" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="firstName" placeholder="" value='${business==null?"":business.firstName}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">二级子项名称</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="secondName" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="secondName" placeholder="" value='${business==null?"":business.secondName}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">三级子项名称</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="thirdName" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="thirdName" placeholder="" value='${business==null?"":business.secondName}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项编码</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="code" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="code" placeholder="" value='${business==null?"":business.code}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项分类</label>
       <select class="form-control width232 fl mr20" name="type">
-        <option>非行政执法类</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+        <option value="1" ${business==null?'':business.type == 1?selected="selected":selected=""}>非行政执法类</option>
+        <option value="2" ${business==null?'':business.type == 2?selected="selected":selected=""}>2</option>
+        <option value="3" ${business==null?'':business.type == 3?selected="selected":selected=""}>3</option>
+        <option value="4" ${business==null?'':business.type == 4?selected="selected":selected=""}>4</option>
+        <option value="5" ${business==null?'':business.type == 5?selected="selected":selected=""}>5</option>
       </select>
       <select class="form-control width232 fl" name="fortype">
-        <option>公共服务</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+        <option value="1" >公共服务</option>
+        <option value="2" >2</option>
+        <option value="3" >3</option>
+        <option value="4" >4</option>
+        <option value="5" >5</option>
       </select>
     </div>
     <div class="mb20 clearfix"></div>
@@ -90,10 +93,10 @@ var htmlPart = {
       <label class="compile-form-title2 fl">业务事项名称填写依据</label>
       <div class="mb10">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="basis" value="1" id="basis_1"> 有
+          <input type="radio" name="basis" value="1" id="basis_1" ${business==null?'':business.basis == "1"?checked="checked":checked=""}> 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="basis" value="0" id="basis_0"> 无
+          <input type="radio" name="basis" value="0" id="basis_0" ${business==null?'':business.basis == "0"?checked="checked":checked=""}> 无
         </label>
       </div>
       <div class="c-f-width485 fr">
@@ -108,32 +111,32 @@ var htmlPart = {
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项办理流程</label>
-      <textarea class="form-control c-f-width485" rows="3" name="flow" placeholder="文字说明"></textarea>
+      <textarea class="form-control c-f-width485" rows="3" name="flow" placeholder="文字说明" >${business==null?"":business.flow}</textarea>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项简述</label>
-      <textarea class="form-control c-f-width485" rows="3" name="summary" placeholder=""></textarea>
+      <textarea class="form-control c-f-width485" rows="3" name="summary" placeholder="">${business==null?"":business.summary}</textarea>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">总时限</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="timeLimit" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="timeLimit" placeholder=""  value='${business==null?"":business.timeLimit}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">收费依据</label>
-      <textarea class="form-control c-f-width485" rows="3" name="chargeBasis" placeholder=""></textarea>
+      <textarea class="form-control c-f-width485" rows="3" name="chargeBasis" placeholder="" >${business==null?"":business.chargeBasis}</textarea>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项主管单位</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="" value='${business==null?"":business.chargeOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项实施单位</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="">
+      <input class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="" value='${business==null?"":business.implOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
@@ -141,19 +144,19 @@ var htmlPart = {
       <div class="fr">
         <div class="mb10">
           <label class="has-ico-radio mr20"> 
-            <input type="radio" name="workload" value="1" id="workload_1"> 有
+            <input type="radio" name="workload" value="1" id="workload_1" ${business==null?'':business.workload == "1"?checked="checked":checked=""}> 有
           </label>
           <label class="has-ico-radio"> 
-            <input type="radio" name="workload" value="0" id="workload_0"> 无
+            <input type="radio" name="workload" value="0" id="workload_0" ${business==null?'':business.workload == "0"?checked="checked":checked=""}> 无
           </label>
         </div>
         <input class="form-control inp fl width300 mr20" type="text" placeholder="">
         <select class="form-control width160 fl" name="forWorkload">
-          <option>公共服务</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
+          <option value="1" >公共服务</option>
+          <option value="2" >2</option>
+          <option value="3" >3</option>
+          <option value="4" >4</option>
+          <option value="5" >5</option>
         </select>
       </div>
     </div>
@@ -162,10 +165,10 @@ var htmlPart = {
       <label class="compile-form-title2 fl">业务事项办理涉及的其他相关单位</label>
       <div class="mb10">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="relateOffice" value="1" id="relateOffice_1"> 有
+          <input type="radio" name="relateOffice" value="1" id="relateOffice_1" ${business==null?'':business.relateOffice == "1"?checked="checked":checked=""}> 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="relateOffice" value="0" id="relateOffice_0"> 无
+          <input type="radio" name="relateOffice" value="0" id="relateOffice_0" ${business==null?'':business.relateOffice == "0"?checked="checked":checked=""}> 无
         </label>
       </div>
       <div class="c-f-width485 fr">
@@ -212,14 +215,14 @@ var htmlPart = {
       <label class="compile-form-title2 fl">业务事项应用系统</label>
       <div class="mb10">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="isUse" value="1" id="isUse_1"> 有
+          <input type="radio" name="isUse" value="1" id="isUse_1" ${business==null?'':business.isUse == "1"?checked="checked":checked=""}> 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="isUse" value="0" id="isUse_0"> 无
+          <input type="radio" name="isUse" value="0" id="isUse_0" ${business==null?'':business.isUse == "0"?checked="checked":checked=""}> 无
         </label>
       </div>
       <div class="c-f-width485 fr">
-        <textarea class="form-control c-f-width485" rows="3" name="forIsUse" placeholder="备注"></textarea>
+        <textarea class="form-control c-f-width485" rows="3" name="forIsUse" placeholder="备注" ></textarea>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
@@ -227,13 +230,13 @@ var htmlPart = {
       <label class="compile-form-title2 fl">资源共享范围</label>
       <div class="c-f-width485 fl">
         <ul class="choosable-box">
-          <li> <input name="shareWith" type="checkbox" value="1" /> 所有人员 </li>
-          <li> <input name="shareWith" type="checkbox" value="2" /> 国家部委 </li>
-          <li> <input name="shareWith" type="checkbox" value="3" /> 市领导 </li>
-          <li> <input name="shareWith" type="checkbox" value="4" /> 委办局 </li>
-          <li> <input name="shareWith" type="checkbox" value="5" /> 委（局）内 </li>
-          <li> <input name="shareWith" type="checkbox" value="6" /> 本部门专员 </li>
-          <li> <input name="shareWith" type="checkbox" value="7" /> 其他 </li>
+          <li> <input name="shareWith" type="checkbox" value="1" ${business==null?'':business.shareWith == 1?selected="selected":selected=""}/> 所有人员 </li>
+          <li> <input name="shareWith" type="checkbox" value="2" ${business==null?'':business.shareWith == 2?selected="selected":selected=""}/> 国家部委 </li>
+          <li> <input name="shareWith" type="checkbox" value="3" ${business==null?'':business.shareWith == 3?selected="selected":selected=""}/> 市领导 </li>
+          <li> <input name="shareWith" type="checkbox" value="4" ${business==null?'':business.shareWith == 4?selected="selected":selected=""}/> 委办局 </li>
+          <li> <input name="shareWith" type="checkbox" value="5" ${business==null?'':business.shareWith == 5?selected="selected":selected=""}/> 委（局）内 </li>
+          <li> <input name="shareWith" type="checkbox" value="6" ${business==null?'':business.shareWith == 6?selected="selected":selected=""}/> 本部门专员 </li>
+          <li> <input name="shareWith" type="checkbox" value="7" ${business==null?'':business.shareWith == 7?selected="selected":selected=""}/> 其他 </li>
         </ul>
       </div>
     </div>

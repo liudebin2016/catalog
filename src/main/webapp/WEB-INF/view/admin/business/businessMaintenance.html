@@ -16,6 +16,16 @@ var jsPart = {
 %>
 <script type="text/javascript">
 
+	//根据id删除业务
+	function delBizById(id){
+		$.get("/admin/business/delBiz.do", { id: id },
+	    function(data){
+	    	if(data=="success"){
+	    		alert("删除成功！");
+	    		location.reload();
+	    	}
+	    });
+	}
 
 </script>
 
@@ -28,24 +38,30 @@ var htmlPart = {
 <div class="content">
    <h3 class="h3tit mt30">业务信息维护</h3>
 	<div class="form-list top-search">
+		<form action="/admin/business/maintenance.do" method="post">
     	<ul class="li-fl">
         	<li>
-            	<label>岗位名称/职位</label>
-                <input class="form-control inp noradius" type="text" placeholder="">
+            	<label>业务事项名称</label>
+                <input class="form-control inp noradius" type="text" name="name" placeholder="" value="">
             </li>
         	<li class="w-state">
             	<label>当前状态</label>
-                <select class="form-control sels wd148 noradius" name="">
-                  <option>未提交</option>
-                  <option>提交</option>
+                <select class="form-control sels wd148 noradius" name="status">
+                  <option value="">请选择</option>
+                  <option value="0">未注册</option>
+                  <option value="1">注册中</option>
+                  <option value="2">已注册</option>
+                  <option value="3">未通过</option>
+                  <option value="4">删除中</option>
                 </select>
                 
             </li>
         	<li>
-            	<button class="btns mlt30" type="button">检索</button>
+            	<button class="btns mlt30" type="submit">检索</button>
                 <input class="nobg mlt10" name="清空" type="reset" value="清空">                                       
             </li>
         </ul>
+        </form>
     </div>
     <div class="search-sel">
     	<a class="btns-gray" href="/admin/business/action.do?type=create">新建业务</a>
@@ -55,7 +71,7 @@ var htmlPart = {
     <table class="table table-hover ntable mt20">
         <thead>
             <tr>
-                <th class="tc"  width="40"><i class="ico-check"></i></th>
+                <th class="tc"  width="40"><input type="checkbox" name="checkAll" id="checkAll"></th>
                 <th class="tc" width="60">序号</th>
                 <th>业务事项名称</th>
                 <th>共享范围</th>
@@ -63,92 +79,19 @@ var htmlPart = {
                 <th width="98">操作</th>
             </tr>
         </thead>
-        <tbody>  
-        	                                                                         
+        <tbody>
+        	<%for(business in page.list){%>
             <tr>
-                <td class="tc"><i class="ico-check ico-checked"></i></td>
-                <td class="tc">1</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>所有人员</td>
-                <td>未注册</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>                                                                    
-            <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">2</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>注册中</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-             <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">3</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>已注册</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-            <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">4</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>未通过</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-             <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">5</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>删除中</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>   
-             <tr>
-                <td class="tc"><i class="ico-check ico-checked"></i></td>
-                <td class="tc">6</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>所有人员</td>
-                <td>未注册</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>                                                                    
-            <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">7</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>注册中</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-             <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">8</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>已注册</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-            <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">9</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>未通过</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>  
-             <tr>
-                <td class="tc"><i class="ico-check"></i></td>
-                <td class="tc">10</td>
-                <td>Here display business information maintenance business matters</td>
-                <td>部门人员</td>
-                <td>删除中</td>
-                <td><a href="javascript:;">编辑</a><a href="javascript:;">删除</a></td>
-            </tr>                         
+                <td class="tc"><input type="checkbox" name="check${business.id}" id="check${business.id}"></td>
+                <td class="tc">${business.id}</td>
+                <td>${business.name}</td>
+                <td>${business.shareWith}</td>
+                <td>${business.status}</td>
+                <td><a href="/admin/business/action.do?type=update&id=${business.id}">编辑</a><a href="javascript:delBizById(${business.id});">删除</a></td>
+            </tr>
+			<%}%>
         </tbody>
     </table>
-    ${page.list}
-    
     <div class="page-box">
     `${page.html}
         <ul class="pagination">
