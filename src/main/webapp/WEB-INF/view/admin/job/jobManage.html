@@ -1,33 +1,94 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			removeHoverDom : removeHoverDom,
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : true},
+		async : {
+			enable : true,
+			url : "../office/tree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			beforeDrag : beforeDrag,
+			onClick : onClick,
+			beforeRemove : beforeRemove
+		}
+	};
+	function beforeDrag(treeId, treeNodes){
+		return false;
+	}
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'jobTree',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$(obj.jobs).each(function(i,e){
+					$('#' + treeNode.tId).prepend(
+							'<span style="position:absolute;left:835px;" class="gcode">'
+									+ e.name + '</span>');
+				});
+			}
+		});
+		return true;
+	};
+	function removeHoverDom(treeId, treeNode) {
+		jq1_4("#addBtn_" + treeNode.tId).unbind().remove();
+		$('#' + treeNode.tId).children('.gcode').remove();
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
 </style>
-
 <%};%>
-
-
 <%
 var jsPart = {
 %>
-
 <script type="text/javascript">
 
-
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
   <h3 class="h3tit mt30">机构目录管理</h3>
+  <div id="_alert" style="display: none;"></div>
   <div class="search-sel mt20"> <a class="btns-gray fr" href="javascript:;">导出</a>
     <div class="search-inp ">
       <input class="form-control inp wd180" type="text" placeholder="检索">
@@ -35,36 +96,11 @@ var htmlPart = {
   </div>
   <div class="ml-wrap mt20 mb30">
     <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>岗位</span></div>
-    <div class="ml-content"> 
-       
-      <ul class="ml-list">
-        <li>
-          <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>苏州市</a></div>
-          <ul class="ml-list01">
-            <li>
-              <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>吴中区</a></div>
-              <ul class="ml-list02">
-                <li>
-                  <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div>
-                  <ul class="ml-list03 ml-list-last">
-                    <li class="hover">
-                      <div>局长<span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
-                    </li>
-                    <li><div>局长</div></li>
-                    <li class="active">
-                      <div>局长<span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
-                    </li>
-                  </ul>                                 
-              </ul>               
-            </li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>金阊区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>平江区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>沧浪区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>虎丘区</a></div> </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <!-- 组织机构树 start -->
+	<div class="zTreeDemoBackground left">
+		<ul id="officeTree" class="ztree"></ul>
+	</div>
+	<!-- 组织机构树 end -->
   </div>
 </div>
 <!-- end:content -->

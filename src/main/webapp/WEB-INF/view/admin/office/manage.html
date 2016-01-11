@@ -20,6 +20,9 @@
 		$('#officeSubmit').on('click', officeSubmit);
 	});
 	var setting = {
+		keep: {
+			parent: true
+		},
 		view : {
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
@@ -145,16 +148,12 @@
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-.ztree .level0{
-margin-left: 0px;
-}
-.ztree li{
-margin-left: 120px;
-}
-.modal-dialog{
-/*  	margin: 10% auto; */
-/* 	top:300px; */
-}
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
 </style>
 <%};%>
 <% var jsPart = { %>
