@@ -243,6 +243,15 @@
   	 order by id DESC 
   </select>
   
+  <!-- 根据officeId 查询关联的jobs -->
+  <select id="findJobsByOfficeId" parameterType="java.lang.Integer" resultType="Job">
+  	select j.* 
+  	from job j
+  	inner join job_office jo on j.id = jo.job_id and j.del_flag=0
+  	inner join sys_office so on so.id = jo.office_id
+  	where so.id = #{officeId}
+  </select>
+  
   <insert id="insertJobAndOffice" parameterType="com.jusfoun.catalog.entity.Job" >
       insert into job_office (job_id,office_id) values(#{jobId},#{officeId})
   </insert>

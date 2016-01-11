@@ -43,5 +43,12 @@ public class JobService extends CrudService<JobDao,Job> {
 		
 		return dao.findJobByCondition(cMap);
 	}
-
+	/**
+	 * 查询机构下关联的岗位
+	 * @param officeId 机构id
+	 */
+	@Transactional(readOnly = true)
+	public List<Job> findJobsByOfficeId(Integer officeId) {
+		return dao.findJobsByOfficeId(officeId);
+	}
 }

@@ -1,9 +1,10 @@
 package com.jusfoun.catalog.controller;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,14 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.entity.Page;
-import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.utils.UserUtils;
-import com.sun.javafx.collections.MappingChange.Map;
 
 /**
  * 部门岗位
@@ -149,5 +149,17 @@ public class JobContoller extends BaseController {
 		boolean flag = jobService.updateById(job);
 		return getJobMaintenance(request, response, model);
 	}
-	
+	@RequestMapping(value = "${adminPath}/job/jobTree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object jobTree(
+			@RequestParam(name = "officeId", required = false) Integer officeId) {
+		List<Job> jobs = jobService.findJobsByOfficeId(officeId);
+		if (jobs != null && jobs.size() > 0) {
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("jobs", jobs);
+			return result;
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+	}
 }
