@@ -54,26 +54,28 @@ var htmlPart = {
   </div>
   <div class="col2">
     <h3 class="h3tit">岗位信息维护</h3>
-    <div class="form-list top-search">
-      <ul class="li-fl">
-        <li>
-          <label>岗位名称</label>
-          <input class="form-control wd120" type="text" placeholder="">
-        </li>
-        <li>
-          <label>所属单位</label>
-          <input class="form-control wd120" type="text" placeholder="">
-        </li>
-        <li>
-          <label>所属单位</label>
-          <input class="form-control wd120" type="text" placeholder="">
-        </li>
-        <li>
-          <button class="btns mlt30" type="button">检索</button>
-          <input class="nobg mlt10" name="清空" type="reset" value="清空">
-        </li>
-      </ul>
-    </div>
+    	<form action="/admin/job/info">
+		    <div class="form-list top-search">
+		      <ul class="li-fl">
+		        <li>
+		          <label>岗位名称</label>
+		          <input class="form-control wd120" type="text" placeholder="" name="name" value="${cMap.name==''?'':cMap.name}">
+		        </li>
+		        <li>
+		          <label>所属单位</label>
+		          <input class="form-control wd120" type="text" placeholder="" name="office" value="${cMap.office==''?'':cMap.office}">
+		        </li>
+		        <li>
+		          <label>所属单位</label>
+		          <input class="form-control wd120" type="text" placeholder="" name="office1" value="${cMap.office1==''?'':cMap.office1}">
+		        </li>
+		        <li>
+		          <button class="btns mlt30" type="submit">检索</button>
+		          <input class="nobg mlt10" name="清空" type="reset" value="清空">
+	        </li>
+	      </ul>
+	    </div>
+	    </form>
     <table class="table table-hover ntable mt20">
       <thead>
         <tr>
@@ -86,14 +88,17 @@ var htmlPart = {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>部门总经理</td>
-          <td>战略发展</td>
-          <td>九次方财富资讯(北京)有限公司</td>
-          <td>管理</td>
-          <td>18608065643</td>
-        </tr>
+      	<%for(entry in jobList){ %>
+	        <tr>
+	          <td>${entryLP.index}</td>
+	          <td>${entry.name}</td>
+	          <td>${entry.duty}</td>
+	          <td></td>
+	          <td>${entry.type}</td>
+	          <td></td>
+	        </tr>
+	     <%}%>
+        <!--
         <tr>
           <td>2</td>
           <td>部门总经理</td>
@@ -166,6 +171,7 @@ var htmlPart = {
           <td>管理</td>
           <td>18608065643</td>
         </tr>
+        -->
       </tbody>
     </table>
     <div class="page-box">

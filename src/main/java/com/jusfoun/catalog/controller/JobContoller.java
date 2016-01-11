@@ -63,10 +63,10 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/maintenance", method = RequestMethod.GET)
 	public String getJobMaintenance(HttpServletRequest request, HttpServletResponse response,Model model){
-		String name = request.getParameter("name");
+		String sname = request.getParameter("sname");
 		String status = request.getParameter("status");
 		HashMap<String, String> cMap = new HashMap<String, String>();
-		cMap.put("name", name);
+		cMap.put("name", sname);
 		cMap.put("office", status);
 		List<Job>jobList = jobService.findJobList(cMap);
 		model.addAttribute("jobList", jobList);
