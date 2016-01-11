@@ -2,6 +2,7 @@ package com.jusfoun.catalog.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.utils.UserUtils;
+import com.sun.javafx.collections.MappingChange.Map;
 
 /**
  * 部门岗位
@@ -38,8 +40,18 @@ public class JobContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/job/info", method = RequestMethod.GET)
-	public String getJobInfoList(HttpServletRequest request, HttpServletResponse response){
-		
+	public String getJobInfoList(HttpServletRequest request, HttpServletResponse response,Model model){
+		String name = request.getParameter("name");
+		String office = request.getParameter("office");
+		String office1 = request.getParameter("office");
+		HashMap<String, String> cMap = new HashMap<String, String>();
+		cMap.put("name", name);
+		cMap.put("office", office);
+		cMap.put("office1", office1);
+		//当前只查询了job一张表，后期还要添加表
+		List jobList = jobService.findJobByCondition(cMap);
+		model.addAttribute("jobList", jobList);
+		model.addAttribute("cMap", cMap);
 		return "admin/job/jobInfo";
 	}
 	
@@ -51,8 +63,14 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/maintenance", method = RequestMethod.GET)
 	public String getJobMaintenance(HttpServletRequest request, HttpServletResponse response,Model model){
-		List<Job>jobList = jobService.findJobList();
+		String name = request.getParameter("name");
+		String status = request.getParameter("status");
+		HashMap<String, String> cMap = new HashMap<String, String>();
+		cMap.put("name", name);
+		cMap.put("office", status);
+		List<Job>jobList = jobService.findJobList(cMap);
 		model.addAttribute("jobList", jobList);
+		model.addAttribute("cMap", cMap);
 		return "admin/job/jobMaintenance";
 	}
 	
@@ -67,6 +85,7 @@ public class JobContoller extends BaseController {
 		String name = request.getParameter("name");
 		String duty = request.getParameter("duty");
 		String type = request.getParameter("type");
+		String officeId = request.getParameter("officeId");
 		Date createDate =new Date();
 		Job job = new Job();
 		job.setName(name);
@@ -75,7 +94,7 @@ public class JobContoller extends BaseController {
 		job.setCreateBy(UserUtils.getUser());
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
-		int index = jobService.createJob(job);
+		int index = jobService.createJob(job,officeId);
 		return getJobMaintenance(request, response, model);
 	}
 	
@@ -131,16 +150,4 @@ public class JobContoller extends BaseController {
 		return getJobMaintenance(request, response, model);
 	}
 	
-	/**
-	 * 部门岗位搜索
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value = "${adminPath}/job/search", method = RequestMethod.POST)
-	public String getJobSearch(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
-		List<Job>jobList = jobService.getJobSearch(job);
-		model.addAttribute("jobList", jobList);
-		return "admin/job/jobMaintenance";
-	}
 }

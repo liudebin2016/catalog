@@ -177,9 +177,7 @@
   </update>
   
   <insert id="createJob" parameterType="com.jusfoun.catalog.entity.Job" useGeneratedKeys="true" keyProperty="id">
-  <selectKey keyProperty="id" resultType="int" order="BEFORE">
-         SELECT LAST_INSERT_ID()
-     </selectKey>
+ 
     insert into job (name, duty, 
       type, create_by, create_date, 
       update_by, update_date, del_flag)
@@ -188,7 +186,12 @@
       #{updateBy.id,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
   </insert>
   <select id="findJobList" resultType="Job">
-  	select * from job order by id DESC 
+  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag from job 
+  	<where>
+  		<if test="name!=null"> AND name LIKE CONCAT('%', #{name}, '%')</if>
+  		<if test="status!=null"> AND name LIKE CONCAT('%', #{status}, '%')</if>
+  	</where>
+  	 order by id DESC 
   </select>
   <select id="selectById" parameterType="java.lang.String" resultType="com.jusfoun.catalog.entity.Job">
     select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag
@@ -230,11 +233,17 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <select id="getJobSearch" resultType="Job">
+  <select id="findJobByCondition" resultType="Job">
   	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag from job 
   	<where>
   		<if test="name!=null"> AND name LIKE CONCAT('%', #{name}, '%')</if>
+  		<if test="office!=null"> AND name LIKE CONCAT('%', #{office}, '%')</if>
+  		<if test="office1!=null"> AND name LIKE CONCAT('%', #{office1}, '%')</if>
   	</where>
   	 order by id DESC 
   </select>
+  
+  <insert id="insertJobAndOffice" parameterType="com.jusfoun.catalog.entity.Job" >
+      insert into job_office (job_id,office_id) values(#{jobId},#{officeId})
+  </insert>
 </mapper>

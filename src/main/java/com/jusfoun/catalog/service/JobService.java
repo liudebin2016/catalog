@@ -1,4 +1,5 @@
 package com.jusfoun.catalog.service;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,14 +15,18 @@ import com.jusfoun.catalog.entity.Job;
 public class JobService extends CrudService<JobDao,Job> {
 
 	
-	public int createJob(Job job){
+	public int createJob(Job job,String officeId){
 		int i = dao.createJob(job);
-		return i;
+		//插入office表
+		HashMap<String, Object> cMap = new HashMap<String, Object>();
+		cMap.put("officeId", officeId);
+		cMap.put("jobId", job.getId());
+		return dao.insertJobAndOffice(cMap);
 	}
 
-	public List<Job> findJobList(){
+	public List<Job> findJobList(HashMap<String, String> cMap){
 		
-		return dao.findJobList();
+		return dao.findJobList(cMap);
 	}
 
 	public Job selectById(String id){
@@ -34,9 +39,9 @@ public class JobService extends CrudService<JobDao,Job> {
 		return index>0?true:false;
 	}
 
-	public List<Job> getJobSearch(Job job) {
+	public List findJobByCondition(HashMap<String, String> cMap) {
 		
-		return dao.getJobSearch(job);
+		return dao.findJobByCondition(cMap);
 	}
 
 }
