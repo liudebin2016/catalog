@@ -16,11 +16,12 @@
 			parent: true
 		},
 		view : {
+			addHoverDom : addHoverDom,
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
 		data : {simpleData : {enable : true}},
-		edit : {enable : true},
+		edit : {enable : false},
 		async : {
 			enable : true,
 			url : "../office/tree",
@@ -29,10 +30,12 @@
 		},
 		callback : {
 			beforeDrag : beforeDrag,
-			onClick : onClick,
-			beforeRemove : beforeRemove
+			onClick : onClick
 		}
 	};
+	function addHoverDom(treeId, treeNode){
+		return false;
+	}
 	function beforeDrag(treeId, treeNodes){
 		return false;
 	}
@@ -56,7 +59,6 @@
 		return true;
 	};
 	function removeHoverDom(treeId, treeNode) {
-		jq1_4("#addBtn_" + treeNode.tId).unbind().remove();
 		$('#' + treeNode.tId).children('.gcode').remove();
 	};
 </script>
@@ -87,7 +89,7 @@ var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
-  <h3 class="h3tit mt30">机构目录管理</h3>
+  <h3 class="h3tit mt30">岗位目录管理</h3>
   <div id="_alert" style="display: none;"></div>
   <div class="search-sel mt20"> <a class="btns-gray fr" href="javascript:;">导出</a>
     <div class="search-inp ">

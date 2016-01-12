@@ -1,6 +1,9 @@
 package com.jusfoun.catalog.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.entity.Page;
-import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
-import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 资源Controller
@@ -37,13 +38,34 @@ public class ResourceController extends BaseController {
 	 * @return
 	 */
     @RequestMapping(value = "${adminPath}/resource/manage", method = RequestMethod.GET)
-    public ModelAndView manage(){
-    	ModelAndView mav=new ModelAndView("admin/resource/manage");
-    	List<CatalogTree> ctList=resourceService.getResourceCatalogTree(null);
-    	String ctListJson=JsonMapper.toJsonString(ctList);
-    	mav.addObject("ctListJson", ctListJson);
-    	return mav;
-    }
+	public String getBusinessManage(HttpServletRequest request, HttpServletResponse response){
+		
+		return "admin/resource/manage";
+	}
+    
+    @RequestMapping(value = "${adminPath}/resource/resourceTree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object resourceTree(
+			@RequestParam(name = "officeId", required = true) Integer officeId) {
+		List<ResourceInfo> resource = resourceService.findResourceByOfficeId(officeId);
+		if (resource != null && resource.size() > 0) {
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("resource", resource);
+			return result;
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+	}
+	
+	@RequestMapping(value = "${adminPath}/resource/resourceInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Object resourceInfo(@RequestParam(value="id",required=true) Integer id){
+			ResourceInfo rs = resourceService.get(id);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("succ", 1);
+			result.put("rs", rs);
+			return result;
+	}
     
     /**
      * 

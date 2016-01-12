@@ -1,10 +1,76 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			removeHoverDom : removeHoverDom,
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : false},
+		async : {
+			enable : true,
+			url : "../office/tree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			beforeDrag : beforeDrag,
+			onClick : onClick
+		}
+	};
+	function beforeDrag(treeId, treeNodes){
+		return false;
+	}
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'resourceTree',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$(obj.resource).each(function(i,e){
+					$('#' + treeNode.tId).prepend(
+							'<a onclick="showResource('+e.id+')" style="position:absolute;left:835px;" class="gcode">'
+									+ e.name + '</a>');
+				});
+			}
+		});
+		return true;
+	};
+	function removeHoverDom(treeId, treeNode) {
+		$('#' + treeNode.tId).children('.gcode').remove();
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
 </style>
 
 <%};%>
@@ -12,18 +78,39 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript">
-
-
+	function showResource(id){
+		$.post('resourceInfo',{'id':id},function(obj){
+			if(obj && obj.succ == 1){
+				var rs = obj.rs;
+				$('#b_name').html(rs.name);
+				$('#b_ofBusiness').html(rs.ofBusiness);
+				$('#b_type').html(rs.type);
+				$('#b_code').html(rs.code);
+				$('#b_tdescr').html(rs.tdescr);
+				$('#b_responseParty').html(rs.responseParty);
+				$('#b_responseAttr').html(rs.responseAttr);
+				$('#b_responseCu').html(rs.responseCu);
+				$('#b_collectWay').html(rs.collectWay);
+				$('#b_updateCycle').html(rs.updateCycle);
+				$('#b_securityLevel').html(rs.securityLevel);
+				$('#b_infoField').html(rs.infoField);
+				$('#b_isDbSupport').html(rs.isDbSupport);
+				$('#b_remarks').html(rs.remarks);
+				$('#b_shareRegion').html(rs.shareRegion);
+				$('#b_shareMode').html(rs.shareMode);
+				$('#resourceInfo').modal('show');
+			}
+		},'json');
+	}
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
 <div class="content">
-  <h3 class="h3tit mt30">机构目录管理</h3>
+  <h3 class="h3tit mt30">资源目录管理</h3>
+  <div id="_alert" style="display: none;"></div>
   <div class="search-sel mt20"> <a class="btns-gray fr" href="javascript:;">导出</a>
     <div class="search-inp ">
       <input class="form-control inp wd180 inp-h30" type="text" placeholder="检索">
@@ -31,39 +118,102 @@ var htmlPart = {
   </div>
   <div class="ml-wrap mt20 mb30">
     <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>岗位</span></div>
-    <div class="ml-content"> 
-       
-      <ul class="ml-list">
-        <li>
-          <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>苏州市</a></div>
-          <ul class="ml-list01">
-            <li>
-              <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>吴中区</a></div>
-              <ul class="ml-list02">
-                <li>
-                  <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div>
-                  <ul class="ml-list03 ml-list-last">
-                    <li class="hover">
-                      <div>资源1<span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
-                    </li>
-                    <li><div>资源2</div></li>
-                    <li class="active">
-                      <div>资源3<span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
-                    </li>
-                  </ul>   
-                </li>                              
-              </ul>               
-            </li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>金阊区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>平江区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>沧浪区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>虎丘区</a></div> </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <!-- 组织机构树 start -->
+	<div class="zTreeDemoBackground left">
+		<ul id="officeTree" class="ztree"></ul>
+	</div>
+	<!-- 组织机构树 end -->
   </div>
 </div>
+<!-- 模态框start -->
+<div class="modal fade" id="resourceInfo" tabindex="-1" role="dialog" 
+   aria-labelledby="resourceLabel" aria-hidden="true" >
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="resourceLabel">
+               资源信息
+            </h4>
+         </div>
+			<div class="modal-body" >
+			<form role="form">
+				<div class="form-group">
+					<label for="b_name">资源名称</label> 
+				    <span class='form-control' id="b_name" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_nameRef">所属业务事项名称</label> 
+					<span class="form-control" id="b_ofBusiness" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_firstName">资源类别</label> 
+					<span class="form-control" id="b_type" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_secondName">信息资源编码</label> 
+					<span class="form-control" id="b_code" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_thirdName">资源描述</label> 
+					<span class="form-control" id="b_tdescr" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_code">资源责任方</label> 
+					<span class="form-control" id="b_responseParty" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_type">责任方属性</label> 
+					<span class="form-control" id="b_responseAttr" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_basis">责任方联系方式</label> 
+					<span class="form-control" id="b_responseCu" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_flow">资源采集途径</label> 
+					<span class="form-control" id="b_collectWay" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_summary">更新周期</label> 
+					<span class="form-control" id="b_updateCycle" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_timeLimit">资源安全级别</label> 
+					<span class="form-control" id="b_securityLevel" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_chargeBasis">信息字段</label> 
+					<span class="form-control" id="b_infoField" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_chargeOfficeId">涉及的数据库支撑</label> 
+					<span class="form-control" id="b_isDbSupport" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_implOfficeId">备注</label> 
+					<span class="form-control" id="b_remarks" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_workload">资源共享范围</label> 
+					<span class="form-control" id="b_shareRegion" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_relateOffice">资源共享方式</label> 
+					<span class="form-control" id="b_shareMode" ></span>
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 模态框end -->
 <!-- end: MAIN CONTAINER -->
 
 <%};

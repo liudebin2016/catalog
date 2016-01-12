@@ -416,4 +416,10 @@
       del_flag = #{delFlag,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 根据机构d查询对应的业务 -->
+  <select id="findBusinessByOfficeId" parameterType="java.lang.Integer" resultType="Business">
+	select b.id,b.name
+	from business b
+	where charge_office_id = #{officeId}
+  </select>
 </mapper>

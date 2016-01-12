@@ -1,6 +1,10 @@
 package com.jusfoun.catalog.controller;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -141,5 +145,27 @@ public class BusinessContoller extends BaseController {
 		return delFlag;
 	}
 	
+	@RequestMapping(value = "${adminPath}/business/businessTree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object businessTree(
+			@RequestParam(name = "officeId", required = true) Integer officeId) {
+		List<Business> business = businessService.findBusinessByOfficeId(officeId);
+		if (business != null && business.size() > 0) {
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("business", business);
+			return result;
+		} else {
+			return Collections.EMPTY_LIST;
+		}
+	}
 	
+	@RequestMapping(value = "${adminPath}/business/businessInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Object businessInfo(@RequestParam(value="id",required=true) Integer id){
+			Business bs = businessService.get(id);
+			Map<String, Object> result = new HashMap<String, Object>();
+			result.put("succ", 1);
+			result.put("bs", bs);
+			return result;
+	}
 }

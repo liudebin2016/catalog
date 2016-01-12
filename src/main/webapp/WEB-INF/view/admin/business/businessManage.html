@@ -1,33 +1,122 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			removeHoverDom : removeHoverDom,
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : false},
+		async : {
+			enable : true,
+			url : "../office/tree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			beforeDrag : beforeDrag,
+			onClick : onClick
+		}
+	};
+	function beforeDrag(treeId, treeNodes){
+		return false;
+	}
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'businessTree',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$(obj.business).each(function(i,e){
+					$('#' + treeNode.tId).prepend(
+							'<a onclick="showBusiness('+e.id+')" style="position:absolute;left:835px;" class="gcode">'
+									+ e.name + '</a>');
+				});
+			}
+		});
+		return true;
+	};
+	function removeHoverDom(treeId, treeNode) {
+		$('#' + treeNode.tId).children('.gcode').remove();
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
 </style>
 
 <%};%>
-
-
 <%
 var jsPart = {
 %>
-
 <script type="text/javascript">
-
-
+	function showBusiness(id){
+		$.post('businessInfo',{'id':id},function(obj){
+			if(obj && obj.succ == 1){
+				var bs = obj.bs;				
+				$('#b_name').html(bs.name);
+				$('#b_nameRef').html(bs.nameRef)
+				$('#b_firstName').html(bs.firstName);
+				$('#b_secondName').html(bs.secondName);
+				$('#b_thirdName').html(bs.thirdName);
+				$('#b_code').html(bs.code);
+				$('#b_type').html(bs.type);
+				$('#b_basis').html(bs.basis);
+				$('#b_flow').html(bs.flow);
+				$('#b_summary').html(bs.summary);
+				$('#b_timeLimit').html(bs.timeLimit);
+				$('#b_chargeBasis').html(bs.chargeBasis);
+				$('#b_chargeOfficeId').html(bs.chargeOfficeId);
+				$('#b_implOfficeId').html(bs.implOfficeId);
+				$('#b_workload').html(bs.workload);
+				$('#b_implOfficeId').html(bs.implOfficeId);
+				$('#b_relateOffice').html(bs.relateOffice);
+				$('#b_needData').html(bs.needData);
+				$('#b_produceData').html(bs.produceData);
+				$('#b_isUse').html(bs.isUse);
+				$('#b_remarks').html(bs.remarks);
+				$('#b_shareWith').html(bs.shareWith);
+				$('#businessInfo').modal('show');
+			}
+		},'json');
+	}
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
-  <h3 class="h3tit mt30">机构目录管理</h3>
+  <h3 class="h3tit mt30">业务目录管理</h3>
+  <div id="_alert" style="display: none;"></div>
   <div class="search-sel mt20"> <a class="btns-gray fr mr0" href="javascript:;">导出</a>
     <div class="search-inp ">
       <input class="form-control inp wd180 inp-h30" type="text" placeholder="检索">
@@ -35,43 +124,123 @@ var htmlPart = {
   </div>
   <div class="ml-wrap mt20 mb40">
     <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>业务</span></div>
-    <div class="ml-content"> 
-       
-      <ul class="ml-list">
-        <li>
-          <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>苏州市</a></div>
-          <ul class="ml-list01">
-            <li>
-              <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>吴中区</a></div>
-              <ul class="ml-list02">
-                <li>
-                  <div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div>
-                  <ul class="ml-list03 ml-list-last">
-                    <li class="hover">
-                      <div>业务1<span><a href="#">注销</a><a href="#">废止</a><a href="#">查看</a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
-                    </li>
-                    <li><div>业务2</div></li>
-                    <li class="active">
-                      <div>业务3<span><a href="#">注销</a><a href="#">废止</a><a href="#">查看</a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
-                    </li>
-                  </ul> 
-                  </li> 
-                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>
-                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>
-                  <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wj-icon"></i>经信局</a></div></li>                                                  
-              </ul>
-            </li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>金阊区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>平江区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>沧浪区</a></div></li>
-            <li><div><a href=""><i class="all-icon jt-gry-down"></i><i class="all-icon wjj-icon"></i>虎丘区</a></div> </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+	<!-- 组织机构树 start -->
+	<div class="zTreeDemoBackground left">
+		<ul id="officeTree" class="ztree"></ul>
+	</div>
+	<!-- 组织机构树 end -->
   </div>
 </div>
 <!-- end:content -->
+<!-- 模态框start -->
+<div class="modal fade" id="businessInfo" tabindex="-1" role="dialog" 
+   aria-labelledby="businessLabel" aria-hidden="true" >
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="businessLabel">
+               业务信息
+            </h4>
+         </div>
+			<div class="modal-body" >
+			<form role="form">
+				<div class="form-group">
+					<label for="b_name">业务事项名称</label> 
+				    <span class='form-control' id="b_name" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_nameRef">业务事项名称填写依据</label> 
+					<span class="form-control" id="b_nameRef" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_firstName">一级子项名称</label> 
+					<span class="form-control" id="b_firstName" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_secondName">二级子项名称</label> 
+					<span class="form-control" id="b_secondName" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_thirdName">三级子项名称</label> 
+					<span class="form-control" id="b_thirdName" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_code">业务事项编码</label> 
+					<span class="form-control" id="b_code" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_type">业务事项分类</label> 
+					<span class="form-control" id="b_type" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_basis">业务事项办理依据</label> 
+					<span class="form-control" id="b_basis" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_flow">业务事项办理流程</label> 
+					<span class="form-control" id="b_flow" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_summary">业务事项简述</label> 
+					<span class="form-control" id="b_summary" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_timeLimit">总时限</label> 
+					<span class="form-control" id="b_timeLimit" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_chargeBasis">收费依据</label> 
+					<span class="form-control" id="b_chargeBasis" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_chargeOfficeId">业务事项主管单位</label> 
+					<span class="form-control" id="b_chargeOfficeId" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_implOfficeId">业务事项实施单位</label> 
+					<span class="form-control" id="b_implOfficeId" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_workload">业务量/工作量</label> 
+					<span class="form-control" id="b_workload" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_relateOffice">业务事项办理涉及的其他相关单位</label> 
+					<span class="form-control" id="b_relateOffice" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_needData">业务事项所需材料</label> 
+					<span class="form-control" id="b_needData" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_produceData">业务事项产生材料</label> 
+					<span class="form-control" id="b_produceData" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_isUse">业务事项应用系统</label> 
+					<span class="form-control" id="b_isUse" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_remarks">备注</label> 
+					<span class="form-control" id="b_remarks" ></span>
+				</div>
+				<div class="form-group">
+					<label for="b_shareWith">资源共享范围</label> 
+					<span class="form-control" id="b_shareWith" ></span>
+				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 模态框end -->
 <%};
 include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
 %>

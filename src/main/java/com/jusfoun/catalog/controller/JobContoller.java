@@ -149,10 +149,11 @@ public class JobContoller extends BaseController {
 		boolean flag = jobService.updateById(job);
 		return getJobMaintenance(request, response, model);
 	}
+	
 	@RequestMapping(value = "${adminPath}/job/jobTree", method = RequestMethod.POST)
     @ResponseBody
 	public Object jobTree(
-			@RequestParam(name = "officeId", required = false) Integer officeId) {
+			@RequestParam(name = "officeId", required = true) Integer officeId) {
 		List<Job> jobs = jobService.findJobsByOfficeId(officeId);
 		if (jobs != null && jobs.size() > 0) {
 			Map<String, Object> result = new HashMap<String, Object>();
