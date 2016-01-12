@@ -1,7 +1,9 @@
 package com.jusfoun.catalog.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
@@ -140,12 +143,15 @@ public class SubjectContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/manage", method = RequestMethod.GET)
-	public ModelAndView getSubjectManage(){
+	public String getSubjectManage(){
+		return "admin/subject/subjectManage";
+	}
+	
+	@RequestMapping(value = "${adminPath}/subject/tree", method = RequestMethod.POST)
+	@ResponseBody
+	public Object tree(){
 		List<CatalogTree> ctList=subjectService.getSubjectCatalogTree(null);
-		String siListJson=JsonMapper.toJsonString(ctList);
-		ModelAndView mav = new ModelAndView("admin/subject/subjectManage"); 
-	    mav.addObject("siListJson", siListJson);
-		return mav;
+		return JsonMapper.toJsonString(ctList);
 	}
 	
 	/**

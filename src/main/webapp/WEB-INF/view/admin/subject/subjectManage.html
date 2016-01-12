@@ -1,27 +1,59 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#subjecctTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : true},
+		async : {
+			enable : true,
+			url : "tree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+		}
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
 </style>
 
 <%};%>
 
-
 <%
 var jsPart = {
 %>
-
 <script type="text/javascript">
 
-
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
@@ -34,36 +66,11 @@ var htmlPart = {
       <i class="glyphicon glyphicon-search search-ico "></i> </div>
   </div>
   <div class="ml-wrap mt20 mb30">    
-    <div class="ml-content ml-content1">
-      <ul class="ml-list">
-        <li>
-          <div><a href=""><i class="all-icon circle-icon-bule"></i>主题1</a>            
-               <ul class="ml-list04 ml-list-last mt020">
-                    <li class="hover">
-                      <div>使用<span><a href="#">删除</a><a href="#">废止</a><a href="/admin/subject/create.do?type=edit&subjectId=5">编辑</a><a href="#"><i class="all-icon jt-bule-left"></i></a><a href="#"><i class="all-icon jt-bule-right"></i></a><a href="#"><i class="all-icon jt-bule-down"></i></a><a href="#"><i class="all-icon jt-bule-up"></i></a></span></div>
-                    </li> 
-                  </ul>
-          </div>
-          <ul class="ml-list01">
-            <li>
-              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>
-              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>
-              <div><a href=""><i class="all-icon circle-icon-orage"></i>子主题</a></div>              
-            </li>            
-          </ul>
-          
-        </li>
-        <li><div class="active"><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a>
-           <ul class="ml-list04 ml-list-last mt020">
-                    <li class="active">
-                      <div><span><a href="#">删除</a><a href="#">废止</a><a href="#">编辑</a><a href="#"><i class="all-icon jt-white-left"></i></a><a href="#"><i class="all-icon jt-white-right"></i></a><a href="#"><i class="all-icon jt-white-down"></i></a><a href="#"><i class="all-icon jt-white-up"></i></a></span></div>
-                    </li> 
-                  </ul>
-        </div></li>
-        <li><div><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a></div></li>
-        <li><div><a href=""><i class="all-icon circle-icon-bule"></i>主题2</a></div></li>
-      </ul>
-    </div>
+  		<!-- 组织机构树 start -->
+		<div class="zTreeDemoBackground left">
+			<ul id="subjecctTree" class="ztree"></ul>
+		</div>
+		<!-- 组织机构树 end -->
   </div>
 </div>
 <!-- end:content -->

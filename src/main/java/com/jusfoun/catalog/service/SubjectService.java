@@ -44,9 +44,9 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 				ct.setName(si.getName());
 				ct.setIsOpen(false);
 				if(si.getParentId()!=null){
-					ct.setPid(si.getParentId());
+					ct.setPId(si.getParentId());
 				}else{
-					ct.setPid(0);
+					ct.setPId(0);
 				}
 				ctList.add(ct);
 			}

@@ -8,7 +8,7 @@ package com.jusfoun.catalog.vo;
 public class CatalogTree {
 	
 	private int id;//目录树id
-	private int pid;//父目录树id
+	private int pId;//父目录树id
 	private String name;//目录树名
 	private boolean isParent;//是否是父目录
 	private boolean open;//是否打开
@@ -19,11 +19,11 @@ public class CatalogTree {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getPid() {
-		return pid;
+	public int getPId() {
+		return pId;
 	}
-	public void setPid(int pid) {
-		this.pid = pid;
+	public void setPId(int pId) {
+		this.pId = pId;
 	}
 	public String getName() {
 		return name;
@@ -31,7 +31,7 @@ public class CatalogTree {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public boolean isParent() {
+	public boolean getIsParent() {
 		return isParent;
 	}
 	public void setIsParent(boolean isParent) {
