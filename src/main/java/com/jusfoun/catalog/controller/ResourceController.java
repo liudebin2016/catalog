@@ -2,6 +2,7 @@ package com.jusfoun.catalog.controller;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.entity.Page;
+import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
+import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 资源Controller
@@ -38,10 +41,13 @@ public class ResourceController extends BaseController {
 	 * @return
 	 */
     @RequestMapping(value = "${adminPath}/resource/manage", method = RequestMethod.GET)
-	public String getBusinessManage(HttpServletRequest request, HttpServletResponse response){
-		
-		return "admin/resource/manage";
-	}
+    public ModelAndView manage(){
+    	ModelAndView mav=new ModelAndView("admin/resource/manage");
+    	List<CatalogTree> ctList=resourceService.getResourceCatalogTree(null);
+    	String ctListJson=JsonMapper.toJsonString(ctList);
+    	mav.addObject("ctListJson", ctListJson);
+    	return mav;
+    }
     
     @RequestMapping(value = "${adminPath}/resource/resourceTree", method = RequestMethod.POST)
     @ResponseBody
@@ -126,24 +132,8 @@ public class ResourceController extends BaseController {
      * @return
      */
     @RequestMapping(value = "${adminPath}/resource/maintenance")
-    public ModelAndView maintenance(HttpServletRequest request){
-    	ModelAndView mav=new ModelAndView("admin/resource/maintenance");
-    	String name=WebUtils.getCleanParam(request,"name");
-		String status=WebUtils.getCleanParam(request,"status");
-		ResourceInfo rsc=new ResourceInfo();
-		if(null!=name||null!=status){
-			if(null!=name){
-				rsc.setName("%"+name+"%");
-			}
-			rsc.setStatus(status);
-		}
-		Page<ResourceInfo> bPage=new Page<ResourceInfo>();
-		bPage.setPageNo(0);
-		bPage.setPageSize(5);
-		rsc.getSqlMap().put("dsf", "limit "+bPage.getPageNo()+","+bPage.getPageSize());
-		Page<ResourceInfo> bizPage=resourceService.findPage(bPage, rsc);
-		mav.addObject("page", bizPage);
-    	return mav;
+    public String maintenance(HttpServletRequest request){    	
+    	return "admin/resource/maintenance";
     }
     
     /**
@@ -164,5 +154,37 @@ public class ResourceController extends BaseController {
 		return delFlag;
 	}
     
+    /**
+	 * 资源列表,根据当前页和记录数获取列表
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/resource/rscList")
+	public  String rscList(int page,int rows,HttpServletRequest request) throws IOException{
+		String name=WebUtils.getCleanParam(request,"name");
+		String status=WebUtils.getCleanParam(request,"status");
+		ResourceInfo rsc=new ResourceInfo();
+		if(null!=name||null!=status){
+			if(null!=name){
+				rsc.setName("%"+name+"%");
+			}
+			rsc.setStatus(status);
+		}
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = resourceService.findListCount(rsc);
+		rsc.getSqlMap().put("page", "limit "+start+","+end);
+		List<ResourceInfo> uList = resourceService.findList(rsc);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(uList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
+	}
 
 }
