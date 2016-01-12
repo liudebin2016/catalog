@@ -47,13 +47,11 @@
     	o.id=c.office_id and c.type=1
   </select>
   
-  <select id="findList" resultType="ResourceInfo">
+  <select id="findListCount" resultType="int">
   	SELECT 
-  		<include refid="Base_Column_List" />
-	    ,
-	    <include refid="Blob_Column_List" />	
+  		count(id)	
   	FROM 
-  		resource_info r 
+  		resource_info 
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
@@ -62,7 +60,24 @@
 	        AND status=#{status}  
 	    </if>  
 	</trim>	
-  		${sqlMap.dsf}
+  </select>
+  
+  <select id="findList" resultType="ResourceInfo">
+  	SELECT 
+  		<include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />	
+  	FROM 
+  		resource_info 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if>  
+	</trim>	
+  		${sqlMap.page}
   </select>
   
   <select id="get" parameterType="java.lang.Integer" resultType="ResourceInfo">
