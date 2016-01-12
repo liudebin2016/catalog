@@ -27,11 +27,11 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 				CatalogTree ct=new CatalogTree();
 				ct.setId(si.getId());
 				ct.setName(si.getName());
-				ct.setIsOpen(false);
+				ct.setOpen(false);
 				if(si.getParentId()!=null){
-					ct.setPId(si.getParentId());
+					ct.setpId(si.getParentId());
 				}else{
-					ct.setPId(0);
+					ct.setpId(0);
 				}
 				ctList.add(ct);
 			}

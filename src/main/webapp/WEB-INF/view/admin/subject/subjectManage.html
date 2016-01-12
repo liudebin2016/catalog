@@ -27,7 +27,14 @@
 			dataType : "json"
 		},
 		callback : {
+			onClick : onClick
 		}
+	};
+	function onClick(event, treeId, treeNode) {
+		$('#' + treeNode.tId).prepend(
+				'<span style="position:absolute;left:555px;" class="gcode">'
+						+ treeNode.status + '</span>');
+		return true;
 	};
 </script>
 <%
@@ -66,6 +73,9 @@ var htmlPart = {
       <i class="glyphicon glyphicon-search search-ico "></i> </div>
   </div>
   <div class="ml-wrap mt20 mb30">    
+		<div class="top-title">
+			<span>主题名称</span><span>子主题名称</span><span>主题状态</span>
+		</div>
   		<!-- 组织机构树 start -->
 		<div class="zTreeDemoBackground left">
 			<ul id="subjecctTree" class="ztree"></ul>
