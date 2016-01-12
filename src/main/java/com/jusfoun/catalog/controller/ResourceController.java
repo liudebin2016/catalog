@@ -19,10 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
-import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 资源Controller
@@ -40,12 +38,8 @@ public class ResourceController extends BaseController {
 	 * @return
 	 */
     @RequestMapping(value = "${adminPath}/resource/manage", method = RequestMethod.GET)
-    public ModelAndView manage(){
-    	ModelAndView mav=new ModelAndView("admin/resource/manage");
-    	List<CatalogTree> ctList=resourceService.getResourceCatalogTree(null);
-    	String ctListJson=JsonMapper.toJsonString(ctList);
-    	mav.addObject("ctListJson", ctListJson);
-    	return mav;
+    public String manage(){
+    	return "admin/resource/manage";
     }
     
     @RequestMapping(value = "${adminPath}/resource/resourceTree", method = RequestMethod.POST)
