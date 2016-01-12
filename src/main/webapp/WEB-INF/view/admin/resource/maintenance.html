@@ -31,22 +31,9 @@ var jsPart = {
 		);
 	}
 	
-	function resetSrc(){
-		$("#srcName").val("");
-		$("#srcStatus").val("");
-	}
-	
-	//查询
-	function getRscList(){
-		var srcName=$.trim($("#srcName").val());
-		var srcStatus=$.trim($("#srcStatus").val());
-		
-		$('#dg').datagrid({
-		    url:'/admin/resource/rscList.do', 
-		    queryParams: {
-				name: srcName,
-				status: srcStatus
-			},
+	$(document).ready(function(){
+		$('#dg').datagrid({    
+		    url:'/resources/assets/jquery-easyui-1.4.4/demo/datagrid/datagrid_data1.json', 
 		    pagination:true,
 		    checkbox:true,
 		    method:"get",
@@ -61,17 +48,13 @@ var jsPart = {
 		        	formatter:function(value,row,index){
 		                    var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">编辑</a> ';
 		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-		                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
+		                    var c = '<a href="#" onclick="javascript:delRscById();">删除</a>';
 		                    return s+b+c;
 		                
 		            }
 		        }
 		    ]]
 		}); 
-	}
-	
-	$(document).ready(function(){
-		getRscList();
 	});
 </script>
 <%};%>
@@ -84,14 +67,15 @@ var htmlPart = {
 <div class="content">
   <h3 class="h3tit mt30">资源信息维护</h3>
   <div class="form-list top-search">
+  	<form action="/admin/resource/maintenance.do" method="post">
     <ul class="li-fl">
       <li>
         <label>资源名称</label>
-        <input id="srcName" class="form-control inp  " type="text" placeholder="" name="name" value="">
+        <input class="form-control inp  " type="text" placeholder="" name="name" value="">
       </li>
       <li class="w-state">
         <label>当前状态</label>
-        <select id="srcStatus" class="form-control sels wd148" name="status" >
+        <select class="form-control sels wd148" name="status" >
           <option value="">请选择</option>
           <option value="0">未注册</option>
           <option value="1">注册中</option>
@@ -101,15 +85,54 @@ var htmlPart = {
         </select>
       </li>
       <li>
-        <button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
-        <button class="btns mlt30" type="button" onclick="resetSrc()">清空</button>
-        <!-- <input class="nobg mlt10" name="清空" type="button" value="清空"> -->
+        <button class="btns mlt30" type="submit">检索</button>
+        <input class="nobg mlt10" name="清空" type="reset" value="清空">
       </li>
     </ul>
+    </form>
   </div>
   <div class="search-sel"> <a class="btns-gray" href="/admin/resource/action.do?type=create">新建业务</a> <a class="btns-gray" href="javascript:;">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
-  <!-- datagrid -->
+  <table class="table table-hover ntable mt20">
+    <thead>
+      <tr>
+        <th class="tc" width="40"><i class="ico-check"></i></th>
+        <th width="60" class="tc" >序号</th>
+        <th>资源名称</th>
+        <th>共享范围</th>
+        <th width="100">当前状态</th>  
+        <th width="100">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%for(rsc in page.list){%>
+      <tr>
+        <td class="tc"><input type="checkbox" name="check${rsc.id}" id="check${rsc.id}"></td>
+        <td class="tc">${rsc.id}</td>
+        <td>${rsc.name}</td>
+        <td>${rsc.shareRegion}</td>
+        <td>${rsc.status}</td>       
+        <td><a href="/admin/resource/action.do?type=update&id=${rsc.id}">编辑</a><a href="javascript:delRscById(${rsc.id});">删除</a></td>
+      </tr>
+      <%}%>
+    </tbody>
+  </table>
   <table id="dg"> </table>
+  <!-- <div class="page-box">
+    <ul class="pagination mr340">
+      <li><a class="arrows-left" href="javascript:;" ></a></li>
+      <li class="active"><a>1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li><a href="#">6</a></li>
+      <li><a href="#">7</a></li>
+      <li><a href="#">8</a></li>
+      <li><a href="#">9</a></li>
+      <li><a href="#">10</a></li>
+      <li><a class="arrows-right" href="javascript:;"></a></li>
+    </ul>
+  </div> -->
 </div>
 <!-- end: MAIN CONTAINER -->
 <%};

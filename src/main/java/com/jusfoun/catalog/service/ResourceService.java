@@ -39,16 +39,8 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 		return ctList;
 	}
 
-	public int findListCount(ResourceInfo rsc) {
-		return dao.findListCount(rsc);
-	}
-
-	/**根据机构id查询关联的资源
-	 * @param officeId 机构id
-	 * @return
-	 */
-	public List<ResourceInfo> findResourceByOfficeId(Integer officeId) {
-		return dao.findResourceByOfficeId(officeId);
+	public int findListCount() {
+		return dao.findListCount();
 	}
 	
 }

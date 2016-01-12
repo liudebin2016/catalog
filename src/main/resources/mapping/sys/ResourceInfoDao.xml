@@ -352,10 +352,4 @@
       del_flag = #{delFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <!-- 根据机构id查询关联的资源 -->
-  <select id="findResourceByOfficeId" parameterType="java.lang.Integer" resultType="ResourceInfo">
-	select ri.id,ri.name
-	from resource_info ri
-	where response_party = #{officeId}
-  </select>
 </mapper>

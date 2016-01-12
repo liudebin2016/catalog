@@ -297,7 +297,7 @@ border-radius:0;}
 button.btns{ display:inline-block;width:79px;height:30px; border:1px solid #ED6904; border-radius:3px; background-repeat:repeat-x; text-align:center; line-height:28px; color:#FFF;}
 a.btns-gray{ display:inline-block;padding:0 10px;height:30px; border:1px solid #C5C5C5; border-radius:3px; background-position:0 -31px; background-repeat:repeat-x; text-align:center; line-height:28px; color:#333;}
 a.btns-gray:hover{ text-decoration:none;}
-.search-sel{ padding:14px 20px; border:1px solid #E6E6E6; background:#F5F5F5; overflow:hidden; line-height:30px;margin-bottom: 10px;}
+.search-sel{ padding:14px 20px; border:1px solid #E6E6E6; background:#F5F5F5; overflow:hidden; line-height:30px;}
 .search-sel a,.search-sel label,.search-sel select,.search-sel input{ float:left;}
 .search-sel a{margin-right:10px;}
 .search-sel select{width:120px;height:30px; margin-right:10px; padding:1px 5px 0 5px; line-height:28px;}
