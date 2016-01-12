@@ -16,6 +16,7 @@
 			parent: true
 		},
 		view : {
+			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
 		data : {simpleData : {enable : true}},
@@ -35,6 +36,9 @@
 				'<span style="position:absolute;left:555px;" class="gcode">'
 						+ treeNode.status + '</span>');
 		return true;
+	};
+	function removeHoverDom(treeId, treeNode) {
+		$('#' + treeNode.tId).children('.gcode').remove();
 	};
 </script>
 <%
