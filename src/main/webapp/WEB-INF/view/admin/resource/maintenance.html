@@ -3,6 +3,10 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
+	
 <style type="text/css">
 
 </style>
@@ -11,6 +15,9 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	//根据id删除资源
 	function delRscById(id){
@@ -23,7 +30,32 @@ var jsPart = {
 		    }
 		);
 	}
-
+	
+	$(document).ready(function(){
+		$('#dg').datagrid({    
+		    url:'/resources/assets/jquery-easyui-1.4.4/demo/datagrid/datagrid_data1.json', 
+		    pagination:true,
+		    checkbox:true,
+		    method:"get",
+		    rownumbers:true,
+		    columns:[[    
+				{field:'ck',title:'全选',width:120,checkbox:true},  
+				{field:'id',title:'id',width:300,hidden:true}, 
+		        {field:'name',title:'资源名称',width:300},    
+		        {field:'shareRegion',title:'共享范围',width:200},
+		        {field:'status',title:'当前状态',width:150},
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+		                    var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">编辑</a> ';
+		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+		                    var c = '<a href="#" onclick="javascript:delRscById();">删除</a>';
+		                    return s+b+c;
+		                
+		            }
+		        }
+		    ]]
+		}); 
+	});
 </script>
 <%};%>
 
@@ -79,12 +111,13 @@ var htmlPart = {
         <td>${rsc.name}</td>
         <td>${rsc.shareRegion}</td>
         <td>${rsc.status}</td>       
-        <td><a href="javascript:;">编辑</a><a href="javascript:delRscById(${rsc.id});">删除</a></td>
+        <td><a href="/admin/resource/action.do?type=update&id=${rsc.id}">编辑</a><a href="javascript:delRscById(${rsc.id});">删除</a></td>
       </tr>
       <%}%>
     </tbody>
   </table>
-  <div class="page-box">
+  <table id="dg"> </table>
+  <!-- <div class="page-box">
     <ul class="pagination mr340">
       <li><a class="arrows-left" href="javascript:;" ></a></li>
       <li class="active"><a>1</a></li>
@@ -99,10 +132,9 @@ var htmlPart = {
       <li><a href="#">10</a></li>
       <li><a class="arrows-right" href="javascript:;"></a></li>
     </ul>
-  </div>
+  </div> -->
 </div>
 <!-- end: MAIN CONTAINER -->
-
 <%};
 include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
 %>

@@ -65,7 +65,7 @@
   		${sqlMap.dsf}
   </select>
   
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
+  <select id="get" parameterType="java.lang.Integer" resultType="ResourceInfo">
     select 
     <include refid="Base_Column_List" />
     ,

@@ -3,6 +3,7 @@ package com.jusfoun.catalog.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,24 @@ public class ResourceController extends BaseController {
     	return mav;
     }
     
+    /**
+     * 
+     * @return
+     */
     @RequestMapping(value = "${adminPath}/resource/index", method = RequestMethod.GET)
     public String index() {
     	return "admin/resource/index";
     }
     
+    /**
+     * 操作导航
+     * @param type
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "${adminPath}/resource/action", method = RequestMethod.GET)
-    public ModelAndView edit(@RequestParam("type")String type,@RequestParam(value="id",required=false) Integer id) {
-    	ModelAndView mav=new ModelAndView("admin/resource/edit");
+    public ModelAndView action(@RequestParam("type")String type,@RequestParam(value="id",required=false) Integer id) {
+    	ModelAndView mav=new ModelAndView("admin/resource/action");
     	if(null!=type&&!"".equals(type)&&type.equals("update")){
     		if(null!=id){
     			ResourceInfo rscInfo=resourceService.get(id);
@@ -65,11 +76,26 @@ public class ResourceController extends BaseController {
     	return mav;
     }
     
-    @RequestMapping(value = "${adminPath}/resource/doCreate", method = RequestMethod.POST)
-    public String rscDoCreate(ResourceInfo rsc) {
-    	System.out.println(4535);
+    /**
+     * 创建资源
+     * @param rsc
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/resource/createRsc", method = RequestMethod.POST)
+    public String createRsc(ResourceInfo rsc) {
     	resourceService.save(rsc);
-    	return adminPath+"/resource/maintenance";
+    	return "redirect:"+adminPath+"/resource/maintenance";
+    }
+    
+    /**
+     * 更新资源
+     * @param rsc
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/resource/updateRsc", method = RequestMethod.POST)
+    public String updateRsc(ResourceInfo rsc) {
+    	resourceService.save(rsc);
+    	return "redirect:"+adminPath+"/resource/maintenance";
     }
     
     /**
@@ -115,4 +141,6 @@ public class ResourceController extends BaseController {
 		}
 		return delFlag;
 	}
+    
+
 }

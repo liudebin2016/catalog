@@ -21,4 +21,6 @@ public interface ResourceInfoDao extends CrudDao<ResourceInfo>{
 	 * @return
 	 */
 	List<SubjectInfo> findRscClList(ResourceInfo subjectInfo);
+
+	int findListCount();
 }
