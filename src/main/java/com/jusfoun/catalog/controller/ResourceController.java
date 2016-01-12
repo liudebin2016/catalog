@@ -131,7 +131,7 @@ public class ResourceController extends BaseController {
      * @return
      */
     @RequestMapping(value = "${adminPath}/resource/maintenance")
-    public String maintenance(HttpServletRequest request){    	
+    public String maintenance(){    	
     	return "admin/resource/maintenance";
     }
     
