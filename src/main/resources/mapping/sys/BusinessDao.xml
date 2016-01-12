@@ -56,6 +56,21 @@
     WHERE id = #{id,jdbcType=INTEGER}
   </select>
   
+  <select id="findListCount" resultType="int">
+  	SELECT 
+  		count(id)	
+  	FROM 
+  		business 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if>  
+	</trim>	
+  </select>
+  
   <select id="findList" parameterType="Business" resultType="Business">
     SELECT 
     <include refid="Base_Column_List" />
@@ -70,7 +85,7 @@
 	        AND status=#{status}  
 	    </if>  
 	</trim>
-    ${sqlMap.dsf}
+    ${sqlMap.page}
     
   </select>
   

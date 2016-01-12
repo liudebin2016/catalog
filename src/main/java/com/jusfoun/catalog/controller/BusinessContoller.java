@@ -1,5 +1,6 @@
 package com.jusfoun.catalog.controller;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.entity.Page;
 import com.jusfoun.catalog.entity.Business;
 import com.jusfoun.catalog.service.BusinessService;
 import com.jusfoun.catalog.utils.UserUtils;
@@ -42,7 +42,7 @@ public class BusinessContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/business/index", method = RequestMethod.GET)
-	public String getBusinessInfoList(HttpServletRequest request){
+	public String getBusinessInfoList(){
 		
 		return "admin/business/businessIndex";
 	}
@@ -54,24 +54,8 @@ public class BusinessContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/business/maintenance")
-	public ModelAndView getBusinessMaintenance(HttpServletRequest request){
-		ModelAndView mav=new ModelAndView("admin/business/businessMaintenance");
-		String name=WebUtils.getCleanParam(request,"name");
-		String status=WebUtils.getCleanParam(request,"status");
-		Business biz=new Business();
-		if(null!=name||null!=status){
-			if(null!=name){
-				biz.setName("%"+name+"%");
-			}
-			biz.setStatus(status);
-		}
-		Page<Business> bPage=new Page<Business>();
-		bPage.setPageNo(0);
-		bPage.setPageSize(5);
-		biz.getSqlMap().put("dsf", "limit "+bPage.getPageNo()+","+bPage.getPageSize());
-		Page<Business> bizPage=businessService.findPage(bPage, biz);
-		mav.addObject("page", bizPage);
-		return mav;
+	public String getBusinessMaintenance(){
+		return "admin/business/businessMaintenance";
 	}
 	
 	/**
@@ -81,7 +65,7 @@ public class BusinessContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/business/manage", method = RequestMethod.GET)
-	public String getBusinessManage(HttpServletRequest request, HttpServletResponse response){
+	public String getBusinessManage(){
 		
 		return "admin/business/businessManage";
 	}
@@ -167,5 +151,38 @@ public class BusinessContoller extends BaseController {
 			result.put("succ", 1);
 			result.put("bs", bs);
 			return result;
+	}
+	
+	/**
+	 * 业务列表,根据当前页和记录数获取列表
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/business/bizList")
+	public  String bizList(int page,int rows,HttpServletRequest request) throws IOException{
+		String name=WebUtils.getCleanParam(request,"name");
+		String status=WebUtils.getCleanParam(request,"status");
+		Business rsc=new Business();
+		if(null!=name||null!=status){
+			if(null!=name){
+				rsc.setName("%"+name+"%");
+			}
+			rsc.setStatus(status);
+		}
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = businessService.findListCount(rsc);
+		rsc.getSqlMap().put("page", "limit "+start+","+end);
+		List<Business> uList = businessService.findList(rsc);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(uList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
 	}
 }

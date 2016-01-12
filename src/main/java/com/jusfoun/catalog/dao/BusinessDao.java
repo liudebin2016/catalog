@@ -20,4 +20,6 @@ public interface BusinessDao extends CrudDao<Business> {
 	 */
 	List<Business> findBusinessByOfficeId(Integer officeId);
 
+	int findListCount(Business biz);
+
 }

@@ -30,4 +30,8 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 		return dao.findBusinessByOfficeId(officeId);
 	}
 
+	public int findListCount(Business biz) {
+		return dao.findListCount(biz);
+	}
+
 }
