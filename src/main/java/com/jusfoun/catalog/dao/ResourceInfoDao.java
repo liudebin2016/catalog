@@ -29,4 +29,11 @@ public interface ResourceInfoDao extends CrudDao<ResourceInfo>{
 	 * @return
 	 */
 	List<ResourceInfo> findResourceByOfficeId(Integer officeId);
+
+	/**
+	 * 查询列表总数
+	 * @param rsc
+	 * @return
+	 */
+	int findListCount(ResourceInfo rsc);
 }
