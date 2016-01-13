@@ -1,5 +1,6 @@
 package com.jusfoun.catalog.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.service.CatalogInfoService;
 import com.jusfoun.catalog.service.OfficeService;
+import com.jusfoun.catalog.utils.UserUtils;
+import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 机构Controller
@@ -95,6 +99,32 @@ public class OfficeController extends BaseController {
 		return JSONObject.parse(sb.toString());
 	}
     
+    /**共享目录-四个模块左侧officeTree
+     * 		->机构职责信息
+     * 		->部门岗位信息
+     * 		->业务目录信息
+     * 		->资源目录信息
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/office/officeTree", method = RequestMethod.POST)
+    @ResponseBody
+    public Object officeTree() {
+    	List<Office> userOffices = UserUtils.getOfficeList();
+    	List<CatalogTree> treeList = new ArrayList<CatalogTree>();
+    	for(Office office : userOffices){
+    		CatalogTree tree = new CatalogTree();
+    		tree.setId(office.getId());
+    		tree.setName(office.getName());
+    		tree.setOpen(false);
+    		if(office.getParent() == null )
+    			tree.setpId(0);
+			else
+				tree.setpId(office.getParentId());
+    		treeList.add(tree);
+    	}
+    	return JsonMapper.toJsonString(treeList);
+    }
+    
     @RequestMapping(value = "${adminPath}/office/save", method = RequestMethod.POST)
     @ResponseBody
 	public Object save(
@@ -160,5 +190,12 @@ public class OfficeController extends BaseController {
     	result.put("succ", 1);
     	result.put("msg", "更新操作成功!");
     	return result;
+    }
+    
+    @RequestMapping(value = "${adminPath}/office/office", method = RequestMethod.POST)
+    @ResponseBody
+    public Object office(
+    		@RequestParam(name = "officeId", required = true) Integer id) {
+    	return JsonMapper.toJsonString(officeService.get(id));
     }
 }

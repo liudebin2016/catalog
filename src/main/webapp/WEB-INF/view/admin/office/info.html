@@ -1,139 +1,58 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : false},
+		async : {
+			enable : true,
+			url : "officeTree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			onClick : onClick
+		}
+	};
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : 'office',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$('#duty').html(typeof(obj.duty) == 'undefined' ? '' : obj.duty);
+			}
+		});
+		return true;
+	};
+</script>
 <% var cssPart = { %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
 </style>
-
 <%};%>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript">
-	var jq1_4 = $.noConflict(true);
-</script>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
-
 <% var jsPart = { %>
 <script type="text/javascript">
-	jq1_4(document).ready(function(){
-  	jq1_4.fn.zTree.init(jq1_4("#tree"), setting,datas); 
-  });
-	var datas =[
-		{id:1, pId:0, name:"[core] 基本功能 演示", open:true},
-		{id:101, pId:1, name:"最简单的树 --  标准 JSON 数据", file:"demo/cn/core/standardData"},
-		{id:102, pId:1, name:"最简单的树 --  简单 JSON 数据", file:"demo/cn/core/simpleData"},
-		{id:103, pId:1, name:"不显示 连接线", file:"demo/cn/core/noline"},
-		{id:104, pId:1, name:"不显示 节点 图标", file:"demo/cn/core/noicon"},
-		{id:105, pId:1, name:"自定义图标 --  icon 属性", file:"demo/cn/core/custom_icon"},
-		{id:106, pId:1, name:"自定义图标 --  iconSkin 属性", file:"demo/cn/core/custom_iconSkin"},
-		{id:107, pId:1, name:"自定义字体", file:"demo/cn/core/custom_font"},
-		{id:115, pId:1, name:"超链接演示", file:"demo/cn/core/url"},
-		{id:108, pId:1, name:"异步加载 节点数据", file:"demo/cn/core/async"},
-		{id:109, pId:1, name:"用 zTree 方法 异步加载 节点数据", file:"demo/cn/core/async_fun"},
-		{id:110, pId:1, name:"用 zTree 方法 更新 节点数据", file:"demo/cn/core/update_fun"},
-		{id:111, pId:1, name:"单击 节点 控制", file:"demo/cn/core/click"},
-		{id:112, pId:1, name:"展开 / 折叠 父节点 控制", file:"demo/cn/core/expand"},
-		{id:113, pId:1, name:"根据 参数 查找 节点", file:"demo/cn/core/searchNodes"},
-		{id:114, pId:1, name:"其他 鼠标 事件监听", file:"demo/cn/core/otherMouse"},
-
-		{id:2, pId:0, name:"[excheck] 复/单选框功能 演示", open:false},
-		{id:201, pId:2, name:"Checkbox 勾选操作", file:"demo/cn/excheck/checkbox"},
-		{id:206, pId:2, name:"Checkbox nocheck 演示", file:"demo/cn/excheck/checkbox_nocheck"},
-		{id:207, pId:2, name:"Checkbox chkDisabled 演示", file:"demo/cn/excheck/checkbox_chkDisabled"},
-		{id:208, pId:2, name:"Checkbox halfCheck 演示", file:"demo/cn/excheck/checkbox_halfCheck"},
-		{id:202, pId:2, name:"Checkbox 勾选统计", file:"demo/cn/excheck/checkbox_count"},
-		{id:203, pId:2, name:"用 zTree 方法 勾选 Checkbox", file:"demo/cn/excheck/checkbox_fun"},
-		{id:204, pId:2, name:"Radio 勾选操作", file:"demo/cn/excheck/radio"},
-		{id:209, pId:2, name:"Radio nocheck 演示", file:"demo/cn/excheck/radio_nocheck"},
-		{id:210, pId:2, name:"Radio chkDisabled 演示", file:"demo/cn/excheck/radio_chkDisabled"},
-		{id:211, pId:2, name:"Radio halfCheck 演示", file:"demo/cn/excheck/radio_halfCheck"},
-		{id:205, pId:2, name:"用 zTree 方法 勾选 Radio", file:"demo/cn/excheck/radio_fun"},
-
-		{id:3, pId:0, name:"[exedit] 编辑功能 演示", open:false},
-		{id:301, pId:3, name:"拖拽 节点 基本控制", file:"demo/cn/exedit/drag"},
-		{id:302, pId:3, name:"拖拽 节点 高级控制", file:"demo/cn/exedit/drag_super"},
-		{id:303, pId:3, name:"用 zTree 方法 移动 / 复制 节点", file:"demo/cn/exedit/drag_fun"},
-		{id:304, pId:3, name:"基本 增 / 删 / 改 节点", file:"demo/cn/exedit/edit"},
-		{id:305, pId:3, name:"高级 增 / 删 / 改 节点", file:"demo/cn/exedit/edit_super"},
-		{id:306, pId:3, name:"用 zTree 方法 增 / 删 / 改 节点", file:"demo/cn/exedit/edit_fun"},
-		{id:307, pId:3, name:"异步加载 & 编辑功能 共存", file:"demo/cn/exedit/async_edit"},
-		{id:308, pId:3, name:"多棵树之间 的 数据交互", file:"demo/cn/exedit/multiTree"},
-
-		{id:4, pId:0, name:"大数据量 演示", open:false},
-		{id:401, pId:4, name:"一次性加载大数据量", file:"demo/cn/bigdata/common"},
-		{id:402, pId:4, name:"分批异步加载大数据量", file:"demo/cn/bigdata/diy_async"},
-		{id:403, pId:4, name:"分批异步加载大数据量", file:"demo/cn/bigdata/page"},
-
-		{id:5, pId:0, name:"组合功能 演示", open:false},
-		{id:501, pId:5, name:"冻结根节点", file:"demo/cn/super/oneroot"},
-		{id:502, pId:5, name:"单击展开/折叠节点", file:"demo/cn/super/oneclick"},
-		{id:503, pId:5, name:"保持展开单一路径", file:"demo/cn/super/singlepath"},
-		{id:504, pId:5, name:"添加 自定义控件", file:"demo/cn/super/diydom"},
-		{id:505, pId:5, name:"checkbox / radio 共存", file:"demo/cn/super/checkbox_radio"},
-		{id:506, pId:5, name:"左侧菜单", file:"demo/cn/super/left_menu"},
-		{id:513, pId:5, name:"OutLook 样式的左侧菜单", file:"demo/cn/super/left_menuForOutLook"},
-		{id:507, pId:5, name:"下拉菜单", file:"demo/cn/super/select_menu"},
-		{id:509, pId:5, name:"带 checkbox 的多选下拉菜单", file:"demo/cn/super/select_menu_checkbox"},
-		{id:510, pId:5, name:"带 radio 的单选下拉菜单", file:"demo/cn/super/select_menu_radio"},
-		{id:508, pId:5, name:"右键菜单 的 实现", file:"demo/cn/super/rightClickMenu"},
-		{id:511, pId:5, name:"与其他 DOM 拖拽互动", file:"demo/cn/super/dragWithOther"},
-		{id:512, pId:5, name:"异步加载模式下全部展开", file:"demo/cn/super/asyncForAll"},
-
-		{id:6, pId:0, name:"其他扩展功能 演示", open:false},
-		{id:601, pId:6, name:"隐藏普通节点", file:"demo/cn/exhide/common"},
-		{id:602, pId:6, name:"配合 checkbox 的隐藏", file:"demo/cn/exhide/checkbox"},
-		{id:603, pId:6, name:"配合 radio 的隐藏", file:"demo/cn/exhide/radio"}
-	];
-	
-	 var setting = {
-         view: {
-               //dblClickExpand: false,
-               expandSpeed: 100 //设置树展开的动画速度
-         },
-         //获取json数据
-        async : {  
-            enable : true, 
-            url : "/admin/office/treeInfo", // Ajax 获取数据的 URL 地址  
-            autoParam : [ "id", "name" ] //ajax提交的时候，传的是id值
-        },  
-        data:{ // 必须使用data  
-            simpleData : {  
-                enable : true,  
-                idKey : "id", // id编号命名   
-                pIdKey : "pId", // 父id编号命名    
-                rootPId : 0 
-            }  
-        },  
-        // 回调函数  
-        //?????treeId
-        callback : {  
-            onClick : function(event, treeId, treeNode, clickFlag) {  
-                if(true) {
-                    alert(" 节点id是：" + treeNode.id + ", 节点文本是：" + treeNode.name);      
-                }  
-            },  
-            //捕获异步加载出现异常错误的事件回调函数 和 成功的回调函数  
-            onAsyncSuccess : function(event, treeId, treeNode, msg){  
-            }  
-        }  
-    };  
-   
-    // 过滤函数  
-    function filter(treeId, parentNode, childNodes) {  
-        if (!childNodes)  
-            return null;  
-        for ( var i = 0, l = childNodes.length; i < l; i++) {  
-           childNodes[i].name = childNodes[i].name.replace(/\.n/g, '.');  
-        }  
-        return childNodes;  
-    }  
-   
-    //   
-   // $(document).ready(function() {  alert(121);
-      //  $.fn.zTree.init($("#tree"), setting );  
-  //  });  
-  
 	
 </script>
 <%};%>
@@ -146,53 +65,17 @@
 			<input class="form-control noradius wd120" type="text"
 				placeholder="检索">
 		</div>
-		 <ul id="tree" class="ztree"></ul>  
-		<!-- 
-		<ul class="menu mt10">
-			<li><a href="#" class="active"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>吴中区</a>
-				<ul>
-					<li><a href="#"><i
-							class="glyphicon glyphicon-triangle-bottom"></i>经信局</a>
-						<ul>
-							<li><a href="#"></i>业务1</a></li>
-							<li><a href="#" class="current"></i>业务2</a></li>
-							<li><a href="#">业务3</a></li>
-						</ul></li>
-					<li><a href="#"><i
-							class="glyphicon glyphicon-triangle-right"></i>财政局</a></li>
-					<li><a href="#"><i
-							class="glyphicon glyphicon-triangle-right"></i>审计局</a></li>
-				</ul></li>
-			<li><a href="#"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>相城区</a></li>
-			<li><a href="#"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>金闾区</a></li>
-			<li><a href="#"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>平江区</a></li>
-			<li><a href="#"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>沧浪区</a></li>
-			<li><a href="#"><i
-					class="glyphicon glyphicon-triangle-bottom"></i>虎丘区</a></li>
-		</ul>
-		 -->
+		<!-- 组织机构树 start -->
+		<div class="zTreeDemoBackground left">
+			<ul id="officeTree" class="ztree"></ul>
+		</div>
+		<!-- 组织机构树 end -->
 	</div>
 	<div class="col2">
 		<h3 class="h3tit">吴中区经信局</h3>
 		<div class="text-warp">
 			<h5 class="h4tit">主要职能</h5>
-			<p>1、贯彻执行国家、省和国民经济和社会发展的战略方针、政策；组织编制全市国民经济和社会发展的中长期规划和年度计划，研究提出总量平衡、发展速度和结构调整的调节目标及调节政策，协调、衔接和平衡各主要行业规划和相关的政策措施。</p>
-			<p>2、研究分析国际和国内经济形势和发展情况，对本市经济运行情况分析、预测，提出经济持续、快速、健康发展的政策建议，综合协调经济社会发展。</p>
-			<p>3、研究全市经济体制改革重大问题，组织拟订综合性经济体制改革方案。指导和协调股份制改革和企业上市工作；协调有关专项经济体制改革方案，对改革方案实施过程进行跟踪、调查，协调方案实施中的有关问题，指导和推进经济体制改革。</p>
-			<p>
-				4、提出全市社会固定资产投资总规模与投资方向，规划重大项目的布局；编制全市固定资产投资计划及重点建设项目计划；负责安排或转报漳平市重大建设项目和按管理权限审批建设项目；组织向上争取项目资金；负责全市重大建设项目的审批、可研、开工报告、后评价等的管理和协调，会同市有关主管部门审查项目初步设计；组织重大项目稽查工作。
-			</p>
-			<p>
-				5、负责本市内工程建设项目招标投标工作的指导和协调，会同有关部门联合开展招标投标执法大检查活动，监督和规范招标投标和公共资源市场化配置工作管理。跟踪、监督上级发改部门下拨补助资金的项目建设，严格按工程进度建议财政拨付，并做到专款专用；抓好工程质量关，督促工程进度，使每个项目能尽快按要求组织实施。组织、指导、监督有关业务部门的经营性收费项目管理，协同处理全市行政事业性、经营性收费方面的争议。
-			</p>
-			<p>
-				6、会同有关部门研究提出全市利用外资的发展战略、总量平衡与结构优化的目标及政策；提出全市利用外资的总规模和投向；参与境内外招商引资工作。按权限审批或审核转报外商直接投资项目。组织有关部门审核上报利用国外贷款项目和境外投资项目。
-			</p>
+			<div id="duty"></div>
 		</div>
 	</div>
 </div>
