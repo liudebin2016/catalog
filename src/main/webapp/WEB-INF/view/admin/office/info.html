@@ -38,7 +38,8 @@
 			},
 			dataType : 'json',
 			success : function(obj) {
-				$('#duty').html(typeof(obj.duty) == 'undefined' ? '' : obj.duty);
+				$('#officeId').html(treeNode.name);
+				$('#duty').html('<h5 class="h4tit">主要职能</h5>' + (typeof(obj.duty) == 'undefined' ? '' : obj.duty));
 			}
 		});
 		return true;
@@ -60,7 +61,7 @@
 <!-- start: MAIN CONTAINER -->
 <div class="content">
 	<div class="col1">
-		<h3 class="h3tit1">业务目录信息</h3>
+		<h3 class="h3tit1">机构职责信息</h3>
 		<div>
 			<input class="form-control noradius wd120" type="text"
 				placeholder="检索">
@@ -72,10 +73,8 @@
 		<!-- 组织机构树 end -->
 	</div>
 	<div class="col2">
-		<h3 class="h3tit">吴中区经信局</h3>
-		<div class="text-warp">
-			<h5 class="h4tit">主要职能</h5>
-			<div id="duty"></div>
+		<h3 class="h3tit" id="officeId"></h3>
+		<div class="text-warp" id="duty">
 		</div>
 	</div>
 </div>
