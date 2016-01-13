@@ -19,7 +19,12 @@ public interface BusinessDao extends CrudDao<Business> {
 	 * @return
 	 */
 	List<Business> findBusinessByOfficeId(Integer officeId);
-
+	
+	/**
+	 * 查询列表中的个数
+	 * @param biz
+	 * @return
+	 */
 	int findListCount(Business biz);
 
 }

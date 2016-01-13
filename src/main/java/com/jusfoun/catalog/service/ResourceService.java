@@ -1,15 +1,13 @@
 package com.jusfoun.catalog.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.ResourceInfoDao;
 import com.jusfoun.catalog.entity.ResourceInfo;
-import com.jusfoun.catalog.entity.SubjectInfo;
-import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 资源SV
@@ -19,26 +17,11 @@ import com.jusfoun.catalog.vo.CatalogTree;
 @Service
 public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 
-	public List<CatalogTree> getResourceCatalogTree(ResourceInfo resourceInfo) {
-		List<CatalogTree> ctList=new ArrayList<CatalogTree>();
-		List<SubjectInfo> siList=dao.findRscClList(resourceInfo);
-		if(null!=siList&&siList.size()>0){
-			for(SubjectInfo si:siList){
-				CatalogTree ct=new CatalogTree();
-				ct.setId(si.getId());
-				ct.setName(si.getName());
-				ct.setOpen(false);
-				if(si.getParentId()!=null){
-					ct.setpId(si.getParentId());
-				}else{
-					ct.setpId(0);
-				}
-				ctList.add(ct);
-			}
-		}
-		return ctList;
-	}
-
+	/**
+	 * 获取列表个数
+	 * @param rsc
+	 * @return
+	 */
 	public int findListCount(ResourceInfo rsc) {
 		return dao.findListCount(rsc);
 	}
@@ -49,6 +32,15 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 	 */
 	public List<ResourceInfo> findResourceByOfficeId(Integer officeId) {
 		return dao.findResourceByOfficeId(officeId);
+	}
+
+	/**
+	 * 更新资源
+	 * @param rsc
+	 */
+	@Transactional(readOnly = false)
+	public void updateRsc(ResourceInfo rsc) {
+		dao.update(rsc);
 	}
 	
 }

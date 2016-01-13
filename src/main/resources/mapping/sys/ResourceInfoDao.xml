@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jusfoun.catalog.dao.ResourceInfoDao" >
-<!-- 
-  <resultMap id="BaseResultMap" type="com.jusfoun.catalog.entity.ResourceInfo" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="of_business" property="ofBusiness" jdbcType="INTEGER" />
-    <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="code" property="code" jdbcType="VARCHAR" />
-    <result column="response_party" property="responseParty" jdbcType="VARCHAR" />
-    <result column="response_attr" property="responseAttr" jdbcType="INTEGER" />
-    <result column="response_cu" property="responseCu" jdbcType="VARCHAR" />
-    <result column="collect_way" property="collectWay" jdbcType="INTEGER" />
-    <result column="security_level" property="securityLevel" jdbcType="INTEGER" />
-    <result column="info_field" property="infoField" jdbcType="VARCHAR" />
-    <result column="is_db_support" property="isDbSupport" jdbcType="INTEGER" />
-    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
-    <result column="share_region" property="shareRegion" jdbcType="VARCHAR" />
-    <result column="share_mode" property="shareMode" jdbcType="VARCHAR" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="create_by" property="createBy" jdbcType="INTEGER" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
-    <result column="update_cycle" property="updateCycle" jdbcType="VARCHAR" />
-    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.jusfoun.catalog.entity.ResourceInfo" extends="BaseResultMap" >
-    <result column="descr" property="descr" jdbcType="LONGVARCHAR" />
-  </resultMap>
--->
+
   <sql id="Base_Column_List" >
     id, name, of_business, type, code, response_party, response_attr, response_cu, collect_way, 
     security_level, info_field, is_db_support, remarks, share_region, share_mode, create_date, 
@@ -38,15 +11,7 @@
     descr
   </sql>
   
-  <select id="findRscClList" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
-  	select
-  		o.id,o.parent_id,o.name,c.type_value
-  	from 
-  		sys_office o,catalog_info c
-  	where 
-    	o.id=c.office_id and c.type=1
-  </select>
-  
+  <!-- 查询列表中元素数量 -->
   <select id="findListCount" resultType="int">
   	SELECT 
   		count(id)	
@@ -62,6 +27,7 @@
 	</trim>	
   </select>
   
+  <!-- 分页查询列表 -->
   <select id="findList" resultType="ResourceInfo">
   	SELECT 
   		<include refid="Base_Column_List" />
@@ -80,6 +46,7 @@
   		${sqlMap.page}
   </select>
   
+  <!-- 根据Id查询 -->
   <select id="get" parameterType="java.lang.Integer" resultType="ResourceInfo">
     select 
     <include refid="Base_Column_List" />
@@ -88,29 +55,15 @@
     from resource_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
+  <!-- 根据id删除 -->
   <delete id="delete" parameterType="ResourceInfo" >
     delete from resource_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  
+  <!-- 根据值情况插入数据 -->
   <insert id="insert" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
-    insert into resource_info (id, name, of_business, 
-      type, code, response_party, 
-      response_attr, response_cu, collect_way, 
-      security_level, info_field, is_db_support, 
-      remarks, share_region, share_mode, 
-      create_date, create_by, update_date, 
-      update_by, update_cycle, del_flag, 
-      descr)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{ofBusiness,jdbcType=INTEGER}, 
-      #{type,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{responseParty,jdbcType=VARCHAR}, 
-      #{responseAttr,jdbcType=INTEGER}, #{responseCu,jdbcType=VARCHAR}, #{collectWay,jdbcType=INTEGER}, 
-      #{securityLevel,jdbcType=INTEGER}, #{infoField,jdbcType=VARCHAR}, #{isDbSupport,jdbcType=INTEGER}, 
-      #{remarks,jdbcType=VARCHAR}, #{shareRegion,jdbcType=VARCHAR}, #{shareMode,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{createBy.id,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
-      #{updateBy.id,jdbcType=INTEGER}, #{updateCycle,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
-      #{descr,jdbcType=LONGVARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
     insert into resource_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -249,7 +202,9 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
+  
+  <!-- 根据值情况更新资源 -->
+  <update id="update" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
     update resource_info
     <set >
       <if test="name != null" >
@@ -318,55 +273,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
-    update resource_info
-    set name = #{name,jdbcType=VARCHAR},
-      of_business = #{ofBusiness,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      code = #{code,jdbcType=VARCHAR},
-      response_party = #{responseParty,jdbcType=VARCHAR},
-      response_attr = #{responseAttr,jdbcType=INTEGER},
-      response_cu = #{responseCu,jdbcType=VARCHAR},
-      collect_way = #{collectWay,jdbcType=INTEGER},
-      security_level = #{securityLevel,jdbcType=INTEGER},
-      info_field = #{infoField,jdbcType=VARCHAR},
-      is_db_support = #{isDbSupport,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      share_region = #{shareRegion,jdbcType=VARCHAR},
-      share_mode = #{shareMode,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      create_by = #{createBy.id,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy.id,jdbcType=INTEGER},
-      update_cycle = #{updateCycle,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      descr = #{descr,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.jusfoun.catalog.entity.ResourceInfo" >
-    update resource_info
-    set name = #{name,jdbcType=VARCHAR},
-      of_business = #{ofBusiness,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      code = #{code,jdbcType=VARCHAR},
-      response_party = #{responseParty,jdbcType=VARCHAR},
-      response_attr = #{responseAttr,jdbcType=INTEGER},
-      response_cu = #{responseCu,jdbcType=VARCHAR},
-      collect_way = #{collectWay,jdbcType=INTEGER},
-      security_level = #{securityLevel,jdbcType=INTEGER},
-      info_field = #{infoField,jdbcType=VARCHAR},
-      is_db_support = #{isDbSupport,jdbcType=INTEGER},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      share_region = #{shareRegion,jdbcType=VARCHAR},
-      share_mode = #{shareMode,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      create_by = #{createBy.id,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy.id,jdbcType=INTEGER},
-      update_cycle = #{updateCycle,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
   <!-- 根据机构id查询关联的资源 -->
   <select id="findResourceByOfficeId" parameterType="java.lang.Integer" resultType="ResourceInfo">
 	select ri.id,ri.name

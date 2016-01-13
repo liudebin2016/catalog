@@ -115,7 +115,7 @@ public class ResourceController extends BaseController {
      */
     @RequestMapping(value = "${adminPath}/resource/updateRsc", method = RequestMethod.POST)
     public String updateRsc(ResourceInfo rsc) {
-    	resourceService.save(rsc);
+    	resourceService.updateRsc(rsc);
     	return "redirect:"+adminPath+"/resource/maintenance";
     }
     

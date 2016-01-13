@@ -3,22 +3,100 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
-
 <%};%>
-
 
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
-
+	
+	
+	$(document).ready(function(){
+		$('#sb').datagrid({
+		    url:'', 
+		    queryParams: {
+				id:'5'
+			},			
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'主题名称',width:320},
+		        {field:'shareRegion',title:'共享范围',width:230},
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+	                    var s = '<a href="/admin/subject/action.do?type=view&id='+row.id+'">查看</a> ';
+	                    return s;
+		            }
+		        }
+		    ]]
+		}); 
+		
+		$('#biz').datagrid({
+		    url:'', 
+		    queryParams: {
+				id:'5'
+			},
+			rownumbers:true,
+			pagination:true,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'业务名称',width:120},
+		        {field:'code',title:'业务事项编码',width:130},
+		        {field:'type',title:'业务事项分类',width:120},
+		        {field:'basis',title:'办理依据',width:130},
+		        {field:'chargeOfficeId',title:'业务所属部门',width:120},
+		        {field:'shareRegion',title:'共享级别',width:130},
+		        {field:'shareWith',title:'共享范围',width:130},
+		        {field:'operator',title:'操作',width:120,align:"center",
+		        	formatter:function(value,row,index){
+		        		var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">查看</a> ';
+	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
+	                    return s+b+c;
+		            }
+		        }
+		    ]]
+		}); 
+		
+		$('#rsc').datagrid({
+		    url:'', 
+		    queryParams: {
+				id:'5'
+			},
+			rownumbers:true,
+			pagination:true,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'资源名称',width:120},
+		        {field:'code',title:'资源代码',width:130},
+		        {field:'name',title:'一级子项名称',width:120},
+		        {field:'responseParty',title:'业务所属部门',width:130},
+		        {field:'shareRegion',title:'资源共享范围',width:120},
+		        {field:'collectWay',title:'共享方式',width:130},
+		        {field:'securityLevel',title:'安全级别',width:120},
+		        {field:'operator',title:'操作',width:120,align:"center",
+		        	formatter:function(value,row,index){
+		        		var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">查看</a> ';
+	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
+	                    return s+b+c;
+		            }
+		        }
+		    ]]
+		}); 
+	});
 </script>
-
 <%};%>
 
 <%
@@ -27,7 +105,7 @@ var htmlPart = {
 <!-- start:content -->
 <div class="content">
   <div class="col1">
-    <h3 class="h3tit1">业务目录信息</h3>
+    <h3 class="h3tit1">主题目录关联</h3>
     <div>
       <input class="form-control noradius wd120" type="text" placeholder="检索">
     </div>
@@ -53,26 +131,15 @@ var htmlPart = {
     </ul>
   </div>
   <div class="col2">
-    <h3 class="h3tit">吴中区经信局:资源1</h3>
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr> 
-          <th>主题描述</th>
-          <th width="200">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td><a href="#">查看</a><a href="#">信息授权</a><a href="">使用申请</a></td>
-        </tr>
-      </tbody>
-    </table>
+    <h3 class="h3tit">主题</h3>
+    <!-- 主题 -->
+    <table id="sb"></table>
     
     <h3 class="h3tit h3posit  mt20">关联业务 <a class = "dropbtn" href="#"></a>
+     <!-- 
      <div class="alert-box">
         <i class="all-icon jt-white-icon1"></i>
-       <ul>
+        <ul>
           <li><h3>检索统计</h3></li>
           <li><a href="#"><span >已关联</span>关联业务</a></li>
           <li><a href="#"><span >已关联</span>关联资源</a></li>
@@ -81,297 +148,16 @@ var htmlPart = {
           <li><a href="#"><span class="vist">关联</span>资源3</a></li>
        </ul>
     </div>
+    -->
     </h3>    
+	
+	<!-- 业务 -->   
+    <table id='biz'></table>
+
+    <h3 class="h3tit mt20">关联资源</h3>
+    <!-- 资源 -->
+    <table id='rsc'></table>
     
-   
-   
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr>
-          <th class="tc" width="50">序号</th>
-          <th>业务名称</th>
-          <th>业务事项编码</th>
-          <th>业务事项分类</th>
-          <th>办理依据</th>
-          <th>业务所属部门</th>
-          <th>共享级别</th>
-          <th>共享范围</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="tc">1</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">2</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">3</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">4</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">5</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">6</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">7</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">8</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">9</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">10</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="page-box">
-      <ul class="pagination">
-        <li><a class="arrows-left" href="javascript:;" ></a></li>
-        <li class="active"><a>1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a class="arrows-right" href="javascript:;"></a></li>
-      </ul>
-    </div>
-    <h3 class="h3tit mt20">所属主题</h3>
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr>
-          <th class="tc" width="50">序号</th>
-          <th>资源名称</th>
-          <th>资源代码</th>
-          <th>一级子项名称</th>
-          <th>业务所属部门</th>
-          <th>资源共享范围</th>
-          <th>共享方式</th>
-          <th>安全级别</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="tc">1</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">2</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">3</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">4</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">5</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>       
-        <tr>
-          <td class="tc">6</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">7</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">8</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">9</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-        <tr>
-          <td class="tc">10</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>        
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-          <td><a href="#">查看</a><a href="#">删除</a></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="page-box">
-      <ul class="pagination">
-        <li><a class="arrows-left" href="javascript:;" ></a></li>
-        <li class="active"><a>1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a class="arrows-right" href="javascript:;"></a></li>
-      </ul>
-    </div>
     <div class="tishi"><p>*关联主题注册通过后，部门管理员即不可修改、删除，但可以新建关联关系！</p></div>
   </div>
 </div>

@@ -59,10 +59,10 @@ var jsPart = {
 		        {field:'status',title:'当前状态',width:150},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
-		                    var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">编辑</a> ';
-		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-		                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
-		                    return s+b+c;
+	                    var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">编辑</a> ';
+	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
+	                    return s+b+c;
 		                
 		            }
 		        }

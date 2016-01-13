@@ -1,39 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jusfoun.catalog.dao.BusinessDao" >
-<!-- 
-  <resultMap id="BaseResultMap" type="com.jusfoun.catalog.entity.Business" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="name_ref" property="nameRef" jdbcType="VARCHAR" />
-    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
-    <result column="second_name" property="secondName" jdbcType="VARCHAR" />
-    <result column="third_name" property="thirdName" jdbcType="VARCHAR" />
-    <result column="code" property="code" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="VARCHAR" />
-    <result column="basis" property="basis" jdbcType="VARCHAR" />
-    <result column="flow" property="flow" jdbcType="VARCHAR" />
-    <result column="summary" property="summary" jdbcType="VARCHAR" />
-    <result column="time_limit" property="timeLimit" jdbcType="VARCHAR" />
-    <result column="charge_basis" property="chargeBasis" jdbcType="VARCHAR" />
-    <result column="charge_office_id" property="chargeOfficeId" jdbcType="INTEGER" />
-    <result column="impl_office_id" property="implOfficeId" jdbcType="INTEGER" />
-    <result column="workload" property="workload" jdbcType="VARCHAR" />
-    <result column="relate_office" property="relateOffice" jdbcType="VARCHAR" />
-    <result column="need_data" property="needData" jdbcType="VARCHAR" />
-    <result column="produce_data" property="produceData" jdbcType="VARCHAR" />
-    <result column="is_use" property="isUse" jdbcType="VARCHAR" />
-    <result column="share_with" property="shareWith" jdbcType="VARCHAR" />
-    <result column="create_by" property="createBy" jdbcType="INTEGER" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.jusfoun.catalog.entity.Business" extends="BaseResultMap" >
-    <result column="remarks" property="remarks" jdbcType="LONGVARCHAR" />
-  </resultMap>
- -->
+
   <sql id="Base_Column_List" >
     id, name, name_ref, first_name, second_name, third_name, code, type, basis, flow, 
     summary, time_limit, charge_basis, charge_office_id, impl_office_id, workload, relate_office, 
@@ -47,6 +15,8 @@
   <sql id="Blob_Column_List" >
     remarks
   </sql>
+  
+  <!-- 根据id查询 -->
   <select id="get" parameterType="java.lang.Integer" resultType="Business">
     SELECT 
     <include refid="Base_Column_List" />
@@ -56,6 +26,7 @@
     WHERE id = #{id,jdbcType=INTEGER}
   </select>
   
+  <!-- 查询列表数量 -->
   <select id="findListCount" resultType="int">
   	SELECT 
   		count(id)	
@@ -71,6 +42,7 @@
 	</trim>	
   </select>
   
+  <!-- 分页查询列表 -->
   <select id="findList" parameterType="Business" resultType="Business">
     SELECT 
     <include refid="Base_Column_List" />
@@ -85,41 +57,19 @@
 	        AND status=#{status}  
 	    </if>  
 	</trim>
-    ${sqlMap.page}
-    
+    ${sqlMap.page}    
   </select>
   
-  
+  <!-- 根据id删除 -->
   <delete id="delete" parameterType="Business" >
     DELETE FROM 
     	business
     WHERE 
     	id = #{id,jdbcType=INTEGER}
   </delete>
-  
+
+  <!-- 根据条件插入数据 -->
   <insert id="insert" parameterType="com.jusfoun.catalog.entity.Business" >
-    insert into business (id, name, name_ref, 
-      first_name, second_name, third_name, 
-      code, type, basis, 
-      flow, summary, time_limit, 
-      charge_basis, charge_office_id, impl_office_id, 
-      workload, relate_office, need_data, 
-      produce_data, is_use, share_with, 
-      create_by, create_date, update_by, 
-      update_date, del_flag, remarks
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nameRef,jdbcType=VARCHAR}, 
-      #{firstName,jdbcType=VARCHAR}, #{secondName,jdbcType=VARCHAR}, #{thirdName,jdbcType=VARCHAR}, 
-      #{code,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{basis,jdbcType=VARCHAR}, 
-      #{flow,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{timeLimit,jdbcType=VARCHAR}, 
-      #{chargeBasis,jdbcType=VARCHAR}, #{chargeOfficeId,jdbcType=INTEGER}, #{implOfficeId,jdbcType=INTEGER}, 
-      #{workload,jdbcType=VARCHAR}, #{relateOffice,jdbcType=VARCHAR}, #{needData,jdbcType=VARCHAR}, 
-      #{produceData,jdbcType=VARCHAR}, #{isUse,jdbcType=VARCHAR}, #{shareWith,jdbcType=VARCHAR}, 
-      #{createBy.id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy.id,jdbcType=INTEGER}, 
-      #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR}, #{remarks,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.jusfoun.catalog.entity.Business" >
     insert into business
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -288,6 +238,8 @@
       </if>
     </trim>
   </insert>
+  
+  <!-- 根据条件更新数据 -->
   <update id="update" parameterType="Business" >
     update business
     <set >
@@ -372,65 +324,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jusfoun.catalog.entity.Business" >
-    update business
-    set name = #{name,jdbcType=VARCHAR},
-      name_ref = #{nameRef,jdbcType=VARCHAR},
-      first_name = #{firstName,jdbcType=VARCHAR},
-      second_name = #{secondName,jdbcType=VARCHAR},
-      third_name = #{thirdName,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      basis = #{basis,jdbcType=VARCHAR},
-      flow = #{flow,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      time_limit = #{timeLimit,jdbcType=VARCHAR},
-      charge_basis = #{chargeBasis,jdbcType=VARCHAR},
-      charge_office_id = #{chargeOfficeId,jdbcType=INTEGER},
-      impl_office_id = #{implOfficeId,jdbcType=INTEGER},
-      workload = #{workload,jdbcType=VARCHAR},
-      relate_office = #{relateOffice,jdbcType=VARCHAR},
-      need_data = #{needData,jdbcType=VARCHAR},
-      produce_data = #{produceData,jdbcType=VARCHAR},
-      is_use = #{isUse,jdbcType=VARCHAR},
-      share_with = #{shareWith,jdbcType=VARCHAR},
-      create_by = #{createBy.id,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy.id,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      del_flag = #{delFlag,jdbcType=CHAR},
-      remarks = #{remarks,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.jusfoun.catalog.entity.Business" >
-    update business
-    set name = #{name,jdbcType=VARCHAR},
-      name_ref = #{nameRef,jdbcType=VARCHAR},
-      first_name = #{firstName,jdbcType=VARCHAR},
-      second_name = #{secondName,jdbcType=VARCHAR},
-      third_name = #{thirdName,jdbcType=VARCHAR},
-      code = #{code,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      basis = #{basis,jdbcType=VARCHAR},
-      flow = #{flow,jdbcType=VARCHAR},
-      summary = #{summary,jdbcType=VARCHAR},
-      time_limit = #{timeLimit,jdbcType=VARCHAR},
-      charge_basis = #{chargeBasis,jdbcType=VARCHAR},
-      charge_office_id = #{chargeOfficeId,jdbcType=INTEGER},
-      impl_office_id = #{implOfficeId,jdbcType=INTEGER},
-      workload = #{workload,jdbcType=VARCHAR},
-      relate_office = #{relateOffice,jdbcType=VARCHAR},
-      need_data = #{needData,jdbcType=VARCHAR},
-      produce_data = #{produceData,jdbcType=VARCHAR},
-      is_use = #{isUse,jdbcType=VARCHAR},
-      share_with = #{shareWith,jdbcType=VARCHAR},
-      create_by = #{createBy.id,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy.id,jdbcType=INTEGER},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      del_flag = #{delFlag,jdbcType=CHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  
   <!-- 根据机构d查询对应的业务 -->
   <select id="findBusinessByOfficeId" parameterType="java.lang.Integer" resultType="Business">
 	select b.id,b.name

@@ -13,6 +13,11 @@ import com.jusfoun.catalog.entity.Business;
 @Transactional(readOnly = true)
 public class BusinessService extends CrudService<BusinessDao, Business>{
 	
+	/**
+	 * 更新业务
+	 * @param biz
+	 * @return
+	 */
 	@Transactional(readOnly = false)
 	public boolean updateBiz(Business biz){
 		int num=dao.update(biz);
@@ -30,6 +35,11 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 		return dao.findBusinessByOfficeId(officeId);
 	}
 
+	/**
+	 * 查询列表中的个数
+	 * @param biz
+	 * @return
+	 */
 	public int findListCount(Business biz) {
 		return dao.findListCount(biz);
 	}
