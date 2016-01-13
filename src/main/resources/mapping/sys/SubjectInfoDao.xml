@@ -28,32 +28,14 @@
     	subject_info
     where id = #{id,jdbcType=INTEGER}
   </select>
+  
   <!-- 根据Id删除主题 -->
   <delete id="delete" parameterType="com.jusfoun.catalog.entity.SubjectInfo" >
     delete from subject_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
   
-  <!--  
-  <resultMap id="BaseResultMap" type="com.jusfoun.catalog.entity.SubjectInfo" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
-    <result column="parent_name" property="parentName" jdbcType="VARCHAR" />
-    <result column="descr" property="descr" jdbcType="VARCHAR" />
-    <result column="share_region" property="shareRegion" jdbcType="VARCHAR" />
-    <result column="share_mode" property="shareMode" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
-    <result column="create_by" property="createBy" jdbcType="INTEGER" />
-    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
-    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
-    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.jusfoun.catalog.entity.SubjectInfo" extends="BaseResultMap" >
-    <result column="remarks" property="remarks" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  -->
+
   <sql id="Base_Column_List" >
     id, name, parent_id, parent_name, descr, share_region, share_mode, status, create_date, 
     create_by as "createBy.id", update_date, update_by as "updateBy.id", del_flag
@@ -61,13 +43,34 @@
   <sql id="Blob_Column_List" >
     remarks
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" >
-    select 
+  
+  <!-- 根据条件进行查询  -->
+  <select id="findList" parameterType="java.lang.Integer" resultType="SubjectInfo">
+    SELECT 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from subject_info
-    where id = #{id,jdbcType=INTEGER}
+    FROM subject_info
+    <trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if> 
+	    <if test="parentId!= null ">  
+	        AND parent_id=#{parentId}  
+	    </if>  
+	    <if test="shareRegion!= null ">  
+	        AND share_region=#{shareRegion}  
+	    </if> 
+	    <if test="shareMode!= null ">  
+	        AND share_mode=#{shareMode}  
+	    </if> 
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if> 
+	    <if test="id!= null ">  
+	        AND id = #{id}
+	    </if>
+	</trim>	
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

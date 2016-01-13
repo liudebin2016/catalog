@@ -1,6 +1,7 @@
 package com.jusfoun.catalog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,24 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 	@Transactional(readOnly = false)
 	public void updateRsc(ResourceInfo rsc) {
 		dao.update(rsc);
+	}
+	
+	/**
+	 * 根据主题Id获取业务数量
+	 * @param sqlMap
+	 * @return
+	 */
+	public int findListCountBySubId(Map<String, Object> sqlMap){
+		return dao.findListCountBySubId(sqlMap);
+	}
+	
+	/**
+	 * 根据主题Id获取业务
+	 * @param sqlMap
+	 * @return
+	 */
+	public List<ResourceInfo> findListBySubId(Map<String, Object> sqlMap){
+		return dao.findListBySubId(sqlMap);
 	}
 	
 }

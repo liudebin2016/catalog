@@ -56,6 +56,25 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
+  <select id="findListCountBySubId" parameterType="Map" resultType="int">
+    SELECT 
+    count(r.id)
+    FROM resource_info r,subject_resource s
+    WHERE r.id=s.resource_id
+    AND s.subject_id=#{subjectId}
+  </select>
+  
+  <select id="findListBySubId" parameterType="Map" resultType="ResourceInfo">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM resource_info r,subject_resource s
+    WHERE r.id=s.resource_id
+    AND s.subject_id=#{subjectId}
+    ${page}
+  </select>
+  
   <!-- 根据id删除 -->
   <delete id="delete" parameterType="ResourceInfo" >
     delete from resource_info

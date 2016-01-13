@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
 
@@ -173,11 +173,31 @@ public class ResourceController extends BaseController {
 		int total = resourceService.findListCount(rsc);
 		rsc.getSqlMap().put("page", "limit "+start+","+end);
 		List<ResourceInfo> uList = resourceService.findList(rsc);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(uList);
+		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();
 		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
 		return sb.toString();
 	}
 
+	@ResponseBody
+	@RequestMapping("${adminPath}/resource/findBySubId")
+	public  String findListBySubId(int page,int rows,HttpServletRequest request) throws IOException{
+		String subjectId=WebUtils.getCleanParam(request,"subjectId");
+		StringBuffer sb=new StringBuffer();
+		if(null!=subjectId){
+			//把总记录和当前记录写到前台
+			Map<String,Object> sqlMap=new HashMap<String,Object>();
+			//求得开始记录与结束记录
+			int start = (page-1)*rows;
+			int end = page * rows;
+			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("subjectId", Integer.valueOf(subjectId));
+			int total = resourceService.findListCountBySubId(sqlMap);
+			List<ResourceInfo> bList = resourceService.findListBySubId(sqlMap);
+			String json = JsonMapper.toJsonString(bList);
+			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+			return sb.toString();
+		}
+		return "{\"total\":,\"rows\":}";
+	}
 }

@@ -22,9 +22,9 @@ var jsPart = {
 	
 	$(document).ready(function(){
 		$('#sb').datagrid({
-		    url:'', 
+		    url:'/admin/subject/getListByPid.do', 
 		    queryParams: {
-				id:'5'
+				pid:'5'
 			},			
 		    method:"get",
 		    columns:[[    
@@ -33,7 +33,7 @@ var jsPart = {
 		        {field:'shareRegion',title:'共享范围',width:230},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/subject/action.do?type=view&id='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/subject/action.do?type=update&subjectId='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
@@ -41,9 +41,9 @@ var jsPart = {
 		}); 
 		
 		$('#biz').datagrid({
-		    url:'', 
+		    url:'/admin/business/findBySubId.do', 
 		    queryParams: {
-				id:'5'
+		    	subjectId:'5'
 			},
 			rownumbers:true,
 			pagination:true,
@@ -69,9 +69,9 @@ var jsPart = {
 		}); 
 		
 		$('#rsc').datagrid({
-		    url:'', 
+		    url:'/admin/business/findBySubId.do', 
 		    queryParams: {
-				id:'5'
+		    	subjectId:'5'
 			},
 			rownumbers:true,
 			pagination:true,

@@ -60,6 +60,25 @@
     ${sqlMap.page}    
   </select>
   
+  <select id="findListCountBySubId" parameterType="Map" resultType="int">
+    SELECT 
+    count(b.id)
+    FROM business b,subject_business s
+    WHERE b.id=s.business_id
+    AND s.subject_id=#{subjectId}
+  </select>
+  
+  <select id="findListBySubId" parameterType="Map" resultType="Business">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM business b,subject_business s
+    WHERE b.id=s.business_id
+    AND s.subject_id=#{subjectId}
+    ${page}
+  </select>
+  
   <!-- 根据id删除 -->
   <delete id="delete" parameterType="Business" >
     DELETE FROM 

@@ -4,17 +4,16 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.SubjectInfo;
@@ -40,15 +39,13 @@ public class SubjectContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/index", method = RequestMethod.GET)
-	public String getSubjectInfoList(HttpServletRequest request, HttpServletResponse response){
+	public String getSubjectInfoList(){
 		
 		return "admin/subject/subjectIndex";
 	}
 	
 	/**
 	 * 主题目录操作控制（创建还是修改？）
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/action", method = RequestMethod.GET)
@@ -71,11 +68,10 @@ public class SubjectContoller extends BaseController {
 	/**
 	 * 主题目录创建
 	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/doCreate", method = RequestMethod.POST)
-	public String getSubjectDoCreate(HttpServletRequest request, HttpServletResponse response,Model model){
+	public String getSubjectDoCreate(HttpServletRequest request){
 		String name=request.getParameter("name");
 		String descr=request.getParameter("descr");
 		String shareRegion=request.getParameter("shareRegion");
@@ -97,11 +93,10 @@ public class SubjectContoller extends BaseController {
 	/**
 	 * 主题目录更新
 	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/doUpdate", method = RequestMethod.POST)
-	public String getSubjectDoUpdate(HttpServletRequest request, HttpServletResponse response){
+	public String getSubjectDoUpdate(HttpServletRequest request){
 		String name=request.getParameter("name");
 		String descr=request.getParameter("descr");
 		String shareRegion=request.getParameter("shareRegion");
@@ -136,8 +131,6 @@ public class SubjectContoller extends BaseController {
 	
 	/**
 	 * 主题目录管理
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/manage", method = RequestMethod.GET)
@@ -154,13 +147,28 @@ public class SubjectContoller extends BaseController {
 	
 	/**
 	 * 主题信息关联
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/subject/link", method = RequestMethod.GET)
-	public String getSubjectLink(HttpServletRequest request, HttpServletResponse response){
+	public String getSubjectLink(){
 		
 		return "admin/subject/subjectLink";
 	}
+	
+	/**
+	 * 根据父id查询其下的子主题
+	 * @param pid
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@ResponseBody
+	@RequestMapping(value="${adminPath}/subject/getListByPid",method=RequestMethod.GET)
+	public String getSubjectListByPid(@RequestParam(value="pid",required=false)Integer pid) throws JsonProcessingException{
+		SubjectInfo si=new SubjectInfo();
+		si.setParentId(pid);		
+		List<SubjectInfo> siList=subjectService.findList(si);
+		String json = JsonMapper.toJsonString(siList);
+		return json;
+	}
+	
 }

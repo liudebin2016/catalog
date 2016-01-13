@@ -1,6 +1,7 @@
 package com.jusfoun.catalog.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,4 +45,11 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 		return dao.findListCount(biz);
 	}
 
+	public int findListCountBySubId(Map<String, Object> sqlMap){
+		return dao.findListCountBySubId(sqlMap);
+	}
+	
+	public List<Business> findListBySubId(Map<String, Object> sqlMap){
+		return dao.findListBySubId(sqlMap);
+	}
 }
