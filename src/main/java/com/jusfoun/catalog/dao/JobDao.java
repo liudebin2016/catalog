@@ -17,7 +17,7 @@ public interface JobDao extends CrudDao<Job>{
 
 	public int createJob(Job job);
 
-	public List<Job> findJobList(HashMap<String, String> cMap);
+	public List<Job> findJobList(Job job);
 
 	public Job selectById(String id);
 
@@ -31,5 +31,9 @@ public interface JobDao extends CrudDao<Job>{
 	 * @param officeId 机构id
 	 */
 	public List<Job> findJobsByOfficeId(Integer officeId);
+
+	public int findListCount(Job job);
+
+	public int deleteById(Job job);
 
 }

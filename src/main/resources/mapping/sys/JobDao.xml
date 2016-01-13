@@ -185,14 +185,38 @@
       #{type,jdbcType=CHAR}, #{createBy.id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
       #{updateBy.id,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
   </insert>
-  <select id="findJobList" resultType="Job">
-  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag from job 
-  	<where>
-  		<if test="name!=null"> AND name LIKE CONCAT('%', #{name}, '%')</if>
-  		<if test="status!=null"> AND name LIKE CONCAT('%', #{status}, '%')</if>
-  	</where>
-  	 order by id DESC 
+  <select id="findListCount" resultType="int">
+	  	SELECT 
+  		count(id)	
+  			FROM 
+  		job 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if>  
+	</trim>	
   </select>
+  <select id="findJobList" resultType="Job">
+  SELECT 
+  		<include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />	
+  	FROM 
+  		job 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND status=#{status}  
+	    </if>  
+	</trim>	
+  		${sqlMap.page}
+  </select>
+  
   <select id="selectById" parameterType="java.lang.String" resultType="com.jusfoun.catalog.entity.Job">
     select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag
     from job
@@ -255,4 +279,9 @@
   <insert id="insertJobAndOffice" parameterType="com.jusfoun.catalog.entity.Job" >
       insert into job_office (job_id,office_id) values(#{jobId},#{officeId})
   </insert>
+  
+  <delete id="deleteById" parameterType="com.jusfoun.catalog.entity.Job" >
+    delete from job
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
 </mapper>

@@ -14,7 +14,8 @@ public class Job extends DataEntity<Job>{
 	private String name;//名称
     private String duty;//职责
     private String type;//岗位属性
-
+    private String status; //当前状态
+    
     public String getName() {
         return name;
     }
@@ -38,5 +39,13 @@ public class Job extends DataEntity<Job>{
     public void setType(String type) {
         this.type = type;
     }
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 }

@@ -24,9 +24,9 @@ public class JobService extends CrudService<JobDao,Job> {
 		return dao.insertJobAndOffice(cMap);
 	}
 
-	public List<Job> findJobList(HashMap<String, String> cMap){
+	public List<Job> findJobList(Job job){
 		
-		return dao.findJobList(cMap);
+		return dao.findJobList(job);
 	}
 
 	public Job selectById(String id){
@@ -50,5 +50,14 @@ public class JobService extends CrudService<JobDao,Job> {
 	@Transactional(readOnly = true)
 	public List<Job> findJobsByOfficeId(Integer officeId) {
 		return dao.findJobsByOfficeId(officeId);
+	}
+
+	public int findListCount(Job job) {
+		
+		return dao.findListCount(job);
+	}
+
+	public int deleteById(Job job) {
+		return dao.deleteById(job);
 	}
 }

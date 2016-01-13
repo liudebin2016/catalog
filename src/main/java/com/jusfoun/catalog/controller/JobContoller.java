@@ -1,26 +1,31 @@
 package com.jusfoun.catalog.controller;
 
-import java.util.Collections;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.entity.Page;
+import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
+import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.utils.UserUtils;
+import com.sun.javafx.collections.MappingChange.Map;
 
 /**
  * 部门岗位
@@ -63,14 +68,14 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/maintenance", method = RequestMethod.GET)
 	public String getJobMaintenance(HttpServletRequest request, HttpServletResponse response,Model model){
-		String sname = request.getParameter("sname");
-		String status = request.getParameter("status");
-		HashMap<String, String> cMap = new HashMap<String, String>();
-		cMap.put("name", sname);
-		cMap.put("office", status);
-		List<Job>jobList = jobService.findJobList(cMap);
-		model.addAttribute("jobList", jobList);
-		model.addAttribute("cMap", cMap);
+//		String sname = request.getParameter("sname");
+//		String status = request.getParameter("status");
+//		HashMap<String, String> cMap = new HashMap<String, String>();
+//		cMap.put("name", sname);
+//		cMap.put("office", status);
+//		List<Job>jobList = jobService.findJobList(cMap);
+//		model.addAttribute("jobList", jobList);
+//		model.addAttribute("cMap", cMap);
 		return "admin/job/jobMaintenance";
 	}
 	
@@ -95,7 +100,7 @@ public class JobContoller extends BaseController {
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
 		int index = jobService.createJob(job,officeId);
-		return getJobMaintenance(request, response, model);
+		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
 	/**
@@ -147,20 +152,60 @@ public class JobContoller extends BaseController {
 		job.setUpdateBy(UserUtils.getUser());
 		job.setUpdateDate(new Date());
 		boolean flag = jobService.updateById(job);
-		return getJobMaintenance(request, response, model);
+		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
-	@RequestMapping(value = "${adminPath}/job/jobTree", method = RequestMethod.POST)
-    @ResponseBody
-	public Object jobTree(
-			@RequestParam(name = "officeId", required = true) Integer officeId) {
-		List<Job> jobs = jobService.findJobsByOfficeId(officeId);
-		if (jobs != null && jobs.size() > 0) {
-			Map<String, Object> result = new HashMap<String, Object>();
-			result.put("jobs", jobs);
-			return result;
-		} else {
-			return Collections.EMPTY_LIST;
+	/**
+	 * 资源列表,根据当前页和记录数获取列表
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/resource/reloadList")
+	public  String reloadList(int page,int rows,HttpServletRequest request) throws IOException{
+		String name=WebUtils.getCleanParam(request,"name");
+		String status=WebUtils.getCleanParam(request,"status");
+		Job job=new Job();
+		if(null!=name||null!=status){
+			if(null!=name){
+				job.setName("%"+name+"%");
+			}
+			job.setStatus(status);
 		}
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = jobService.findListCount(job);
+		job.getSqlMap().put("page", "limit "+start+","+end);
+		List<Job>jobList = jobService.findJobList(job);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(jobList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
+	}
+	
+	/**
+	 * 岗位目录删除
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/delJobById", method = RequestMethod.GET)
+	public String delJobById(HttpServletRequest request, HttpServletResponse response){
+		String id = request.getParameter("id");
+		String delFlag="fail";
+		if(null!=id){
+			Job job=new Job();
+			job.setId(Integer.parseInt(id));
+			int temp = jobService.deleteById(job);
+			delFlag="success";
+		}
+		return delFlag;
+		
+		//return "redirect:"+adminPath+"/job/maintenance";
 	}
 }

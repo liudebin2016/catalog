@@ -3,7 +3,9 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -14,8 +16,66 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
+	//根据id删除资源
+	function delRscById(id){
+		$.get("/admin/job/delJobById.do", { id: id },
+		    function(data){location.reload();
+		    	if(data=="success"){
+		    		alert("删除成功！");
+		    		location.reload();
+		    	}
+		    }
+		);   
+	}
+	
+	function resetSrc(){
+		$("#srcName").val("");
+		$("#srcStatus").val("");
+	}
+	
+	//查询
+	function getRscList(){
+		var srcName=$.trim($("#srcName").val());
+		var srcStatus=$.trim($("#srcStatus").val());
+		
+		$('#dg').datagrid({
+		    url:'/admin/resource/reloadList.do', 
+		    queryParams: {
+				name: srcName,
+				status: srcStatus
+			},
+		    pagination:true,
+		    checkbox:true,
+		    method:"get",
+		    rownumbers:true,
+		    columns:[[    
+				{field:'ck',title:'全选',width:120,checkbox:true},  
+				{field:'id',title:'id',width:0,hidden:true}, 
+		        {field:'name',title:'岗位名称/职位',width:150,align:"center"},    
+		        {field:'duty',title:'岗位职责',width:150,align:"center"},
+		        {field:'office',title:'所属单位',width:150,align:"center"},
+		        {field:'bussiness',title:'相关业务',width:150,align:"center"},
+		        {field:'status',title:'当前状态',width:150,align:"center"},
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+		                    var s = '<a href="/admin/job/edit?id='+row.id+'">编辑</a> ';
+		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+		                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
+		                    return s+b+c;
+		                
+		            }
+		        }
+		    ]]
+		}); 
+	}
+	
+	$(document).ready(function(){
+		getRscList();
+	});
 
 </script>
 
@@ -27,28 +87,28 @@ var htmlPart = {
 <!-- start:content -->
 <div class="content">
   <h3 class="h3tit mt30">岗位信息维护</h3>
-  	<form action="/admin/job/maintenance" method="GET">
 	  <div class="form-list top-search">
 	    <ul class="li-fl">
 	      <li>
 	        <label>岗位名称/职位</label>
-	        <input class="form-control inp noradius" type="text" placeholder="" name="sname" value="${cMap.name==''?'':cMap.name}">
+	        <input id="srcName" class="form-control inp noradius" type="text" placeholder="" name="name" value="">
 	      </li>
 	      <li>
 	        <label>当前状态</label>
-	        <select class="form-control sels wd148 noradius" name="status">
-	          <option>未提交</option>
-	          <option>提交</option>
+	        <select id="srcStatus" class="form-control sels wd148 noradius" name="status">
+	          <option value="">未提交</option>
+	          <option value="1">提交</option>
 	        </select>
 	      </li>
 	      <li>
-	        <button class="btns mlt30" type="submit">检索</button>
-	        <input class="nobg mlt10" name="清空" type="reset" value="清空">
+	        <button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
+	        <button class="btns mlt30" type="button" onclick="resetSrc()">清空</button>
 	      </li>
 	    </ul>
 	  </div>
-	</form>
   <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
+ <table id="dg"> </table>
+ <!-- 
   <table class="table table-hover ntable mt20">
     <thead>
       <tr>
@@ -64,20 +124,7 @@ var htmlPart = {
       </tr>
     </thead>
     <tbody>
-     <%for(entry in jobList){ %>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc"> ${entryLP.index}</td>
-        <td> ${entry.name}</td>
-        <td>${entry.duty}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>未注册</td>
-        <td><a href="/admin/job/edit?id=${entry.id}">编辑</a></td>
-      </tr>
-       <%}%>
-      <!-- 
+      
       <tr>
         <td class="tc"><i class="ico-check ico-checked"></i></td>
         <td class="tc">2</td>
@@ -177,7 +224,7 @@ var htmlPart = {
         <td>未注册</td>
         <td><a href="javascript:;">查看</a></td>
       </tr>
-       -->
+       
     </tbody>
   </table>
   <div class="page-box">
@@ -195,7 +242,7 @@ var htmlPart = {
       <li><a href="#">10</a></li>
       <li><a class="arrows-right" href="javascript:;"></a></li>
     </ul>
-  </div>
+  </div>-->
 </div>
 <!-- end:content -->
 <%};
