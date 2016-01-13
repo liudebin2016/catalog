@@ -1,26 +1,66 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		// init tree
+		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+	});
+	var setting = {
+		keep: {
+			parent: true
+		},
+		view : {
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : false},
+		async : {
+			enable : true,
+			url : "../office/officeTree",
+			autoParam : [ "id", "name", "level" ],
+			dataType : "json"
+		},
+		callback : {
+			onClick : onClick
+		}
+	};
+	function onClick(event, treeId, treeNode) {
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : '../office/office',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$('#officeId').html(treeNode.name);
+			}
+		});
+		return true;
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
 
 </style>
-
 <%};%>
-
-
 <%
 var jsPart = {
 %>
 <script type="text/javascript">
 
-
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
@@ -31,29 +71,14 @@ var htmlPart = {
     <div>
       <input class="form-control noradius wd120" type="text" placeholder="检索">
     </div>
-    <ul class="menu mt10">
-      <li><a href="#" class="active" ><i class="glyphicon glyphicon-triangle-bottom"></i>吴中区</a>
-        <ul>
-          <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>经信局</a>
-            <ul>
-              <li><a href="#" class="current" >业务1</a></li>
-              <li><a href="#" >业务2</a></li>
-              <li><a href="#">业务3</a></li>
-            </ul>
-          </li>
-          <li><a href="#"><i class="glyphicon glyphicon-triangle-right"></i>财政局</a></li>
-          <li><a href="#"><i class="glyphicon glyphicon-triangle-right"></i>审计局</a></li>
-        </ul>
-      </li>
-      <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>相城区</a></li>
-      <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>金闾区</a></li>
-      <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>平江区</a></li>
-      <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>沧浪区</a></li>
-      <li><a href="#"><i class="glyphicon glyphicon-triangle-bottom"></i>虎丘区</a></li>
-    </ul>
+	<!-- 组织机构树 start -->
+	<div class="zTreeDemoBackground left">
+		<ul id="officeTree" class="ztree"></ul>
+	</div>
+	<!-- 组织机构树 end -->
   </div>
   <div class="col2">
-    <h3 class="h3tit">吴中区经信局：业务1</h3>
+    <h3 class="h3tit" id="officeId"></h3>
     <table class="table table-hover ntable mt20">
       <thead>
         <tr>
