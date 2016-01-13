@@ -53,7 +53,7 @@ public class SubjectContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/subject/action", method = RequestMethod.GET)
 	public ModelAndView action(@RequestParam("type") String type,@RequestParam(value="subjectId",required=false) Integer subjectId){
-		ModelAndView mav = new ModelAndView("admin/subject/subjectCreate");
+		ModelAndView mav = new ModelAndView("admin/subject/subjectAction");
 		if(null!=type&&!"".equals(type)&&type.equals("update")){
 			if(subjectId!=null){
 				SubjectInfo si=subjectService.get(subjectId);
