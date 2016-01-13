@@ -79,6 +79,25 @@
     ${page}
   </select>
   
+  <select id="findListCountByRscId" parameterType="Map" resultType="int">
+    SELECT 
+    count(b.id)
+    FROM business b,business_resource s
+    WHERE b.id=s.business_id
+    AND s.resource_id=#{resourceId}
+  </select>
+  
+  <select id="findListByRscId" parameterType="Map" resultType="Business">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM business b,business_resource s
+    WHERE b.id=s.business_id
+    AND s.resource_id=#{resourceId}
+    ${page}
+  </select>
+  
   <!-- 根据id删除 -->
   <delete id="delete" parameterType="Business" >
     DELETE FROM 

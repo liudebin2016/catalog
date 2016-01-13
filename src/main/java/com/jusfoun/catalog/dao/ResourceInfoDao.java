@@ -29,16 +29,30 @@ public interface ResourceInfoDao extends CrudDao<ResourceInfo>{
 	int findListCount(ResourceInfo rsc);
 	
 	/**
-	 * 根据主题Id获取业务数量
+	 * 根据主题Id获取资源数量
 	 * @param sqlMap
 	 * @return
 	 */
 	int findListCountBySubId(Map<String, Object> sqlMap);
 	
 	/**
-	 * 根据主题Id获取业务
+	 * 根据主题Id获取资源
 	 * @param sqlMap
 	 * @return
 	 */
 	List<ResourceInfo> findListBySubId(Map<String, Object> sqlMap);
+	
+	/**
+	 * 根据业务Id获取资源数量
+	 * @param sqlMap
+	 * @return
+	 */
+	int findListCountByBizId(Map<String, Object> sqlMap);
+
+	/**
+	 * 根据业务Id获取资源
+	 * @param sqlMap
+	 * @return
+	 */
+	List<ResourceInfo> findListByBizId(Map<String, Object> sqlMap);
 }

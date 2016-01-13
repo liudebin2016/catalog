@@ -56,6 +56,7 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   
+  <!-- 根据主题id获取资源数量 -->
   <select id="findListCountBySubId" parameterType="Map" resultType="int">
     SELECT 
     count(r.id)
@@ -63,7 +64,7 @@
     WHERE r.id=s.resource_id
     AND s.subject_id=#{subjectId}
   </select>
-  
+  <!-- 根据主题Id获取资源列表 -->
   <select id="findListBySubId" parameterType="Map" resultType="ResourceInfo">
     SELECT 
     <include refid="Base_Column_List" />
@@ -72,6 +73,26 @@
     FROM resource_info r,subject_resource s
     WHERE r.id=s.resource_id
     AND s.subject_id=#{subjectId}
+    ${page}
+  </select>
+  
+  <!-- 根据业务Id获取资源 -->
+  <select id="findListCountByBizId" parameterType="Map" resultType="int">
+    SELECT 
+    count(r.id)
+    FROM resource_info r,business_resource s
+    WHERE r.id=s.resource_id
+    AND s.business_id=#{businessId}
+  </select>
+  <!-- 根据业务Id获取资源列表 -->
+  <select id="findListByBizId" parameterType="Map" resultType="ResourceInfo">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM resource_info r,business_resource s
+    WHERE r.id=s.resource_id
+    AND s.business_id=#{businessId}
     ${page}
   </select>
   

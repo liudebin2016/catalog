@@ -2,12 +2,14 @@ package com.jusfoun.catalog.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.SubjectInfoDao;
+import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.entity.SubjectInfo;
 import com.jusfoun.catalog.vo.CatalogTree;
 
@@ -66,5 +68,21 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 			return true;
 		}
 		return false;
+	}
+
+	public int findListCountByBizId(Map<String, Object> sqlMap) {
+		return dao.findListCountByBizId(sqlMap);
+	}
+
+	public List<ResourceInfo> findListByBizId(Map<String, Object> sqlMap) {
+		return dao.findListByBizId(sqlMap);
+	}
+
+	public int findListCountByRscId(Map<String, Object> sqlMap) {
+		return dao.findListCountByRscId(sqlMap);
+	}
+
+	public List<ResourceInfo> findListByRscId(Map<String, Object> sqlMap) {
+		return dao.findListByRscId(sqlMap);
 	}
 }

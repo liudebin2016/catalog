@@ -1,7 +1,9 @@
 package com.jusfoun.catalog.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.entity.SubjectInfo;
 import com.jusfoun.catalog.service.SubjectService;
 import com.jusfoun.catalog.utils.UserUtils;
@@ -162,13 +165,72 @@ public class SubjectContoller extends BaseController {
 	 * @throws JsonProcessingException
 	 */
 	@ResponseBody
-	@RequestMapping(value="${adminPath}/subject/getListByPid",method=RequestMethod.GET)
-	public String getSubjectListByPid(@RequestParam(value="pid",required=false)Integer pid) throws JsonProcessingException{
+	@RequestMapping(value="${adminPath}/subject/getListById",method=RequestMethod.GET)
+	public String getSubListByPid(@RequestParam(value="pid",required=false)Integer pid,@RequestParam(value="subjectId",required=false)Integer subjectId) throws JsonProcessingException{
 		SubjectInfo si=new SubjectInfo();
-		si.setParentId(pid);		
+		if(null!=pid){
+			si.setParentId(pid);		
+		}
+		if(null!=subjectId){
+			si.setId(subjectId);
+		}
 		List<SubjectInfo> siList=subjectService.findList(si);
 		String json = JsonMapper.toJsonString(siList);
 		return json;
+	}
+	
+	/**
+	 * 根据业务Id查询主题
+	 * @param pid
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@ResponseBody
+	@RequestMapping(value="${adminPath}/subject/getSubListByBizId",method=RequestMethod.GET)
+	public String getSubListByBizId(int page,int rows,@RequestParam(value="businessId",required=false)Integer businessId) throws JsonProcessingException{
+		StringBuffer sb=new StringBuffer();
+		if(null!=businessId){
+			//把总记录和当前记录写到前台
+			Map<String,Object> sqlMap=new HashMap<String,Object>();
+			//求得开始记录与结束记录
+			int start = (page-1)*rows;
+			int end = page * rows;
+			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("businessId", Integer.valueOf(businessId));
+			int total = subjectService.findListCountByBizId(sqlMap);
+			List<ResourceInfo> bList = subjectService.findListByBizId(sqlMap);
+			String json = JsonMapper.toJsonString(bList);
+			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+			return sb.toString();
+		}
+		return "{\"total\":0,\"rows\":[]}";
+	}
+	
+	/**
+	 * 根据业务Id查询主题
+	 * @param pid
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	@ResponseBody
+	@RequestMapping(value="${adminPath}/subject/getSubListByRscId",method=RequestMethod.GET)
+	public String getSubListByRscId(int page,int rows,@RequestParam(value="resourceId",required=false)Integer resourceId) throws JsonProcessingException{
+		StringBuffer sb=new StringBuffer();
+		if(null!=resourceId){
+			//把总记录和当前记录写到前台
+			Map<String,Object> sqlMap=new HashMap<String,Object>();
+			//求得开始记录与结束记录
+			int start = (page-1)*rows;
+			int end = page * rows;
+			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("resourceId", resourceId);
+			int total = subjectService.findListCountByRscId(sqlMap);
+			List<ResourceInfo> bList = subjectService.findListByRscId(sqlMap);
+			String json = JsonMapper.toJsonString(bList);
+			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+			return sb.toString();
+		}
+		return "{\"total\":0,\"rows\":[]}";
 	}
 	
 }

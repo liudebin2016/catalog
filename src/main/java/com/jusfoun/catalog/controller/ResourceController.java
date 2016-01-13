@@ -159,12 +159,16 @@ public class ResourceController extends BaseController {
 	public  String rscList(int page,int rows,HttpServletRequest request) throws IOException{
 		String name=WebUtils.getCleanParam(request,"name");
 		String status=WebUtils.getCleanParam(request,"status");
+		String resourceId=WebUtils.getCleanParam(request,"resourceId");
 		ResourceInfo rsc=new ResourceInfo();
 		if(null!=name||null!=status){
 			if(null!=name){
 				rsc.setName("%"+name+"%");
 			}
 			rsc.setStatus(status);
+		}
+		if(null!=resourceId){
+			rsc.setId(Integer.valueOf(resourceId));
 		}
 		//求得开始记录与结束记录
 		int start = (page-1)*rows;
@@ -198,6 +202,28 @@ public class ResourceController extends BaseController {
 			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
 			return sb.toString();
 		}
-		return "{\"total\":,\"rows\":}";
+		return "{\"total\":0,\"rows\":[]}";
+	}
+	
+	@ResponseBody
+	@RequestMapping("${adminPath}/resource/getListByBizId")
+	public  String getListByBizId(int page,int rows,HttpServletRequest request) throws IOException{
+		String businessId=WebUtils.getCleanParam(request,"businessId");
+		StringBuffer sb=new StringBuffer();
+		if(null!=businessId){
+			//把总记录和当前记录写到前台
+			Map<String,Object> sqlMap=new HashMap<String,Object>();
+			//求得开始记录与结束记录
+			int start = (page-1)*rows;
+			int end = page * rows;
+			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("businessId", Integer.valueOf(businessId));
+			int total = resourceService.findListCountByBizId(sqlMap);
+			List<ResourceInfo> bList = resourceService.findListByBizId(sqlMap);
+			String json = JsonMapper.toJsonString(bList);
+			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+			return sb.toString();
+		}
+		return "{\"total\":0,\"rows\":[]}";
 	}
 }

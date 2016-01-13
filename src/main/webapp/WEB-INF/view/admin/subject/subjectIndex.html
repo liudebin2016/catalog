@@ -1,3 +1,21 @@
+
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+<style type="text/css">
+
+</style>
+<%};%>
+
+<%
+var jsPart = {
+%>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 	var jq1_4 = $.noConflict(true);
@@ -39,28 +57,136 @@
 			dataType : 'json',
 			success : function(obj) {
 				$('#subjectId').html(treeNode.name);
+				subData(treeNode.id);
+				bizData(treeNode.id);
+				rscData(treeNode.id);
 			}
 		});
 		return true;
 	};
 </script>
-<%
-var cssPart = {
-%>
-<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resources/assets/css/main.css">
-<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
-<style type="text/css">
-
-</style>
-<%};%>
-<%
-var jsPart = {
-%>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 
+	//加载主题数据
+	function subData(subjectId){
+		$('#sub').datagrid({
+		    url:'/admin/subject/getListById.do', 
+		    fitColumns:true,
+		    queryParams: {
+				subjectId:subjectId,
+				page:1,
+				rows:1
+			},
+			pagination:false,
+			height:50,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'主题名称',width:300},
+		        {field:'descr',title:'主题描述',width:200},		        
+		        {field:'operator',title:'操作',width:120,align:"center",
+		        	formatter:function(value,row,index){
+	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    return s;
+		            }
+		        }
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
+		}); 
+	}
+	
+	//加载业务数据
+	function bizData(subjectId){
+		$('#bizLink').datagrid({
+		    url:'/admin/business/findBySubId.do', 
+		    fitColumns:true,
+		    queryParams: {
+		    	subjectId:subjectId
+			},
+			pagination:true,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'业务事项编码',width:80},
+		        {field:'type',title:'业务事项分类',width:100},
+		        {field:'basis',title:'办理依据',width:120},
+		        {field:'chargeOfficeId',title:'业务所属部门',width:110},
+		        {field:'shareLevel',title:'共享级别',width:90},
+		        {field:'shareRegion',title:'共享范围',width:100},
+		        {field:'operator',title:'操作',width:120,align:"center",
+		        	formatter:function(value,row,index){
+	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    return s;
+		            }
+		        }
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 7 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
+		}); 
+	}
+	
+	//加载资源数据
+	function rscData(subjectId){
+		$('#rscLink').datagrid({
+		    url:'/admin/resource/findBySubId.do',
+		    fitColumns:true,
+		    queryParams: {
+		    	subjectId:subjectId
+			},
+		    method:"get",
+		    pagination:true,
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'name',title:'资源名称',width:80},
+		        {field:'type',title:'资源编码',width:100},
+		        {field:'basis',title:'一级子项名称',width:120},
+		        {field:'chargeOfficeId',title:'业务所属部门',width:110},
+		        {field:'shareLevel',title:'资源共享范围',width:90},
+		        {field:'shareRegion',title:'共享方式',width:100},
+		        {field:'shareRegion',title:'安全级别',width:100},
+		        {field:'operator',title:'操作',width:120,align:"center",
+		        	formatter:function(value,row,index){
+	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    return s;
+		            }
+		        }
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
+		}); 
+	}
+	
+	//页面初始化加载数据
+	$(document).ready(function(){
+		subData(0);
+		bizData(0);
+		rscData(0);
+	});
 </script>
 <%};%>
+
 <%
 var htmlPart = {
 %>
@@ -79,196 +205,14 @@ var htmlPart = {
   </div>
   <div class="col2">
     <h3 class="h3tit" id="subjectId"></h3>
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr>
-          <th>主题描述</th>
-          <th width="200">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td></td>
-          <td><a href="#">查看</a><a href="#">信息授权</a><a href="">使用申请</a></td>
-        </tr>
-      </tbody>
-    </table>
+    <table id="sub"></table>
+    
     <h3 class="h3tit mt20">关联业务</h3>
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>业务名称</th>
-          <th>业务事项编码</th>
-          <th>业务事项分类</th>
-          <th>办理依据</th>
-          <th>业务所属部门</th>
-          <th>共享级别</th>
-          <th>共享范围</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>7</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>8</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>9</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-        <tr>
-          <td>10</td>
-          <td>APPlist diglb</td>
-          <td>noioei09</td>
-          <td>name file</td>
-          <td>业务需求</td>
-          <td>市场部</td>
-          <td>高级</td>
-          <td>互联网</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="page-box">
-      <ul class="pagination">
-        <li><a class="arrows-left" href="javascript:;" ></a></li>
-        <li class="active"><a>1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a class="arrows-right" href="javascript:;"></a></li>
-      </ul>
-    </div>
+    <table id="bizLink"></table>
+    
     <h3 class="h3tit mt20">关联资源</h3>
-    <table class="table table-hover ntable mt20">
-      <thead>
-        <tr>
-          <th>序号</th>
-          <th>资源名称</th>
-          <th>资源编码</th>
-          <th>一级子项名称</th>
-          <th>业务所属部门</th>
-          <th>资源共享范围</th>
-          <th>共享方式</th>
-          <th>安全级别</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>APPlist diglb</td>
-          <td>Nioe0</td>
-          <td>name file</td>
-          <td>市场部</td>
-          <td>互联网</td>
-          <td>数据传输</td>
-          <td>高级</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="page-box">
-      <ul class="pagination">
-        <li><a class="arrows-left" href="javascript:;" ></a></li>
-        <li class="active"><a>1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">6</a></li>
-        <li><a href="#">7</a></li>
-        <li><a href="#">8</a></li>
-        <li><a href="#">9</a></li>
-        <li><a href="#">10</a></li>
-        <li><a class="arrows-right" href="javascript:;"></a></li>
-      </ul>
-    </div>
+    <table id="rscLink"></table>
+   
   </div>
 </div>
 <!-- end:content -->

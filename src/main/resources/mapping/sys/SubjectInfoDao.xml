@@ -73,6 +73,48 @@
 	</trim>	
   </select>
   
+  <!-- 根据业务id获取主题数量 -->
+  <select id="findListCountByBizId" parameterType="Map" resultType="int">
+    SELECT 
+    count(r.id)
+    FROM subject_info r,subject_business s
+    WHERE r.id=s.subject_id
+    AND s.business_id=#{businessId}
+  </select>
+  
+  <!-- 根据业务Id获取主题列表 -->
+  <select id="findListByBizId" parameterType="Map" resultType="SubjectInfo">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM subject_info r,subject_business s
+    WHERE r.id=s.subject_id
+    AND s.business_id=#{businessId}
+    ${page}
+  </select>
+  
+  <!-- 根据资源id获取主题数量 -->
+  <select id="findListCountByRscId" parameterType="Map" resultType="int">
+    SELECT 
+    count(r.id)
+    FROM subject_info r,subject_resource s
+    WHERE r.id=s.subject_id
+    AND s.resource_id=#{resourceId}
+  </select>
+  
+  <!-- 根据资源Id获取主题列表 -->
+  <select id="findListByRscId" parameterType="Map" resultType="SubjectInfo">
+    SELECT 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    FROM subject_info r,subject_resource s
+    WHERE r.id=s.subject_id
+    AND s.resource_id=#{resourceId}
+    ${page}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from subject_info
     where id = #{id,jdbcType=INTEGER}

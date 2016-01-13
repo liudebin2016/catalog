@@ -42,4 +42,18 @@ public interface BusinessDao extends CrudDao<Business> {
 	 */
 	List<Business> findListBySubId(Map<String, Object> sqlMap);
 
+	/**
+	 * 根据资源Id获取业务数量
+	 * @param sqlMap
+	 * @return
+	 */
+	int findListCountByRscId(Map<String, Object> sqlMap);
+
+	/**
+	 * 根据资源Id获取业务
+	 * @param sqlMap
+	 * @return
+	 */
+	List<Business> findListByRscId(Map<String, Object> sqlMap);
+
 }

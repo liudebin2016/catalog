@@ -52,4 +52,12 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 	public List<Business> findListBySubId(Map<String, Object> sqlMap){
 		return dao.findListBySubId(sqlMap);
 	}
+
+	public int findListCountByRscId(Map<String, Object> sqlMap) {
+		return dao.findListCountByRscId(sqlMap);
+	}
+
+	public List<Business> findListByRscId(Map<String, Object> sqlMap) {
+		return dao.findListByRscId(sqlMap);
+	}
 }

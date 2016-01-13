@@ -61,5 +61,13 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 	public List<ResourceInfo> findListBySubId(Map<String, Object> sqlMap){
 		return dao.findListBySubId(sqlMap);
 	}
+
+	public int findListCountByBizId(Map<String, Object> sqlMap) {
+		return dao.findListCountByBizId(sqlMap);
+	}
+
+	public List<ResourceInfo> findListByBizId(Map<String, Object> sqlMap) {
+		return dao.findListByBizId(sqlMap);
+	}
 	
 }

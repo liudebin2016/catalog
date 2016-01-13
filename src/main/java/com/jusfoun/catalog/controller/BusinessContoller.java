@@ -165,12 +165,16 @@ public class BusinessContoller extends BaseController {
 	public  String bizList(int page,int rows,HttpServletRequest request) throws IOException{
 		String name=WebUtils.getCleanParam(request,"name");
 		String status=WebUtils.getCleanParam(request,"status");
+		String id=WebUtils.getCleanParam(request,"id");
 		Business rsc=new Business();
 		if(null!=name||null!=status){
 			if(null!=name){
 				rsc.setName("%"+name+"%");
 			}
 			rsc.setStatus(status);
+		}
+		if(null!=id){
+			rsc.setId(Integer.valueOf(id));
 		}
 		//求得开始记录与结束记录
 		int start = (page-1)*rows;
@@ -204,6 +208,28 @@ public class BusinessContoller extends BaseController {
 			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
 			return sb.toString();
 		}
-		return "{\"total\":,\"rows\":}";
+		return "{\"total\":0,\"rows\":[]}";
+	}
+	
+	@ResponseBody
+	@RequestMapping("${adminPath}/business/findByRscId")
+	public  String findListByRscId(int page,int rows,HttpServletRequest request) throws IOException{
+		String resourceId=WebUtils.getCleanParam(request,"resourceId");
+		StringBuffer sb=new StringBuffer();
+		if(null!=resourceId){
+			//把总记录和当前记录写到前台
+			Map<String,Object> sqlMap=new HashMap<String,Object>();
+			//求得开始记录与结束记录
+			int start = (page-1)*rows;
+			int end = page * rows;
+			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("resourceId", Integer.valueOf(resourceId));
+			int total = businessService.findListCountByRscId(sqlMap);
+			List<Business> bList = businessService.findListByRscId(sqlMap);
+			String json = JsonMapper.toJsonString(bList);
+			sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+			return sb.toString();
+		}
+		return "{\"total\":0,\"rows\":[]}";
 	}
 }
