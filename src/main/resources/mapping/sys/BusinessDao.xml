@@ -3,17 +3,17 @@
 <mapper namespace="com.jusfoun.catalog.dao.BusinessDao" >
 
   <sql id="Base_Column_List" >
-    id, name, name_ref, first_name, second_name, third_name, code, type, basis, flow, 
-    summary, time_limit, charge_basis, charge_office_id, impl_office_id, workload, relate_office, 
-    need_data, produce_data, is_use, share_with,
+    b.id, b.name, b.name_ref, b.first_name, b.second_name, b.third_name, b.code, b.type, b.basis, b.flow, 
+    b.summary, b.time_limit, b.charge_basis, b.charge_office_id, b.impl_office_id, b.workload, b.relate_office, 
+    b.need_data, b.produce_data, b.is_use, b.share_with,
 <!--      create_by AS "createBy.id",  -->
-     create_date, 
+     b.create_date, 
 <!--      update_by AS "updateBy.id", -->
-      update_date, 
-    del_flag,status
+      b.update_date, 
+    b.del_flag,b.status
   </sql>
   <sql id="Blob_Column_List" >
-    remarks
+    b.remarks
   </sql>
   
   <!-- 根据id查询 -->
@@ -22,7 +22,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM business
+    FROM business b
     WHERE id = #{id,jdbcType=INTEGER}
   </select>
   
@@ -31,13 +31,16 @@
   	SELECT 
   		count(id)	
   	FROM 
-  		business 
+  		business b
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
 	    </if>  
 	    <if test="status!= null ">  
 	        AND status=#{status}  
+	    </if>  
+	    <if test="id!= null ">  
+	        AND id=#{id}  
 	    </if>  
 	</trim>	
   </select>
@@ -48,7 +51,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM business
+    FROM business b
     <trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
@@ -56,6 +59,9 @@
 	    <if test="status!= null ">  
 	        AND status=#{status}  
 	    </if>  
+	    <if test="id!= null ">  
+	        AND id=#{id}  
+	    </if> 
 	</trim>
     ${sqlMap.page}    
   </select>
@@ -63,9 +69,9 @@
   <select id="findListCountBySubId" parameterType="Map" resultType="int">
     SELECT 
     count(b.id)
-    FROM business b,subject_business s
-    WHERE b.id=s.business_id
-    AND s.subject_id=#{subjectId}
+    FROM business b,subject_info s
+    WHERE b.subject_id=s.id
+    AND b.subject_id=#{subjectId}
   </select>
   
   <select id="findListBySubId" parameterType="Map" resultType="Business">
@@ -73,9 +79,9 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM business b,subject_business s
-    WHERE b.id=s.business_id
-    AND s.subject_id=#{subjectId}
+    FROM business b,subject_info s
+    WHERE b.subject_id=s.id
+    AND b.subject_id=#{subjectId}
     ${page}
   </select>
   

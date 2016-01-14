@@ -3,12 +3,12 @@
 <mapper namespace="com.jusfoun.catalog.dao.ResourceInfoDao" >
 
   <sql id="Base_Column_List" >
-    id, name, of_business, type, code, response_party, response_attr, response_cu, collect_way, 
-    security_level, info_field, is_db_support, remarks, share_region, share_mode, create_date, 
-    create_by , update_date, update_by , update_cycle, del_flag,status
+    r.id, r.name, r.of_business, r.type, r.code, r.response_party, r.response_attr, r.response_cu, r.collect_way, 
+    r.security_level, r.info_field, r.is_db_support, r.remarks, r.share_region, r.share_mode, r.create_date, 
+    r.create_by , r.update_date, r.update_by , r.update_cycle, r.del_flag,r.status
   </sql>
   <sql id="Blob_Column_List" >
-    descr
+    r.descr
   </sql>
   
   <!-- 查询列表中元素数量 -->
@@ -16,13 +16,16 @@
   	SELECT 
   		count(id)	
   	FROM 
-  		resource_info 
+  		resource_info r
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
 	    </if>  
 	    <if test="status!= null ">  
 	        AND status=#{status}  
+	    </if>
+	    <if test="id!= null ">  
+	        AND id=#{id}  
 	    </if>  
 	</trim>	
   </select>
@@ -34,7 +37,7 @@
 	    ,
 	    <include refid="Blob_Column_List" />	
   	FROM 
-  		resource_info 
+  		resource_info r
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
@@ -42,6 +45,9 @@
 	    <if test="status!= null ">  
 	        AND status=#{status}  
 	    </if>  
+	    <if test="id!= null ">  
+	        AND id=#{id}  
+	    </if> 
 	</trim>	
   		${sqlMap.page}
   </select>
@@ -52,7 +58,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from resource_info
+    from resource_info r
     where id = #{id,jdbcType=INTEGER}
   </select>
   
@@ -60,9 +66,9 @@
   <select id="findListCountBySubId" parameterType="Map" resultType="int">
     SELECT 
     count(r.id)
-    FROM resource_info r,subject_resource s
-    WHERE r.id=s.resource_id
-    AND s.subject_id=#{subjectId}
+    FROM resource_info r,subject_info s
+    WHERE r.subject_id=s.id
+    AND r.subject_id=#{subjectId}
   </select>
   <!-- 根据主题Id获取资源列表 -->
   <select id="findListBySubId" parameterType="Map" resultType="ResourceInfo">
@@ -70,9 +76,9 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM resource_info r,subject_resource s
-    WHERE r.id=s.resource_id
-    AND s.subject_id=#{subjectId}
+    FROM resource_info r,subject_info s
+    WHERE r.subject_id=s.id
+    AND r.subject_id=#{subjectId}
     ${page}
   </select>
   

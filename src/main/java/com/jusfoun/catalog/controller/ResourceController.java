@@ -84,15 +84,21 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "${adminPath}/resource/action", method = RequestMethod.GET)
     public ModelAndView action(@RequestParam("type")String type,@RequestParam(value="id",required=false) Integer id) {
     	ModelAndView mav=new ModelAndView("admin/resource/action");
-    	if(null!=type&&!"".equals(type)&&type.equals("update")){
+    	if(null!=type&&!"".equals(type)&&(type.equals("update")||type.equals("view"))){
     		if(null!=id){
     			ResourceInfo rscInfo=resourceService.get(id);
     			if(null!=rscInfo){
     				mav.addObject("rsc", rscInfo);
+    				if(type.equals("view")){
+						mav.addObject("actionType", "view");
+					}else{
+						mav.addObject("actionType", "update");
+					}
     			}
     		}
     	}else{
     		mav.addObject("rsc", null);
+    		mav.addObject("actionType", "create");
     	}
     	return mav;
     }

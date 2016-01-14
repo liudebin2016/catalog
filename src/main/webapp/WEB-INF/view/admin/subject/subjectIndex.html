@@ -1,4 +1,3 @@
-
 <%
 var cssPart = {
 %>
@@ -89,7 +88,7 @@ var jsPart = {
 		        {field:'descr',title:'主题描述',width:200},		        
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/subject/action.do?type=view&subjectId='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
@@ -125,7 +124,7 @@ var jsPart = {
 		        {field:'shareRegion',title:'共享范围',width:100},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/business/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
@@ -162,7 +161,7 @@ var jsPart = {
 		        {field:'shareRegion',title:'安全级别',width:100},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/resource/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }

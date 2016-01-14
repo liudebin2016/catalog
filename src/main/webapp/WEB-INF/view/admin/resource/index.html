@@ -87,7 +87,7 @@
 		        {field:'shareRegion',title:'安全级别',width:100},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/resource/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
@@ -112,7 +112,7 @@
 		    	resourceId:resourceId
 			},
 			pagination:true,
-		    rownumbers:true,
+// 		    rownumbers:true,
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
@@ -124,7 +124,7 @@
 		        {field:'shareRegion',title:'共享范围',width:100},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/business/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
@@ -146,10 +146,12 @@
 		    url:'/admin/subject/getSubListByRscId.do',
 		    fitColumns:true,
 		    queryParams: {
-		    	resourceId:resourceId
+		    	resourceId:resourceId,
+		    	page:1,
+		    	rows:1
 			},
-			pagination:true,
-		    rownumbers:true,
+// 			pagination:true,
+// 		    rownumbers:true,
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
@@ -157,7 +159,7 @@
 		        {field:'descr',title:'主题描述',width:200},		        
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/subject/action.do?type=view&subjectId='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }

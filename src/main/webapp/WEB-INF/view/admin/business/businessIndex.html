@@ -46,7 +46,7 @@ var jsPart = {
 		}
 	};
 	function onClick(event, treeId, treeNode) {
-		$.ajax({
+		jq1_4.ajax({
 			type : 'post',
 			async : false,
 			url : '../office/office',
@@ -55,7 +55,7 @@ var jsPart = {
 			},
 			dataType : 'json',
 			success : function(obj) {
-				$('#officeId').html(treeNode.name);
+				jq1_4('#officeId').html(treeNode.name);
 				bizData(treeNode.id);
 				rscData(treeNode.id);
 				subData(treeNode.id);
@@ -69,30 +69,37 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
+// var eu = $.noConflict(true);
 	//业务数据加载
 	function bizData(businessId){
 		$('#biz').datagrid({
 		    url:'/admin/business/bizList.do', 
 		    queryParams: {
-		    	businessId:businessId
+		    	id:businessId,
+		    	page:1,
+		    	rows:1
 			},
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
-		        {field:'name',title:'业务事项编码',width:80},
-		        {field:'type',title:'业务事项分类',width:100},
-		        {field:'basis',title:'办理依据',width:120},
-		        {field:'chargeOfficeId',title:'业务所属部门',width:110},
-		        {field:'shareLevel',title:'共享级别',width:90},
-		        {field:'shareRegion',title:'共享范围',width:100},
-		        {field:'operator',title:'操作',width:120,align:"center",
+		        {field:'name',title:'业务事项编码',width:110},
+		        {field:'type',title:'业务事项分类',width:120},
+		        {field:'basis',title:'办理依据',width:140},
+		        {field:'chargeOfficeId',title:'业务所属部门',width:130},
+		        {field:'shareRegion',title:'共享范围',width:130},
+		        {field:'operator',title:'操作',width:130,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/business/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 6 })
+	            }
+		    }
 		}); 
 	}
 	
@@ -100,12 +107,13 @@ var jsPart = {
 	function rscData(businessId){
 		$('#rscLink').datagrid({
 		    url:'/admin/resource/getListByBizId.do', 
+		    fitColumns:true,
 		    queryParams: {
 		    	businessId:businessId
 			},
 		    method:"get",
 		    pagination:true,
-		    rownumbers:true,
+// 		    rownumbers:true,
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
 		        {field:'name',title:'资源名称',width:80},
@@ -117,11 +125,19 @@ var jsPart = {
 		        {field:'shareRegion',title:'安全级别',width:100},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/resource/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
 		}); 
 	}
 	
@@ -129,8 +145,11 @@ var jsPart = {
 	function subData(businessId){
 		$('#subLink').datagrid({
 		    url:'/admin/subject/getSubListByBizId.do', 
+		    fitColumns:true,
 		    queryParams: {
-				businessId:businessId
+				businessId:businessId,
+				page:1,
+				rows:1
 			},
 		    method:"get",
 		    columns:[[    
@@ -139,11 +158,19 @@ var jsPart = {
 		        {field:'descr',title:'主题描述',width:200},		        
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="/admin/business/action.do?type=update&subjectId='+row.id+'">查看</a> ';
+	                    var s = '<a href="/admin/subject/action.do?type=view&subjectId='+row.id+'">查看</a> ';
 	                    return s;
 		            }
 		        }
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
 		}); 
 	}
 	
