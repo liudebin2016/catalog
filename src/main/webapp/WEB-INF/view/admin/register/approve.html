@@ -1,0 +1,152 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<style type="text/css">
+
+</style>
+<%};%>
+<%
+var jsPart = {
+%>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	function resetQuery(){
+		$("#applyName").val("");
+		$("#applyType").val("");
+		$("#status").val("");
+	}
+	function apporve(id,type,flag){
+		$.post('approved',{
+			'applyId' : id,
+			'applyType' : type,
+			'flag' : flag
+		},function(obj){
+			if(obj.succ == 1){
+				$('#_alert').html('<div class="alert alert-success">'
+						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+						+obj.msg
+						+'</div>').show();
+				queryList();
+			}
+		},'json');
+	}
+	//查询
+	function queryList(){
+		var applyName=$.trim($("#applyName").val());
+		var applyType=$.trim($("#applyType").val());
+		var status=$.trim($("#status").val());
+		$('#dg').datagrid({
+		    url:'/admin/register/approveList', 
+		    queryParams: {
+		    	applyName : applyName,
+		    	applyType : applyType,
+		    	status : status
+			},
+		    pagination:true,
+		    method:"post",
+		    rownumbers:true,
+		    columns:[[
+				{field:'id',title:'id',width:300,hidden:true}, 
+		        {field:'applyName',title:'名称',width:300},
+		        {field:'applyType',title:'信息类型',width:200,align:"center",
+		        	formatter:function(value,row,index){
+		        		var tmp = "--";
+		        		switch(value){
+		        		case 1:
+		        			tmp = '机构职责';
+		        			break;
+		        		case 2:
+		        			tmp = '部门岗位';
+		        			break;
+		        		case 3:
+		        			tmp = '业务信息';
+		        			break;
+		        		case 4:
+		        			tmp = '资源信息';
+		        			break;
+		        		case 5:
+		        			tmp = '主题信息';
+		        			break;
+		        		}
+		        		return tmp;
+		        	}
+		        },
+		        {field:'applyFlag',title:'申请状态',width:150,align:"center",
+		        		formatter:function(value,row,index){
+		        				var tmp = '--';
+		        				switch(value){
+				        		case '1':
+				        			tmp = '注册';
+				        			break;
+				        		case '2':
+				        			tmp = '注销';
+				        			break;
+				        		}
+				        		return tmp;
+		        		}
+		        },
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+	                    var s = '<a href="javascript:void(0);" onclick="apporve('+row.id+','+row.applyType+',0);">通过</a> ';
+	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	                    var c = '<a href="javascript:void(0);" onclick="apporve('+row.id+','+row.applyType+',1);">不通过</a>';
+	                    return s+b+c;
+		            }
+		        }
+		    ]]
+		}); 
+	}
+	$(document).ready(function(){
+		queryList();
+	});
+</script>
+<%};%>
+<%
+var htmlPart = {
+%>
+<!-- start:content -->
+ <div class="content">
+   <h3 class="h3tit mt30">待审批记录</h3>
+	<div class="form-list top-search">
+    	<ul class="li-fl">
+        	<li>
+            	<label>名称</label>
+                <input class="form-control inp " type="text" id="applyName" placeholder="">
+            </li>
+        	<li>
+            	<label>信息类型</label>
+                <select class="form-control sels wd148 mr20 " id="applyType">
+                  <option value="">请选择</option>
+                  <option value="1">机构职责</option>
+                  <option value="2">部门岗位</option>
+                  <option value="3">业务信息</option>
+                  <option value="4">资源信息</option>
+                  <option value="5">主题信息</option>
+                </select>
+            </li>
+            <li>
+            	<label>申请状态</label>
+                <select class="form-control sels wd148 mr50 " id="status">
+                  <option value="">请选择</option>
+                  <option value="1">注册</option>
+                  <option value="2">注销</option>
+                </select>
+            </li>
+        	<li>
+            	<button class="btns mlt30" type="button" onclick="queryList()">检索</button>
+                <input class="nobg mlt10" type="reset" value="清空" onclick="resetQuery()">                                       
+            </li>
+        </ul>
+    </div>
+    <div id="_alert" style="display: none;"></div>
+	<table id="dg" class="table table-hover ntable mt20"></table>   
+</div>
+<!-- end:content -->
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%>

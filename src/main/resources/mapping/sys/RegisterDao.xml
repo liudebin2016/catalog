@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jusfoun.catalog.dao.RegisterDao">
+
+    <sql id="registerColumns">
+        a.id,
+       	a.office_id as "office.id",
+       	a.apply_type,
+       	a.apply_id,
+       	a.apply_name,
+       	a.apply_flag,
+       	a.approve_flag,
+       	a.apply_by as "approveBy.id",
+       	a.apply_date,
+       	a.approve_by as "approveBy.id",
+       	a.approve_date,
+       	a.del_flag
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_office(
+            office_id,
+	       	apply_type,
+	       	apply_id,
+	       	apply_name,
+	       	apply_flag,
+	       	approve_flag,
+	       	apply_by,
+	       	apply_date,
+	       	approve_by,
+	       	approve_date
+        ) VALUES (
+	        #{officeId},
+	        #{officeName},
+			#{applyType},
+			#{applyId},
+			#{applyFlag},
+			#{approveFlag},
+			#{applyBy},
+			#{applyDate},
+			#{approveBy},
+			#{approveDate}
+        )
+    </insert>
+    
+      <!-- 查询列表数量 -->
+	<select id="findListCount" resultType="int">
+		select
+		count(id)
+		from
+		register
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="applyName != null and applyName != '' ">
+				apply_name like  CONCAT('%', #{applyName}, '%')
+			</if>
+			<if test="applyType != null ">
+				and apply_type = #{applyType}
+			</if>
+			<if test="applyFlag != null">
+				and apply_flag = #{applyFlag}
+			</if>
+			<if test="approveFlag != null">
+				and approve_flag = #{approveFlag}
+			</if>
+		</trim>
+  </select>
+  
+  <!-- 分页查询列表 -->
+  <select id="findList" parameterType="Register" resultType="Register">
+    select 
+    <include refid="registerColumns" />
+    from register a
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="applyName != null and applyName != '' ">
+				a.apply_name like CONCAT('%', #{applyName}, '%')
+			</if>
+			<if test="applyType != null ">
+				and a.apply_type = #{applyType}
+			</if>
+			<if test="applyFlag != null">
+				and a.apply_flag = #{applyFlag}
+			</if>
+			<if test="approveFlag != null">
+				and a.approve_flag = #{approveFlag}
+			</if>
+		</trim>
+    ${sqlMap.page}    
+  </select>
+  <update id="approve" parameterType="Register">
+  	update register
+ 	set
+	 	approve_flag = #{approveFlag},
+	 	approve_by = #{approveBy.id},
+	 	approve_date = #{approveDate}
+ 	where 
+ 		apply_id = #{applyId} 
+ 		and apply_type = #{applyType}
+  </update>
+</mapper>
