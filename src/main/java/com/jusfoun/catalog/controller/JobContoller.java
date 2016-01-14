@@ -15,17 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
-import com.jusfoun.catalog.common.entity.Page;
-import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
-import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.utils.UserUtils;
-import com.sun.javafx.collections.MappingChange.Map;
+import com.jusfoun.catalog.vo.JobAndOfficeView;
 
 /**
  * 部门岗位
@@ -54,8 +52,14 @@ public class JobContoller extends BaseController {
 		cMap.put("office", office);
 		cMap.put("office1", office1);
 		//当前只查询了job一张表，后期还要添加表
-		List jobList = jobService.findJobByCondition(cMap);
-		model.addAttribute("jobList", jobList);
+		try {
+			List jobList = jobService.findJobByCondition(cMap);
+			model.addAttribute("jobList", jobList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		model.addAttribute("cMap", cMap);
 		return "admin/job/jobInfo";
 	}
@@ -67,15 +71,7 @@ public class JobContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/job/maintenance", method = RequestMethod.GET)
-	public String getJobMaintenance(HttpServletRequest request, HttpServletResponse response,Model model){
-//		String sname = request.getParameter("sname");
-//		String status = request.getParameter("status");
-//		HashMap<String, String> cMap = new HashMap<String, String>();
-//		cMap.put("name", sname);
-//		cMap.put("office", status);
-//		List<Job>jobList = jobService.findJobList(cMap);
-//		model.addAttribute("jobList", jobList);
-//		model.addAttribute("cMap", cMap);
+	public String getJobMaintenance(HttpServletRequest request, HttpServletResponse response){
 		return "admin/job/jobMaintenance";
 	}
 	
@@ -163,7 +159,7 @@ public class JobContoller extends BaseController {
 	 * @throws IOException
 	 */
 	@ResponseBody
-	@RequestMapping("${adminPath}/resource/reloadList")
+	@RequestMapping("${adminPath}/job/reloadList")
 	public  String reloadList(int page,int rows,HttpServletRequest request) throws IOException{
 		String name=WebUtils.getCleanParam(request,"name");
 		String status=WebUtils.getCleanParam(request,"status");
@@ -180,7 +176,7 @@ public class JobContoller extends BaseController {
 		//把总记录和当前记录写到前台
 		int total = jobService.findListCount(job);
 		job.getSqlMap().put("page", "limit "+start+","+end);
-		List<Job>jobList = jobService.findJobList(job);
+		List<JobAndOfficeView>jobList = jobService.findJobList(job);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(jobList);
 		StringBuffer sb=new StringBuffer();
@@ -208,4 +204,53 @@ public class JobContoller extends BaseController {
 		
 		//return "redirect:"+adminPath+"/job/maintenance";
 	}
+	
+	/**
+	 * 资源列表,根据当前页和记录数获取列表根据officeid查询的
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/job/reloadListByOfficeId")
+	public  String reloadListByOfficeId(int page,int rows,HttpServletRequest request,@RequestParam("ids[]") List<Integer> ids) throws IOException{
+		String name=WebUtils.getCleanParam(request,"name");
+		String officeId=WebUtils.getCleanParam(request,"officeId");
+		String type=WebUtils.getCleanParam(request,"type");
+		JobAndOfficeView job=new JobAndOfficeView();
+		if(null!=name|| null != type){
+			if(null!=name){
+				job.setJobName("%"+name+"%");
+			}
+			job.setJobType(type);
+			
+		}
+		if(null!=officeId){
+			job.setOfficeId(Integer.parseInt(officeId));
+		}else{
+//			job.setOfficeId(1);
+		}
+		if(ids.size() !=0){
+			if(ids.get(0)!= -100){
+				job.setOfficeIds(ids);
+			}else{
+				job.setOfficeIds(new ArrayList<Integer>());
+			}
+		}
+		
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = jobService.findListCountByOfficeId(job);
+		job.getSqlMap().put("page", "limit "+start+","+end);
+		List<JobAndOfficeView>jobList = jobService.findJobListByOfficeId(job);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(jobList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
+	}
+	
 }

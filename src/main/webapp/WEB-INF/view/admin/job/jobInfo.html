@@ -2,7 +2,7 @@
 <script type="text/javascript">
 	var jq1_4 = $.noConflict(true);
 </script>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+
 <script type="text/javascript">
 	// ready func
 	jq1_4(document).ready(function(){
@@ -29,6 +29,32 @@
 		}
 	};
 	function onClick(event, treeId, treeNode) {
+		//alert(treeNode.getParentNode().id);
+//		alert(getFilePath(treeNode));
+//		var ss = getFilePath(treeNode);
+//		var s = ss.substring(0,ss.length-2);
+//		alert(s);
+//		function getFilePath(treeObj){
+//			if(treeObj==null)return "";
+//			var filename = treeObj.id;
+//			var pNode = treeObj.getParentNode();
+//			if(pNode!=null){
+///				filename = getFilePath(pNode) +","+ filename;
+//			}
+//			return filename;
+//		 }
+
+		function getChildren(ids,treeNode){
+			ids.push(treeNode.id);
+			 if (treeNode.isParent){
+					for(var obj in treeNode.children){
+						getChildren(ids,treeNode.children[obj]);
+					}
+			    }
+			 return ids;
+		}
+		var ids=[];
+		ids=getChildren(ids,treeNode);
 		$.ajax({
 			type : 'post',
 			async : false,
@@ -39,6 +65,7 @@
 			dataType : 'json',
 			success : function(obj) {
 				$('#officeId').html(treeNode.name);
+				getRscList(treeNode.id,ids);
 			}
 		});
 		return true;
@@ -50,6 +77,9 @@ var cssPart = {
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -58,8 +88,81 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript">
-
+//根据id删除资源
+	function delRscById(id){
+		$.get("/admin/job/delJobById.do", { id: id },
+		    function(data){location.reload();
+		    	if(data=="success"){
+		    		alert("删除成功！");
+		    		location.reload();
+		    	}
+		    }
+		);   
+	}
+	
+	function resetSrc(){
+		$("#jobName").val("");
+		$("#srcOffice").val("");
+		$("#srcType").val("");
+	}
+	
+	//查询
+	function getRscList(id,ids){
+		var srcOffice = "";
+		if(id == null || id == ""){
+			srcOffice = $.trim($("#srcOffice").val());
+		}else{
+			srcOffice = id;
+		}
+	
+		var jobName=$.trim($("#jobName").val());
+		var srcOffice=$.trim($("#srcOffice").val());
+		var srcType=$.trim($("#srcType").val());
+		$("#dg").datagrid({
+		    url:'/admin/job/reloadListByOfficeId.do', 
+		    fitColumns:true,
+		    queryParams: {
+				name: jobName,
+				officeId: srcOffice,
+				type:srcType,
+				ids:ids
+			},
+		    pagination:true,
+		    checkbox:true,
+		    method:"get",
+		    rownumbers:true,
+		    columns:[[    
+				{field:'ck',title:'全选',width:120,checkbox:true},  
+				{field:'id',title:'id',width:0,hidden:true}, 
+		        {field:'jobName',title:'岗位名称/职位',width:150,align:"center"},    
+		        {field:'jobDuty',title:'岗位职责',width:150,align:"center"},
+		        {field:'officeName',title:'所属单位',width:150,align:"center"},
+		        {field:'businessName',title:'相关业务',width:150,align:"center"},
+		        {field:'jobStatus',title:'当前状态',width:150,align:"center"}
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 5 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
+		}); 
+	}
+	
+	//$(document).ready(function(){
+	//	getRscList();
+	//});
+	window.onload=function(){
+	var ids = [-100];
+	getRscList("",ids);
+	}
 </script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <%};%>
 <%
 var htmlPart = {
@@ -79,29 +182,28 @@ var htmlPart = {
   </div>
   <div class="col2">
     <h3 class="h3tit" id="officeId"></h3>
-    	<form action="/admin/job/info">
 		    <div class="form-list top-search">
 		      <ul class="li-fl">
 		        <li>
 		          <label>岗位名称</label>
-		          <input class="form-control wd120" type="text" placeholder="" name="name" value="${cMap.name==''?'':cMap.name}">
+		          <input id="jobName" class="form-control wd120" type="text" placeholder="" name="jobName" value="">
 		        </li>
 		        <li>
 		          <label>所属单位</label>
-		          <input class="form-control wd120" type="text" placeholder="" name="office" value="${cMap.office==''?'':cMap.office}">
+		          <input id="srcOffice" class="form-control wd120" type="text" placeholder="" name="srcOffice" value="">
 		        </li>
 		        <li>
-		          <label>所属单位</label>
-		          <input class="form-control wd120" type="text" placeholder="" name="office1" value="${cMap.office1==''?'':cMap.office1}">
+		          <label>岗位属性</label>
+		          <input id="srcType" class="form-control wd120" type="text" placeholder="" name="type" value="">
 		        </li>
 		        <li>
-		          <button class="btns mlt30" type="submit">检索</button>
-		          <input class="nobg mlt10" name="清空" type="reset" value="清空">
+		          <button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
+		          <input class="nobg mlt10" name="清空" type="button" value="清空" onclick="resetSrc()">
 	        </li>
 	      </ul>
 	    </div>
-	    </form>
-    <table class="table table-hover ntable mt20">
+	    <table id="dg"> </table>
+    <!-- <table class="table table-hover ntable mt20">
       <thead>
         <tr>
           <th width="60">序号</th>
@@ -113,17 +215,7 @@ var htmlPart = {
         </tr>
       </thead>
       <tbody>
-      	<%for(entry in jobList){ %>
-	        <tr>
-	          <td>${entryLP.index}</td>
-	          <td>${entry.name}</td>
-	          <td>${entry.duty}</td>
-	          <td></td>
-	          <td>${entry.type}</td>
-	          <td></td>
-	        </tr>
-	     <%}%>
-        <!--
+       
         <tr>
           <td>2</td>
           <td>部门总经理</td>

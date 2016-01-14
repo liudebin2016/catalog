@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
+import com.jusfoun.catalog.vo.JobAndOfficeView;
 @Service
 @Transactional(readOnly = false)
 public class JobService extends CrudService<JobDao,Job> {
@@ -24,7 +25,7 @@ public class JobService extends CrudService<JobDao,Job> {
 		return dao.insertJobAndOffice(cMap);
 	}
 
-	public List<Job> findJobList(Job job){
+	public List<JobAndOfficeView> findJobList(Job job){
 		
 		return dao.findJobList(job);
 	}
@@ -59,5 +60,15 @@ public class JobService extends CrudService<JobDao,Job> {
 
 	public int deleteById(Job job) {
 		return dao.deleteById(job);
+	}
+
+	public int findListCountByOfficeId(JobAndOfficeView job) {
+		
+		return dao.findListCountByOfficeId(job);
+	}
+
+	public List<JobAndOfficeView> findJobListByOfficeId(JobAndOfficeView job) {
+		
+		return dao.findJobListByOfficeId(job);
 	}
 }

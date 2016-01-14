@@ -43,7 +43,7 @@ var jsPart = {
 		var srcStatus=$.trim($("#srcStatus").val());
 		
 		$('#dg').datagrid({
-		    url:'/admin/resource/reloadList.do', 
+		    url:'/admin/job/reloadList.do', 
 		    queryParams: {
 				name: srcName,
 				status: srcStatus
@@ -55,11 +55,11 @@ var jsPart = {
 		    columns:[[    
 				{field:'ck',title:'全选',width:120,checkbox:true},  
 				{field:'id',title:'id',width:0,hidden:true}, 
-		        {field:'name',title:'岗位名称/职位',width:150,align:"center"},    
-		        {field:'duty',title:'岗位职责',width:150,align:"center"},
-		        {field:'office',title:'所属单位',width:150,align:"center"},
-		        {field:'bussiness',title:'相关业务',width:150,align:"center"},
-		        {field:'status',title:'当前状态',width:150,align:"center"},
+		        {field:'jobName',title:'岗位名称/职位',width:150,align:"center"},    
+		        {field:'jobDuty',title:'岗位职责',width:150,align:"center"},
+		        {field:'officeName',title:'所属单位',width:150,align:"center"},
+		        {field:'businessName',title:'相关业务',width:150,align:"center"},
+		        {field:'jobStatus',title:'当前状态',width:150,align:"center"},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
 		                    var s = '<a href="/admin/job/edit?id='+row.id+'">编辑</a> ';
