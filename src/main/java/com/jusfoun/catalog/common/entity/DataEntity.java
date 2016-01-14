@@ -22,7 +22,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	protected Date createDate;	// 创建日期
 	protected User updateBy;	// 更新者
 	protected Date updateDate;	// 更新日期
-	protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
+	protected String delFlag; 	// 删除标记（0：启用状态；1：废止状态；2：删除(注销)状态；）
 	
 	public DataEntity() {
 		super();

@@ -37,11 +37,11 @@
   
 
   <sql id="Base_Column_List" >
-    id, name, parent_id, parent_name, descr, share_region, share_mode, status, create_date, 
-    create_by as "createBy.id", update_date, update_by as "updateBy.id", del_flag
+    r.id, r.name, r.parent_id, r.parent_name, r.descr, r.share_region, r.share_mode, r.status, r.create_date, 
+    r.create_by , r.update_date, r.update_by , r.del_flag
   </sql>
   <sql id="Blob_Column_List" >
-    remarks
+    r.remarks
   </sql>
   
   <!-- 根据条件进行查询  -->
@@ -50,7 +50,7 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM subject_info
+    FROM subject_info r
     <trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
@@ -77,9 +77,9 @@
   <select id="findListCountByBizId" parameterType="Map" resultType="int">
     SELECT 
     count(r.id)
-    FROM subject_info r,subject_business s
+    FROM subject_info r,business s
     WHERE r.id=s.subject_id
-    AND s.business_id=#{businessId}
+    AND s.id=#{businessId}
   </select>
   
   <!-- 根据业务Id获取主题列表 -->
@@ -88,9 +88,9 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM subject_info r,subject_business s
+    FROM subject_info r,business s
     WHERE r.id=s.subject_id
-    AND s.business_id=#{businessId}
+    AND s.id=#{businessId}
     ${page}
   </select>
   
@@ -98,9 +98,9 @@
   <select id="findListCountByRscId" parameterType="Map" resultType="int">
     SELECT 
     count(r.id)
-    FROM subject_info r,subject_resource s
+    FROM subject_info r,resource_info s
     WHERE r.id=s.subject_id
-    AND s.resource_id=#{resourceId}
+    AND s.id=#{resourceId}
   </select>
   
   <!-- 根据资源Id获取主题列表 -->
@@ -109,9 +109,9 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    FROM subject_info r,subject_resource s
+    FROM subject_info r,resource_info s
     WHERE r.id=s.subject_id
-    AND s.resource_id=#{resourceId}
+    AND s.id=#{resourceId}
     ${page}
   </select>
   

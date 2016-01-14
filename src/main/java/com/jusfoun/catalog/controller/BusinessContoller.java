@@ -71,7 +71,7 @@ public class BusinessContoller extends BaseController {
 	}
 	
 	/**
-	 * 业务目录操作--针对create及update
+	 * 业务目录操作导航--针对create、update及view
 	 * @param request
 	 * @param response
 	 * @return
@@ -79,15 +79,21 @@ public class BusinessContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/business/action", method = RequestMethod.GET)
 	public ModelAndView operBusinesAction(@RequestParam("type")String type,@RequestParam(value="id",required=false) Integer id){
 		ModelAndView mav=new ModelAndView("admin/business/businessAction");
-		if(null!=type&&!"".equals(type)&&type.equals("update")){
+		if(null!=type&&!"".equals(type)&&(type.equals("view")||type.equals("update"))){
 			if(id!=null){
 				Business biz=businessService.get(id);
 				if(biz!=null){
 					mav.addObject("business", biz);
+					if(type.equals("view")){
+						mav.addObject("actionType", "view");
+					}else{
+						mav.addObject("actionType", "update");
+					}
 				}
 			}			
 		}else{
 			mav.addObject("business", null);
+			mav.addObject("actionType", "create");
 		}
 		return mav;
 	}

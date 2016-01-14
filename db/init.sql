@@ -484,4 +484,21 @@ create table job_office
    primary key (job_id, office_id)
 );
 
+DROP TABLE IF EXISTS `register`;
+CREATE TABLE register (
+   id INT AUTO_INCREMENT NOT NULL COMMENT '主键',
+   office_id BIGINT NOT NULL COMMENT '机构(部门)id',
+   apply_type INT NOT NULL COMMENT '信息类型',
+   apply_id BIGINT NOT NULL COMMENT '信息id',
+   apply_name varchar(128) not null COMMENT '信息名称',
+   apply_flag char(1) NOT NULL COMMENT '申请状态',
+   approve_flag char(1) NOT NULL COMMENT '审核状态',
+   apply_by BIGINT COMMENT '申请人',
+   apply_date DATETIME COMMENT '申请时间',
+   approve_by BIGINT COMMENT '审核人',
+   approve_date DATETIME COMMENT '审核时间',
+   del_flag char(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (id)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 COMMENT = '注册申请(审批)表';
+
 SET FOREIGN_KEY_CHECKS = 1;
