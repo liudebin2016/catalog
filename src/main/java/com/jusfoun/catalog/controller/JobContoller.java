@@ -87,6 +87,7 @@ public class JobContoller extends BaseController {
 		String duty = request.getParameter("duty");
 		String type = request.getParameter("type");
 		String officeId = request.getParameter("officeId");
+		String businessId = request.getParameter("businessId");
 		Date createDate =new Date();
 		Job job = new Job();
 		job.setName(name);
@@ -95,7 +96,7 @@ public class JobContoller extends BaseController {
 		job.setCreateBy(UserUtils.getUser());
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
-		int index = jobService.createJob(job,officeId);
+		int index = jobService.createJob(job,officeId,businessId);
 		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
@@ -145,9 +146,15 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/doedit", method = RequestMethod.POST)
 	public String getJobDoEdit(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
+		String officeId=WebUtils.getCleanParam(request,"officeId");
+		String businessId=WebUtils.getCleanParam(request,"businessId");
+		HashMap<String, Object> cMap = new HashMap<String, Object>();
+		cMap.put("officeId", officeId);
+		cMap.put("businessId", businessId);
+		cMap.put("jobId", job.getId());
 		job.setUpdateBy(UserUtils.getUser());
 		job.setUpdateDate(new Date());
-		boolean flag = jobService.updateById(job);
+		boolean flag = jobService.updateById(job,cMap);
 		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	

@@ -41,4 +41,14 @@ public interface JobDao extends CrudDao<Job>{
 
 	public List<JobAndOfficeView> findJobListByOfficeId(JobAndOfficeView job);
 
+	public int insertJob_business(HashMap<String, Object> cMap);
+
+	public int updateJob_Office(HashMap<String, Object> cMap);
+
+	public int updateJob_business(HashMap<String, Object> cMap);
+
+	public int deleteJob_Office(Job job);
+
+	public int deleteJob_Bussiness(Job job);
+
 }

@@ -44,6 +44,7 @@ var jsPart = {
 		
 		$('#dg').datagrid({
 		    url:'/admin/job/reloadList.do', 
+		    fitColumns:true,
 		    queryParams: {
 				name: srcName,
 				status: srcStatus
@@ -69,7 +70,15 @@ var jsPart = {
 		                
 		            }
 		        }
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
 		}); 
 	}
 	
@@ -108,142 +117,6 @@ var htmlPart = {
 	  </div>
   <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
  <table id="dg"> </table>
- <!-- 
-  <table class="table table-hover ntable mt20">
-    <thead>
-      <tr>
-        <th class="tc" width="40"><i class="ico-check"></i></th>
-        <th width="60" class="tc">序号</th>
-        <th>岗位名称/职位</th>
-        <th>岗位职责</th>
-        <th>所属单位</th>
-        <th width="100">岗位属性</th>
-        <th width="135">相关业务</th>
-        <th width="86">当前状态</th>
-        <th width="80">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">2</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">查看</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">3</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">编辑</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">4</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">查看</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">5</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">编辑</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">6</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">查看</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">7</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">编辑</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">8</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">查看</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">9</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">编辑</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">10</td>
-        <td>部门总经理</td>
-        <td>战略发展</td>
-        <td>九次方财富资讯(北京)有限公司</td>
-        <td>管理</td>
-        <td>81334567</td>
-        <td>未注册</td>
-        <td><a href="javascript:;">查看</a></td>
-      </tr>
-       
-    </tbody>
-  </table>
-  <div class="page-box">
-    <ul class="pagination">
-      <li><a class="arrows-left" href="javascript:;" ></a></li>
-      <li class="active"><a>1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li><a href="#">7</a></li>
-      <li><a href="#">8</a></li>
-      <li><a href="#">9</a></li>
-      <li><a href="#">10</a></li>
-      <li><a class="arrows-right" href="javascript:;"></a></li>
-    </ul>
-  </div>-->
-</div>
 <!-- end:content -->
 <%};
 include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
