@@ -50,5 +50,10 @@ public interface JobDao extends CrudDao<Job>{
 	public int deleteJob_Office(Job job);
 
 	public int deleteJob_Bussiness(Job job);
+	
+	/**查询有效个数
+	 * @return
+	 */
+	public Long getCount();
 
 }

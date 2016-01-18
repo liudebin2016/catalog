@@ -23,8 +23,10 @@ var jsPart = {
 <script type="text/javascript">
 	//ready func
 	jq1_4(document).ready(function(){
-		// init tree
-		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+		$.post('../office/officeTree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json');
 	});
 	var setting = {
 		keep: {
@@ -37,8 +39,8 @@ var jsPart = {
 		edit : {enable : false},
 		async : {
 			enable : true,
-			url : "../office/officeTree",
-			autoParam : [ "id", "name", "level" ],
+			url : "tree",
+			autoParam : [ "id"],
 			dataType : "json"
 		},
 		callback : {
@@ -46,21 +48,13 @@ var jsPart = {
 		}
 	};
 	function onClick(event, treeId, treeNode) {
-		jq1_4.ajax({
-			type : 'post',
-			async : false,
-			url : '../office/office',
-			data : {
-				'officeId' : treeNode.id
-			},
-			dataType : 'json',
-			success : function(obj) {
-				jq1_4('#officeId').html(treeNode.name);
-				bizData(treeNode.id);
-				rscData(treeNode.id);
-				subData(treeNode.id);
-			}
-		});
+		if(treeNode.type != 'business'){
+			return false;
+		}
+		$('#officeId').html(treeNode.name);
+		bizData(treeNode.id);
+		rscData(treeNode.id);
+		subData(treeNode.id);
 		return true;
 	};
 </script>

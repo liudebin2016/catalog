@@ -92,9 +92,9 @@ public class OfficeController extends BaseController {
 			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
 			sb.append("{ id:" + office.getId() + ", pId:"
 					+ office.getParentId() + ", name:'" + office.getName()
-					+ (level.intValue() < 2 ? "', isParent:true}" : "'}"));
+					+ (level.intValue() < 2 ? "', isParent:true}" : "'}") +",");
 		}
-		sb.substring(0, sb.length() - 1);
+		sb.deleteCharAt(sb.length()-1);
 		sb.append("]");
 		return JSONObject.parse(sb.toString());
 	}
@@ -116,6 +116,7 @@ public class OfficeController extends BaseController {
     		tree.setId(office.getId());
     		tree.setName(office.getName());
     		tree.setOpen(false);
+    		tree.setParent(true);
     		if(office.getParent() == null )
     			tree.setpId(0);
 			else

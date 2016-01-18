@@ -375,4 +375,11 @@
 	from business b
 	where charge_office_id = #{officeId}
   </select>
+  
+	<!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from business
+  	where del_flag = 0
+  </select>
 </mapper>

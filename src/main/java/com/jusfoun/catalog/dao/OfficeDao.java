@@ -17,4 +17,9 @@ public interface OfficeDao extends TreeDao<Office> {
 	void updateOfficeById(int id,String content);
 
 	List<Office> findPageList(Office office);
+
+	/**查询有效个数
+	 * @return
+	 */
+	Long getCount();
 }

@@ -326,4 +326,11 @@
 	from resource_info ri
 	where response_party = #{officeId}
   </select>
+  
+      <!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from resource_info
+  	where del_flag = 0
+  </select>
 </mapper>

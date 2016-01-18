@@ -56,4 +56,9 @@ public interface BusinessDao extends CrudDao<Business> {
 	 */
 	List<Business> findListByRscId(Map<String, Object> sqlMap);
 
+	/**查询有效个数
+	 * @return
+	 */
+	Long getCount();
+
 }

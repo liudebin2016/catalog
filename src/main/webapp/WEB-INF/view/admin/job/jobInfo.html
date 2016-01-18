@@ -6,8 +6,10 @@
 <script type="text/javascript">
 	// ready func
 	jq1_4(document).ready(function(){
-		// init tree
-		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
+		$.post('../office/officeTree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json');
 	});
 	var setting = {
 		keep: {
@@ -18,12 +20,6 @@
 		},
 		data : {simpleData : {enable : true}},
 		edit : {enable : false},
-		async : {
-			enable : true,
-			url : "../office/officeTree",
-			autoParam : [ "id", "name", "level" ],
-			dataType : "json"
-		},
 		callback : {
 			onClick : onClick
 		}

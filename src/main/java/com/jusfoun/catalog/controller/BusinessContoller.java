@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.Business;
@@ -149,6 +150,26 @@ public class BusinessContoller extends BaseController {
 		}
 	}
 	
+    @RequestMapping(value = "${adminPath}/business/tree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object tree(
+			@RequestParam(name = "id", required = true) Integer officeId) {
+		List<Business> business = businessService.findBusinessByOfficeId(officeId);
+		if (business == null || business.size() == 0) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (Business bs : business) {
+			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
+			sb.append("{ id:" + bs.getId() + ", pId:"
+					+ officeId + ", name:'" + bs.getName() +"',type:'business'},");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		return JSONObject.parse(sb.toString());
+	}
+    
 	@RequestMapping(value = "${adminPath}/business/businessInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Object businessInfo(@RequestParam(value="id",required=true) Integer id){

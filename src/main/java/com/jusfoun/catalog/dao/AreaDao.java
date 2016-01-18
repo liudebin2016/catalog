@@ -11,5 +11,10 @@ import com.jusfoun.catalog.entity.Area;
  */
 @MyBatisDao
 public interface AreaDao extends TreeDao<Area> {
+
+	/**查询有效个数
+	 * @return
+	 */
+	Long getCount();
 	
 }

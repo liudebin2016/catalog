@@ -434,4 +434,11 @@
     delete from job_business
     where job_id = #{id}
   </delete>
+  
+    <!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from job
+  	where del_flag = 0
+  </select>
 </mapper>

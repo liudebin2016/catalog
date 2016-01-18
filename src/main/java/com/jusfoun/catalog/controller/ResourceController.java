@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
@@ -54,6 +55,26 @@ public class ResourceController extends BaseController {
 		} else {
 			return Collections.EMPTY_LIST;
 		}
+	}
+    
+    @RequestMapping(value = "${adminPath}/resource/tree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object tree(
+			@RequestParam(name = "id", required = true) Integer officeId) {
+		List<ResourceInfo> resources = resourceService.findResourceByOfficeId(officeId);
+		if (resources == null || resources.size() == 0) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (ResourceInfo resource : resources) {
+			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
+			sb.append("{ id:" + resource.getId() + ", pId:"
+					+ officeId + ", name:'" + resource.getName() +"',type:'resource'},");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		return JSONObject.parse(sb.toString());
 	}
 	
 	@RequestMapping(value = "${adminPath}/resource/resourceInfo", method = RequestMethod.POST)
