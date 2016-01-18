@@ -20,27 +20,23 @@ var jsPart = {
 	var jq1_4 = $.noConflict(true);
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
 <script type="text/javascript">
 	// ready func
 	jq1_4(document).ready(function(){
-		// init tree
-		jq1_4.fn.zTree.init(jq1_4("#subjecctTree"), setting);
+		$.post('tree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json');
+		// search nodes
+		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
 	});
 	var setting = {
-		keep: {
-			parent: true
-		},
-		view : {
-			selectedMulti : false
-		},
+		keep: {parent: true},
+		view : {selectedMulti : false},
 		data : {simpleData : {enable : true}},
 		edit : {enable : false},
-		async : {
-			enable : true,
-			url : "tree",
-			autoParam : [ "id", "name", "level" ],
-			dataType : "json"
-		},
 		callback : {
 			onClick : onClick
 		}
@@ -194,11 +190,11 @@ var htmlPart = {
   <div class="col1">
     <h3 class="h3tit1">主题目录信息</h3>
     <div>
-      <input class="form-control noradius wd120" type="text" placeholder="检索">
+      <input class="form-control noradius wd120"  type="text"  id="searchNodes"  placeholder="检索"/>
     </div>
  	<!-- 组织机构树 start -->
 	<div class="zTreeDemoBackground left">
-		<ul id="subjecctTree" class="ztree"></ul>
+		<ul id="officeTree" class="ztree"></ul>
 	</div>
 	<!-- 组织机构树 end -->
   </div>

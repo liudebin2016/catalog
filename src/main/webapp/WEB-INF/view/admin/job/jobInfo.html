@@ -10,11 +10,11 @@
 			// init tree
 			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
 		},'json');
+		// search nodes
+		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
 	});
 	var setting = {
-		keep: {
-			parent: true
-		},
+		keep: {parent: true},
 		view : {
 			selectedMulti : false
 		},
@@ -146,6 +146,8 @@ var jsPart = {
 	})
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
@@ -158,7 +160,7 @@ var htmlPart = {
   <div class="col1">
     <h3 class="h3tit1">部门岗位信息</h3>
     <div>
-      <input class="form-control noradius wd120" type="text" placeholder="检索">
+      <input class="form-control noradius wd120" type="text" id="searchNodes" placeholder="检索">
     </div>
 	<!-- 组织机构树 start -->
 	<div class="zTreeDemoBackground left">
