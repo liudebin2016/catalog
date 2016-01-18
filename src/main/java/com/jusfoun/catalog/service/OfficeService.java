@@ -16,6 +16,7 @@ import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.utils.UserUtils;
+import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 机构Service
@@ -29,8 +30,8 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Resource
 	private CatalogInfoDao catalogInfoDao;
 	
-	public List<Office> findAll(){
-		return UserUtils.getOfficeList();
+	public List<CatalogTree> getOfficeTree(){
+		return UserUtils.getOfficeTree();
 	}
 	
 	public List<Office> findList(Boolean isAll){
@@ -52,6 +53,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	public void save(Office office) {
 		super.save(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
 	
 	@Transactional(readOnly = false)
@@ -69,6 +71,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		catalogInfoDao.delete(catalog);
 		// remove cache
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
 
 	/**
@@ -104,6 +107,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		catalogInfoDao.insert(catalog);
 		// remove cache
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
 	
 	/**
@@ -137,6 +141,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 			catalogInfoDao.update(catalog);
 		// remove cache
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
 	
 	@Transactional(readOnly = false)
@@ -175,5 +180,6 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		dao.update(office);
 		// remove cache
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
 }

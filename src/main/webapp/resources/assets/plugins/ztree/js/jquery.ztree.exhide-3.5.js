@@ -364,4 +364,4 @@
 			_repairParentChkClassWithSelf.apply(view, arguments);
 		}
 	}
-})(jQuery);
+})(jq1_4);

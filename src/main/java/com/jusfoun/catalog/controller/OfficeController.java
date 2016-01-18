@@ -2,7 +2,6 @@ package com.jusfoun.catalog.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.CatalogInfo;
@@ -71,32 +69,8 @@ public class OfficeController extends BaseController {
     
     @RequestMapping(value = "${adminPath}/office/tree", method = RequestMethod.POST)
     @ResponseBody
-	public Object tree(
-			@RequestParam(name = "id", required = false) Integer id, 
-			String name, 
-			@RequestParam(name = "level", required = false) Integer level) {
-		List<Office> officeListInDB = officeService.findAll();
-		List<Office> resultList = new LinkedList<Office>();
-		if (id == null) {
-			// 加载一级域
-			id = new Integer(0);
-			level = new Integer(0);
-		}
-		for (Office ofc : officeListInDB) {
-			if (ofc.getParentId().intValue() == id.intValue())
-				resultList.add(ofc);
-		}
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for (Office office : resultList) {
-			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
-			sb.append("{ id:" + office.getId() + ", pId:"
-					+ office.getParentId() + ", name:'" + office.getName()
-					+ (level.intValue() < 2 ? "', isParent:true}" : "'}") +",");
-		}
-		sb.deleteCharAt(sb.length()-1);
-		sb.append("]");
-		return JSONObject.parse(sb.toString());
+	public Object tree() {
+		return JsonMapper.toJsonString(officeService.getOfficeTree());
 	}
     
     /**共享目录-四个模块左侧officeTree

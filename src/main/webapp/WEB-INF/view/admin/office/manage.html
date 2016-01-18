@@ -3,38 +3,31 @@
 	var jq1_4 = $.noConflict(true);
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.excheck-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
 <script type="text/javascript">
 	// ready func
 	jq1_4(document).ready(function(){
 		// init tree
-		jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting);
-		// modal window
-		$(".modal").on("hidden.bs.modal", function() {
-		    $(this).removeData("bs.modal");
-		});
+		jq1_4.post('tree',function(obj){
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting, obj);
+		},'json');
+		// search nodes
+		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
 		// areaSubmit
 		$('#areaSubmit').on('click', areaSubmit);
 		// officeSubmit
 		$('#officeSubmit').on('click', officeSubmit);
 	});
 	var setting = {
-		keep: {
-			parent: true
-		},
+		keep: { parent: true },
 		view : {
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
 		data : {simpleData : {enable : true}},
 		edit : {enable : true},
-		async : {
-			enable : true,
-			url : "tree",
-			autoParam : [ "id", "name", "level" ],
-			dataType : "json"
-		},
 		callback : {
 			beforeDrop : beforeDrop,
 			onClick : onClick,
@@ -141,6 +134,7 @@
 		}
 		return false;
 	}
+	
 </script>
 <% var cssPart = { %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
@@ -255,7 +249,9 @@
 					treeObj.updateNode(selectedNode);
 					$('#'+selectedNode.tId).children('.gcode').html($('#officeCode').val());
 				} else{
-					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+// 					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+// 					treeObj.refresh();
+					window.location.href = "manage";
 				}
 				$('#addOffice').modal('hide');
 			}
@@ -280,7 +276,7 @@
 			<a href="javascript:void(0);" class="btns-gray" data-toggle="modal" role="button" onclick="addOfficeCheck();">
 				<i class="all-icon xjbm-icon fl"></i>新增部门
 			</a>
-			<input class="form-control inp wd180" type="text" placeholder="检索">
+			<input class="form-control inp wd180" type="text" id="searchNodes" placeholder="检索">
 			<i class="glyphicon glyphicon-search search-ico "></i>
 		</div>
 	</div>

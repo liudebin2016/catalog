@@ -1,12 +1,18 @@
 package com.jusfoun.catalog.vo;
 
+import java.io.Serializable;
+
 /**
  * 目录树VO
  * @author liudebin
  *
  */
-public class CatalogTree {
+public class CatalogTree implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;//目录树id
 	private int pId;//父目录树id
 	private String name;//目录树名

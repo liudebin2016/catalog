@@ -1,5 +1,6 @@
 package com.jusfoun.catalog.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -22,6 +23,7 @@ import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.entity.Role;
 import com.jusfoun.catalog.entity.User;
 import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
+import com.jusfoun.catalog.vo.CatalogTree;
 
 /**
  * 用户工具类
@@ -46,6 +48,7 @@ public class UserUtils {
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
+	public static final String CACHE_OFFICE_TREE = "officeTree";
 
 
 	/**
@@ -98,6 +101,7 @@ public class UserUtils {
 		removeCache(CACHE_AREA_LIST);
 		removeCache(CACHE_OFFICE_LIST);
 		removeCache(CACHE_OFFICE_ALL_LIST);
+		removeCache(CACHE_OFFICE_TREE);
 		UserUtils.clearCache(getUser());
 	}
 
@@ -209,6 +213,39 @@ public class UserUtils {
 			putCache(CACHE_OFFICE_LIST, officeList);
 		}
 		return officeList;
+	}
+	
+	/**
+	 * 获取当前用户有权限访问的部门树
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<CatalogTree> getOfficeTree() {
+		List<CatalogTree> tree = (List<CatalogTree>) getCache(CACHE_OFFICE_TREE);
+		if (tree == null) {
+			tree = new ArrayList<CatalogTree>();
+			List<Office> officeList = null;
+			User user = getUser();
+			if (user.isAdmin()) {
+				officeList = officeDao.findAllList(new Office());
+			} else {
+				Office office = new Office();
+				office.getSqlMap().put("dsf", BaseService.dataScopeFilter(user, "a", ""));
+				officeList = officeDao.findList(office);
+			}
+			if (officeList != null && !officeList.isEmpty()) {
+				for(Office ofe : officeList){
+					CatalogTree node = new CatalogTree();
+					node.setId(ofe.getId());
+					node.setName(ofe.getName());
+					node.setOpen(false);
+					node.setpId(ofe.getParentId()==null ? 0 : ofe.getParentId());
+					tree.add(node);
+				}
+				putCache(CACHE_OFFICE_TREE, tree);
+			}
+		}
+		return tree;
 	}
 
 	/**
