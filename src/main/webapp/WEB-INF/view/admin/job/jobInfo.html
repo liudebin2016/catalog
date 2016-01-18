@@ -127,6 +127,7 @@ var jsPart = {
 	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 5 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
 	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                $("input[name=ck]").hide();
 	            }
 		    }
 		}); 
@@ -179,7 +180,14 @@ var htmlPart = {
 		        </li> -->
 		        <li>
 		          <label>岗位属性</label>
-		          <input id="srcType" class="form-control wd120" type="text" placeholder="" name="type" value="">
+		          <select class="form-control wd120" name="type" id="srcType">
+				  <option value="" >--请选择--</option>
+				  <option value="1">公务员编制</option>
+				  <option value="2">事业编制</option>
+				  <option value="3">参公编制</option>
+				  <option value="4">工勤编制</option>
+				  <option value="5">其他</option>
+				</select>
 		        </li>
 		        <li>
 		          <button class="btns mlt30" type="button" id="checkSearch" >检索</button>

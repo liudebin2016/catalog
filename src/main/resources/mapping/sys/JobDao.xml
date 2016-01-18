@@ -277,9 +277,9 @@
 	    <if test="jobStatus!= null ">  
 	        AND j.status=#{jobStatus}  
 	    </if>   
-	     <if test="officeId!= null ">  
-	        AND s.id=#{officeId}  
-	    </if>
+	     <if test="jobType!= null ">  
+	        AND j.type=#{jobType}  
+	    </if> 
 	     <if test="OfficeIds.size() !=0">
 	    	AND s.id in 
 	    	<foreach item="OfficeIds" index="index" collection="OfficeIds" open="(" separator="," close=")">  
@@ -326,8 +326,8 @@
 	    <if test="jobStatus!= null ">  
 	        AND j.status=#{jobStatus}  
 	    </if>  
-	     <if test="officeId!= null ">  
-	        AND s.id=#{officeId}  
+	     <if test="jobType!= null ">  
+	        AND j.type=#{jobType}  
 	    </if>   
 	    <if test="OfficeIds.size() !=0">
 	    	AND s.id in 
