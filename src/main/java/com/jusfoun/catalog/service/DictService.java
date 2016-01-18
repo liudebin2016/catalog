@@ -39,4 +39,13 @@ public class DictService extends CrudService<DictDao, Dict> {
 		CacheTool.remove(DictUtils.CACHE_DICT_MAP);
 	}
 
+	public int findListCount(Dict dict) {
+		return dao.findListCount(dict);
+	}
+
+	@Transactional(readOnly = false)
+	public void update(Dict dict) {
+		dao.update(dict);
+	}
+
 }

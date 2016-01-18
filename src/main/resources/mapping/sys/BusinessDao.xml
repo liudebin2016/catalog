@@ -10,7 +10,7 @@
      b.create_date, 
 <!--      update_by AS "updateBy.id", -->
       b.update_date, 
-    b.del_flag,b.status
+    b.del_flag,b.status,b.subject_id
   </sql>
   <sql id="Blob_Column_List" >
     b.remarks
@@ -365,6 +365,9 @@
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=LONGVARCHAR},
       </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -374,5 +377,12 @@
 	select b.id,b.name
 	from business b
 	where charge_office_id = #{officeId}
+  </select>
+  
+	<!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from business
+  	where del_flag = 0
   </select>
 </mapper>

@@ -60,4 +60,18 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 	public List<Business> findListByRscId(Map<String, Object> sqlMap) {
 		return dao.findListByRscId(sqlMap);
 	}
+
+	/**
+	 * 批量更新业务
+	 * @param subId
+	 * @param params
+	 */
+	public void batchUpdateBiz(Integer subId, String params) {
+		for(String str:params.split(",")){
+			Business biz=new Business();
+			biz.setId(Integer.valueOf(str));
+			biz.setSubjectId(subId);
+			dao.update(biz);
+		}
+	}
 }

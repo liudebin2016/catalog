@@ -34,6 +34,7 @@ public class Business extends DataEntity<Business>{
     private String isUse;//业务事项应用系统
     private String shareWith;//资源共享范围
     private String status;//业务状态：0-未注册，1-注册中，2-已注册，3-未通过，4-删除中
+    private Integer subjectId;//所属主题分类
     
     public String getName() {
         return name;
@@ -218,6 +219,14 @@ public class Business extends DataEntity<Business>{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
 	}
 
 }

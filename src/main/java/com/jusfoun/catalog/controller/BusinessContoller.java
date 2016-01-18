@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.Business;
@@ -122,6 +123,18 @@ public class BusinessContoller extends BaseController {
 		return "redirect:"+adminPath+"/business/maintenance";
 	}
 	
+	/**
+	 * 批量更新业务
+	 * @param biz
+	 * @return
+	 */	
+	@RequestMapping(value = "${adminPath}/business/batchUpdateBiz", method = RequestMethod.POST)
+	@ResponseBody
+	public String batchUpdateBiz(@RequestParam(value="subId")Integer subId,@RequestParam(value="params")String params){
+		businessService.batchUpdateBiz(subId,params);		
+		return "success";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value = "${adminPath}/business/delBiz", method = RequestMethod.GET)
 	public String delBiz(@RequestParam("id")Integer id){
@@ -130,6 +143,20 @@ public class BusinessContoller extends BaseController {
 			Business biz=new Business();
 			biz.setId(id);
 			businessService.delete(biz);
+			delFlag="success";
+		}
+		return delFlag;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "${adminPath}/business/delBizLinkSub", method = RequestMethod.GET)
+	public String delBizLinkSub(@RequestParam("id")Integer id){
+		String delFlag="fail";
+		if(null!=id){
+			Business biz=new Business();
+			biz.setId(id);
+			biz.setSubjectId(null);
+			businessService.updateBiz(biz);
 			delFlag="success";
 		}
 		return delFlag;
@@ -149,6 +176,26 @@ public class BusinessContoller extends BaseController {
 		}
 	}
 	
+    @RequestMapping(value = "${adminPath}/business/tree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object tree(
+			@RequestParam(name = "id", required = true) Integer officeId) {
+		List<Business> business = businessService.findBusinessByOfficeId(officeId);
+		if (business == null || business.size() == 0) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (Business bs : business) {
+			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
+			sb.append("{ id:" + bs.getId() + ", pId:"
+					+ officeId + ", name:'" + bs.getName() +"',type:'business'},");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		return JSONObject.parse(sb.toString());
+	}
+    
 	@RequestMapping(value = "${adminPath}/business/businessInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Object businessInfo(@RequestParam(value="id",required=true) Integer id){

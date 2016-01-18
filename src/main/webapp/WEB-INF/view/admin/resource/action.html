@@ -8,8 +8,37 @@
 
 
 <% var jsPart = { %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript">
+
+function checkVal(){
 	
+}	
+
+$(document).ready(function(){
+	//编辑时初始化“资源共享范围”值
+	$("input[name='shareRegion']").each(function(){
+		if($("#shareRegion").text()){
+			var nfs=$("#shareRegion").text().split(",");
+			for(var nf=0 ;nf< nfs.length;nf++){
+				if(nfs[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}		
+		}
+	});
+	//编辑时初始化“资源共享方式”值
+	$("input[name='shareMode']").each(function(){
+		if($("#shareMode").text()){
+			var nfs=$("#shareMode").text().split(",");
+			for(var nf=0 ;nf< nfs.length;nf++){
+				if(nfs[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}		
+		}
+	});
+});
 </script>
 <%};%>
 
@@ -19,7 +48,7 @@
 	<h2 class="compile-title mt40">资源信息${actionType=="update"?"编辑":actionType=="view"?"查看":"创建"}</h2>
 	<span class="imaginary-line"></span>
 	<div class="compile-form">
-		<form action="/admin/resource/${rsc==null?"createRsc":"updateRsc"}.do" method="post">
+		<form action="/admin/resource/${rsc==null?"createRsc":"updateRsc"}.do" method="post" onsubmit="return checkVal();">
 		<%if(rsc!=null){%>
 	    <input type="hidden" name="id" value='${rsc.id}'>
 	    <%}%>
@@ -31,20 +60,20 @@
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">所属业务事项名称</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="ofBusiness" value="0" id="ofBusiness_0" ${rsc==null?'':rsc.ofBusiness == "0"?checked="checked":checked=""}>新建业务
+				<input type="radio" name="ofBusiness" value="0" ${rsc==null?'':rsc.ofBusiness == 0?checked="checked":checked=""}>新建业务
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="ofBusiness" value="1" id="ofBusiness_1" ${rsc==null?'':rsc.ofBusiness == "1"?checked="checked":checked=""}>已有业务
+				<input type="radio" name="ofBusiness" value="1" ${rsc==null?'':rsc.ofBusiness == 1?checked="checked":checked=""}>已有业务
 			</label>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源类别</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="type" value="1" id="type_1" ${rsc==null?'':rsc.type == "1"?checked="checked":checked=""}>所需材料
+				<input type="radio" name="type" value="1" id="type_1" ${rsc==null?'':rsc.type == 1?checked="checked":checked=""}>所需材料
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="type" value="2" id="type_2" ${rsc==null?'':rsc.type == "2"?checked="checked":checked=""}>生产材料
+				<input type="radio" name="type" value="2" id="type_2" ${rsc==null?'':rsc.type == 2?checked="checked":checked=""}>生产材料
 			</label>
 		</div>
 		<div class="clearfix"></div>
@@ -71,13 +100,13 @@
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">责任方属性</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="responseAttr" value="1" id="responseAttr_1" ${rsc==null?'':rsc.responseAttr == "1"?checked="checked":checked=""}>委（局）内
+				<input type="radio" name="responseAttr" value="1" id="responseAttr_1" ${rsc==null?'':rsc.responseAttr == 1?checked="checked":checked=""}>委（局）内
 			</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="responseAttr" value="2" id="responseAttr_2" ${rsc==null?'':rsc.responseAttr == "2"?checked="checked":checked=""}>委办局
+				<input type="radio" name="responseAttr" value="2" id="responseAttr_2" ${rsc==null?'':rsc.responseAttr == 2?checked="checked":checked=""}>委办局
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="responseAttr" value="3" id="responseAttr_3" ${rsc==null?'':rsc.responseAttr == "3"?checked="checked":checked=""}>其他
+				<input type="radio" name="responseAttr" value="3" id="responseAttr_3" ${rsc==null?'':rsc.responseAttr == 3?checked="checked":checked=""}>其他
 			</label>
 		</div>
 		<div class="clearfix"></div>
@@ -139,10 +168,10 @@
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">涉及的数据库支撑</label>
 			<label class="has-ico-radio mr20">
-				<input type="radio" name="isDbSupport" value="1" id="isDbSupport_0" ${rsc==null?'':rsc.isDbSupport == "1"?checked="checked":checked=""}>有
+				<input type="radio" name="isDbSupport" value="1" id="isDbSupport_0" ${rsc==null?'':rsc.isDbSupport == 1?checked="checked":checked=""}>有
 			</label>
 			<label class="has-ico-radio">
-				<input type="radio" name="isDbSupport" value="0" id="isDbSupport_1" ${rsc==null?'':rsc.isDbSupport == "0"?checked="checked":checked=""}>无
+				<input type="radio" name="isDbSupport" value="0" id="isDbSupport_1" ${rsc==null?'':rsc.isDbSupport == 0?checked="checked":checked=""}>无
 			</label>
 		</div>
 		<div class="clearfix"></div>
@@ -154,50 +183,52 @@
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源共享范围</label>
 			<div class="c-f-width485 fl">
+				<span id="shareRegion" style="display:none">${rsc==null?'':rsc.shareRegion}</span>
 				<ul class="choosable-box">
 					<!-- <li>
 						<span></span><input name="all" type="checkbox" value="" />所有人员
 					</li> -->
 					<li>
-						<input name="shareRegion" type="checkbox" value="1" ${rsc==null?'':rsc.shareRegion == "1"?checked="checked"checked=""}/> 国家部委
+						<input name="shareRegion" type="checkbox" value="1" /> 国家部委
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="2" ${rsc==null?'':rsc.shareRegion == "2"?checked="checked"checked=""}/> 市领导
+						<input name="shareRegion" type="checkbox" value="2" /> 市领导
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="3" ${rsc==null?'':rsc.shareRegion == "3"?checked="checked"checked=""}/> 委办局
+						<input name="shareRegion" type="checkbox" value="3" /> 委办局
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="4" ${rsc==null?'':rsc.shareRegion == "4"?checked="checked"checked=""}/> 委（局）内
+						<input name="shareRegion" type="checkbox" value="4" /> 委（局）内
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="5" ${rsc==null?'':rsc.shareRegion == "5"?checked="checked"checked=""}/> 本部门专员
+						<input name="shareRegion" type="checkbox" value="5" /> 本部门专员
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="6" ${rsc==null?'':rsc.shareRegion == "6"?checked="checked"checked=""}/> 其他
+						<input name="shareRegion" type="checkbox" value="6" /> 其他
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
-			<label class="compile-form-title2 fl">资源共享范围</label>
+			<label class="compile-form-title2 fl">资源共享方式</label>
 			<div class="c-f-width485 fl">
+				<span id="shareMode" style="display:none">${rsc==null?'':rsc.shareMode}</span>
 				<ul class="choosable-box">
 					<li>
-						<input name="shareMode" type="checkbox" value="1" ${rsc==null?'':rsc.shareMode == "1"?checked="checked"checked=""}/> 网上发布
+						<input name="shareMode" type="checkbox" value="1" /> 网上发布
 					</li>
 					<li>
-						<input name="shareMode" type="checkbox" value="2" ${rsc==null?'':rsc.shareMode == "2"?checked="checked"checked=""}/> 介质交流（纸制报表，电子文档等）
+						<input name="shareMode" type="checkbox" value="2" /> 介质交流（纸制报表，电子文档等）
 					</li>
 					<li>
-						<input name="shareMode" type="checkbox" value="3" ${rsc==null?'':rsc.shareMode == "3"?checked="checked"checked=""}/> 委（局）内
+						<input name="shareMode" type="checkbox" value="3" /> 委（局）内
 					</li>
 					<li>
-						<input name="shareMode" type="checkbox" value="4" ${rsc==null?'':rsc.shareMode == "4"?checked="checked"checked=""}/> 系统接口
+						<input name="shareMode" type="checkbox" value="4" /> 系统接口
                     </li>
 					<li>
-						<input name="shareMode" type="checkbox" value="5" ${rsc==null?'':rsc.shareMode == "5"?checked="checked"checked=""}/> 其他
+						<input name="shareMode" type="checkbox" value="5" /> 其他
 					</li>
 				</ul>
 			</div>

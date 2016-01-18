@@ -15,5 +15,7 @@ import java.util.List;
 public interface DictDao extends CrudDao<Dict> {
 
 	public List<String> findTypeList(Dict dict);
+
+	public int findListCount(Dict dict);
 	
 }

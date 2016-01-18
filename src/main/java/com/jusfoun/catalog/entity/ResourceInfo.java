@@ -27,6 +27,7 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
     private String updateCycle;//更新周期
     private String descr;//资源描述
     private String status;//资源状态
+    private Integer subjectId;//所属主题
 
     public String getName() {
         return name;
@@ -154,6 +155,14 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Integer getSubjectId() {
+		return subjectId;
+	}
+
+	public void setSubjectId(Integer subjectId) {
+		this.subjectId = subjectId;
 	}
     
 }

@@ -70,4 +70,19 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 		return dao.findListByBizId(sqlMap);
 	}
 	
+	/**
+	 * 批量更新资源
+	 * @param subId
+	 * @param params
+	 */
+	@Transactional(readOnly = false)
+	public void batchUpdateRsc(Integer subId, String params) {
+		for(String str:params.split(",")){
+			ResourceInfo rsc=new ResourceInfo();
+			rsc.setId(Integer.valueOf(str));
+			rsc.setSubjectId(subId);
+			dao.update(rsc);
+		}
+	}
+	
 }

@@ -5,7 +5,7 @@
   <sql id="Base_Column_List" >
     r.id, r.name, r.of_business, r.type, r.code, r.response_party, r.response_attr, r.response_cu, r.collect_way, 
     r.security_level, r.info_field, r.is_db_support, r.remarks, r.share_region, r.share_mode, r.create_date, 
-    r.create_by , r.update_date, r.update_by , r.update_cycle, r.del_flag,r.status
+    r.create_by , r.update_date, r.update_by , r.update_cycle, r.del_flag,r.status,r.subject_id
   </sql>
   <sql id="Blob_Column_List" >
     r.descr
@@ -316,6 +316,9 @@
       <if test="descr != null" >
         descr = #{descr,jdbcType=LONGVARCHAR},
       </if>
+      <if test="subjectId != null" >
+        subject_id = #{subjectId,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -325,5 +328,12 @@
 	select ri.id,ri.name
 	from resource_info ri
 	where response_party = #{officeId}
+  </select>
+  
+      <!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from resource_info
+  	where del_flag = 0
   </select>
 </mapper>

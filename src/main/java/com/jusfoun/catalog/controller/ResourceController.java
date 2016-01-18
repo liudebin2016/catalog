@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.ResourceInfo;
@@ -54,6 +55,26 @@ public class ResourceController extends BaseController {
 		} else {
 			return Collections.EMPTY_LIST;
 		}
+	}
+    
+    @RequestMapping(value = "${adminPath}/resource/tree", method = RequestMethod.POST)
+    @ResponseBody
+	public Object tree(
+			@RequestParam(name = "id", required = true) Integer officeId) {
+		List<ResourceInfo> resources = resourceService.findResourceByOfficeId(officeId);
+		if (resources == null || resources.size() == 0) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (ResourceInfo resource : resources) {
+			// { id:1, pId:0, name:"父节点1", open:true,isParent:true},
+			sb.append("{ id:" + resource.getId() + ", pId:"
+					+ officeId + ", name:'" + resource.getName() +"',type:'resource'},");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.append("]");
+		return JSONObject.parse(sb.toString());
 	}
 	
 	@RequestMapping(value = "${adminPath}/resource/resourceInfo", method = RequestMethod.POST)
@@ -126,6 +147,18 @@ public class ResourceController extends BaseController {
     }
     
     /**
+     * 批量更新资源
+     * @param rsc
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/resource/batchUpdateRsc", method = RequestMethod.POST)
+    @ResponseBody
+    public String batchUpdateRsc(@RequestParam(value="subId")Integer subId,@RequestParam(value="params")String params) {
+    	resourceService.batchUpdateRsc(subId,params);
+    	return "success";
+    }
+    
+    /**
      * 维护资源
      * @param request
      * @return
@@ -148,6 +181,25 @@ public class ResourceController extends BaseController {
 			ResourceInfo rsc=new ResourceInfo();
 			rsc.setId(id);
 			resourceService.delete(rsc);
+			delFlag="success";
+		}
+		return delFlag;
+	}
+	
+	/**
+     * 删除资源
+     * @param id
+     * @return
+     */
+    @ResponseBody
+	@RequestMapping(value = "${adminPath}/resource/delRscLinkSub", method = RequestMethod.GET)
+	public String delRscLinkSub(@RequestParam("id")Integer id){
+		String delFlag="fail";
+		if(null!=id){
+			ResourceInfo rsc=new ResourceInfo();
+			rsc.setId(id);
+			rsc.setSubjectId(null);
+			resourceService.updateRsc(rsc);
 			delFlag="success";
 		}
 		return delFlag;

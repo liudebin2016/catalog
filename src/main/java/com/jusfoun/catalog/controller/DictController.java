@@ -1,9 +1,21 @@
 package com.jusfoun.catalog.controller;
 
-import com.jusfoun.catalog.common.controller.BaseController;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.entity.Dict;
+import com.jusfoun.catalog.service.DictService;
 
 /**
  * 统计Controller
@@ -12,13 +24,73 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class DictController extends BaseController{
+	
+	@Autowired
+	private DictService dictService;
 
     /**
      * 显示字典列表页面
      *
      */
-    @RequestMapping(value = "${adminPath}/dict/list", method = RequestMethod.GET)
+    @RequestMapping(value = "${adminPath}/dict/list")
     public String getDictListPage() {
         return "admin/dict/list";
     }
+    
+    /**
+     * 创建字典
+     * @param rsc
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/dict/createDict", method = RequestMethod.POST)
+    public String createDict(Dict dict) {
+    	if(dict.getId()!=null){
+    		dictService.update(dict);
+    	}else{
+    		dictService.save(dict);
+    	}
+    	
+    	return "redirect:/admin/dict/list";
+    }
+    
+    /**
+	 * 业务列表,根据当前页和记录数获取列表
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/dict/dictList")
+	public  String dictList(int page,int rows,HttpServletRequest request) throws IOException{
+		String label=WebUtils.getCleanParam(request,"label");
+		String value=WebUtils.getCleanParam(request,"value");
+		String id=WebUtils.getCleanParam(request,"id");
+		Dict dict=new Dict();
+		if(null!=label||null!=label){
+			if(null!=label){
+				dict.setLabel(label);
+			}
+		}
+		if(null!=value||null!=value){
+			if(null!=label){
+				dict.setValue(label);
+			}
+		}		
+		if(null!=id){
+			dict.setId(Integer.valueOf(id));
+		}
+		
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = dictService.findListCount(dict);
+		dict.getSqlMap().put("page", "limit "+start+","+end);
+		List<Dict> uList = dictService.findList(dict);
+		String json = JsonMapper.toJsonString(uList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
+	}
 }

@@ -3,21 +3,87 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
-
 <%};%>
 
 
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
-
+	function sf(row){
+		$("#dlg").dialog("open").dialog('setTitle', '维护字典');
+		var fm=$('#fm');
+		fm.form('clear');
+		fm.form('load', row);
+	}
+	
+	function dictDg(label,value){
+		$('#dict').datagrid({
+		    url:'/admin/dict/dictList.do', 
+		    fitColumns:true,
+		    queryParams: {
+		    	label:label,
+		    	value:value
+			},
+			toolbar:[{
+				text:'新建字典',
+				handler:function(){
+					newDict();
+				}
+			}],
+			rownumbers:true,
+			pagination:true,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'label',title:'字典名称',width:220},
+		        {field:'value',title:'字典编码',width:230},
+		        {field:'description',title:'备注',width:220},
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+		        		var obj=JSON.stringify(row);
+		        		var s = "<a onclick='sf("+obj+");'>维护</a> ";
+	                    return s;
+		            }
+		        }
+		    ]]
+		});
+	}
+	
+	function search(){
+		var label=$.trim($('#lblsrh').val());
+		var value=$.trim($('#valsrh').val());
+		dictDg(label,value);
+	}
+	
+	function reset(){
+		$('#lblsrh').val("");
+		$('#valsrh').val("");
+	}
+	
+	//页面初始化加载
+	$(document).ready(function(){
+		dictDg("","");
+	});
+	
+	 function newDict() {
+         $("#dlg").dialog("open").dialog('setTitle', '新建字典');
+         $("#fm").form("clear");         
+     }
+	 
+	 function submit(){
+		 $('#fm').submit();
+	 }
 </script>
-
 <%};%>
 
 <%
@@ -30,130 +96,43 @@ var htmlPart = {
     <ul class="li-fl">
       <li>
         <label>字典名称</label>
-        <input class="form-control inp noradius " type="text" placeholder="">
+        <input id="lblsrh" class="form-control inp noradius " type="text" placeholder="">
       </li>
       <li>
         <label>字典编码</label>
-        <input class="form-control inp noradius " type="text" placeholder="">
+        <input id="valsrh" class="form-control inp noradius " type="text" placeholder="">
       </li>
       <li>
-        <button class="btns mlt30" type="button">检索</button>
-        <input class="nobg mlt10" name="清空" type="reset" value="清空">
+        <button class="btns mlt30" type="button" onclick="search()">检索</button>
+        <input class="nobg mlt10" name="清空" type="reset" value="清空" onclick="reset()">
       </li>
     </ul>
   </div>
- 
-  <table class="table table-hover ntable mt20">
-    <thead>
-      <tr>
-        <th class="tc" width="40"><i class="ico-check"></i></th>
-        <th width="60" class="tc">序号</th>
-        <th>字典名称</th>
-        <th>字典编码</th>
-        <th width="100">备注</th>  
-        <th width="100">操作</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">1</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check ico-checked"></i></td>
-        <td class="tc">2</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">3</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-       <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">4</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-      <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">5</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">6</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-       <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">7</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-      <tr>
-        <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">8</td>
-        <td>九次方政府资源目录平台</td>
-        <td>所有人员</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">查看</a><a href="javascript:;">编辑</a></td>
-      </tr>     
-      <tr>
-       <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">9</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-       <tr>
-       <td class="tc"><i class="ico-check"></i></td>
-        <td class="tc">10</td>
-        <td>九次方政府资源目录平台</td>
-        <td>机构职责</td>
-        <td>未注册</td>       
-        <td><a href="javascript:;">通过</a><a href="javascript:;">不通过</a></td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="page-box">
-    <ul class="pagination">
-      <li><a class="arrows-left" href="javascript:;" ></a></li>
-      <li class="active"><a>1</a></li>
-      <li><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li><a href="#">7</a></li>
-      <li><a href="#">8</a></li>
-      <li><a href="#">9</a></li>
-      <li><a href="#">10</a></li>
-      <li><a class="arrows-right" href="javascript:;"></a></li>
-    </ul>
-  </div>
-</div>
+  
+  <!-- 字典Datagrid -->
+  <table id="dict"></table>
+  
+  <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
+       <form id="fm" method="post" method="post" action="/admin/dict/createDict.do"> 
+       <div class="fitem"> 
+       		<input name="id" class="easyui-textbox" style="display:none">
+           <label>字典项名称</label> 
+           <input name="label" class="easyui-textbox" style="width:width:300px;height:32px">
+       </div> 
+       <div class="fitem"> 
+           <label>字典项编码</label> 
+           <input name="value" class="easyui-textbox" style="width:width:300px;height:32px">
+       </div> 
+       <div class="fitem"> 
+           <label>备注</label> 
+           <input name="description" class="easyui-textbox" data-options="multiline:true" value="" style="width:300px;height:60px"> 
+       </div> 
+       <div>
+			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
+		</div>
+       </form> 
+   </div> 
+
     <!-- end: PAGE -->
 </div>
 <!-- end: MAIN CONTAINER -->

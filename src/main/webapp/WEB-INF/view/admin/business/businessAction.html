@@ -10,11 +10,130 @@ var cssPart = {
 
 <%};%>
 
-
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript">
+
+function checkVal(){
+	//设置业务事件分类值
+	$("#type").val($("#forType1").val()+"-"+$("#forType2").val());
+	//设置业务事项办理依据
+	if($(":radio[name='forBasis']:checked").val()==0){
+		$("#basis").val($(":radio[name='forBasis']:checked").val());
+	}else{
+		var str="";
+		$("input[name=forBasis2]:checked").each(function(){ 
+			str+=$(this).val()+",";  
+		});  
+		$("#basis").val($(":radio[name='forBasis']:checked").val()+"-"+str);
+	}
+	//设置业务量/工作量
+	if($(":radio[name='forWorkload']:checked").val()==0){
+		$("#workload").val($(":radio[name='forWorkload']:checked").val());
+	}else{
+		$("#workload").val($(":radio[name='forWorkload']:checked").val()+"-"+$("#forWorkload2").val());
+	}
+	//设置业务事项办理涉及的其他相关单位
+	if($(":radio[name='forRelateOffice']:checked").val()==0){
+		$("#relateOffice").val($(":radio[name='forRelateOffice']:checked").val());
+	}else{
+		var str="";
+		$("input[name=forRelateOffice2]:checked").each(function(){ 
+			str+=$(this).val()+",";  
+		});
+		$("#relateOffice").val($(":radio[name='forRelateOffice']:checked").val()+"-"+str);
+	}
+	//设置业务事项应用系统
+	if($(":radio[name='forIsUse']:checked").val()==0){
+		$("#isUse").val($(":radio[name='forIsUse']:checked").val());
+	}else{
+		$("#isUse").val($(":radio[name='forIsUse']:checked").val()+"-"+$("#forIsUse2").val());
+	}
+	return true;
+}
+
+$(document).ready(function(){
+	
+	//编辑时初始化“业务事项名称填写依据”值
+	$("input[name='nameRef']").each(function(){
+		if($("#nameRef").text()){
+			var nfs=$("#nameRef").text().split(",");
+			for(var nf=0 ;nf< nfs.length;nf++){
+				if(nfs[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}		
+		}
+	});
+	
+	//编辑时初始化“业务事项分类”
+	var types=$("#type").val().split("-");
+	$("#forType1 option[value='"+types[0]+"']").attr("selected","selected");
+	$("#forType2 option[value='"+types[1]+"']").attr("selected","selected");
+	
+	//编辑时初始化“业务事项办理依据”
+	if($("#basis").val()==0){
+		$("input[name=forBasis][value='0']").attr("checked",true);
+	}else{
+		var basis=$("#basis").val().split("-");
+		$("input[name=forBasis][value='1']").attr("checked",true);
+		var wr= $("#basis").val().split("-")[1].split(",");
+		$("input[name='forBasis2']").each(function(){
+			for(var nf=0 ;nf< wr.length;nf++){
+				if(wr[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}		
+		});
+	}
+	
+	//编辑时初始化“业务量/工作量”
+	if($("#workload").val()==0){
+		$("input[name=forWorkload][value='0']").attr("checked",true);
+	}else{
+		$("input[name=forWorkload][value='1']").attr("checked",true);
+		$("#forWorkload2").val($("#workload").val().split("-")[1]);
+	}
+	
+	//编辑时初始化“业务事项办理涉及的其他相关单位”
+	if($("#relateOffice").val()==0){
+		$("input[name=forRelateOffice][value='0']").attr("checked",true);
+	}else{
+		var basis=$("#basis").val().split("-");
+		$("input[name=forRelateOffice][value='1']").attr("checked",true);
+		var wr= $("#relateOffice").val().split("-")[1].split(",");
+		$("input[name='forRelateOffice2']").each(function(){
+			for(var nf=0 ;nf< wr.length;nf++){
+				if(wr[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}		
+		});
+	}
+	
+	//编辑时初始化“业务事项应用系统”
+	if($("#isUse").val()==0){
+		$("input[name=forIsUse][value='0']").attr("checked",true);
+	}else{
+		$("input[name=forIsUse][value='1']").attr("checked",true);
+		$("#forIsUse2").text($("#isUse").val().split("-")[1]);
+	}
+	
+	//编辑时初始化"资源共享范围"值
+	$("input[name='shareWith']").each(function(){
+		if($("#shareWith").text()){
+			var nfs=$("#shareWith").text().split(",");
+			for(var nf=0 ;nf< nfs.length;nf++){
+				if(nfs[nf]==$(this).attr("value")){
+					$(this).attr("checked","checked");
+				}
+			}
+		}
+	});
+	
+});
 
 
 </script>
@@ -26,10 +145,12 @@ var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
+	<span id="nameRef" style="display:none;">${business==null?"":business.nameRef}</span>
+	<span id="shareWith" style="display:none;">${business==null?"":business.shareWith}</span>
   <h2 class="compile-title mt40">业务信息${actionType=="update"?"编辑":actionType=="view"?"查看":"创建"}</h2>
   <span class="imaginary-line"></span>
   <div class="compile-form">
-  	<form action='/admin/business/${business==null?"createBiz":"updateBiz"}.do' method="post">
+  	<form action='/admin/business/${business==null?"createBiz":"updateBiz"}.do' method="post" onsubmit="return checkVal();">
     <%if(business!=null){%>
     <input type="hidden" name="id" value='${business.id}'>
     <%}%>
@@ -42,11 +163,11 @@ var htmlPart = {
       <label class="compile-form-title2 fl">业务事项名称填写依据</label>
       <div class="c-f-width485 fl">
         <ul class="choosable-box">
-          <li> <input name="nameRef" type="checkbox" value="1" ${business==null?'':business.nameRef == "1"?checked="checked"checked=""}/> “三定方案”中的核心业务 </li>
-          <li> <input name="nameRef" type="checkbox" value="2" ${business==null?'':business.nameRef == "2"?checked="checked"checked=""}/> 行政审批、行政许可事项 </li>
-          <li> <input name="nameRef" type="checkbox" value="3" ${business==null?'':business.nameRef == "3"?checked="checked"checked=""}/> 委办局党组决定事项 </li>
-          <li> <input name="nameRef" type="checkbox" value="4" ${business==null?'':business.nameRef == "4"?checked="checked"checked=""}/> 可共享的科技信息资源 </li>
-          <li> <input name="nameRef" type="checkbox" value="5" ${business==null?'':business.nameRef == "5"?checked="checked"checked=""}/> 单位日常工作 </li>
+          <li> <input name="nameRef" type="checkbox" value="1" /> “三定方案”中的核心业务 </li>
+          <li> <input name="nameRef" type="checkbox" value="2" /> 行政审批、行政许可事项 </li>
+          <li> <input name="nameRef" type="checkbox" value="3" /> 委办局党组决定事项 </li>
+          <li> <input name="nameRef" type="checkbox" value="4" /> 可共享的科技信息资源 </li>
+          <li> <input name="nameRef" type="checkbox" value="5" /> 单位日常工作 </li>
         </ul>
       </div>
     </div>
@@ -72,39 +193,41 @@ var htmlPart = {
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
+    	<input id="type" type="hidden" name="type" value='${business==null?"":business.type}'>
       <label class="compile-form-title2 fl">业务事项分类</label>
-      <select class="form-control width232 fl mr20" name="type">
-        <option value="1" ${business==null?'':business.type == 1?selected="selected":selected=""}>非行政执法类</option>
-        <option value="2" ${business==null?'':business.type == 2?selected="selected":selected=""}>2</option>
-        <option value="3" ${business==null?'':business.type == 3?selected="selected":selected=""}>3</option>
-        <option value="4" ${business==null?'':business.type == 4?selected="selected":selected=""}>4</option>
-        <option value="5" ${business==null?'':business.type == 5?selected="selected":selected=""}>5</option>
-      </select>
-      <select class="form-control width232 fl" name="fortype">
-        <option value="1" >公共服务</option>
+      <select id="forType1" class="form-control width232 fl mr20" >
+        <option value="1" >非行政执法类</option>
         <option value="2" >2</option>
         <option value="3" >3</option>
+        <option value="4" >4</option>
+        <option value="5" >5</option>
+      </select>
+      <select id="forType2" class="form-control width232 fl" >
+        <option value="1" >公共服务</option>
+        <option value="2" >2</option>
+        <option value="3" selected="selected">3</option>
         <option value="4" >4</option>
         <option value="5" >5</option>
       </select>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
-      <label class="compile-form-title2 fl">业务事项名称填写依据</label>
+      <label class="compile-form-title2 fl">业务事项办理依据</label>
       <div class="mb10">
+      	<input id="basis" type="hidden" name="basis" value="${business==null?'':business.basis}">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="basis" value="1" id="basis_1" ${business==null?'':business.basis == "1"?checked="checked":checked=""}> 有
+          <input type="radio" value="1" name="forBasis" > 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="basis" value="0" id="basis_0" ${business==null?'':business.basis == "0"?checked="checked":checked=""}> 无
+          <input type="radio" value="0" name="forBasis" > 无
         </label>
       </div>
       <div class="c-f-width485 fr">
         <ul class="choosable-box">
-          <li> <input name="forBasis" type="checkbox" value="1" /> 国家相关规定 </li>
-          <li> <input name="forBasis" type="checkbox" value="2" /> 市委、市政府相关规定 </li>
-          <li> <input name="forBasis" type="checkbox" value="3" /> 国家部委相关规定 </li>
-          <li> <input name="forBasis" type="checkbox" value="4" /> 本单位相关规定 </li>
+          <li> <input name="forBasis2" type="checkbox" value="1" /> 国家相关规定 </li>
+          <li> <input name="forBasis2" type="checkbox" value="2" /> 市委、市政府相关规定 </li>
+          <li> <input name="forBasis2" type="checkbox" value="3" /> 国家部委相关规定 </li>
+          <li> <input name="forBasis2" type="checkbox" value="4" /> 本单位相关规定 </li>
         </ul>
       </div>
     </div>
@@ -143,39 +266,41 @@ var htmlPart = {
       <label class="compile-form-title2 fl">业务量/工作量</label>
       <div class="fr">
         <div class="mb10">
+        	<input type="hidden" id="workload" name="workload" value="${business==null?'':business.workload}">
           <label class="has-ico-radio mr20"> 
-            <input type="radio" name="workload" value="1" id="workload_1" ${business==null?'':business.workload == "1"?checked="checked":checked=""}> 有
+            <input type="radio" name="forWorkload" value="1" id="workload_1" > 有
           </label>
           <label class="has-ico-radio"> 
-            <input type="radio" name="workload" value="0" id="workload_0" ${business==null?'':business.workload == "0"?checked="checked":checked=""}> 无
+            <input type="radio" name="forWorkload" value="0" id="workload_0" > 无
           </label>
         </div>
-        <input class="form-control inp fl width300 mr20" type="text" placeholder="">
-        <select class="form-control width160 fl" name="forWorkload">
+        <input class="form-control inp fl width300 mr20" id="forWorkload2" type="text" placeholder="">
+        <!-- <select class="form-control width160 fl" name="forWorkload">
           <option value="1" >公共服务</option>
           <option value="2" >2</option>
           <option value="3" >3</option>
           <option value="4" >4</option>
           <option value="5" >5</option>
-        </select>
+        </select> -->
       </div>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项办理涉及的其他相关单位</label>
       <div class="mb10">
+      	<input type="hidden" id="relateOffice" name="relateOffice" value="${business==null?'':business.relateOffice}">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="relateOffice" value="1" id="relateOffice_1" ${business==null?'':business.relateOffice == "1"?checked="checked":checked=""}> 有
+          <input type="radio" name="forRelateOffice" value="1" id="relateOffice_1" > 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="relateOffice" value="0" id="relateOffice_0" ${business==null?'':business.relateOffice == "0"?checked="checked":checked=""}> 无
+          <input type="radio" name="forRelateOffice" value="0" id="relateOffice_0" > 无
         </label>
       </div>
       <div class="c-f-width485 fr">
         <ul class="choosable-box">
-          <li> <input name="forRelateOffice" type="checkbox" value="1" /> 国家部委 </li>
-          <li> <input name="forRelateOffice" type="checkbox" value="2" /> 市委、市政府相关委办局 </li>
-          <li> <input name="forRelateOffice" type="checkbox" value="3" /> 委（局）内处室、直属单位 </li>
+          <li> <input name="forRelateOffice2" type="checkbox" value="1" /> 国家部委 </li>
+          <li> <input name="forRelateOffice2" type="checkbox" value="2" /> 市委、市政府相关委办局 </li>
+          <li> <input name="forRelateOffice2" type="checkbox" value="3" /> 委（局）内处室、直属单位 </li>
         </ul>
       </div>
     </div>
@@ -214,15 +339,16 @@ var htmlPart = {
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项应用系统</label>
       <div class="mb10">
+      	<input type="hidden" id="isUse" name="isUse" value="${business==null?'':business.isUse}">
         <label class="has-ico-radio mr20"> 
-          <input type="radio" name="isUse" value="1" id="isUse_1" ${business==null?'':business.isUse == "1"?checked="checked":checked=""}> 有
+          <input type="radio" name="forIsUse" value="1" > 有
         </label>
         <label class="has-ico-radio"> 
-          <input type="radio" name="isUse" value="0" id="isUse_0" ${business==null?'':business.isUse == "0"?checked="checked":checked=""}> 无
+          <input type="radio" name="forIsUse" value="0" > 无
         </label>
       </div>
       <div class="c-f-width485 fr">
-        <textarea class="form-control c-f-width485" rows="3" name="forIsUse" placeholder="备注" ></textarea>
+        <textarea id="forIsUse2" class="form-control c-f-width485" rows="3" name="forIsUse2" placeholder="备注" ></textarea>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
@@ -230,13 +356,13 @@ var htmlPart = {
       <label class="compile-form-title2 fl">资源共享范围</label>
       <div class="c-f-width485 fl">
         <ul class="choosable-box">
-          <li> <input name="shareWith" type="checkbox" value="1" ${business==null?'':business.shareWith == 1?selected="selected":selected=""}/> 所有人员 </li>
-          <li> <input name="shareWith" type="checkbox" value="2" ${business==null?'':business.shareWith == 2?selected="selected":selected=""}/> 国家部委 </li>
-          <li> <input name="shareWith" type="checkbox" value="3" ${business==null?'':business.shareWith == 3?selected="selected":selected=""}/> 市领导 </li>
-          <li> <input name="shareWith" type="checkbox" value="4" ${business==null?'':business.shareWith == 4?selected="selected":selected=""}/> 委办局 </li>
-          <li> <input name="shareWith" type="checkbox" value="5" ${business==null?'':business.shareWith == 5?selected="selected":selected=""}/> 委（局）内 </li>
-          <li> <input name="shareWith" type="checkbox" value="6" ${business==null?'':business.shareWith == 6?selected="selected":selected=""}/> 本部门专员 </li>
-          <li> <input name="shareWith" type="checkbox" value="7" ${business==null?'':business.shareWith == 7?selected="selected":selected=""}/> 其他 </li>
+          <li> <input name="shareWith" type="checkbox" value="1" /> 所有人员 </li>
+          <li> <input name="shareWith" type="checkbox" value="2" /> 国家部委 </li>
+          <li> <input name="shareWith" type="checkbox" value="3" /> 市领导 </li>
+          <li> <input name="shareWith" type="checkbox" value="4" /> 委办局 </li>
+          <li> <input name="shareWith" type="checkbox" value="5" /> 委（局）内 </li>
+          <li> <input name="shareWith" type="checkbox" value="6" /> 本部门专员 </li>
+          <li> <input name="shareWith" type="checkbox" value="7" /> 其他 </li>
         </ul>
       </div>
     </div>
