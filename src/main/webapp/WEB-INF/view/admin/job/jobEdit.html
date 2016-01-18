@@ -45,24 +45,42 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
+		        <select class="form-control c-f-width540" name="officeId"  value="8">
+				  <option value="1">1</option>
+				  <option value="2">2</option>
+				  <option value="3">3</option>
+				  <option value="4">4</option>
+				  <option value="5">5</option>
+				</select>
+		        
+		        <!-- 
 				<input class="form-control inp fl c-f-width450" type="text" placeholder="" name="officeId" value="8">
-				<span class="btn-select fr">选择</span>
+				<span class="btn-select fr">选择</span> -->
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">相关业务</label>
-				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
-				<span class="btn-select fr">选择</span>
-			</div>
-			<div class="mb20 clearfix"></div>
-			<div class="c-formbox">
-				<label class="compile-form-title fl">岗位属性</label>
-				<select class="form-control c-f-width540" name="type">
+				 <select class="form-control c-f-width540" name="businessId" value="5">
 				  <option>1</option>
 				  <option>2</option>
 				  <option>3</option>
 				  <option>4</option>
 				  <option>5</option>
+				</select>
+		        
+		        <!-- 
+				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
+				<span class="btn-select fr">选择</span> -->
+			</div>
+			<div class="mb20 clearfix"></div>
+			<div class="c-formbox">
+				<label class="compile-form-title fl">岗位属性</label>
+				<select class="form-control c-f-width540" name="type">
+				  <option value="1" ${job==null?'':job.type == 1?selected="selected":selected=""}>1</option>
+				  <option value="2" ${job==null?'':job.type == 2?selected="selected":selected=""}>2</option>
+				  <option value="3" ${job==null?'':job.type == 3?selected="selected":selected=""}>3</option>
+				  <option value="4" ${job==null?'':job.type == 4?selected="selected":selected=""}>4</option>
+				  <option value="5" ${job==null?'':job.type == 5?selected="selected":selected=""}>5</option>
 				</select>
 			</div>
 			<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>

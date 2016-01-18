@@ -55,4 +55,9 @@ public interface ResourceInfoDao extends CrudDao<ResourceInfo>{
 	 * @return
 	 */
 	List<ResourceInfo> findListByBizId(Map<String, Object> sqlMap);
+
+	/**查询有效个数
+	 * @return
+	 */
+	Long getCount();
 }

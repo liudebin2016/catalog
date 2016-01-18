@@ -44,4 +44,9 @@ public interface SubjectInfoDao  extends CrudDao<SubjectInfo> {
 	 */
 	List<ResourceInfo> findListByRscId(Map<String, Object> sqlMap);
 
+	/**查询有效个数
+	 * @return
+	 */
+	Long getCount();
+
 }

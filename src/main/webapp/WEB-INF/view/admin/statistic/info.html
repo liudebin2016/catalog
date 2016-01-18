@@ -3,54 +3,137 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
 <style type="text/css">
 
 </style>
-
 <%};%>
-
-
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
-
+	//查询
+	function queryList(){
+		var applyName=$.trim($("#applyName").val());
+		var applyType=$.trim($("#applyType").val());
+		var status=$.trim($("#status").val());
+		$('#dg').datagrid({
+		    url:'/admin/register/applyList', 
+		    queryParams: {
+		    	applyName : applyName,
+		    	applyType : applyType,
+		    	status : status
+			},
+		    pagination:true,
+		    method:"post",
+		    rownumbers:true,
+		    columns:[[    
+				{field:'id',title:'id',width:300,hidden:true}, 
+		        {field:'applyName',title:'名称',width:300},
+		        {field:'applyType',title:'信息类型',width:200,align:"center",
+		        	formatter:function(value,row,index){
+		        		var tmp = "--";
+		        		switch(value){
+		        		case 1:
+		        			tmp = '机构职责';
+		        			break;
+		        		case 2:
+		        			tmp = '部门岗位';
+		        			break;
+		        		case 3:
+		        			tmp = '业务信息';
+		        			break;
+		        		case 4:
+		        			tmp = '资源信息';
+		        			break;
+		        		case 5:
+		        			tmp = '主题信息';
+		        			break;
+		        		}
+		        		return tmp;
+		        	}},
+		        {field:'applyFlag',title:'申请状态',width:150,align:"center",
+	        		formatter:function(value,row,index){
+		    				var tmp = '--';
+		    				switch(value){
+			        		case '1':
+			        			tmp = '注册';
+			        			break;
+			        		case '2':
+			        			tmp = '注销';
+			        			break;
+			        		}
+			        		return tmp;
+		    		}
+		        },
+		        {field:'approveFlag',title:'申请结果',width:150,align:"center",
+	        		formatter:function(value,row,index){
+		    				var tmp = '--';
+		    				switch(value){
+			        		case '0':
+			        			tmp = '待审批';
+			        			break;
+			        		case '1':
+			        			tmp = '通过';
+			        			break;
+			        		case '2':
+			        			tmp = '未通过';
+			        			break;
+			        		}
+			        		return tmp;
+		    		}
+		        },
+		        {field:'operator',title:'审核意见',width:220,align:"center",
+		        	formatter:function(value,row,index){
+	//		                    var s = '<a href="/admin/business/action.do?type=update&id='+row.id+'">编辑</a> ';
+	//		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	//		                    var c = '<a href="#" onclick="javascript:delBizById('+row.id+');">删除</a>';
+	//		                    return s+b+c;
+							return '';
+		            }
+		        }
+		    ]]
+		}); 
+	}
+	$(document).ready(function(){
+		queryList();
+	});
 </script>
-
 <%};%>
-
 <%
 var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
 <div class="content">
-           <h3 class="h3tit mt30">使用申请审批</h3>
+           <h3 class="h3tit mt30">信息统计</h3>
            <div class="mt30">当前共有<a  type="button" class="fr  btns-gray  ">导出</a></div>
            <div class="total-txt mt20">
                 	<ul>
                     	<li>
-                        	<span><strong>34</strong></span>
+                        	<span><strong>${counts.area}</strong></span>
                         	<span>域</span>
                         </li>
                     	<li>
-                        	<span><strong>18964</strong> 个</span>
+                        	<span><strong>${counts.office}</strong> 个</span>
                         	<span>机构</span>
                         </li>
                     	<li>
-                        	<span><strong>20001</strong> 个</span>
+                        	<span><strong>${counts.job}</strong> 个</span>
                         	<span>岗位数</span>
                         </li>
                     	<li>
-                        	<span><strong>10215</strong> 条</span>
+                        	<span><strong>${counts.business}</strong> 条</span>
                         	<span>业务数</span>
                         </li>
                     	<li>
-                        	<span><strong>14215</strong> 万条</span>
+                        	<span><strong>${counts.resource}</strong> 条</span>
                         	<span>资源数</span>
                         </li>
                         <li>
-                        	<span><strong>14215</strong> 万条</span>
+                        	<span><strong>${counts.subject}</strong> 条</span>
                         	<span>主题数</span>
                         </li>
                     </ul>

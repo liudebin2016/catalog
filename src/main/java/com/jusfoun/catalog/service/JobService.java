@@ -10,21 +10,25 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
+import com.jusfoun.catalog.vo.JobAndOfficeView;
 @Service
 @Transactional(readOnly = false)
 public class JobService extends CrudService<JobDao,Job> {
 
 	
-	public int createJob(Job job,String officeId){
+	public int createJob(Job job,String officeId, String businessId){
 		int i = dao.createJob(job);
-		//插入office表
+		//插入job_office表
 		HashMap<String, Object> cMap = new HashMap<String, Object>();
 		cMap.put("officeId", officeId);
 		cMap.put("jobId", job.getId());
+		cMap.put("businessId", businessId);
+		//插入job_business表
+		dao.insertJob_business(cMap);
 		return dao.insertJobAndOffice(cMap);
 	}
 
-	public List<Job> findJobList(Job job){
+	public List<JobAndOfficeView> findJobList(Job job){
 		
 		return dao.findJobList(job);
 	}
@@ -34,8 +38,10 @@ public class JobService extends CrudService<JobDao,Job> {
 		return dao.selectById(id);
 	}
 
-	public boolean updateById(Job job) {
+	public boolean updateById(Job job, HashMap<String, Object> cMap) {
 		int index = dao.updateById(job);
+		dao.updateJob_Office(cMap);
+		dao.updateJob_business(cMap);
 		return index>0?true:false;
 	}
 
@@ -58,6 +64,18 @@ public class JobService extends CrudService<JobDao,Job> {
 	}
 
 	public int deleteById(Job job) {
+		dao.deleteJob_Office(job);
+		dao.deleteJob_Bussiness(job);
 		return dao.deleteById(job);
+	}
+
+	public int findListCountByOfficeId(JobAndOfficeView job) {
+		
+		return dao.findListCountByOfficeId(job);
+	}
+
+	public List<JobAndOfficeView> findJobListByOfficeId(JobAndOfficeView job) {
+		
+		return dao.findJobListByOfficeId(job);
 	}
 }

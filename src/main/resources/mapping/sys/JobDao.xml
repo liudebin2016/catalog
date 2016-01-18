@@ -178,18 +178,89 @@
   
   <insert id="createJob" parameterType="com.jusfoun.catalog.entity.Job" useGeneratedKeys="true" keyProperty="id">
  
-    insert into job (name, duty, 
-      type, create_by, create_date, 
-      update_by, update_date, del_flag)
-    values (#{name,jdbcType=VARCHAR}, #{duty,jdbcType=VARCHAR}, 
-      #{type,jdbcType=CHAR}, #{createBy.id,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{updateBy.id,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=CHAR})
+   insert into job
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="duty != null" >
+        duty,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="duty != null" >
+        #{duty,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy.id,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy.id,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
   </insert>
   <select id="findListCount" resultType="int">
 	  	SELECT 
-  		count(id)	
+  		count(j.id)	
   			FROM 
-  		job 
+  		job j
+  		INNER JOIN job_office jo ON j.id = jo.job_id
+	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN job_business jb ON j.id = jb.job_id
+	INNER JOIN business b ON jb.business_id = b.id 
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        j.name like #{name}
+	    </if>  
+	    <if test="status!= null ">  
+	        AND j.status=#{status}  
+	    </if>  
+	</trim>	
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        name like #{name}
@@ -199,20 +270,80 @@
 	    </if>  
 	</trim>	
   </select>
-  <select id="findJobList" resultType="Job">
-  SELECT 
-  		<include refid="Base_Column_List" />
-	    ,
-	    <include refid="Blob_Column_List" />	
-  	FROM 
-  		job 
+   <select id="findListCountByOfficeId" resultType="int">
+	  	SELECT count(j.id)
+  	from job j 
+  	
+  	INNER JOIN job_office jo ON j.id = jo.job_id
+	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN job_business jb ON j.id = jb.job_id
+	INNER JOIN business b ON jb.business_id = b.id  
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="jobName!=null and jobName!='' ">  
+	        j.name like #{jobName}
+	    </if>  
+	    <if test="jobStatus!= null ">  
+	        AND j.status=#{jobStatus}  
+	    </if>   
+	     <if test="officeId!= null ">  
+	        AND s.id=#{officeId}  
+	    </if>
+	     <if test="OfficeIds.size() !=0">
+	    	AND s.id in 
+	    	<foreach item="OfficeIds" index="index" collection="OfficeIds" open="(" separator="," close=")">  
+  				#{OfficeIds}  
+ 			</foreach>
+	    </if>
+	</trim>	
+  </select>
+  <select id="findJobList" resultType="JobAndOfficeView">
+  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
+  	b.id as businessId,b.name as businessName
+  	
+  	from job j 
+  	
+  	INNER JOIN job_office jo ON j.id = jo.job_id
+	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN job_business jb ON j.id = jb.job_id
+	INNER JOIN business b ON jb.business_id = b.id 
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
-	        name like #{name}
+	        j.name like #{name}
 	    </if>  
 	    <if test="status!= null ">  
-	        AND status=#{status}  
+	        AND j.status=#{status}  
 	    </if>  
+	</trim>	
+  		${sqlMap.page}
+  </select>
+  
+  <select id="findJobListByOfficeId" resultType="JobAndOfficeView">
+  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
+  	b.id as businessId,b.name as businessName
+  	
+  	from job j 
+  	
+  	INNER JOIN job_office jo ON j.id = jo.job_id
+	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN job_business jb ON j.id = jb.job_id
+	INNER JOIN business b ON jb.business_id = b.id  
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="jobName!=null and jobName!='' ">  
+	        j.name like #{jobName}
+	    </if>  
+	    <if test="jobStatus!= null ">  
+	        AND j.status=#{jobStatus}  
+	    </if>  
+	     <if test="officeId!= null ">  
+	        AND s.id=#{officeId}  
+	    </if>   
+	    <if test="OfficeIds.size() !=0">
+	    	AND s.id in 
+	    	<foreach item="OfficeIds" index="index" collection="OfficeIds" open="(" separator="," close=")">  
+  				#{OfficeIds}  
+ 			</foreach>
+	    </if>
+	     
 	</trim>	
   		${sqlMap.page}
   </select>
@@ -257,14 +388,15 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <select id="findJobByCondition" resultType="Job">
-  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag from job 
-  	<where>
-  		<if test="name!=null"> AND name LIKE CONCAT('%', #{name}, '%')</if>
-  		<if test="office!=null"> AND name LIKE CONCAT('%', #{office}, '%')</if>
-  		<if test="office1!=null"> AND name LIKE CONCAT('%', #{office1}, '%')</if>
-  	</where>
-  	 order by id DESC 
+  <select id="findJobByCondition" resultType="JobAndOfficeView">
+  	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
+  	b.id as businessId,b.name as businessName
+  	
+  	from job j 
+  	
+  	LEFT JOIN job_office jo on j.id=jo.job_id 
+  	LEFT JOIN sys_office s on jo.office_id=s.id
+  	LEFT JOIN job_business jb ON j.id=jb.business_id LEFT JOIN business b on jb.business_id=b.id
   </select>
   
   <!-- 根据officeId 查询关联的jobs -->
@@ -280,8 +412,33 @@
       insert into job_office (job_id,office_id) values(#{jobId},#{officeId})
   </insert>
   
+  <insert id="insertJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
+      insert into job_business (job_id,business_id) values(#{jobId},#{businessId})
+  </insert>
+  
+  <update id="updateJob_Office" parameterType="com.jusfoun.catalog.entity.Job" >
+      update job_office set office_id=#{officeId} where job_id=#{jobId}
+  </update>
+   <update id="updateJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
+      update job_business set business_id=#{businessId} where job_id=#{jobId}
+  </update>
   <delete id="deleteById" parameterType="com.jusfoun.catalog.entity.Job" >
     delete from job
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteJob_Office" parameterType="com.jusfoun.catalog.entity.Job" >
+    delete from job_office
+    where job_id = #{id}
+  </delete>
+  <delete id="deleteJob_Bussiness" parameterType="com.jusfoun.catalog.entity.Job" >
+    delete from job_business
+    where job_id = #{id}
+  </delete>
+  
+    <!-- 查询有效个数 -->
+  <select id="getCount" resultType="java.lang.Long">
+  	select count(id)
+  	from job
+  	where del_flag = 0
+  </select>
 </mapper>

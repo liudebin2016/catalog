@@ -176,4 +176,10 @@
 		</choose>
     </select>
 
+	<!-- 查询有效个数 -->
+	<select id="getCount" resultType="java.lang.Long">
+		select count(id)
+		from sys_office
+		where del_flag = 0
+	</select>
 </mapper>
