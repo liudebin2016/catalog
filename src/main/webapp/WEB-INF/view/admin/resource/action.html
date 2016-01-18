@@ -12,7 +12,8 @@
 <script type="text/javascript">
 
 function checkVal(){
-	
+	$('#infoField').val($('#addField').html());
+	return true;
 }	
 
 $(document).ready(function(){
@@ -38,7 +39,19 @@ $(document).ready(function(){
 			}		
 		}
 	});
+	
+	$('#addField').html($('#infoField').val());
 });
+
+//移除信息字段
+function removeField(obj){
+	$(obj).parent().remove();
+}
+//增加信息字段
+function addField(){
+	var sdf='<div style="margin-left:10px;">'+$('#forInfoField').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeField(this)">删除</a></div>'
+	$('#addField').append(sdf)
+}
 </script>
 <%};%>
 
@@ -118,11 +131,9 @@ $(document).ready(function(){
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源采集途径</label>
 			<select class="form-control c-f-width485" name="collectWay">
-			  <option value="1" ${rsc==null?'':rsc.collectWay == 1?selected="selected":selected=""}>非行政执法类</option>
-			  <option value="2" ${rsc==null?'':rsc.collectWay == 2?selected="selected":selected=""}>2</option>
-			  <option value="3" ${rsc==null?'':rsc.collectWay == 3?selected="selected":selected=""}>3</option>
-			  <option value="4" ${rsc==null?'':rsc.collectWay == 4?selected="selected":selected=""}>4</option>
-			  <option value="5" ${rsc==null?'':rsc.collectWay == 5?selected="selected":selected=""}>5</option>
+			  <option value="1" ${rsc==null?'':rsc.collectWay == 1?selected="selected":selected=""}>面向业务对象采集的数据</option>
+			  <option value="2" ${rsc==null?'':rsc.collectWay == 2?selected="selected":selected=""}>业务流程产生的数据</option>
+			  <option value="3" ${rsc==null?'':rsc.collectWay == 3?selected="selected":selected=""}>综合统计形成的数据</option>
 			</select>
 		</div>
 		<div class="c-formbox">
@@ -133,35 +144,21 @@ $(document).ready(function(){
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源安全级别</label>
 			<select class="form-control c-f-width485" name="securityLevel">
-			  <option value="1" ${rsc==null?'':rsc.securityLevel == 1?selected="selected":selected=""}>非行政执法类</option>
-			  <option value="2" ${rsc==null?'':rsc.securityLevel == 2?selected="selected":selected=""}>2</option>
-			  <option value="3" ${rsc==null?'':rsc.securityLevel == 3?selected="selected":selected=""}>3</option>
-			  <option value="4" ${rsc==null?'':rsc.securityLevel == 4?selected="selected":selected=""}>4</option>
-			  <option value="5" ${rsc==null?'':rsc.securityLevel == 5?selected="selected":selected=""}>5</option>
+			  <option value="1" ${rsc==null?'':rsc.securityLevel == 1?selected="selected":selected=""}>未分级</option>
+			  <option value="2" ${rsc==null?'':rsc.securityLevel == 2?selected="selected":selected=""}>内部</option>
+			  <option value="3" ${rsc==null?'':rsc.securityLevel == 3?selected="selected":selected=""}>秘密</option>
+			  <option value="4" ${rsc==null?'':rsc.securityLevel == 4?selected="selected":selected=""}>机密</option>
+			  <option value="5" ${rsc==null?'':rsc.securityLevel == 5?selected="selected":selected=""}>绝密</option>
 			</select>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">信息字段</label>
-			<input type="hidden" name="infoField" value="98">
+			<input id="infoField" type="hidden" name="infoField" value="${rsc==null?'':rsc.infoField}">
 			<div class="add-material c-f-width485 fl">
-				<a class="btns-gray fl mb20 btn-auto" href="javascript:;">添加所需材料</a>
-				<table class="table table-bordered">
-			      <thead>
-			        <tr class="active">
-			          <th class="tc" width="50">序号</th>
-			          <th>字段名称</th>
-			          <th width="124">操作</th>
-			        </tr>
-			      </thead>
-			      <tbody>
-			        <tr>
-			          <td class="tc">1</td>
-			          <td>Mark</td>
-			          <td><a class="mr20" href="javascript:;">修改</a><a href="javascript:;">删除</a></td>
-			        </tr>
-			      </tbody>
-			    </table>
+				<input type="text" id="forInfoField"> &nbsp;&nbsp;&nbsp;<a class="btns-gray mb10 btn-auto" href="javascript:addField();">添加信息字段</a>
+				<div id="addField">
+				</div>
 			</div>
 		</div>
 		<div class="clearfix"></div>

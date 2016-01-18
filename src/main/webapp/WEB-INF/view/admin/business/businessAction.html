@@ -18,7 +18,7 @@ var jsPart = {
 
 function checkVal(){
 	//设置业务事件分类值
-	$("#type").val($("#forType1").val()+"-"+$("#forType2").val());
+	/* $("#type").val($("#forType1").val()+"-"+$("#forType2").val()); */
 	//设置业务事项办理依据
 	if($(":radio[name='forBasis']:checked").val()==0){
 		$("#basis").val($(":radio[name='forBasis']:checked").val());
@@ -51,6 +51,10 @@ function checkVal(){
 	}else{
 		$("#isUse").val($(":radio[name='forIsUse']:checked").val()+"-"+$("#forIsUse2").val());
 	}
+	
+	$('#needData').val($('#addNeedData').html());
+	$('#produceData').val($('#addProduceData').html());
+	
 	return true;
 }
 
@@ -69,9 +73,9 @@ $(document).ready(function(){
 	});
 	
 	//编辑时初始化“业务事项分类”
-	var types=$("#type").val().split("-");
+	/* var types=$("#type").val().split("-");
 	$("#forType1 option[value='"+types[0]+"']").attr("selected","selected");
-	$("#forType2 option[value='"+types[1]+"']").attr("selected","selected");
+	$("#forType2 option[value='"+types[1]+"']").attr("selected","selected"); */
 	
 	//编辑时初始化“业务事项办理依据”
 	if($("#basis").val()==0){
@@ -133,8 +137,29 @@ $(document).ready(function(){
 		}
 	});
 	
+	$('#addNeedData').html($('#needData').val());
+	$('#addProduceData').html($('#produceData').val());
 });
 
+//移除信息字段
+function removeNeedData(obj){
+	$(obj).parent().remove();
+}
+//增加信息字段
+function addNeedData(){
+	var sdf='<div style="margin-left:10px;">'+$('#forNeedData').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeNeedData(this)">删除</a></div>'
+	$('#addNeedData').append(sdf)
+}
+
+//移除信息字段
+function removeProduceData(obj){
+	$(obj).parent().remove();
+}
+//增加信息字段
+function addProduceData(){
+	var sdf='<div style="margin-left:10px;">'+$('#forProduceData').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeProduceData(this)">删除</a></div>'
+	$('#addProduceData').append(sdf)
+}
 
 </script>
 
@@ -192,7 +217,7 @@ var htmlPart = {
       <input class="form-control inp fl c-f-width485" type="text" name="code" placeholder="" value='${business==null?"":business.code}'>
     </div>
     <div class="mb20 clearfix"></div>
-    <div class="c-formbox">
+    <!-- <div class="c-formbox">
     	<input id="type" type="hidden" name="type" value='${business==null?"":business.type}'>
       <label class="compile-form-title2 fl">业务事项分类</label>
       <select id="forType1" class="form-control width232 fl mr20" >
@@ -210,7 +235,7 @@ var htmlPart = {
         <option value="5" >5</option>
       </select>
     </div>
-    <div class="mb20 clearfix"></div>
+    <div class="mb20 clearfix"></div> -->
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项办理依据</label>
       <div class="mb10">
@@ -264,24 +289,19 @@ var htmlPart = {
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务量/工作量</label>
-      <div class="fr">
+      <div class="fr" style="float:left;">
         <div class="mb10">
         	<input type="hidden" id="workload" name="workload" value="${business==null?'':business.workload}">
+          <span style="float:left;">
           <label class="has-ico-radio mr20"> 
             <input type="radio" name="forWorkload" value="1" id="workload_1" > 有
           </label>
           <label class="has-ico-radio"> 
             <input type="radio" name="forWorkload" value="0" id="workload_0" > 无
           </label>
+          </span>
+	      <input  style="float:left;margin-left: 20px;" class="form-control inp fl width300 mr20" id="forWorkload2" type="text" placeholder="">
         </div>
-        <input class="form-control inp fl width300 mr20" id="forWorkload2" type="text" placeholder="">
-        <!-- <select class="form-control width160 fl" name="forWorkload">
-          <option value="1" >公共服务</option>
-          <option value="2" >2</option>
-          <option value="3" >3</option>
-          <option value="4" >4</option>
-          <option value="5" >5</option>
-        </select> -->
       </div>
     </div>
     <div class="mb20 clearfix"></div>
@@ -307,32 +327,21 @@ var htmlPart = {
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项产生材料</label>
-      <input type="hidden" name="needData" value="业务事项所需材料">
-      <div class="add-material c-f-width485 fl"> <a class="btns-gray btn-auto fl mb20" href="javascript:;">添加所需材料</a>
-        <table class="table table-bordered">
-          <thead>
-            <tr class="active">
-              <th class="tc" width="50">序号</th>
-              <th>字段名称</th>
-              <th width="118">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="tc">1</td>
-              <td>Mark</td>
-              <td class="operation-box"><span class="fl">编辑</span> <span class="fl">删除</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <input id="needData" type="hidden" name="needData" value="${business==null?'':business.needData}">
+      <div class="add-material c-f-width485 fl"> 
+      	<input type="text" id="forNeedData" value=""> &nbsp;&nbsp;<a class="btns-gray btn-auto mb10" href="javascript:void(0);" onclick="addNeedData()">添加所需材料</a>
+        <div id="addNeedData">
+		</div>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项产生材料</label>
-      <input type="hidden" name="produceData" value="">
-      <div class="add-material c-f-width485 fl"> <a class="btns-gray btn-auto mb10" href="javascript:;">添加生产材料</a>
-        <div>暂无数据</div>
+      <input id="produceData" type="hidden" name="produceData" value="${business==null?'':business.produceData}">
+      <div class="add-material c-f-width485 fl"> 
+      	<input type="text" id="forProduceData" value=""> &nbsp;&nbsp;<a class="btns-gray btn-auto mb10" href="javascript:void(0);" onclick="addProduceData()">添加生产材料</a>
+        <div id="addProduceData">
+		</div>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
@@ -366,16 +375,6 @@ var htmlPart = {
         </ul>
       </div>
     </div>
-    <!-- <div class="mb20 clearfix"></div>
-    <div class="c-formbox">
-      <label class="compile-form-title2 fl">是否可以申请共享</label>
-      <div class="c-f-width485 fl">
-        <ul class="choosable-box">
-          <li> <input type="radio" name="applyShare" value="1" id="applyShare_1"> 可申请 </li>
-          <li> <input type="radio" name="applyShare" value="0" id="applyShare_0"> 不可申请 </li>
-        </ul>
-      </div>
-    </div> -->
     <div class="mb20 clearfix"></div>
     <div class="btn-box fr mb40">
     <%if(null!=actionType&&actionType=="view"){%>
