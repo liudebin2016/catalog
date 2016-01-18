@@ -261,14 +261,6 @@
 	        AND j.status=#{status}  
 	    </if>  
 	</trim>	
-  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
-	    <if test="name!=null and name!='' ">  
-	        name like #{name}
-	    </if>  
-	    <if test="status!= null ">  
-	        AND status=#{status}  
-	    </if>  
-	</trim>	
   </select>
    <select id="findListCountByOfficeId" resultType="int">
 	  	SELECT count(j.id)

@@ -76,11 +76,12 @@ var htmlPart = {
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位属性</label>
 				<select class="form-control c-f-width540" name="type">
-				  <option value="1" ${job==null?'':job.type == 1?selected="selected":selected=""}>1</option>
-				  <option value="2" ${job==null?'':job.type == 2?selected="selected":selected=""}>2</option>
-				  <option value="3" ${job==null?'':job.type == 3?selected="selected":selected=""}>3</option>
-				  <option value="4" ${job==null?'':job.type == 4?selected="selected":selected=""}>4</option>
-				  <option value="5" ${job==null?'':job.type == 5?selected="selected":selected=""}>5</option>
+				  <option value="" >--请选择--</option>
+				  <option value="1" ${job==null?'':job.type == '1'?selected="selected":selected=""}>公务员编制</option>
+				  <option value="2" ${job==null?'':job.type == '2'?selected="selected":selected=""}>事业编制</option>
+				  <option value="3" ${job==null?'':job.type == '3'?selected="selected":selected=""}>参公编制</option>
+				  <option value="4" ${job==null?'':job.type == '4'?selected="selected":selected=""}>工勤编制</option>
+				  <option value="5" ${job==null?'':job.type == '5'?selected="selected":selected=""}>其他</option>
 				</select>
 			</div>
 			<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
