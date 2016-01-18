@@ -5,6 +5,8 @@ import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.common.tool.DateTool;
 import com.jusfoun.catalog.dao.LogDao;
 import com.jusfoun.catalog.entity.Log;
+import com.jusfoun.catalog.vo.LogAndUserView;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,15 @@ public class LogService extends CrudService<LogDao, Log> {
 		
 //		return super.findPage(page, log);
 		return null;
+	}
+
+	public List<LogAndUserView> reloadList(LogAndUserView log) {
+		
+		return dao.reloadList(log);
+	}
+
+	public int reloadLogListCount(LogAndUserView log) {
+		return dao.reloadLogListCount(log);
 	}
 	
 }

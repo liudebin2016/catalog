@@ -3,6 +3,9 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -13,8 +16,74 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+//根据id删除资源
+function delRscById(id){
+	$.get("/admin/job/delJobById.do", { id: id },
+	    function(data){location.reload();
+	    	if(data=="success"){
+	    		alert("删除成功！");
+	    		location.reload();
+	    	}
+	    }
+	);   
+}
 
+function resetSrc(){
+	$("#userName").val("");
+	$('#beginDate').combo('setText','');
+	$('#endDate').combo('setText','');
+}
+
+//查询
+function getRscList(){
+	var userName=$.trim($("#userName").val());
+	var beginDate = $('#beginDate').datetimebox('getValue');		         // 获取日期时间输入框的值
+	var endDate = $('#endDate').datetimebox('getValue');
+
+	
+	$('#dg').datagrid({
+	 url:'/admin/log/reloadList.do', 
+	    fitColumns:true,
+	    queryParams: {
+	    	userName: userName,
+	    	beginDate: beginDate,
+	    	endDate : endDate
+		},
+	    pagination:true,
+	    checkbox:true,
+	    method:"get",
+	    rownumbers:true,
+	    columns:[[ 
+			{field:'ck',title:'',width:0,checkbox:false},   
+			{field:'id',title:'id',width:0,hidden:true}, 
+	        {field:'userName',title:'用户名',width:150,align:"center"},    
+	        {field:'logTitle',title:'模块',width:150,align:"center"},
+	        {field:'logBeginDate',title:'操作时间',width:150,align:"center",
+	        	formatter:function(value,row,index){ 
+                    var unixTimestamp = new Date(value); 
+                    return unixTimestamp.toLocaleString(); 
+                    } 	
+	        },
+	        {field:'logRemoteAddr',title:'IP',width:150,align:"center"}
+	    ]],
+	    onLoadSuccess:function(data){
+	    	if (data.total == 0) {
+             //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+             $(this).datagrid('appendRow', { ck: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'ck', colspan: 6 })
+             //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+             $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+         }
+	    }
+	}); 
+}
+
+$(document).ready(function(){
+	getRscList();
+});
 
 </script>
 
@@ -25,152 +94,29 @@ var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
  <div class="content">
-	    <h3 class="h3tit mt30">使用申请审批</h3>
+	    <h3 class="h3tit mt30">使用日志</h3>
 	 	<div class="form-list top-search">
 	     	<ul class="li-fl">
 	         	<li>
-	             	<label>名称</label>
-	                 <input class="form-control inp wd260 " type="text" placeholder="">
+	             	<label>用户名</label>
+	                 <input class="form-control inp wd260 " type="text" placeholder="" id="userName">
 	             </li>
 	         	<li>
 	            <label>时间筛选</label>
-	             <input class="form-control inp-date" type="text" placeholder="2015-12-07 00:00:00">
+	            <input class="easyui-datetimebox" required style="width:200px" id="beginDate">
+	             
 	             <label>至</label>
-	             <input class="form-control inp-date" type="text" placeholder="2015-12-07 00:00:00">                    
+	             <input class="easyui-datetimebox" required style="width:200px" id="endDate">                    
 	                 
 	             </li>
 	            
 	         	<li>
-	             	<button class="btns mlt30" type="button">检索</button>
-	                 <input class="nobg mlt10" name="清空" type="reset" value="清空">                                       
+	             	<button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
+	                 <input class="nobg mlt10" name="清空" type="reset" value="清空" onclick="resetSrc()">                                       
 	             </li>
 	         </ul>
 	     </div>
-	     
-	
-	         
-	     <table class="table table-hover ntable mt20">
-	         <thead>
-	             <tr>
-	                 <th class="tc" width="40"><i class="ico-check"></i></th>
-	                 <th width="60">序号</th>
-	                 <th>用户名</th>
-	                 <th>模块</th>
-	                 <th width="80">操作</th>
-	                 <th width="110">操作时间</th> 
-	                 <th width="110">IP</th>
-	             </tr>
-	         </thead>
-	         <tbody>                                               
-	             <tr>
-	                 <td class="tc"><i class="ico-check ico-checked"></i></td>
-	                 <td class="tc">1</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>                     
-	             </tr>                                        
-	             <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">2</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	              <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">3</td>
-	                  <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	             <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">4</td>
-	                  <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	              <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">5</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>   
-	              <tr>
-	                 <td class="tc"><i class="ico-check ico-checked"></i></td>
-	                 <td>6</td>
-	                <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>                                                                    
-	             <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">7</td>
-	                <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	              <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">8</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	             <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">9</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>  
-	              <tr>
-	                 <td class="tc"><i class="ico-check"></i></td>
-	                 <td class="tc">10</td>
-	                 <td>总经理</td>
-	                 <td>九次方政府资源目录平台</td>
-	                 <td><a href="">查看</a></td> 
-	                 <td width="110">09:00:00</td>  
-	                 <td>192.168.1.2</td>      
-	             </tr>                         
-	         </tbody>
-	     </table>
-	     <div class="page-box">
-	         <ul class="pagination">
-	             <li><a class="arrows-left" href="javascript:;" ></a></li>
-	             <li class="active"><a>1</a></li>
-	             <li><a href="#">2</a></li>
-	             <li><a href="#">3</a></li>
-	             <li><a href="#">4</a></li>
-	             <li><a href="#">5</a></li>
-	             <li><a href="#">6</a></li>
-	             <li><a href="#">7</a></li>
-	             <li><a href="#">8</a></li>
-	             <li><a href="#">9</a></li>
-	              <li><a href="#">10</a></li>
-	             <li><a class="arrows-right" href="javascript:;"></a></li>
-	         </ul>
-	     </div>
-	 </div>
+	      <table id="dg"> </table>
     <!-- end: PAGE -->
 </div>
 <!-- end: MAIN CONTAINER -->
