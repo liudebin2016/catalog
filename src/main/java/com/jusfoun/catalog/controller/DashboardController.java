@@ -38,6 +38,10 @@ public class DashboardController extends BaseController{
     public String login(){
         return "";
     }
-
+    
+    @RequestMapping(value = "/search")
+    public String search() {
+        return "search";
+    }
 
 }
