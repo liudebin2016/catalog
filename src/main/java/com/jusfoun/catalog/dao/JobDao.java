@@ -26,13 +26,6 @@ public interface JobDao extends CrudDao<Job>{
 
 	public List findJobByCondition(HashMap<String, String> cMap);
 
-	public int insertJobAndOffice(HashMap<String, Object> cMap);
-	/**
-	 * 查询机构下关联的岗位
-	 * @param officeId 机构id
-	 */
-	public List<Job> findJobsByOfficeId(Integer officeId);
-
 	public int findListCount(Job job);
 
 	public int deleteById(Job job);
@@ -42,8 +35,6 @@ public interface JobDao extends CrudDao<Job>{
 	public List<JobAndOfficeView> findJobListByOfficeId(JobAndOfficeView job);
 
 	public int insertJob_business(HashMap<String, Object> cMap);
-
-	public int updateJob_Office(HashMap<String, Object> cMap);
 
 	public int updateJob_business(HashMap<String, Object> cMap);
 

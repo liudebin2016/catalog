@@ -15,8 +15,17 @@ public class Job extends DataEntity<Job>{
     private String duty;//职责
     private String type;//岗位属性
     private String status; //当前状态
+    private Integer officeId;
     
-    public String getName() {
+    public Integer getOfficeId() {
+		return officeId;
+	}
+
+	public void setOfficeId(Integer officeId) {
+		this.officeId = officeId;
+	}
+
+	public String getName() {
         return name;
     }
 

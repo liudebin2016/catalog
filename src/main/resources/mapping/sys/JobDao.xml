@@ -210,6 +210,9 @@
       <if test="remarks != null" >
         remarks,
       </if>
+      <if test="officeId != null" >
+        office_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -242,6 +245,9 @@
       <if test="remarks != null" >
         #{remarks,jdbcType=LONGVARCHAR},
       </if>
+      <if test="officeId != null" >
+        #{officeId,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <select id="findListCount" resultType="int">
@@ -249,8 +255,7 @@
   		count(j.id)	
   			FROM 
   		job j
-  		INNER JOIN job_office jo ON j.id = jo.job_id
-	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id 
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
@@ -266,8 +271,7 @@
 	  	SELECT count(j.id)
   	from job j 
   	
-  	INNER JOIN job_office jo ON j.id = jo.job_id
-	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id  
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
@@ -294,8 +298,7 @@
   	
   	from job j 
   	
-  	INNER JOIN job_office jo ON j.id = jo.job_id
-	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id 
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
@@ -315,8 +318,7 @@
   	
   	from job j 
   	
-  	INNER JOIN job_office jo ON j.id = jo.job_id
-	INNER JOIN sys_office s ON jo.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id  
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
@@ -341,7 +343,7 @@
   </select>
   
   <select id="selectById" parameterType="java.lang.String" resultType="com.jusfoun.catalog.entity.Job">
-    select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag
+    select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag,status,office_id as officeId
     from job
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -376,6 +378,9 @@
       <if test="remarks != null" >
         remarks = #{remarks,jdbcType=LONGVARCHAR},
       </if>
+      <if test="officeId != null" >
+        office_id = #{officeId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -386,41 +391,20 @@
   	
   	from job j 
   	
-  	LEFT JOIN job_office jo on j.id=jo.job_id 
-  	LEFT JOIN sys_office s on jo.office_id=s.id
-  	LEFT JOIN job_business jb ON j.id=jb.business_id LEFT JOIN business b on jb.business_id=b.id
+	INNER JOIN sys_office s ON j.office_id = s.id
+	INNER JOIN job_business jb ON j.id = jb.job_id
+	INNER JOIN business b ON jb.business_id = b.id  
   </select>
-  
-  <!-- 根据officeId 查询关联的jobs -->
-  <select id="findJobsByOfficeId" parameterType="java.lang.Integer" resultType="Job">
-  	select j.* 
-  	from job j
-  	inner join job_office jo on j.id = jo.job_id and j.del_flag=0
-  	inner join sys_office so on so.id = jo.office_id
-  	where so.id = #{officeId}
-  </select>
-  
-  <insert id="insertJobAndOffice" parameterType="com.jusfoun.catalog.entity.Job" >
-      insert into job_office (job_id,office_id) values(#{jobId},#{officeId})
-  </insert>
   
   <insert id="insertJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
       insert into job_business (job_id,business_id) values(#{jobId},#{businessId})
   </insert>
-  
-  <update id="updateJob_Office" parameterType="com.jusfoun.catalog.entity.Job" >
-      update job_office set office_id=#{officeId} where job_id=#{jobId}
-  </update>
    <update id="updateJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
       update job_business set business_id=#{businessId} where job_id=#{jobId}
   </update>
   <delete id="deleteById" parameterType="com.jusfoun.catalog.entity.Job" >
     delete from job
     where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteJob_Office" parameterType="com.jusfoun.catalog.entity.Job" >
-    delete from job_office
-    where job_id = #{id}
   </delete>
   <delete id="deleteJob_Bussiness" parameterType="com.jusfoun.catalog.entity.Job" >
     delete from job_business
