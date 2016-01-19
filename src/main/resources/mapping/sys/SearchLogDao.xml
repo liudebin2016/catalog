@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jusfoun.catalog.dao.SearchLogDao">
+    <sql id="searchLogColumns">
+        a.id,
+       	a.keyword,
+       	a.srhTime,
+       	a.srhType,
+       	a.remarks
+    </sql>
+
+    <insert id="insert" parameterType="SearchLog">
+        INSERT INTO rpt_search(
+            keyword,
+	       	srhTime,
+	       	srhType,
+	       	remarks
+        ) VALUES (
+	        #{keyword},
+	        #{srhTime},
+			#{srhType},
+			#{remarks}
+        )
+    </insert>
+</mapper>

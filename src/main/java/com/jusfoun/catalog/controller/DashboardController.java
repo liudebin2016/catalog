@@ -1,11 +1,20 @@
 package com.jusfoun.catalog.controller;
 
 
-import com.jusfoun.catalog.common.controller.BaseController;
-        import org.springframework.stereotype.Controller;
+import java.util.Date;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-        import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.entity.SearchLog;
+import com.jusfoun.catalog.service.OfficeService;
+import com.jusfoun.catalog.service.SearchLogService;
 
 /**
  * Created by huanglei on 15/12/27.
@@ -13,7 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class DashboardController extends BaseController{
 
-
+	@Resource
+	private OfficeService officeService;
+	@Resource
+	private SearchLogService searchLogService;
 //    @Autowired
 //    private IUserService userService;
 
@@ -39,9 +51,14 @@ public class DashboardController extends BaseController{
         return "";
     }
     
-    @RequestMapping(value = "/search")
-    public String search() {
-        return "search";
-    }
-
+    @RequestMapping(value = "/search",method = RequestMethod.POST)
+	public String search(@RequestParam(value = "search_value", required=true) String value,
+			@RequestParam(value = "search_type", required=true) int type) {
+    	SearchLog log = new SearchLog();
+    	log.setKeyword(value);
+    	log.setSrhTime(new Date());
+    	log.setSrhType(type);
+    	searchLogService.save(log);
+		return "search";
+	}
 }

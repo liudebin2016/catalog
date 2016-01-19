@@ -25,7 +25,7 @@ var jsPart = {
 <script type="text/javascript">
 	//ready func
 	jq1_4(document).ready(function(){
-		$.post('../office/officeTree',function(obj){
+		$.post('../office/tree',function(obj){
 			// init tree
 			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
 		},'json');

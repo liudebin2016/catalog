@@ -12,8 +12,14 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript">
-
-
+$(function(){
+	$('#_search').on('click',function(){
+		var _v = $('#_ipt').val();
+		if($.trim(_v) ==='')
+			return;
+		$('#searchForm').submit();
+	});
+});
 </script>
 
 <%};%>
@@ -25,6 +31,7 @@ var htmlPart = {
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
+        <form action="search" id="searchForm" method="post">
             <div class="" style="margin-top: 100px;height: 100%;">
                 <div class="">
                     <h4 class="panel-title" style="text-align: center;"><span class="text-bold">九次方</span>·政府资源目录检索</h4>
@@ -35,9 +42,9 @@ var htmlPart = {
                             <!--Date <small class="text-success">99/99/9999</small>-->
                         <!--</label>-->
                         <div class="input-group">
-                            <input type="text" id="" class="form-control">
-                                <a href="search" class="input-group-btn">
-                                    <button type="button" class="btn btn-green">
+                            <input type="text" id="_ipt" name="search_value" class="form-control">
+                                <a href="#" class="input-group-btn">
+                                    <button type="button" class="btn btn-green" id="_search">
                                         搜索
                                     </button>
                                 </a>
@@ -48,14 +55,15 @@ var htmlPart = {
             <div class="panel-body" style="padding-top: 0px;">
                 <div class="toolbar toolbar-tools pull-left" style="border:0px;">
                     <ul class="nav navbar-right">
-                        <li class=""><a href="#">全部</a></li>
-                        <li class="dropdown"><a href="#">sks</a></li>
-                        <li class="dropdown"><a href="#">sks</a></li>
-                        <li class="dropdown"><a href="#">sks</a></li>
-                        <li class="dropdown"><a href="#">sks</a></li>
+                        <li class=""><a href="#"><input type="radio" name="search_type" value="1" checked="checked"/>机构职责</a></li>
+                        <li class="dropdup"><a href="#"><input type="radio" name="search_type" value="2"/>岗位</a></li>
+                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="3"/>业务</a></li>
+                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="4"/>资源</a></li>
+                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="5"/>主题</a></li>
                     </ul>
                 </div>
             </div>
+            </form>
         </div>
         <div class="col-sm-2"></div>
     </div>
