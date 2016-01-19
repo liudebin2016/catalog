@@ -23,9 +23,7 @@ public class JobService extends CrudService<JobDao,Job> {
 		cMap.put("officeId", officeId);
 		cMap.put("jobId", job.getId());
 		cMap.put("businessId", businessId);
-		//插入job_business表
-		dao.insertJob_business(cMap);
-		return dao.insertJobAndOffice(cMap);
+		return dao.insertJob_business(cMap);
 	}
 
 	public List<JobAndOfficeView> findJobList(Job job){
@@ -40,7 +38,6 @@ public class JobService extends CrudService<JobDao,Job> {
 
 	public boolean updateById(Job job, HashMap<String, Object> cMap) {
 		int index = dao.updateById(job);
-		dao.updateJob_Office(cMap);
 		dao.updateJob_business(cMap);
 		return index>0?true:false;
 	}
@@ -49,14 +46,6 @@ public class JobService extends CrudService<JobDao,Job> {
 		
 		return dao.findJobByCondition(cMap);
 	}
-	/**
-	 * 查询机构下关联的岗位
-	 * @param officeId 机构id
-	 */
-	@Transactional(readOnly = true)
-	public List<Job> findJobsByOfficeId(Integer officeId) {
-		return dao.findJobsByOfficeId(officeId);
-	}
 
 	public int findListCount(Job job) {
 		
@@ -64,7 +53,6 @@ public class JobService extends CrudService<JobDao,Job> {
 	}
 
 	public int deleteById(Job job) {
-		dao.deleteJob_Office(job);
 		dao.deleteJob_Bussiness(job);
 		return dao.deleteById(job);
 	}

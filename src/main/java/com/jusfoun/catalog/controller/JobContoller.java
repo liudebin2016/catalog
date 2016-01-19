@@ -96,6 +96,7 @@ public class JobContoller extends BaseController {
 		job.setCreateBy(UserUtils.getUser());
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
+		job.setOfficeId(Integer.parseInt(officeId));
 		int index = jobService.createJob(job,officeId,businessId);
 		return "redirect:"+adminPath+"/job/maintenance";
 	}

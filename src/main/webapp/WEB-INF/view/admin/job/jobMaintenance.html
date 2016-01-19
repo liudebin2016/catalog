@@ -21,15 +21,19 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	//根据id删除资源
-	function delRscById(id){
-		$.get("/admin/job/delJobById.do", { id: id },
-		    function(data){location.reload();
-		    	if(data=="success"){
-		    		alert("删除成功！");
-		    		location.reload();
-		    	}
-		    }
-		);   
+	function delRscById(id){  
+		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+		    if (r){  
+		    	$.get("/admin/job/delJobById.do", { id: id },
+				    function(data){location.reload();
+				    	if(data=="success"){
+				    		alert("删除成功！");
+				    		location.reload();
+				    	}
+				    }
+				);   
+		    }    
+		}); 
 	}
 	
 	function resetSrc(){
