@@ -1,6 +1,8 @@
 package com.jusfoun.catalog.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.entity.Statistic;
 import com.jusfoun.catalog.service.StatisticService;
 
 /**
@@ -39,9 +43,33 @@ public class StatisticController extends BaseController {
     }
     
 	@ResponseBody
-	@RequestMapping(value = "${adminPath}/register/list", method = RequestMethod.POST)
+	@RequestMapping(value = "${adminPath}/statistic/list", method = RequestMethod.POST)
 	public  String list(int page,int rows,HttpServletRequest request) throws IOException{
 		return null;
+	}
+	
+	/**
+	 * 信息统计
+	 * @param page 当前页
+	 * @param rows 页面记录数
+	 * @param response
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping("${adminPath}/statistic/statb")
+	public  String bizList(int page,int rows,HttpServletRequest request) throws IOException{
+		//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		int total = statisticService.findListCount();
+		Map<String,String> paraMaps=new HashMap<String,String>();
+		paraMaps.put("page", "limit "+start+","+end);
+		List<Statistic> uList = statisticService.findList(paraMaps);
+		String json = JsonMapper.toJsonString(uList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
 	}
     
 }

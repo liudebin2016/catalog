@@ -22,6 +22,17 @@
         <if test="value != null and value != ''">
             AND value LIKE CONCAT('%', #{value}, '%')
         </if>
+        <choose>
+			<when test="parentId != null and parentId != ''">  
+			    AND parent_id = #{parentId}
+			</when>  
+			<otherwise>  
+			    AND (parent_id = '0' OR parent_id is null)
+			</otherwise> 
+		</choose>
+        <!-- <if test="parentId != null and parentId != ''">
+            AND parent_id = #{parentId}
+        </if> -->
         <if test="description != null and description != ''">
             AND description LIKE CONCAT('%', #{description}, '%')            
         </if>
@@ -41,9 +52,19 @@
         <if test="value != null and value != ''">
             AND value LIKE CONCAT('%', #{value}, '%')
         </if>
+        <choose>
+			<when test="parentId != null and parentId != ''">  
+			    AND parent_id = #{parentId}
+			</when>  
+			<otherwise>  
+			    AND (parent_id = '0' OR parent_id is null)  
+			</otherwise> 
+		</choose>
+        <!-- <if test="parentId != null and parentId != ''">
+            AND parent_id = #{parentId}
+        </if> -->
         <if test="description != null and description != ''">
             AND description LIKE CONCAT('%', #{description}, '%')
-            
         </if>
         ORDER BY type, sort, update_date DESC
         ${sqlMap.page} 
@@ -74,6 +95,7 @@
         type,
         description,
         sort,
+        parent_id,
         create_by,
         create_date,
         update_by,
@@ -87,6 +109,7 @@
         #{type},
         #{description},
         #{sort},
+        #{parentId},
         #{createBy.id},
         #{createDate},
         #{updateBy.id},
@@ -113,6 +136,9 @@
 	      </if>
           <if test="sort != null" >
 	        sort = #{sort,jdbcType=VARCHAR},
+	      </if>
+	      <if test="parentId != null" >
+	        parent_id = #{parentId,jdbcType=VARCHAR},
 	      </if>
           <if test="updateBy != null" >
 	        update_by = #{updateBy.id,jdbcType=VARCHAR},

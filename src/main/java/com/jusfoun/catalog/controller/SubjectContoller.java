@@ -67,6 +67,11 @@ public class SubjectContoller extends BaseController {
 				}
 			}
 		}else{
+			if(subjectId!=null){
+				mav.addObject("parentId", subjectId);
+			}else{
+				mav.addObject("parentId", null);
+			}
 			mav.addObject("subject", null);
 			mav.addObject("actionType", "create");
 		}
@@ -86,8 +91,12 @@ public class SubjectContoller extends BaseController {
 		String shareRegion=request.getParameter("shareRegion");
 		String shareMode=request.getParameter("shareMode");
 		String status=request.getParameter("status");
+		String parentId=request.getParameter("parentId");
 		SubjectInfo si=new SubjectInfo();
 		si.setName(name);
+		if(parentId!=null&&!"".equals(parentId)){
+			si.setParentId(Integer.valueOf(parentId));
+		}
 		si.setDescr(descr);
 		si.setShareMode(shareMode);
 		si.setShareRegion(shareRegion);

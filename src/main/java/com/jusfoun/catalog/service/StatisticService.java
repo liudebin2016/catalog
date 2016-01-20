@@ -1,14 +1,12 @@
 package com.jusfoun.catalog.service;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.sound.sampled.SourceDataLine;
 
-import org.apache.shiro.mgt.SubjectDAO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +16,9 @@ import com.jusfoun.catalog.dao.BusinessDao;
 import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.dao.ResourceInfoDao;
+import com.jusfoun.catalog.dao.StatisticDao;
 import com.jusfoun.catalog.dao.SubjectInfoDao;
+import com.jusfoun.catalog.entity.Statistic;
 
 @Service
 @Transactional(readOnly=true)
@@ -36,6 +36,9 @@ public class StatisticService extends BaseService {
 	private ResourceInfoDao resourceInfoDao;
 	@Resource
 	private SubjectInfoDao subjectInfoDao;
+	@Resource
+	private StatisticDao statisticDao;
+	
 	/**查询各个模块的总量
 	 * @return
 	 */
@@ -56,6 +59,14 @@ public class StatisticService extends BaseService {
 		result.put("resource", resourceCount == null ? "0" : format.format(resourceCount));
 		result.put("subject", subjectCount == null ? "0" : format.format(subjectCount));
 		return result;
+	}
+
+	public int findListCount() {
+		return statisticDao.findListCount();
+	}
+
+	public List<Statistic> findList(Map<String, String> paraMaps) {
+		return statisticDao.findList(paraMaps);
 	}
 	
 }

@@ -22,7 +22,7 @@ var jsPart = {
 
 	//弹出编辑表单
 	function sf(row){
-		$("#dlg").dialog("open").dialog('setTitle', '维护字典');
+		$("#dlg").dialog("open").dialog('setTitle', '维护字典项');
 		var fm=$('#fm');
 		fm.form('clear');
 		fm.form('load', row);
@@ -34,12 +34,13 @@ var jsPart = {
 		    url:'/admin/dict/dictList.do', 
 		    fitColumns:true,
 		    queryParams: {
+		    	parentId:${dict.id},
 		    	label:label,
 		    	value:value
 			},
 			toolbar:[{
 				iconCls: 'icon-add',
-				text:'新建字典',
+				text:'新建字典项',
 				handler:function(){
 					newDict();
 				}
@@ -49,16 +50,14 @@ var jsPart = {
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
-		        {field:'label',title:'字典名称',width:220},
-		        {field:'value',title:'字典编码',width:230},
+		        {field:'label',title:'字典项名称',width:220},
+		        {field:'value',title:'字典项编码',width:230},
 		        {field:'description',title:'备注',width:220},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
 		        		var obj=JSON.stringify(row);
 		        		var s = "<a onclick='sf("+obj+");'>编辑</a> ";
-		        		var d=" &nbsp;&nbsp;&nbsp;&nbsp;";
-		        		var f = "<a href='/admin/dict/subList.do?id="+row.id+"&label="+row.label+"&value="+row.value+"&description="+row.description+"'>字典项维护</a> ";
-	                    return s + d + f;
+	                    return s;
 		            }
 		        }
 		    ]],
@@ -92,8 +91,9 @@ var jsPart = {
 	});
 	
 	 function newDict() {
-         $("#dlg").dialog("open").dialog('setTitle', '新建字典');
-         $("#fm").form("clear");         
+         $("#dlg").dialog("open").dialog('setTitle', '新建项字典');
+         $("#fm").form("clear"); 
+         $("#parentId").val(${dict.id});
      }
 	 
 	 function submit(){
@@ -107,15 +107,16 @@ var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
 <div class="content">
-  <h3 class="h3tit mt30">字典管理</h3>
+  <h3 class="h3tit mt30">字典项维护</h3>
+  <p class="h3tit mt30" style="text-align: center;margin-top: 10px;">${dict.label}</p>
   <div class="form-list top-search">
     <ul class="li-fl">
       <li>
-        <label>字典名称</label>
+        <label>字典项名称</label>
         <input id="lblsrh" class="form-control inp noradius " type="text" placeholder="">
       </li>
       <li>
-        <label>字典编码</label>
+        <label>字典项编码</label>
         <input id="valsrh" class="form-control inp noradius " type="text" placeholder="">
       </li>
       <li>
@@ -130,20 +131,21 @@ var htmlPart = {
   
   <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
        <form id="fm" method="post" method="post" action="/admin/dict/createDict.do"> 
-       <div class="fitem"> 
-       		<input name="id" type="hidden" class="easyui-textbox">
-           <label>字典名称</label> 
-           <input name="label" class="easyui-textbox" style="width:width:300px;height:32px">
+       <div class="fitem" style="margin-bottom: 10px;"> 
+       	   <input type="hidden" id="parentId"  name="parentId" value="${dict.id}">
+       	   <input type="hidden" id="id" name="id" value="">
+           <label>字典项名称：</label> 
+           <input name="label" class="easyui-textbox" style="width:200px">
        </div> 
-       <div class="fitem"> 
-           <label>字典编码</label> 
-           <input name="value" class="easyui-textbox" style="width:width:300px;height:32px">
+       <div class="fitem" style="margin-bottom:10px;" > 
+           <label>字典项编码：</label> 
+           <input name="value" class="easyui-textbox" style="width:200px">
        </div> 
-       <div class="fitem"> 
-           <label>备注</label> 
-           <input name="description" class="easyui-textbox" data-options="multiline:true" value="" style="width:300px;height:60px"> 
+       <div class="fitem" style="margin-bottom: 10px;"> 
+           <label style="margin-right:35px;">备注：</label> 
+           <input name="description" class="easyui-textbox" data-options="multiline:true" value="" style="width:200px;height:60px;margin-left:30px;"> 
        </div> 
-       <div>
+       <div style="text-align: center;">
 			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
 		</div>
        </form> 

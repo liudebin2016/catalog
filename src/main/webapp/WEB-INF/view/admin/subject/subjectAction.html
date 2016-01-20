@@ -28,6 +28,7 @@ var htmlPart = {
 		<h2 class="compile-title mt40">主题信息${actionType=="update"?"编辑":actionType=="view"?"查看":"创建"}</h2>
 		<span class="imaginary-line"></span>
 		<div class="compile-form">
+			<input type="hidden" name="parentId" value="${parentId!=null?parentId:''}">
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">主题名称</label>
 				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name" value="${subject==null?'':subject.name}">

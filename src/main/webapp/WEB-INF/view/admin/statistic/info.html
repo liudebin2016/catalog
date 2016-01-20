@@ -8,6 +8,7 @@ var cssPart = {
 
 </style>
 <%};%>
+
 <%
 var jsPart = {
 %>
@@ -21,7 +22,7 @@ var jsPart = {
 		var applyType=$.trim($("#applyType").val());
 		var status=$.trim($("#status").val());
 		$('#dg').datagrid({
-		    url:'/admin/register/applyList', 
+		    url:'/admin/statistic/applyList', 
 		    queryParams: {
 		    	applyName : applyName,
 		    	applyType : applyType,
@@ -98,176 +99,176 @@ var jsPart = {
 		    ]]
 		}); 
 	}
+	
+	function statbDg(){
+		$('#statb').datagrid({
+		    url:'/admin/statistic/statb.do',
+		    pagination:true,
+		    method:"get",
+		    rownumbers:true,
+		    fitColumns:true,
+		    columns:[[
+				{field:'region',title:'域',width:300}, 
+		        {field:'office',title:'机构',width:300},    
+		        {field:'ofcDuty',title:'机构职责',width:300,
+	        		formatter:function(value,row,index){
+	    				if(value){
+	    					return '已注册';
+	    				}else{
+	    					return '未注册';
+	    				}
+	    			}		        	
+		        },
+		        {field:'ofcCount',title:'岗位数',width:150},
+		        {field:'bizCount',title:'业务数',width:150},
+		        {field:'rscCount',title:'资源数',width:150}
+		    ]]
+		}); 
+	}
+	
 	$(document).ready(function(){
 		queryList();
+		statbDg();
 	});
 </script>
 <%};%>
+
 <%
 var htmlPart = {
 %>
 <!-- start: MAIN CONTAINER -->
 <div class="content">
-           <h3 class="h3tit mt30">信息统计</h3>
-           <div class="mt30">当前共有<a  type="button" class="fr  btns-gray  ">导出</a></div>
-           <div class="total-txt mt20">
-                	<ul>
-                    	<li>
-                        	<span><strong>${counts.area}</strong></span>
-                        	<span>域</span>
-                        </li>
-                    	<li>
-                        	<span><strong>${counts.office}</strong> 个</span>
-                        	<span>机构</span>
-                        </li>
-                    	<li>
-                        	<span><strong>${counts.job}</strong> 个</span>
-                        	<span>岗位数</span>
-                        </li>
-                    	<li>
-                        	<span><strong>${counts.business}</strong> 条</span>
-                        	<span>业务数</span>
-                        </li>
-                    	<li>
-                        	<span><strong>${counts.resource}</strong> 条</span>
-                        	<span>资源数</span>
-                        </li>
-                        <li>
-                        	<span><strong>${counts.subject}</strong> 条</span>
-                        	<span>主题数</span>
-                        </li>
-                    </ul>
-                </div>
-                
-        	 <div class="chart-box mb50 mt20">
-                <h3 class="chart-tit">数据传输统计</h3>
-                <div class="chart-in">
-                    <img src="images/echart01.png" alt="">
-                </div>
-            </div>
-                
-            <table class="table table-hover ntable mt20">
-                <thead>
-                    <tr>                        
-                        <th width="60" class="tc">序号</th>
-                        <th>域</th>
-                        <th>机构</th>
-                        <th width="80">机构职责</th>
-                        <th width="110">岗位数</th> 
-                        <th width="110">业务数</th>
-                        <th width="110">资源数</th>
-                    </tr>
-                </thead>
-                <tbody>                                               
-                    <tr>                        
-                        <td class="tc">1</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>                   
-                    </tr>                                        
-                    <tr>
-                        <td class="tc">2</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>      
-                    </tr>  
-                     <tr>
-                        <td class="tc">3</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>      
-                    </tr>  
-                    <tr>
-                        <td class="tc">4</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>         
-                    </tr>  
-                     <tr>
-                        <td class="tc">5</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>     
-                    </tr>   
-                     <tr>
-                       <td class="tc">6</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>     
-                    </tr>                                                                    
-                    <tr>
-                        <td class="tc">7</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>    
-                    </tr>  
-                     <tr>
-                       <td class="tc">8</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>    
-                    </tr>  
-                    <tr>
-                       <td class="tc">9</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>    
-                    </tr>  
-                     <tr>
-                       <td class="tc">10</td>
-                        <td>Applist diglb</td>
-                        <td>name file</td>
-                        <td>已注册</td> 
-                        <td width="110">12</td>  
-                        <td>5666</td>  
-                        <td>36</td>     
-                    </tr>                         
-                </tbody>
-            </table>
-            <div class="page-box">
-                <ul class="pagination">
-                    <li><a class="arrows-left" href="javascript:;" ></a></li>
-                    <li class="active"><a>1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">6</a></li>
-                    <li><a href="#">7</a></li>
-                    <li><a href="#">8</a></li>
-                    <li><a href="#">9</a></li>
-                     <li><a href="#">10</a></li>
-                    <li><a class="arrows-right" href="javascript:;"></a></li>
-                </ul>
-            </div>
+   <h3 class="h3tit mt30">信息统计</h3>
+   <div class="mt30">当前共有<!-- <a  type="button" class="fr  btns-gray  ">导出</a> --></div>
+   <div class="total-txt mt20">
+     	<ul>
+         	<li>
+             	<span><strong>${counts.area}</strong></span>
+             	<span>域</span>
+             </li>
+         	<li>
+             	<span><strong>${counts.office}</strong> 个</span>
+             	<span>机构</span>
+             </li>
+         	<li>
+             	<span><strong>${counts.job}</strong> 个</span>
+             	<span>岗位数</span>
+             </li>
+         	<li>
+             	<span><strong>${counts.business}</strong> 条</span>
+             	<span>业务数</span>
+             </li>
+         	<li>
+             	<span><strong>${counts.resource}</strong> 条</span>
+             	<span>资源数</span>
+             </li>
+             <li>
+             	<span><strong>${counts.subject}</strong> 条</span>
+             	<span>主题数</span>
+             </li>
+         </ul>
+     </div>
+        
+	 <div class="chart-box mb50 mt20">
+        <h3 class="chart-tit">数据传输统计</h3>
+        <div class="chart-in">
+            <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		    <div id="main" style="height:400px"></div>
+		    <!-- ECharts单文件引入 -->
+		    <script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+		    <script type="text/javascript">
+		        // 路径配置
+		        require.config({
+		            paths: {
+		                echarts: 'http://echarts.baidu.com/build/dist'
+		            }
+		        });
+		        
+		        // 使用
+		        require(
+		            [
+		                'echarts',
+		                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+		            ],
+		            function (ec) {
+		                // 基于准备好的dom，初始化echarts图表
+		                var myChart = ec.init(document.getElementById('main')); 
+		                
+		                option = {
+		                	    tooltip : {
+		                	        trigger: 'axis'
+		                	    },
+		                	    legend: {
+		                	        data:['机构','岗位','业务','资源','主题']
+		                	    },
+		                	    toolbox: {
+		                	        show : true,
+		                	        feature : {
+		                	            mark : {show: false},
+		                	            dataView : {show: true, readOnly: true},
+		                	            magicType : {show: false, type: ['line']},
+		                	            restore : {show: false},
+		                	            saveAsImage : {show: true}
+		                	        }
+		                	    },
+		                	    calculable : false,
+		                	    xAxis : [
+		                	        {
+		                	            type : 'category',
+		                	            boundaryGap : false,
+		                	            data : ['6月','7月','8月','9月','10月','11月','12月']
+		                	        }
+		                	    ],
+		                	    yAxis : [
+		                	        {
+		                	            type : 'value'
+		                	        }
+		                	    ],
+		                	    series : [
+		                	        {
+		                	            name:'机构',
+		                	            type:'line',
+		                	            stack: '总量',
+		                	            data:[120, 132, 101, 134, 90, 230, 210]
+		                	        },
+		                	        {
+		                	            name:'岗位',
+		                	            type:'line',
+		                	            stack: '总量',
+		                	            data:[220, 182, 191, 234, 290, 330, 310]
+		                	        },
+		                	        {
+		                	            name:'业务',
+		                	            type:'line',
+		                	            stack: '总量',
+		                	            data:[150, 232, 201, 154, 190, 330, 410]
+		                	        },
+		                	        {
+		                	            name:'资源',
+		                	            type:'line',
+		                	            stack: '总量',
+		                	            data:[320, 332, 301, 334, 390, 330, 320]
+		                	        },
+		                	        {
+		                	            name:'主题',
+		                	            type:'line',
+		                	            stack: '总量',
+		                	            data:[820, 932, 901, 934, 990, 992, 995]
+		                	        }
+		                	    ]
+		                	};
+		        
+		                // 为echarts对象加载数据 
+		                myChart.setOption(option); 
+		            }
+		        );
+		    </script>
         </div>
+    </div>
+    
+    <table id="statb"></table>    
+    
+</div>
 <!-- end: MAIN CONTAINER -->
 
 <%};

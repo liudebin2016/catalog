@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
@@ -38,19 +40,35 @@ public class DictController extends BaseController{
     }
     
     /**
+     * 显示字典列表页面
+     *
+     */
+    @RequestMapping(value = "${adminPath}/dict/subList")
+    public ModelAndView subListPage(Dict dict) {
+    	ModelAndView mav=new ModelAndView("admin/dict/sublist");
+    	mav.addObject(dict);
+        return mav;
+    }
+    
+    /**
      * 创建字典
      * @param rsc
      * @return
      */
     @RequestMapping(value = "${adminPath}/dict/createDict", method = RequestMethod.POST)
-    public String createDict(Dict dict) {
+    public String createDict(Dict dict,RedirectAttributes attr) {
     	if(dict.getId()!=null){
     		dictService.update(dict);
     	}else{
     		dictService.save(dict);
     	}
-    	
-    	return "redirect:/admin/dict/list";
+    	String reVal="redirect:/admin/dict/list";
+    	if(dict.getParentId()!=null){
+    		Dict d=dictService.get(Integer.valueOf(dict.getParentId()));
+    		attr.addFlashAttribute(d);
+    		reVal="redirect:/admin/dict/subList";
+    	}
+    	return reVal;
     }
     
     /**
@@ -66,6 +84,7 @@ public class DictController extends BaseController{
 		String label=WebUtils.getCleanParam(request,"label");
 		String value=WebUtils.getCleanParam(request,"value");
 		String id=WebUtils.getCleanParam(request,"id");
+		String parentId=WebUtils.getCleanParam(request,"parentId");
 		Dict dict=new Dict();
 		if(null!=label||null!=label){
 			if(null!=label){
@@ -73,12 +92,16 @@ public class DictController extends BaseController{
 			}
 		}
 		if(null!=value||null!=value){
-			if(null!=label){
-				dict.setValue(label);
+			if(null!=value){
+				dict.setValue(value);
 			}
 		}		
 		if(null!=id){
 			dict.setId(Integer.valueOf(id));
+		}
+		
+		if(null!=parentId){
+			dict.setParentId(parentId);
 		}
 		
 		//求得开始记录与结束记录
