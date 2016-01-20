@@ -1,3 +1,23 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+<style type="text/css">
+	.ztree .level0{
+		margin-left: 0px;
+	}
+	.ztree li{
+		margin-left: 120px;
+	}
+</style>
+
+<%};%>
+
+<%
+var jsPart = {
+%>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 	var jq1_4 = $.noConflict(true);
@@ -32,40 +52,22 @@
 		}
 	};
 	function onClick(event, treeId, treeNode) {
-		$('#' + treeNode.tId).prepend(
+		jq1_4('#' + treeNode.tId).prepend(
 				'<span style="position:absolute;left:555px;" class="gcode">'
 						+ treeNode.status.replace("1","使用").replace("2","草案").replace("3","废止").replace("4","标准") + '</span>');
-		$("#subsub").attr("href","/admin/subject/action.do?type=create&subjectId="+treeNode.id);
+		jq1_4("#subsub").attr("href","/admin/subject/action.do?type=create&subjectId="+treeNode.id);
 		return true;
 	};
 	function removeHoverDom(treeId, treeNode) {
-		$('#' + treeNode.tId).children('.gcode').remove();
+		jq1_4('#' + treeNode.tId).children('.gcode').remove();
 	};
 </script>
-<%
-var cssPart = {
-%>
-<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resources/assets/css/main.css">
-<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
-<style type="text/css">
-	.ztree .level0{
-		margin-left: 0px;
-	}
-	.ztree li{
-		margin-left: 120px;
-	}
-</style>
 
-<%};%>
-
-<%
-var jsPart = {
-%>
 <script type="text/javascript">
 
 </script>
 <%};%>
+
 <%
 var htmlPart = {
 %>
