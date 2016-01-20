@@ -119,7 +119,23 @@ var jsPart = {
 		        {field:'jobDuty',title:'岗位职责',width:150,align:"center"},
 		        {field:'officeName',title:'所属单位',width:150,align:"center"},
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
-		        {field:'jobStatus',title:'当前状态',width:150,align:"center"}
+		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
+		        	formatter: function(value,row,index){
+						if(value==0){
+							return "未注册";
+						}else if(value==1){
+							return "注册中";
+						}else if(value==2){
+							return "已注册";
+						}else if(value==3){
+							return "未通过";
+						}else if(value==4){
+							return "注销中";
+						}else if(value==5){
+							return "已注销";
+						}
+					} 	
+		        }
 		    ]],
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {

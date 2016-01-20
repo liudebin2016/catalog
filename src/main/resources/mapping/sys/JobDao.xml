@@ -213,6 +213,9 @@
       <if test="officeId != null" >
         office_id,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -247,12 +250,16 @@
       </if>
       <if test="officeId != null" >
         #{officeId,jdbcType=INTEGER},
+      </if> 
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
   <select id="findListCount" resultType="int">
+   select count(a.id) from(
 	  	SELECT 
-  		count(j.id)	
+  		count(j.id)	 as id
   			FROM 
   		job j
 	INNER JOIN sys_office s ON j.office_id = s.id
@@ -266,9 +273,11 @@
 	        AND j.status=#{status}  
 	    </if>  
 	</trim>	
+		 GROUP BY j.id ) a
   </select>
    <select id="findListCountByOfficeId" resultType="int">
-	  	SELECT count(j.id)
+   select count(a.id) from(
+	  	SELECT count(j.id) as id
   	from job j 
   	
 	INNER JOIN sys_office s ON j.office_id = s.id
@@ -291,10 +300,11 @@
  			</foreach>
 	    </if>
 	</trim>	
+		 GROUP BY j.id ) a
   </select>
   <select id="findJobList" resultType="JobAndOfficeView">
-  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
-  	b.id as businessId,b.name as businessName
+  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
+  	b.id as businessId,GROUP_CONCAT(b.`name`) as businessName
   	
   	from job j 
   	
@@ -309,12 +319,13 @@
 	        AND j.status=#{status}  
 	    </if>  
 	</trim>	
+		 GROUP BY j.id
   		${sqlMap.page}
   </select>
   
   <select id="findJobListByOfficeId" resultType="JobAndOfficeView">
-  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
-  	b.id as businessId,b.name as businessName
+  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
+  	b.id as businessId,GROUP_CONCAT(b.`name`) as businessName
   	
   	from job j 
   	
@@ -337,8 +348,9 @@
   				#{OfficeIds}  
  			</foreach>
 	    </if>
-	     
+	    
 	</trim>	
+		 GROUP BY j.id
   		${sqlMap.page}
   </select>
   
@@ -381,19 +393,22 @@
       <if test="officeId != null" >
         office_id = #{officeId,jdbcType=INTEGER},
       </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   
   <select id="findJobByCondition" resultType="JobAndOfficeView">
-  	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,s.name as officeName,
-  	b.id as businessId,b.name as businessName
+  	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
+  	b.id as businessId,,GROUP_CONCAT(b.`name`) as businessName as businessName
   	
   	from job j 
   	
 	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id  
+	INNER JOIN business b ON jb.business_id = b.id   GROUP BY j.id
   </select>
   
   <insert id="insertJob_business" parameterType="Map" >

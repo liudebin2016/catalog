@@ -110,6 +110,12 @@ var jsPart = {
 			hideMenu();
 		}
 	}
+	
+	function submitForm(status){
+		$("#status").val(status);
+		$("#form").submit();
+	}
+	
 </script>
 <%};%>
 <%
@@ -121,10 +127,11 @@ var htmlPart = {
    	<span class="imaginary-line"></span>
    	<div class="compile-form">
    <%if(job.id==null){%>
-   	<form action="/admin/job/create" method="post">
+   	<form id="form" action="/admin/job/create" method="post">
    <% }else{ %>
-   		<form action="/admin/job/doedit" method="post">
+   		<form id="form" action="/admin/job/doedit" method="post">
    	<%}%>
+   			<input type="hidden" id="status" name="status" value=""/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
@@ -163,16 +170,22 @@ var htmlPart = {
 				  <option value="5" ${job==null?'':job.type == '5'?selected="selected":selected=""}>其他</option>
 				</select>
 			</div>
-			<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
+				<span class="warning-box fr">*机构职能介绍为公开信息，任何人均有权限进行查看！</span>
 			<div class="mb20 clearfix"></div>
-	   		<div class="last-modified-time fr">
-	   			<span>当前状态：已注册</span>
-	   			<span>最后操作时间：2015年12月2日 12:00:00</span>
-	   		</div>
+			<%if(job.id!=null){%>
+		   		<div class="last-modified-time fr">
+		   			<span>当前状态：${job==null?'':job.status == '0'?"未注册":""}${job==null?'':job.status == '1'?"注册中":""}${job==null?'':job.status == '2'?"已注册":""}${job==null?'':job.status == '3'?"未通过":""}${job==null?'':job.status == '4'?"注销中":""}${job==null?'':job.status == '5'?"已注销":""}</span>
+		   			<%if(job.updateDate!=null){%>
+		   				<span>最后操作时间：${job.updateDate,dateFormat="yyyy-MM-dd HH:mm:ss"}</span>
+		   			<%}%>
+		   		</div>
+		   	<%}%>
 	   		<div class="mb20 clearfix"></div>
 	   		<div class="btn-box fr mb20">
-	   			<button class="btns  fl mr20">申请注册</button>
-	   			<button class="btns-gray fl mr20" type="submit">保存</button>
+	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
+	   			<%if(job.status ==null || job.status == '0'){%>
+	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(0)">保存</button>
+	   			<%}%>
 	   			<button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
 	   		</div>
    		</form>

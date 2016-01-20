@@ -86,6 +86,7 @@ public class JobContoller extends BaseController {
 		String name = request.getParameter("name");
 		String duty = request.getParameter("duty");
 		String type = request.getParameter("type");
+		String status = request.getParameter("status");
 		String officeId = request.getParameter("officeId");
 		String[] businessId = request.getParameterValues("businessId");
 		Date createDate =new Date();
@@ -93,6 +94,7 @@ public class JobContoller extends BaseController {
 		job.setName(name);
 		job.setDuty(duty);
 		job.setType(type);
+		job.setStatus(status);
 		job.setCreateBy(UserUtils.getUser());
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
@@ -261,4 +263,22 @@ public class JobContoller extends BaseController {
 		return sb.toString();
 	}
 	
+	/**
+	 * 岗位提交申请
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.GET)
+	public String jobApplyFor(HttpServletRequest request, HttpServletResponse response){
+		String ids = request.getParameter("ids");
+		String delFlag="fail";
+		if(ids != null){
+			int temp = jobService.jobApplyFor(ids);
+			delFlag="success";
+		}
+		return delFlag;
+		
+		//return "redirect:"+adminPath+"/job/maintenance";
+	}
 }

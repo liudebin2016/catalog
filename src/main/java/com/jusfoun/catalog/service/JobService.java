@@ -66,4 +66,15 @@ public class JobService extends CrudService<JobDao,Job> {
 		
 		return dao.findJobListByOfficeId(job);
 	}
+
+	public int jobApplyFor(String ids) {
+		String[] row = ids.split(",");
+		for(int i=0;i<row.length;i++){
+			Job job = new Job();
+			job.setId(Integer.parseInt(row[i]));
+			job.setStatus("1");
+			dao.updateById(job);
+		}
+		return 0;
+	}
 }
