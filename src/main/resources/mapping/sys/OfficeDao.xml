@@ -182,4 +182,11 @@
 		from sys_office
 		where del_flag = 0
 	</select>
+	
+	<!-- queryOffices -->
+	<select id="queryOffices" parameterType="map" resultType="Office">
+		select id,name,duty
+		from sys_office
+		where duty like CONCAT('%', #{duty}, '%')
+	</select>
 </mapper>

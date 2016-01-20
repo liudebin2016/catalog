@@ -1,7 +1,9 @@
 package com.jusfoun.catalog.service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -40,6 +42,11 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		}else{
 			return UserUtils.getOfficeList();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Office> queryOffices(Map<String,Object> param){
+		return dao.queryOffices(param);
 	}
 	
 	@Transactional(readOnly = true)
