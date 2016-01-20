@@ -396,8 +396,12 @@
 	INNER JOIN business b ON jb.business_id = b.id  
   </select>
   
-  <insert id="insertJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
-      insert into job_business (job_id,business_id) values(#{jobId},#{businessId})
+  <insert id="insertJob_business" parameterType="Map" >
+      insert into job_business (job_id,business_id) 
+      values
+      <foreach item="businessId" index="index" collection="businessId" separator=",">  
+  				(#{jobId},#{businessId})
+ 	  </foreach>
   </insert>
    <update id="updateJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
       update job_business set business_id=#{businessId} where job_id=#{jobId}

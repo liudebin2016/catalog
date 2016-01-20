@@ -1,9 +1,67 @@
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
+
+<script type="text/javascript">
+	// ready func
+	jq1_4(document).ready(function(){
+		$.post('../office/tree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json');
+		// search nodes
+		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
+	});
+	var setting = {
+		keep: {parent: true},
+		view : {
+			selectedMulti : false
+		},
+		data : {simpleData : {enable : true}},
+		edit : {enable : false},
+		callback : {
+			onClick : onClick
+		}
+	};
+	function onClick(event, treeId, treeNode) {
+		function getChildren(ids,treeNode){
+			ids.push(treeNode.id);
+			 if (treeNode.isParent){
+					for(var obj in treeNode.children){
+						getChildren(ids,treeNode.children[obj]);
+					}
+			    }
+			 return ids;
+		}
+		var ids=[];
+		ids=getChildren(ids,treeNode);
+		$.ajax({
+			type : 'post',
+			async : false,
+			url : '../office/office',
+			data : {
+				'officeId' : treeNode.id
+			},
+			dataType : 'json',
+			success : function(obj) {
+				$('#officeId').html(treeNode.name);
+				getRscList(treeNode.id,ids);
+			}
+		});
+		return true;
+	};
+</script>
 <%
 var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
 
 </style>
@@ -14,7 +72,65 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
+<script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+
+//加载业务datagrid
+var find = false;
+$('#bizlink').combogrid({    
+    panelWidth:540,    
+    idField:'id',    
+    multiple: true,
+    url:'/admin/business/bizList.do',    
+    pagination:true,
+   /*  toolbar:[{
+		text:'提交',
+		handler:function(){
+			var vals = $('#bizlink').combogrid('getValues');
+			var subId=$('#subId').html();
+			sendLinkReq("/admin/business/batchUpdateBiz.do",subId,vals);
+		}
+	}], */
+    columns:[[    
+		{field:'ck',checkbox:true},
+        {field:'code',title:'业务编码',width:150},    
+        {field:'name',title:'业务名称',width:150},    
+        {field:'subjectId',title:'状态',width:200//,
+        	/* formatter: function(value,row,index){
+				if(value){
+					return "已关联";
+				}else{
+					return "";
+				}
+			} */
+	    }    
+    ]],
+    onLoadSuccess: function(data) { // 当前请求的页面数据。
+        /* alert(45);
+    	$.each(data.rows, function(index, value) {//alert(value.id);
+            if ("5" == value.id) { // value.id与idField属性对应的值
+               // find = true;// 循环当前请求页面数据，如果取出的值与默认值一致，则设置成找到
+                $('#bizlink').combogrid('grid').datagrid('selectRecord',value.id);
+               // $('#bizlink').combogrid('setValue',11);
+            } 
+        
+        }); */
+         /* if (!find) {
+            // combogrid获取下一页页码
+            var nextPage = $('#bizlink').combogrid('grid').datagrid('options').pageNumber + 1;
+            $('#bizlink').combogrid('grid').datagrid('getPager').pagination("select", nextPage);
+         } */
+    }
+});  
+
+/* $(document).ready(){
+	$('#bizlink').combogrid('setValues', ['001','007']);
+} */
 </script>
 
 <%};%>
@@ -45,27 +161,28 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
-		        <select class="form-control c-f-width540" name="officeId"  value="8">
+		        <input class="form-control inp fl c-f-width540" type="text" id="officeTree" placeholder="" name="officeId" value="">
+		        <div>
+		        	<div class="zTreeDemoBackground left">
+						<ul id="officeTree" class="ztree"></ul>
+					</div>
+				</div>
+		       <!--  <select class="form-control c-f-width540" name="officeId"  value="8">
 				  <option value="1">1</option>
 				  <option value="2">2</option>
 				  <option value="3">3</option>
 				  <option value="4">4</option>
 				  <option value="5">5</option>
-				</select>
+				</select> -->
 		        
 		        <!-- 
-				<input class="form-control inp fl c-f-width450" type="text" placeholder="" name="officeId" value="8">
+				<input class="form-control inp fl c-f-width450" type="text" placeholder="" name="officeId">
 				<span class="btn-select fr">选择</span> -->
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">相关业务</label>
-				 <select class="form-control c-f-width540" name="businessId" value="5">
-				  <option>1</option>
-				  <option>2</option>
-				  <option>3</option>
-				  <option>4</option>
-				  <option>5</option>
+				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="">
 				</select>
 		        
 		        <!-- 

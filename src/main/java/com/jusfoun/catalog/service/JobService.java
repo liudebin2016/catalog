@@ -16,11 +16,11 @@ import com.jusfoun.catalog.vo.JobAndOfficeView;
 public class JobService extends CrudService<JobDao,Job> {
 
 	
-	public int createJob(Job job,String officeId, String businessId){
+	public int createJob(Job job,String officeId, String[] businessId){
 		int i = dao.createJob(job);
 		//插入job_office表
 		HashMap<String, Object> cMap = new HashMap<String, Object>();
-		cMap.put("officeId", officeId);
+//		cMap.put("officeId", officeId);
 		cMap.put("jobId", job.getId());
 		cMap.put("businessId", businessId);
 		return dao.insertJob_business(cMap);

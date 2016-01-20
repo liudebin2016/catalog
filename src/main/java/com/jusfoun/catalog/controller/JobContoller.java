@@ -87,7 +87,7 @@ public class JobContoller extends BaseController {
 		String duty = request.getParameter("duty");
 		String type = request.getParameter("type");
 		String officeId = request.getParameter("officeId");
-		String businessId = request.getParameter("businessId");
+		String[] businessId = request.getParameterValues("businessId");
 		Date createDate =new Date();
 		Job job = new Job();
 		job.setName(name);
