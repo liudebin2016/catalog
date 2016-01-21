@@ -269,7 +269,8 @@ public class JobContoller extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.GET)
+	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.POST)
+	@ResponseBody
 	public String jobApplyFor(HttpServletRequest request, HttpServletResponse response){
 		String ids = request.getParameter("ids");
 		String delFlag="fail";
@@ -285,7 +286,8 @@ public class JobContoller extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.GET)
+	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.POST)
+	@ResponseBody
 	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){
 		String ids = request.getParameter("ids");
 		String delFlag="fail";

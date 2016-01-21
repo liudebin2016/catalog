@@ -66,19 +66,12 @@ var jsPart = {
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
-						if(value==0){
-							return "未注册";
-						}else if(value==1){
-							return "注册中";
-						}else if(value==2){
-							return "已注册";
-						}else if(value==3){
-							return "未通过";
-						}else if(value==4){
-							return "注销中";
-						}else if(value==5){
-							return "已注销";
-						}
+						if(value){
+			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
 					} 	
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
@@ -135,11 +128,11 @@ var jsPart = {
 		ids = ids.substring(0,ids.length-1)
 	 	$.messager.confirm('确认','您确认提交申请吗？',function(r){    
 		    if (r){  
-		    	$.get("/admin/job/jobApplyFor.do", { ids: ids },
-				    function(data){location.reload();
+		    	$.post("/admin/job/jobApplyFor.do", { ids: ids },
+				    function(data){
 				    	if(data=="success"){
-				    		alert("成功！");
-				    		location.reload();
+				    		$.messager.alert("成功","注册申请已提交，请等待审批！")
+				    		getRscList();
 				    	}
 				    }
 				);   
@@ -168,11 +161,11 @@ var jsPart = {
 		ids = ids.substring(0,ids.length-1)
 	 	$.messager.confirm('确认','您确认申请注销吗？',function(r){    
 		    if (r){  
-		    	$.get("/admin/job/logOff.do", { ids: ids },
-				    function(data){location.reload();
+		    	$.post("/admin/job/logOff.do", { ids: ids },
+				    function(data){
 				    	if(data=="success"){
-				    		alert("成功！");
-				    		location.reload();
+				    		$.messager.alert("成功","注销申请已提交，请等待审批！")
+				    		getRscList();
 				    	}
 				    }
 				);   
@@ -202,9 +195,9 @@ var htmlPart = {
 	          <option value="0">未注册</option>
 	          <option value="1">注册中</option>
 	          <option value="2">已注册</option>
-	          <option value="3">未通过</option>
+	        <!--   <option value="3">未通过</option>
 	          <option value="4">注销中</option>
-	          <option value="5">已注销</option>
+	          <option value="5">已注销</option> -->
 	        </select>
 	      </li>
 	      <li>

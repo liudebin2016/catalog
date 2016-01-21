@@ -74,10 +74,11 @@ var jsPart = {
 	jq1_4(document).ready(function(){
 		$.post('../office/tree',function(obj){
 			// init tree
-			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);selectedTreeNode();
 		},'json');
 		// bind focus
 		$('#officeSel').on('focus',showMenu);
+		
 	});
 	var setting = {
 			keep: {parent: true},
@@ -115,7 +116,14 @@ var jsPart = {
 		$("#status").val(status);
 		$("#form").submit();
 	}
-	
+	//模拟点击树的节点达到显示节点名称在input上
+	function selectedTreeNode(){
+		var id = $("#officeId_text").val();
+		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");//获取ztree对象  
+        var node = zTree.getNodeByParam('id', id);//获取id的点  
+        zTree.selectNode(node);//选择点  
+        zTree.setting.callback.onClick(null, zTree.setting.treeId, node);//调用事件  
+	}
 </script>
 <%};%>
 <%
@@ -132,6 +140,7 @@ var htmlPart = {
    		<form id="form" action="/admin/job/doedit" method="post">
    	<%}%>
    			<input type="hidden" id="status" name="status" value=""/>
+   			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
