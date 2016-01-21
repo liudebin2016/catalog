@@ -83,9 +83,9 @@ var jsPart = {
 		        		var b="";
 		        		var c=""
 		        		if(row.jobStatus == 0){
-		        			s = '<a href="/admin/job/edit?id='+row.id+'">编辑</a> ';
+		        			s = '<a href="/admin/job/edit?type=update&id='+row.id+'">编辑</a> ';
 		        		}else{
-		        			c = '<a href="/admin/job/edit?id='+row.id+'">查看</a>';
+		        			c = '<a href="/admin/job/edit?type=view&id='+row.id+'">查看</a>';
 		        		}
 		                    //var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
 		                    return s+b+c;
@@ -220,7 +220,7 @@ var htmlPart = {
 	      </li>
 	    </ul>
 	  </div>
-  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;" id="logOff">申请注销</a> </div>
+  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob?type=create">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;" id="logOff">申请注销</a> </div>
  <table id="dg"> </table>
 <!-- end:content -->
 <%};

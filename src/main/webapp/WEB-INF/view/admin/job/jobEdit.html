@@ -147,17 +147,17 @@ var htmlPart = {
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
-				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name" value="${job.id==''?'':job.name}">
+				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}">
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位职责</label>
-				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job.id==''?'':job.duty}</textarea>
+				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job==null?'':job.id==''?'':job.duty}</textarea>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel"/>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel" />
 		        <input type="hidden" id="officeId" name="officeId"/>
 			</div>
 			<div class="mb20 clearfix"></div>
@@ -173,7 +173,7 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位属性</label>
-				<select class="form-control c-f-width540" name="type">
+				<select class="form-control c-f-width540" name="type" >
 				  <option value="" >--请选择--</option>
 				  <option value="1" ${job==null?'':job.type == '1'?selected="selected":selected=""}>公务员编制</option>
 				  <option value="2" ${job==null?'':job.type == '2'?selected="selected":selected=""}>事业编制</option>
@@ -195,10 +195,12 @@ var htmlPart = {
 	   		<div class="mb20 clearfix"></div>
 	   		<div class="btn-box fr mb20">
 	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
-	   			<%if(job.status ==null || job.status == '0'){%>
+	   			<%if(actionType =='create' || actionType == 'update'){%>
 	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(0)">保存</button>
+	   				 <button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
+	   			 <% }else{ %>
+	   				 <button class="btns-gray fl"  onclick="history.go(-1)">返回</button>
 	   			<%}%>
-	   			<button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
 	   		</div>
    		</form>
    	</div>
