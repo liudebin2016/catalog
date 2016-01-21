@@ -63,6 +63,7 @@
 	        AND id=#{id}  
 	    </if> 
 	</trim>
+    order by b.status , b.create_date desc
     ${sqlMap.page}    
   </select>
   
@@ -367,6 +368,9 @@
       </if>
       <if test="subjectId != null" >
         subject_id = #{subjectId,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

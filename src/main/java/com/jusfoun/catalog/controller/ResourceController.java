@@ -153,8 +153,8 @@ public class ResourceController extends BaseController {
      */
     @RequestMapping(value = "${adminPath}/resource/batchUpdateRsc", method = RequestMethod.POST)
     @ResponseBody
-    public String batchUpdateRsc(@RequestParam(value="subId")Integer subId,@RequestParam(value="params")String params) {
-    	resourceService.batchUpdateRsc(subId,params);
+    public String batchUpdateRsc(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params) {
+    	resourceService.batchUpdateRsc(subId,opType,params);
     	return "success";
     }
     

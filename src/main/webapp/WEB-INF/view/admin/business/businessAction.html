@@ -17,6 +17,10 @@ var jsPart = {
 <script type="text/javascript">
 
 function checkVal(){
+	if($.trim($('#bizName').val())==""){
+		alert('"业务事项名称"不能为空!');
+		return false;
+	}
 	//设置业务事件分类值
 	/* $("#type").val($("#forType1").val()+"-"+$("#forType2").val()); */
 	//设置业务事项办理依据
@@ -55,6 +59,20 @@ function checkVal(){
 	$('#needData').val($('#addNeedData').html());
 	$('#produceData').val($('#addProduceData').html());
 	
+	if($(":radio[name='shareWith1']:checked").val()=='1'){
+		$("#shareWith").val("1");
+	}else{
+		var result = "";
+	    $("input[name = shareWith2]:checkbox").each(function () {
+	        if ($(this).is(":checked")) {
+	            result+=$(this).attr("value")+",";
+	        }
+	    });
+		if(result!=""){
+		    $("#shareWith").val(result);
+		}
+	}
+	
 	return true;
 }
 
@@ -91,6 +109,7 @@ $(document).ready(function(){
 				}
 			}		
 		});
+		$("#basisDiv").attr("style","display:block");
 	}
 	
 	//编辑时初始化“业务量/工作量”
@@ -99,6 +118,7 @@ $(document).ready(function(){
 	}else{
 		$("input[name=forWorkload][value='1']").attr("checked",true);
 		$("#forWorkload2").val($("#workload").val().split("-")[1]);
+		$("#workloadDiv").attr("style","display:block");
 	}
 	
 	//编辑时初始化“业务事项办理涉及的其他相关单位”
@@ -115,6 +135,7 @@ $(document).ready(function(){
 				}
 			}		
 		});
+		$("#relateOfficeDiv").attr("style","display:block");
 	}
 	
 	//编辑时初始化“业务事项应用系统”
@@ -123,22 +144,82 @@ $(document).ready(function(){
 	}else{
 		$("input[name=forIsUse][value='1']").attr("checked",true);
 		$("#forIsUse2").text($("#isUse").val().split("-")[1]);
+		$("#isUseDiv").attr("style","display:block");
 	}
 	
-	//编辑时初始化"资源共享范围"值
-	$("input[name='shareWith']").each(function(){
-		if($("#shareWith").text()){
-			var nfs=$("#shareWith").text().split(",");
-			for(var nf=0 ;nf< nfs.length;nf++){
-				if(nfs[nf]==$(this).attr("value")){
-					$(this).attr("checked","checked");
-				}
+	//当点单选按钮时，清除复选项
+	$("input[name=shareWith1]").click(function(){
+		$("input[type='checkbox'][name='shareWith2']").each(function(){
+			$(this).attr("checked",false);
+		});
+ 	});
+	//当点复选项时，清除单选项
+	$("input[name=shareWith2]").click(function(){
+		$("input[name=shareWith1]").attr("checked",false);
+ 	});
+	
+	//编辑时初始化“资源共享范围”值
+	var srVal=$("input[name='shareWith']");
+	if(srVal=="1"){
+		$("input[name='shareWith1']").attr("checked",true);
+	}else{
+		$("input[name='shareWith2']").each(function(){
+			if(srVal){
+				var nfs=srVal.split(",");
+				for(var nf=0 ;nf< nfs.length;nf++){
+					if(nfs[nf]==$(this).attr("value")){
+						$(this).attr("checked","checked");
+					}
+				}		
 			}
-		}
-	});
+		});
+	}
 	
 	$('#addNeedData').html($('#needData').val());
 	$('#addProduceData').html($('#produceData').val());
+	
+	$("input[name='forBasis']").change(function() {
+		var sltval = $("input[name='forBasis']:checked").val();
+		if (sltval == 0) {
+			$("#basisDiv").attr("style","display:none");
+		} else {
+			$("#basisDiv").attr("style","display:block");
+		}
+	});
+	
+	$("input[name='forWorkload']").change(function() {
+		var sltval = $("input[name='forWorkload']:checked").val();
+		if (sltval == 0) {
+			$("#workloadDiv").attr("style","display:none");
+		} else {
+			$("#workloadDiv").attr("style","display:block");
+		}
+	});
+	
+	$("input[name='forRelateOffice']").change(function() {
+		var sltval = $("input[name='forRelateOffice']:checked").val();
+		if (sltval == 0) {
+			$("#relateOfficeDiv").attr("style","display:none");
+		} else {
+			$("#relateOfficeDiv").attr("style","display:block");
+		}
+	});
+	
+	$("input[name='forIsUse']").change(function() {
+		var sltval = $("input[name='forIsUse']:checked").val();
+		if (sltval == 0) {
+			$("#isUseDiv").attr("style","display:none");
+		} else {
+			$("#isUseDiv").attr("style","display:block");
+		}
+	});
+	
+	if($('input:radio[name=shareWith1]:checked').val()=="1"){
+		$("input[type='checkbox'][name='shareWith']").each(function(){
+			$(this).removeAttr("checked");
+		});
+	}
+	
 });
 
 //移除信息字段
@@ -171,7 +252,6 @@ var htmlPart = {
 <!-- start:content -->
 <div class="content">
 	<span id="nameRef" style="display:none;">${business==null?"":business.nameRef}</span>
-	<span id="shareWith" style="display:none;">${business==null?"":business.shareWith}</span>
   <h2 class="compile-title mt40">业务信息${actionType=="update"?"编辑":actionType=="view"?"查看":"创建"}</h2>
   <span class="imaginary-line"></span>
   <div class="compile-form">
@@ -181,7 +261,7 @@ var htmlPart = {
     <%}%>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项名称</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${business==null?"":business.name}'>
+      <input id="bizName" class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${business==null?"":business.name}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
@@ -247,7 +327,7 @@ var htmlPart = {
           <input type="radio" value="0" name="forBasis" > 无
         </label>
       </div>
-      <div class="c-f-width485 fr">
+      <div id="basisDiv" class="c-f-width485 fr" style="display:none">
         <ul class="choosable-box">
           <li> <input name="forBasis2" type="checkbox" value="1" /> 国家相关规定 </li>
           <li> <input name="forBasis2" type="checkbox" value="2" /> 市委、市政府相关规定 </li>
@@ -300,7 +380,9 @@ var htmlPart = {
             <input type="radio" name="forWorkload" value="0" id="workload_0" > 无
           </label>
           </span>
-	      <input  style="float:left;margin-left: 20px;" class="form-control inp fl width300 mr20" id="forWorkload2" type="text" placeholder="">
+          <span id="workloadDiv" style="display:none">
+		      <input  style="float:left;margin-left: 20px;" class="form-control inp fl width300 mr20" id="forWorkload2" type="text" placeholder="">
+          </span>
         </div>
       </div>
     </div>
@@ -316,7 +398,7 @@ var htmlPart = {
           <input type="radio" name="forRelateOffice" value="0" id="relateOffice_0" > 无
         </label>
       </div>
-      <div class="c-f-width485 fr">
+      <div id="relateOfficeDiv" class="c-f-width485 fr" style="display:none">
         <ul class="choosable-box">
           <li> <input name="forRelateOffice2" type="checkbox" value="1" /> 国家部委 </li>
           <li> <input name="forRelateOffice2" type="checkbox" value="2" /> 市委、市政府相关委办局 </li>
@@ -356,22 +438,23 @@ var htmlPart = {
           <input type="radio" name="forIsUse" value="0" > 无
         </label>
       </div>
-      <div class="c-f-width485 fr">
+      <div id="isUseDiv" class="c-f-width485 fr" style="display:none">
         <textarea id="forIsUse2" class="form-control c-f-width485" rows="3" name="forIsUse2" placeholder="备注" ></textarea>
       </div>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
+      <input type="hidden" name="shareWith" id="shareWith" value="${business==null?'':business.shareWith}">
       <label class="compile-form-title2 fl">资源共享范围</label>
       <div class="c-f-width485 fl">
         <ul class="choosable-box">
-          <li> <input name="shareWith" type="checkbox" value="1" /> 所有人员 </li>
-          <li> <input name="shareWith" type="checkbox" value="2" /> 国家部委 </li>
-          <li> <input name="shareWith" type="checkbox" value="3" /> 市领导 </li>
-          <li> <input name="shareWith" type="checkbox" value="4" /> 委办局 </li>
-          <li> <input name="shareWith" type="checkbox" value="5" /> 委（局）内 </li>
-          <li> <input name="shareWith" type="checkbox" value="6" /> 本部门专员 </li>
-          <li> <input name="shareWith" type="checkbox" value="7" /> 其他 </li>
+          <li> <input name="shareWith1" type="radio" value="1" /> 所有人员 </li>
+          <li> <input name="shareWith2" type="checkbox" value="2" /> 国家部委 </li>
+          <li> <input name="shareWith2" type="checkbox" value="3" /> 市领导 </li>
+          <li> <input name="shareWith2" type="checkbox" value="4" /> 委办局 </li>
+          <li> <input name="shareWith2" type="checkbox" value="5" /> 委（局）内 </li>
+          <li> <input name="shareWith2" type="checkbox" value="6" /> 本部门专员 </li>
+          <li> <input name="shareWith2" type="checkbox" value="7" /> 其他 </li>
         </ul>
       </div>
     </div>
@@ -379,8 +462,7 @@ var htmlPart = {
     <div class="btn-box fr mb40">
     <%if(null!=actionType&&actionType=="view"){%>
     	<a class="btns-gray fl" style="margin-left: 200px;" href="javascript:history.go(-1);">关闭</a>
-    <%}else{%>
-      <a class="btns-gray fl mr20" href="javascript:;">申请注册</a> 
+    <%}else{%>      
       <button class="btns fl mr20 ml-reg" type="submit">保存</button>
       <a class="btns-gray fl" href="javascript:history.go(-1);">取消</a> 
     <%}%>

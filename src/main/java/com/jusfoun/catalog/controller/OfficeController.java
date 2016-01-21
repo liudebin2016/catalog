@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
+import com.jusfoun.catalog.entity.User;
 import com.jusfoun.catalog.service.CatalogInfoService;
 import com.jusfoun.catalog.service.OfficeService;
 import com.jusfoun.catalog.utils.UserUtils;
@@ -63,8 +65,12 @@ public class OfficeController extends BaseController {
     }
     
     @RequestMapping(value = "${adminPath}/office/maintenance", method = RequestMethod.GET)
-    public String maintenance(){
-    	return "admin/office/maintenance";
+    public ModelAndView maintenance(){
+    	ModelAndView mav=new ModelAndView("admin/office/maintenance");
+    	User user=UserUtils.getUser();
+    	Integer sfd=user.getOffice().getId();
+    	mav.addObject("officeId", sfd);
+    	return mav;
     }
     
     @RequestMapping(value = "${adminPath}/office/tree", method = RequestMethod.POST)

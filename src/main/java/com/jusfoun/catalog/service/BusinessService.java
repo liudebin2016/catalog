@@ -64,13 +64,20 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 	/**
 	 * 批量更新业务
 	 * @param subId
+	 * @param opType 
 	 * @param params
 	 */
-	public void batchUpdateBiz(Integer subId, String params) {
+	@Transactional(readOnly = false)
+	public void batchUpdateBiz(Integer subId, Integer opType, String params) {
 		for(String str:params.split(",")){
 			Business biz=new Business();
 			biz.setId(Integer.valueOf(str));
-			biz.setSubjectId(subId);
+			if(subId!=null){
+				biz.setSubjectId(subId);
+			}
+			if(opType!=null){
+				biz.setStatus(opType.toString());
+			}
 			dao.update(biz);
 		}
 	}

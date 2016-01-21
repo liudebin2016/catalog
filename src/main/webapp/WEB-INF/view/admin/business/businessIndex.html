@@ -25,12 +25,12 @@ var jsPart = {
 <script type="text/javascript">
 	//ready func
 	jq1_4(document).ready(function(){
-		$.post('../office/tree',function(obj){
+		jq1_4.post('../office/tree',function(obj){
 			// init tree
 			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
 		},'json');
 		// search nodes
-		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
+		jq1_4('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
 	});
 	var setting = {
 		keep: {parent: true},
@@ -39,7 +39,7 @@ var jsPart = {
 		edit : {enable : false},
 		async : {
 			enable : true,
-			url : "tree",
+			url : "../business/tree",
 			autoParam : [ "id"],
 			dataType : "json"
 		},
@@ -48,13 +48,13 @@ var jsPart = {
 		}
 	};
 	function onClick(event, treeId, treeNode) {
-		if(treeNode.type != 'business'){
-			return false;
+		if(treeNode.type == 'business'){
+			jq1_4('#officeId').html(treeNode.name);
+			bizData(treeNode.id);
+			rscData(treeNode.id);
+			subData(treeNode.id);
+			return true;
 		}
-		$('#officeId').html(treeNode.name);
-		bizData(treeNode.id);
-		rscData(treeNode.id);
-		subData(treeNode.id);
 		return true;
 	};
 </script>

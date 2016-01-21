@@ -12,7 +12,7 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
 	private static final long serialVersionUID = 1L;
 	
 	private String name;//资源名称
-    private Integer ofBusiness;//所属业务
+    private String ofBusiness;//所属业务
     private Integer type;//资源类型
     private String code;//资源编码
     private String responseParty;//资源责任方
@@ -37,11 +37,11 @@ public class ResourceInfo extends DataEntity<ResourceInfo>{
         this.name = name;
     }
 
-    public Integer getOfBusiness() {
+    public String getOfBusiness() {
         return ofBusiness;
     }
 
-    public void setOfBusiness(Integer ofBusiness) {
+    public void setOfBusiness(String ofBusiness) {
         this.ofBusiness = ofBusiness;
     }
 

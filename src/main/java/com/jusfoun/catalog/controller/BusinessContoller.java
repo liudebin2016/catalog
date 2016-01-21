@@ -130,8 +130,8 @@ public class BusinessContoller extends BaseController {
 	 */	
 	@RequestMapping(value = "${adminPath}/business/batchUpdateBiz", method = RequestMethod.POST)
 	@ResponseBody
-	public String batchUpdateBiz(@RequestParam(value="subId")Integer subId,@RequestParam(value="params")String params){
-		businessService.batchUpdateBiz(subId,params);		
+	public String batchUpdateBiz(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params){
+		businessService.batchUpdateBiz(subId,opType,params);		
 		return "success";
 	}
 	

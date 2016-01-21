@@ -49,6 +49,7 @@
 	        AND id=#{id}  
 	    </if> 
 	</trim>	
+		order by r.status, r.create_date desc
   		${sqlMap.page}
   </select>
   
@@ -257,7 +258,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="ofBusiness != null" >
-        of_business = #{ofBusiness,jdbcType=INTEGER},
+        of_business = #{ofBusiness,jdbcType=VARCHAR},
       </if>
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
@@ -315,6 +316,9 @@
       </if>
       <if test="descr != null" >
         descr = #{descr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=LONGVARCHAR},
       </if>
       <if test="subjectId != null" >
         subject_id = #{subjectId,jdbcType=LONGVARCHAR},

@@ -12,22 +12,83 @@
 <script type="text/javascript">
 
 function checkVal(){
+	if($.trim($("#rscName").val())==''){
+		alert("资源名称不可为空！");
+	}
+	
+	//设置所属业务事项名称
+	if($(":radio[name='forOfBusiness']:checked").val()==0){
+		$("#ofBusiness").val($(":radio[name='forOfBusiness']:checked").val());
+	}else{
+		$("#ofBusiness").val($(":radio[name='forOfBusiness']:checked").val()+"-"+$("#forOfBusiness2").val());
+	}
+	
+	if($(":radio[name='shareRegion1']:checked").val()=='1'){
+		$("#shareRegion").val("1");
+	}else{
+		var result = "";
+	    $("input[name=shareRegion2]:checkbox").each(function () {
+	        if ($(this).is(":checked")) {
+	            result+=$(this).attr("value")+",";
+	        }
+	    });
+		if(result!=""){
+		    $("#shareRegion").val(result);
+		}
+	}
+	
 	$('#infoField').val($('#addField').html());
 	return true;
 }	
 
 $(document).ready(function(){
-	//编辑时初始化“资源共享范围”值
-	$("input[name='shareRegion']").each(function(){
-		if($("#shareRegion").text()){
-			var nfs=$("#shareRegion").text().split(",");
-			for(var nf=0 ;nf< nfs.length;nf++){
-				if(nfs[nf]==$(this).attr("value")){
-					$(this).attr("checked","checked");
-				}
-			}		
+	
+	//编辑时初始化“所属业务事项名称”
+	if($("#ofBusiness").val()==0){
+		$("input[name=forOfBusiness][value='0']").attr("checked",true);
+	}else{
+		$("input[name=forOfBusiness][value='1']").attr("checked",true);
+		$("#forOfBusiness2").val($("#ofBusiness").val().split("-")[1]);
+		$("#ofBusinessDiv").attr("style","display:block");
+	}
+	
+	$("input[name='forOfBusiness']").change(function() {
+		var sltval = $("input[name='forOfBusiness']:checked").val();
+		if (sltval == 0) {
+			$("#ofBusinessDiv").attr("style","display:none");
+		} else {
+			$("#ofBusinessDiv").attr("style","display:block");
 		}
 	});
+	
+	//当点单选按钮时，清除复选项
+	$("input[name=shareRegion1]").click(function(){
+		$("input[type='checkbox'][name='shareRegion2']").each(function(){
+			$(this).attr("checked",false);
+		});
+ 	});
+	//当点复选项时，清除单选项
+	$("input[name=shareRegion2]").click(function(){
+		$("input[name=shareRegion1]").attr("checked",false);
+ 	});
+	
+	//编辑时初始化“资源共享范围”值
+	var srVal=$("#shareRegion").val();
+	if(srVal.indexOf("1")!=-1){
+		$("input[name='shareRegion1']").attr("checked",true);
+	}else{
+		$("input[name='shareRegion2']").each(function(){
+			if(srVal){
+				var nfs=srVal.split(",");
+				for(var nf=0 ;nf< nfs.length;nf++){
+					if(nfs[nf]==$(this).attr("value")){
+						$(this).attr("checked","checked");
+					}
+				}		
+			}
+		});
+	}
+	
 	//编辑时初始化“资源共享方式”值
 	$("input[name='shareMode']").each(function(){
 		if($("#shareMode").text()){
@@ -67,17 +128,23 @@ function addField(){
 	    <%}%>
 		<div class="c-formbox">
 	        <label class="compile-form-title2 fl">资源名称</label>
-			<input class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${rsc==null?"":rsc.name}'>
+			<input id="rscName" class="form-control inp fl c-f-width485" type="text" name="name" placeholder="" value='${rsc==null?"":rsc.name}'>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
+			<input type="hidden" id="ofBusiness" name="ofBusiness" value="${rsc==null?'':rsc.ofBusiness}">
 			<label class="compile-form-title2 fl">所属业务事项名称</label>
-			<label class="has-ico-radio mr20">
-				<input type="radio" name="ofBusiness" value="0" ${rsc==null?'':rsc.ofBusiness == 0?checked="checked":checked=""}>新建业务
-			</label>
-			<label class="has-ico-radio">
-				<input type="radio" name="ofBusiness" value="1" ${rsc==null?'':rsc.ofBusiness == 1?checked="checked":checked=""}>已有业务
-			</label>
+			<span style="float:left;margin-right: 20px;">
+				<label class="has-ico-radio mr20">
+					<input type="radio" name="forOfBusiness" value="0" ${rsc==null?'':rsc.ofBusiness == 0?checked="checked":checked=""}>新建业务
+				</label>
+				<label class="has-ico-radio">
+					<input type="radio" name="forOfBusiness" value="1" ${rsc==null?'':rsc.ofBusiness == 1?checked="checked":checked=""}>已有业务
+				</label>
+			</span>
+			<span id="ofBusinessDiv" style="display:none;float:right;">
+		      <input id="forOfBusiness2" type="text" placeholder="" style="width: 300px;">
+            </span>
 		</div>
 		<div class="clearfix"></div>
 		<div class="c-formbox">
@@ -180,28 +247,28 @@ function addField(){
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源共享范围</label>
 			<div class="c-f-width485 fl">
-				<span id="shareRegion" style="display:none">${rsc==null?'':rsc.shareRegion}</span>
+				<input type="hidden" name="shareRegion" id="shareRegion" value="${rsc==null?'':rsc.shareRegion}"> 
 				<ul class="choosable-box">
-					<!-- <li>
-						<span></span><input name="all" type="checkbox" value="" />所有人员
-					</li> -->
 					<li>
-						<input name="shareRegion" type="checkbox" value="1" /> 国家部委
+						<input name="shareRegion1" type="radio" value="1" />所有人员
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="2" /> 市领导
+						<input name="shareRegion2" type="checkbox" value="2" /> 国家部委
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="3" /> 委办局
+						<input name="shareRegion2" type="checkbox" value="3" /> 市领导
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="4" /> 委（局）内
+						<input name="shareRegion2" type="checkbox" value="4" /> 委办局
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="5" /> 本部门专员
+						<input name="shareRegion2" type="checkbox" value="5" /> 委（局）内
 					</li>
 					<li>
-						<input name="shareRegion" type="checkbox" value="6" /> 其他
+						<input name="shareRegion2" type="checkbox" value="6" /> 本部门专员
+					</li>
+					<li>
+						<input name="shareRegion2" type="checkbox" value="7" /> 其他
 					</li>
 				</ul>
 			</div>
@@ -235,7 +302,6 @@ function addField(){
 		<%if(null!=actionType&&actionType=="view"){%>
 	    	<a class="btns-gray fl" style="margin-left: 200px;" href="javascript:history.go(-1);">关闭</a>
 	    <%}else{%>
-			<a class="btns-gray fl mr20" href="javascript:;">申请注册</a>
 			<button class="btns fl mr20 ml-reg" type="submit">保存</button>
 			<a class="btns-gray fl" href="javascript:history.go(-1);">取消</a>
 		<%}%>

@@ -61,6 +61,7 @@ public class SubjectContoller extends BaseController {
 					mav.addObject("subject", si);
 					if(type.equals("view")){
 						mav.addObject("actionType", "view");
+						mav.addObject("parentId", null);
 					}else{
 						mav.addObject("actionType", "update");
 					}

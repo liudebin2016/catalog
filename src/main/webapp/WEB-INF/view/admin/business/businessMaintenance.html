@@ -20,7 +20,6 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-
 	//根据id删除业务
 	function delBizById(id){
 		$.get("/admin/business/delBiz.do", { id: id },
@@ -54,8 +53,8 @@ var jsPart = {
 		    rownumbers:true,
 		    fitColumns:true,
 		    columns:[[    
-				{field:'ck',title:'全选',width:120,checkbox:true},  
-				{field:'id',title:'id',width:300,hidden:true}, 
+				{field:'ck',title:'全选',width:120,checkbox:true},
+				{field:'id',title:'全选',width:120},
 		        {field:'name',title:'业务事项名称',width:300},    
 		        {field:'shareWith',title:'共享范围',width:300,
 		        	formatter:function(value,row,index){
@@ -72,23 +71,82 @@ var jsPart = {
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
-		                    var s = '<a href="/admin/business/action.do?type=update&id='+row.id+'">编辑</a> ';
+		        			var a = '<a href="/admin/business/action.do?type=view&id='+row.id+'">查看</a> ';
+		        			var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+		        			var s = '<a href="/admin/business/action.do?type=update&id='+row.id+'">编辑</a> ';
 		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 		                    var c = '<a href="#" onclick="javascript:delBizById('+row.id+');">删除</a>';
-		                    return s+b+c;
+		                    return a+b+s+b+c;
 		                
 		            }
 		        }
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
+	            }
+		    }
 		}); 
 	}
 	
 	$(document).ready(function(){
 		getBizList();
 	});
+	
+	//申请注册
+	function applyRegister(){
+		var checkedItems = $('#dg').datagrid('getChecked');
+		var names = "";
+		$.each(checkedItems, function(index, item){
+			if(item.status=="0"){
+				names=names+item.id+",";
+			}
+		});  
+		if(names!=''){
+			$.post("/admin/business/batchUpdateBiz.do", 
+				{ 
+					opType: 1, params: names 
+				},
+			   	function(data){
+			     	if(data="success"){
+			     		alert("注册申请已提交，请等待审批！");
+			     		$('#dg').datagrid('reload');
+			     	}
+			   	}
+			);
+		}else{
+			alert("请选择需要注册的数据！");
+		}
+	}
+	
+	//申请注销
+	function applyCancel(){
+		var checkedItems = $('#dg').datagrid('getChecked');
+		var names = "";
+		$.each(checkedItems, function(index, item){
+			if(item.status=="2"){
+				names=names+item.id+",";
+			}
+		});  
+		if(names!=''){
+			$.post("/admin/business/batchUpdateBiz.do", 
+				{ 
+					opType: 4, params: names 
+				},
+			   	function(data){
+			     	if(data="success"){
+			     		alert("注销申请已提交，请等待审批！");
+			     		$('#dg').datagrid('reload');
+			     	}
+			   	}
+			);
+		}else{
+			alert("请选择需要注销的数据！");
+		}
+	}
 
 </script>
-
 <%};%>
 
 <%
@@ -124,8 +182,8 @@ var htmlPart = {
     </div>
     <div class="search-sel">
     	<a class="btns-gray" href="/admin/business/action.do?type=create">新建业务</a>
-    	<a class="btns-gray" href="javascript:;">申请注册</a>
-    	<a class="btns-gray" href="javascript:;">申请注销</a> 
+    	<a class="btns-gray" href="javascript:applyRegister();">申请注册</a>
+    	<a class="btns-gray" href="javascript:applyCancel();">申请注销</a> 
     </div>           
     <!-- datagrid -->
     <table id="dg"> </table>

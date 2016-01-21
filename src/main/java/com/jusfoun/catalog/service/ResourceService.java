@@ -73,14 +73,20 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 	/**
 	 * 批量更新资源
 	 * @param subId
+	 * @param opType 
 	 * @param params
 	 */
 	@Transactional(readOnly = false)
-	public void batchUpdateRsc(Integer subId, String params) {
+	public void batchUpdateRsc(Integer subId, Integer opType, String params) {
 		for(String str:params.split(",")){
 			ResourceInfo rsc=new ResourceInfo();
 			rsc.setId(Integer.valueOf(str));
-			rsc.setSubjectId(subId);
+			if(subId!=null){
+				rsc.setSubjectId(subId);
+			}
+			if(opType!=null){
+				rsc.setStatus(opType.toString());
+			}
 			dao.update(rsc);
 		}
 	}

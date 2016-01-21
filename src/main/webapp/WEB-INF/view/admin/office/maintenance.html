@@ -16,11 +16,15 @@
 	function sendContent(){
 		var content=ueditor.getContent();
 		$.get("/admin/office/updateDuty.do", 
-			{ id:10,content: content},
+			{ id:${officeId},content: content},
 		  	function(data){
 		    	alert("职责添加成功！");
 		  	}
 		);
+	}
+	
+	function applyRegister(){
+		
 	}
 </script>
 <%};%>
@@ -40,7 +44,7 @@
 		</div>
 		<div class="mb30 clearfix"></div>
 		<div class="btn-box fl mb20">
-			<button class="btns fl mr20" type="提交">申请注册</button>
+			<button class="btns fl mr20" type="button" onclick="applyRegister(${officeId})">申请注册</button>
 			<a class="btns-gray fl mr20" href="javascript:sendContent();">保存</a> <a
 				class="btns-gray fl" href="javascript:;">取消</a>
 		</div>

@@ -74,10 +74,12 @@ var jsPart = {
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
+		        		var a = '<a href="/admin/resource/action.do?type=view&id='+row.id+'">查看</a> ';
+		        		var d = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 	                    var s = '<a href="/admin/resource/action.do?type=update&id='+row.id+'">编辑</a> ';
 	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 	                    var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
-	                    return s+b+c;
+	                    return a+d+s+b+c;
 		                
 		            }
 		        }
@@ -88,6 +90,58 @@ var jsPart = {
 	$(document).ready(function(){
 		getRscList();
 	});
+	
+	//申请注册
+	function applyRegister(){
+		var checkedItems = $('#dg').datagrid('getChecked');
+		var names = "";
+		$.each(checkedItems, function(index, item){
+			if(item.status=="0"){
+				names=names+item.id+",";
+			}
+		});  
+		if(names!=''){
+			$.post("/admin/resource/batchUpdateRsc.do", 
+				{ 
+					opType: 1, params: names 
+				},
+			   	function(data){
+			     	if(data="success"){
+			     		alert("注册申请已提交，请等待审批！");
+			     		$('#dg').datagrid('reload');
+			     	}
+			   	}
+			);
+		}else{
+			alert("请选择需要注册的数据！");
+		}
+	}
+	
+	//申请注销
+	function applyCancel(){
+		var checkedItems = $('#dg').datagrid('getChecked');
+		var names = "";
+		$.each(checkedItems, function(index, item){
+			if(item.status=="2"){
+				names=names+item.id+",";
+			}
+		});  
+		if(names!=''){
+			$.post("/admin/resource/batchUpdateRsc.do", 
+				{ 
+					opType: 4, params: names 
+				},
+			   	function(data){
+			     	if(data="success"){
+			     		alert("注销申请已提交，请等待审批！");
+			     		$('#dg').datagrid('reload');
+			     	}
+			   	}
+			);
+		}else{
+			alert("请选择需要注销的数据！");
+		}
+	}
 </script>
 <%};%>
 
@@ -123,9 +177,9 @@ var htmlPart = {
     </ul>
   </div>
   <div class="search-sel"> 
-	  <a class="btns-gray" href="/admin/resource/action.do?type=create">新建业务</a> 
-	  <a class="btns-gray" href="javascript:;">申请注册</a> 
-	  <a class="btns-gray" href="javascript:;">申请注销</a> 
+	  <a class="btns-gray" href="/admin/resource/action.do?type=create">新建资源</a> 
+	  <a class="btns-gray" href="javascript:applyRegister();">申请注册</a> 
+	  <a class="btns-gray" href="javascript:applyCancel();">申请注销</a> 
   </div>
   <!-- datagrid -->
   <table id="dg"> </table>
