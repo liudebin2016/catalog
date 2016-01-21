@@ -20,6 +20,7 @@ import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.entity.SearchLog;
 import com.jusfoun.catalog.service.OfficeService;
 import com.jusfoun.catalog.service.SearchLogService;
+import com.jusfoun.catalog.utils.UserUtils;
 
 /**
  * Created by huanglei on 15/12/27.

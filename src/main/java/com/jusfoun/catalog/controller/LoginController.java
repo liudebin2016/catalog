@@ -180,8 +180,16 @@ public class LoginController extends BaseController{
 ////			request.getSession().setAttribute("aaa", "aa");
 ////		}
 //		System.out.println("==========================b");
-		ModelAndView view = new ModelAndView("admin/dashboard");
-		return view;
+//		ModelAndView view = new ModelAndView("admin/dashboard");
+//		return view;
+		
+    	if(UserUtils.getUser().isAdmin()){
+    		// 系统管理员
+    		return new ModelAndView("redirect:/admin/statistic/info");
+    	}else{
+    		// 部门管理员
+    		return new ModelAndView("redirect:/admin/register/applyIndex");
+    	}
 	}
 	
 	/**
