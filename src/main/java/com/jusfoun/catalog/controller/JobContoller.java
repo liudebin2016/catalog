@@ -150,7 +150,7 @@ public class JobContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/job/doedit", method = RequestMethod.POST)
 	public String getJobDoEdit(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
 		String officeId=WebUtils.getCleanParam(request,"officeId");
-		String businessId=WebUtils.getCleanParam(request,"businessId");
+		String[] businessId=request.getParameterValues("businessId");
 		HashMap<String, Object> cMap = new HashMap<String, Object>();
 		cMap.put("officeId", officeId);
 		cMap.put("businessId", businessId);
@@ -278,7 +278,21 @@ public class JobContoller extends BaseController {
 			delFlag="success";
 		}
 		return delFlag;
-		
-		//return "redirect:"+adminPath+"/job/maintenance";
+	}
+	/**
+	 * 岗位申请注销
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.GET)
+	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){
+		String ids = request.getParameter("ids");
+		String delFlag="fail";
+		if(ids != null){
+			int temp = jobService.jobLogOff(ids);
+			delFlag="success";
+		}
+		return delFlag;
 	}
 }
