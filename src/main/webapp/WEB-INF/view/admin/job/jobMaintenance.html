@@ -175,6 +175,17 @@ var jsPart = {
 		    }    
 		});  
 	});
+	function getSearch(){
+		var srcName=$.trim($("#srcName").val());
+		var srcStatus=$.trim($("#srcStatus").val());
+		//需求未确定，暂时注释
+		/* if(srcName =="" && srcStatus ==""){
+			//alert("都是空");
+		}else{
+			getRscList();
+		} */
+		getRscList();
+	}
 </script>
 
 <%};%>
@@ -204,7 +215,7 @@ var htmlPart = {
 	        </select>
 	      </li>
 	      <li>
-	        <button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
+	        <button class="btns mlt30" type="button" onclick="getSearch()">检索</button>
 	        <button class="btns mlt30" type="button" onclick="resetSrc()">清空</button>
 	      </li>
 	    </ul>
