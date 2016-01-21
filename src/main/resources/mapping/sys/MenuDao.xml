@@ -143,4 +143,24 @@
         <if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
     </update>
 
+	<!-- 查询系统管理员菜单 -->
+	<select id="findSysAdminMenu" resultType="Menu">
+		select 
+		<include refid="menuColumns"/>
+		from sys_role sr
+		inner join sys_role_menu srm on sr.id = srm.role_id and sr.id=1
+		inner join sys_menu a on srm.menu_id = a.id
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+		ORDER BY a.sort
+	</select>
+	<!-- 查询部门管理员菜单 -->
+	<select id="findDeptAdminMenu" resultType="Menu">
+		select
+		<include refid="menuColumns"/>
+		from sys_role sr
+		inner join sys_role_menu srm on sr.id = srm.role_id and sr.id != 1
+		inner join sys_menu a on srm.menu_id = a.id
+		LEFT JOIN sys_menu p ON p.id = a.parent_id
+		ORDER BY a.sort
+	</select>
 </mapper>

@@ -165,12 +165,14 @@ public class UserUtils {
 		List<Menu> menuList = (List<Menu>)getCache(CACHE_MENU_LIST);
 		if (menuList == null){
 			User user = getUser();
-			if (user.isAdmin()){
-				menuList = menuDao.findAllList(new Menu());
-			}else{
-				Menu m = new Menu();
-				m.setUserId(user.getId());
-				menuList = menuDao.findByUserId(m);
+			if (user.isAdmin()){// 系统管理员id为1
+//				menuList = menuDao.findAllList(new Menu());
+				menuList = menuDao.findSysAdminMenu(new Menu());
+			}else{// 部门管理员
+//				Menu m = new Menu();
+//				m.setUserId(user.getId());
+//				menuList = menuDao.findByUserId(m);
+				menuList = menuDao.findDeptAdminMenu(new Menu());
 			}
 
 			Menu menuTree1 = MenuUtils.buildTree(menuList);
