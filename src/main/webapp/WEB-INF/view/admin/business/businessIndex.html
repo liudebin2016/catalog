@@ -60,13 +60,16 @@ var jsPart = {
 </script>
 
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 // var eu = $.noConflict(true);
 	//业务数据加载
 	function bizData(businessId){
-		$('#biz').datagrid({
+		jq1_11('#biz').datagrid({
 		    url:'/admin/business/bizList.do', 
 		    queryParams: {
 		    	id:businessId,
@@ -91,7 +94,7 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 6 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 6 })
 	            }
 		    }
 		}); 
@@ -99,7 +102,7 @@ var jsPart = {
 	
 	//资源数据加载
 	function rscData(businessId){
-		$('#rscLink').datagrid({
+		jq1_11('#rscLink').datagrid({
 		    url:'/admin/resource/getListByBizId.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -127,9 +130,9 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	            }
 		    }
 		}); 
@@ -137,7 +140,7 @@ var jsPart = {
 	
 	//主题数据加载
 	function subData(businessId){
-		$('#subLink').datagrid({
+		jq1_11('#subLink').datagrid({
 		    url:'/admin/subject/getSubListByBizId.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -160,16 +163,16 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	            }
 		    }
 		}); 
 	}
 	
 	//页面初始化加载数据
-	$(document).ready(function(){
+	jq1_11(document).ready(function(){
 		bizData(0);
 		rscData(0);
 		subData(0);

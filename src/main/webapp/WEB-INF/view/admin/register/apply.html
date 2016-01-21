@@ -12,6 +12,9 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -25,7 +28,7 @@ var jsPart = {
 		var applyName=$.trim($("#applyName").val());
 		var applyType=$.trim($("#applyType").val());
 		var status=$.trim($("#status").val());
-		$('#dg').datagrid({
+		jq1_11('#dg').datagrid({
 		    url:'/admin/register/applyList', 
 		    queryParams: {
 		    	applyName : applyName,
@@ -103,7 +106,7 @@ var jsPart = {
 		    ]]
 		}); 
 	}
-	$(document).ready(function(){
+	jq1_11(document).ready(function(){
 		queryList();
 	});
 </script>
