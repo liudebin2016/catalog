@@ -116,25 +116,59 @@ var jsPart = {
 	$("#applyFor").on('click',function(){
 		var row=$("#dg").datagrid("getSelections");
 		if(row.length==0){
-			$.messager.alert("警告","您未选中任何数据");
+			$.messager.alert("警告","请选择需要注册的数据！");
 		    return false;
 		}
 		var ids="";
 		var ishave=false;
 		for(var i=0; i<row.length; i++){
-		    ids+=row[i].id+",";
 		    if(row[i].jobStatus != 0){
 		    	ishave=true;
+		    	continue;
 		    }
+		    ids+=row[i].id+",";
 		}
-		if(ishave){
-			$.messager.alert("警告","您只能选择未申请的数据");
+		/* if(ishave){
+			$.messager.alert("警告","您只能选择未注册的数据！");
 		    return false;
-		}
+		} */
 		ids = ids.substring(0,ids.length-1)
 	 	$.messager.confirm('确认','您确认提交申请吗？',function(r){    
 		    if (r){  
 		    	$.get("/admin/job/jobApplyFor.do", { ids: ids },
+				    function(data){location.reload();
+				    	if(data=="success"){
+				    		alert("成功！");
+				    		location.reload();
+				    	}
+				    }
+				);   
+		    }    
+		});  
+	});
+	$("#logOff").on('click',function(){
+		var row=$("#dg").datagrid("getSelections");
+		if(row.length==0){
+			$.messager.alert("警告","请选择需要注销的数据!");
+		    return false;
+		}
+		var ids="";
+		var ishave=false;
+		for(var i=0; i<row.length; i++){
+		    if(row[i].jobStatus != 2){
+		    	ishave=true;
+		    	continue;
+		    }
+		    ids+=row[i].id+",";
+		}
+		/* if(ishave){
+			$.messager.alert("警告","您只能选择已注册的岗位!");
+		    return false;
+		} */
+		ids = ids.substring(0,ids.length-1)
+	 	$.messager.confirm('确认','您确认申请注销吗？',function(r){    
+		    if (r){  
+		    	$.get("/admin/job/logOff.do", { ids: ids },
 				    function(data){location.reload();
 				    	if(data=="success"){
 				    		alert("成功！");
@@ -179,7 +213,7 @@ var htmlPart = {
 	      </li>
 	    </ul>
 	  </div>
-  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;">申请注销</a> </div>
+  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;" id="logOff">申请注销</a> </div>
  <table id="dg"> </table>
 <!-- end:content -->
 <%};

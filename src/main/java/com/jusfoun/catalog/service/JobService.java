@@ -78,4 +78,17 @@ public class JobService extends CrudService<JobDao,Job> {
 		}
 		return 0;
 	}
+
+	public int jobLogOff(String ids) {
+		String[] row = ids.split(",");
+		int index = 0;
+		for(int i=0;i<row.length;i++){
+			Job job = new Job();
+			job.setId(Integer.parseInt(row[i]));
+			job.setStatus("4");
+			dao.updateById(job);
+			index++;
+		}
+		return index;
+	}
 }
