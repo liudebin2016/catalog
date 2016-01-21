@@ -99,7 +99,7 @@ var jsPart = {
 		var jobName=$.trim($("#jobName").val());
 		var srcOffice=$.trim($("#srcOffice").val());
 		var srcType=$.trim($("#srcType").val());
-		$("#dg").datagrid({
+		jq1_11("#dg").datagrid({
 		    url:'/admin/job/reloadListByOfficeId.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -165,6 +165,9 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <%};%>

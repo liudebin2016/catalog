@@ -17,6 +17,9 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -41,7 +44,7 @@ var jsPart = {
 		var bizName=$.trim($("#bizName").val());
 		var bizStatus=$.trim($("#bizStatus").val());
 		
-		$('#dg').datagrid({
+		jq1_11('#dg').datagrid({
 		    url:'/admin/business/bizList.do', 
 		    queryParams: {
 				name: bizName,
@@ -84,19 +87,19 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
 	            }
 		    }
 		}); 
 	}
 	
-	$(document).ready(function(){
+	jq1_11(document).ready(function(){
 		getBizList();
 	});
 	
 	//申请注册
 	function applyRegister(){
-		var checkedItems = $('#dg').datagrid('getChecked');
+		var checkedItems = jq1_11('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
 			if(item.status=="0"){
@@ -122,7 +125,7 @@ var jsPart = {
 	
 	//申请注销
 	function applyCancel(){
-		var checkedItems = $('#dg').datagrid('getChecked');
+		var checkedItems = jq1_11('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
 			if(item.status=="2"){
