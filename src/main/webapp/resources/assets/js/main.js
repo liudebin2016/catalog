@@ -435,7 +435,7 @@ var Main = function() {"use strict";
 		});
 	};
 	//function to activate the main menu functionality
-	var runNavigationMenu = function() {debugger;
+	var runNavigationMenu = function() {
 		if($("body").hasClass("single-page") == false) {
 			$('.main-navigation-menu > li.active').addClass('open');
 			$('.main-navigation-menu > li a').on('click', function() {
