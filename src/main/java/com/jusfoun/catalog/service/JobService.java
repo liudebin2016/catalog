@@ -38,7 +38,8 @@ public class JobService extends CrudService<JobDao,Job> {
 
 	public boolean updateById(Job job, HashMap<String, Object> cMap) {
 		int index = dao.updateById(job);
-		dao.updateJob_business(cMap);
+		dao.deleteJob_Bussiness(job);
+		dao.insertJob_business(cMap);
 		return index>0?true:false;
 	}
 

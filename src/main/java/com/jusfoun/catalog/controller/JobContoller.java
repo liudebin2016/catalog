@@ -150,7 +150,7 @@ public class JobContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/job/doedit", method = RequestMethod.POST)
 	public String getJobDoEdit(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
 		String officeId=WebUtils.getCleanParam(request,"officeId");
-		String businessId=WebUtils.getCleanParam(request,"businessId");
+		String[] businessId=request.getParameterValues("businessId");
 		HashMap<String, Object> cMap = new HashMap<String, Object>();
 		cMap.put("officeId", officeId);
 		cMap.put("businessId", businessId);
