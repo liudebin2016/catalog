@@ -8,9 +8,6 @@
     <title>Jusfoun</title>
     <!-- start: META -->
     <meta charset="utf-8" />
-    <!--[if IE]>
-    <meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" />
-    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -24,9 +21,6 @@
     <link rel="stylesheet" href="/resources/assets/css/styles.css">
     <link rel="stylesheet" href="/resources/assets/css/styles-responsive.css">
     <link rel="stylesheet" href="/resources/assets/plugins/iCheck/skins/all.css">
-    <!--[if IE 7]>
-    <link rel="stylesheet" href="/resources/assets/plugins/font-awesome/css/font-awesome-ie7.min.css">
-    <![endif]-->
     <!-- end: MAIN CSS -->
     <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
     <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
@@ -77,9 +71,7 @@
             <h1>政府资源目录平台</h1>
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="" style="padding: 0px 50px;color:red;">
-                        ${message!}
-                    </div>
+                    <div class="" style="padding: 0px 50px;color:red;">${message!}</div>
                     <form role="form" class="form-horizontal"  action="/admin/login" method="post">
                         <div class="form-group">
                             <span class="input-icon">
@@ -90,15 +82,11 @@
                         <div class="form-group form-actions">
                             <span class="input-icon">
                                 <input type="password" class="form-control password" name="password" placeholder="密码" value="${password!}">
-                                <i class="fa fa-lock"></i>
-                                <a class="forgot" href="#">
-                                    忘记密码
-                                </a>
+                                <!-- <i class="fa fa-lock"></i>
+                                <a class="forgot" href="#">忘记密码  </a> -->
                             </span>
                         </div>
-                        <div class="form-group">
-
-
+                        <!-- <div class="form-group">
                             <div class="col-sm-6" style="padding-left: 0px;">
                                 <span class="input-icon">
                                     <input type="text" name="validateCode" placeholder="验证码" id="form-field-3" class="form-control" value="">
@@ -109,24 +97,18 @@
                                 <img src="/servlet/validateCodeServlet" height="34px" alt="点击刷新">
                             </div>
                             <div class="col-sm-3" style="padding-right: 0px;line-height:34px;text-align:center;">
-                                <a href="javascript:void(0);" style="color: #ffffff;">
-                                    换一张
-                                </a>
-
+                                <a href="javascript:void(0);" style="color: #ffffff;">换一张</a>
                             </div>
                         </div>
 
                         <div class="from-group" style="margin-left: -15px;">
                             <label for="remember" class="checkbox-inline">
-                                <input type="checkbox" class="grey remember" id="remember" name="remember">
-                                记住我
+                                <input type="checkbox" class="grey remember" id="remember" name="remember">记住我
                             </label>
-
-                        </div>
+                        </div> -->
                         <div class="from-group" style="text-align: center;">
-
                             <button type="submit" class="btn btn-orange " style="width: 100%;">
-                                登录 <i class="fa fa-arrow-circle-right"></i>
+                            	登录 <i class="fa fa-arrow-circle-right"></i>
                             </button>
                         </div>
                     </form>
@@ -143,26 +125,23 @@
         <!-- start: FORGOT BOX -->
         <div class="box-forgot" style="color: #ffffff;">
             <h3 style="padding: 0px 50px;">忘记密码?</h3>
-            <p style="padding: 0px 50px;">
-                输入您的电子邮箱地址,重置您的密码.
-
-            </p>
+            <p style="padding: 0px 50px;">输入您的电子邮箱地址,重置您的密码.</p>
             <form class="form-forgot">
                 <div class="errorHandler alert alert-danger no-display">
                     <i class="fa fa-remove-sign"></i> You have some form errors. Please check below.
                 </div>
                 <fieldset>
                     <div class="form-group">
-								<span class="input-icon">
-									<input type="email" class="form-control" name="email" placeholder="邮箱">
-									<i class="fa fa-envelope"></i> </span>
+						<span class="input-icon">
+						<input type="email" class="form-control" name="email" placeholder="邮箱">
+						<i class="fa fa-envelope"></i> </span>
                     </div>
                     <div class="form-actions">
                         <a class="btn btn-light-grey go-back">
                             <i class="fa fa-chevron-circle-left"></i> 登录
                         </a>
                         <button type="submit" class="btn btn-green pull-right">
-                            提交 <i class="fa fa-arrow-circle-right"></i>
+                           	提交 <i class="fa fa-arrow-circle-right"></i>
                         </button>
                     </div>
                 </fieldset>
@@ -177,9 +156,7 @@
         <!-- start: REGISTER BOX -->
         <div class="box-register">
             <h3>Sign Up</h3>
-            <p>
-                Enter your personal details below:
-            </p>
+            <p>Enter your personal details below:</p>
             <form class="form-register">
                 <div class="errorHandler alert alert-danger no-display">
                     <i class="fa fa-remove-sign"></i> You have some form errors. Please check below.
@@ -197,12 +174,10 @@
                     <div class="form-group">
                         <div>
                             <label class="radio-inline">
-                                <input type="radio" class="grey" value="F" name="gender">
-                                Female
+                                <input type="radio" class="grey" value="F" name="gender">Female
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" class="grey" value="M" name="gender">
-                                Male
+                                <input type="radio" class="grey" value="M" name="gender">Male
                             </label>
                         </div>
                     </div>
@@ -210,19 +185,19 @@
                         Enter your account details below:
                     </p>
                     <div class="form-group">
-								<span class="input-icon">
-									<input type="email" class="form-control" name="email" placeholder="Email">
-									<i class="fa fa-envelope"></i> </span>
+						<span class="input-icon">
+						<input type="email" class="form-control" name="email" placeholder="Email">
+						<i class="fa fa-envelope"></i> </span>
                     </div>
                     <div class="form-group">
-								<span class="input-icon">
-									<input type="password" class="form-control" id="password" name="password" placeholder="Password">
-									<i class="fa fa-lock"></i> </span>
+						<span class="input-icon">
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+						<i class="fa fa-lock"></i> </span>
                     </div>
                     <div class="form-group">
-								<span class="input-icon">
-									<input type="password" class="form-control" name="password_again" placeholder="Password Again">
-									<i class="fa fa-lock"></i> </span>
+						<span class="input-icon">
+						<input type="password" class="form-control" name="password_again" placeholder="Password Again">
+						<i class="fa fa-lock"></i> </span>
                     </div>
                     <div class="form-group">
                         <div>
@@ -234,9 +209,7 @@
                     </div>
                     <div class="form-actions">
                         Already have an account?
-                        <a href="#" class="go-back">
-                            Log-in
-                        </a>
+                        <a href="#" class="go-back">Log-in</a>
                         <button type="submit" class="btn btn-green pull-right">
                             Submit <i class="fa fa-arrow-circle-right"></i>
                         </button>
@@ -252,28 +225,17 @@
         <!-- end: REGISTER BOX -->
     </div>
 </div>
-<!--[if lt IE 9]>
-<script src="/resources/assets/plugins/respond.min.js"></script>
-<script src="/resources/assets/plugins/excanvas.min.js"></script>
-<script type="text/javascript" src="/resources/assets/plugins/jQuery/jquery-1.11.1.min.js"></script>
-<![endif]-->
-<!--[if gte IE 9]><!-->
-<script src="/resources/assets/plugins/jQuery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <!--<![endif]-->
-<script src="/resources/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
 <script src="/resources/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- 对checkbox的美化插件 -->
 <script src="/resources/assets/plugins/iCheck/jquery.icheck.min.js"></script>
+<!-- 使用 CSS3 的新特性来实现过渡效果,比默认的.animate方法要顺畅得多 -->
 <script src="/resources/assets/plugins/jquery.transit/jquery.transit.js"></script>
-<script src="/resources/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js"></script>
-<script src="/resources/assets/js/main.js"></script>
-<!-- end: MAIN JAVASCRIPTS -->
-<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 <script src="/resources/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="/resources/assets/js/login.js"></script>
-<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 <script>
     jQuery(document).ready(function() {
-        Main.init();
         Login.init();
     });
 </script>
