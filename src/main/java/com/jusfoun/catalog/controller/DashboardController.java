@@ -31,6 +31,7 @@ import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.service.OfficeService;
 import com.jusfoun.catalog.service.ResourceService;
 import com.jusfoun.catalog.service.SearchLogService;
+import com.jusfoun.catalog.service.SubjectService;
 import com.jusfoun.catalog.utils.UserUtils;
 
 /**
