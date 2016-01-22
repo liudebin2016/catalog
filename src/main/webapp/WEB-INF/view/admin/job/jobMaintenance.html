@@ -17,12 +17,15 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	//根据id删除资源
 	function delRscById(id){  
-		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+		jq1_11.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
 		    if (r){  
 		    	$.get("/admin/job/delJobById.do", { id: id },
 				    function(data){location.reload();
@@ -46,7 +49,7 @@ var jsPart = {
 		var srcName=$.trim($("#srcName").val());
 		var srcStatus=$.trim($("#srcStatus").val());
 		
-		$('#dg').datagrid({
+		jq1_11('#dg').datagrid({
 		    url:'/admin/job/reloadList.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -66,19 +69,12 @@ var jsPart = {
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
-						if(value==0){
-							return "未注册";
-						}else if(value==1){
-							return "注册中";
-						}else if(value==2){
-							return "已注册";
-						}else if(value==3){
-							return "未通过";
-						}else if(value==4){
-							return "注销中";
-						}else if(value==5){
-							return "已注销";
-						}
+						if(value){
+			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
 					} 	
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
@@ -87,9 +83,9 @@ var jsPart = {
 		        		var b="";
 		        		var c=""
 		        		if(row.jobStatus == 0){
-		        			s = '<a href="/admin/job/edit?id='+row.id+'">编辑</a> ';
+		        			s = '<a href="/admin/job/edit?type=update&id='+row.id+'">编辑</a> ';
 		        		}else{
-		        			c = '<a href="/admin/job/edit?id='+row.id+'">查看</a>';
+		        			c = '<a href="/admin/job/edit?type=view&id='+row.id+'">查看</a>';
 		        		}
 		                    //var c = '<a href="#" onclick="javascript:delRscById('+row.id+');">删除</a>';
 		                    return s+b+c;
@@ -100,23 +96,23 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
+	                jq1_11(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	                $("input[name=ck]").hide();
 	            }
 		    }
 		}); 
 	}
 	
-	$(document).ready(function(){
+	jq1_11(document).ready(function(){
 		getRscList();
 	});
 
 	$("#applyFor").on('click',function(){
-		var row=$("#dg").datagrid("getSelections");
+		var row=jq1_11("#dg").datagrid("getSelections");
 		if(row.length==0){
-			$.messager.alert("警告","请选择需要注册的数据！");
+			jq1_11.messager.alert("警告","请选择需要注册的数据！");
 		    return false;
 		}
 		var ids="";
@@ -129,17 +125,17 @@ var jsPart = {
 		    ids+=row[i].id+",";
 		}
 		/* if(ishave){
-			$.messager.alert("警告","您只能选择未注册的数据！");
+			jq1_11.messager.alert("警告","您只能选择未注册的数据！");
 		    return false;
 		} */
 		ids = ids.substring(0,ids.length-1)
-	 	$.messager.confirm('确认','您确认提交申请吗？',function(r){    
+	 	jq1_11.messager.confirm('确认','您确认提交申请吗？',function(r){    
 		    if (r){  
-		    	$.get("/admin/job/jobApplyFor.do", { ids: ids },
-				    function(data){location.reload();
+		    	$.post("/admin/job/jobApplyFor.do", { ids: ids },
+				    function(data){
 				    	if(data=="success"){
-				    		alert("成功！");
-				    		location.reload();
+				    		jq1_11.messager.alert("成功","注册申请已提交，请等待审批！")
+				    		getRscList();
 				    	}
 				    }
 				);   
@@ -147,9 +143,9 @@ var jsPart = {
 		});  
 	});
 	$("#logOff").on('click',function(){
-		var row=$("#dg").datagrid("getSelections");
+		var row=jq1_11("#dg").datagrid("getSelections");
 		if(row.length==0){
-			$.messager.alert("警告","请选择需要注销的数据!");
+			jq1_11.messager.alert("警告","请选择需要注销的数据!");
 		    return false;
 		}
 		var ids="";
@@ -162,23 +158,34 @@ var jsPart = {
 		    ids+=row[i].id+",";
 		}
 		/* if(ishave){
-			$.messager.alert("警告","您只能选择已注册的岗位!");
+			jq1_11.messager.alert("警告","您只能选择已注册的岗位!");
 		    return false;
 		} */
 		ids = ids.substring(0,ids.length-1)
-	 	$.messager.confirm('确认','您确认申请注销吗？',function(r){    
+	 	jq1_11.messager.confirm('确认','您确认申请注销吗？',function(r){    
 		    if (r){  
-		    	$.get("/admin/job/logOff.do", { ids: ids },
-				    function(data){location.reload();
+		    	$.post("/admin/job/logOff.do", { ids: ids },
+				    function(data){
 				    	if(data=="success"){
-				    		alert("成功！");
-				    		location.reload();
+				    		jq1_11.messager.alert("成功","注销申请已提交，请等待审批！")
+				    		getRscList();
 				    	}
 				    }
 				);   
 		    }    
 		});  
 	});
+	function getSearch(){
+		var srcName=$.trim($("#srcName").val());
+		var srcStatus=$.trim($("#srcStatus").val());
+		//需求未确定，暂时注释
+		/* if(srcName =="" && srcStatus ==""){
+			//alert("都是空");
+		}else{
+			getRscList();
+		} */
+		getRscList();
+	}
 </script>
 
 <%};%>
@@ -202,18 +209,18 @@ var htmlPart = {
 	          <option value="0">未注册</option>
 	          <option value="1">注册中</option>
 	          <option value="2">已注册</option>
-	          <option value="3">未通过</option>
+	        <!--   <option value="3">未通过</option>
 	          <option value="4">注销中</option>
-	          <option value="5">已注销</option>
+	          <option value="5">已注销</option> -->
 	        </select>
 	      </li>
 	      <li>
-	        <button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
+	        <button class="btns mlt30" type="button" onclick="getSearch()">检索</button>
 	        <button class="btns mlt30" type="button" onclick="resetSrc()">清空</button>
 	      </li>
 	    </ul>
 	  </div>
-  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;" id="logOff">申请注销</a> </div>
+  <div class="search-sel"> <a class="btns-gray" href="/admin/job/addjob?type=create">新建岗位</a> <a class="btns-gray" href="javascript:;" id="applyFor">申请注册</a> <a class="btns-gray" href="javascript:;" id="logOff">申请注销</a> </div>
  <table id="dg"> </table>
 <!-- end:content -->
 <%};

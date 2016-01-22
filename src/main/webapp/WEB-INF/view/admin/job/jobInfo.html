@@ -99,7 +99,7 @@ var jsPart = {
 		var jobName=$.trim($("#jobName").val());
 		var srcOffice=$.trim($("#srcOffice").val());
 		var srcType=$.trim($("#srcType").val());
-		$("#dg").datagrid({
+		jq1_11("#dg").datagrid({
 		    url:'/admin/job/reloadListByOfficeId.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -121,29 +121,22 @@ var jsPart = {
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
-						if(value==0){
-							return "未注册";
-						}else if(value==1){
-							return "注册中";
-						}else if(value==2){
-							return "已注册";
-						}else if(value==3){
-							return "未通过";
-						}else if(value==4){
-							return "注销中";
-						}else if(value==5){
-							return "已注销";
-						}
+		        		if(value){
+			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
 					} 	
 		        }
 		    ]],
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 5 })
+	                jq1_11(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 5 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
-	                $("input[name=ck]").hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11("input[name=ck]").hide();
 	            }
 		    }
 		}); 
@@ -165,6 +158,9 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/js/ztree-search-nodes.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <%};%>

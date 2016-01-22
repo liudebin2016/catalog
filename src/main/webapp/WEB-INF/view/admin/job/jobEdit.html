@@ -18,6 +18,9 @@ var jsPart = {
 <script type="text/javascript">
 	var jq1_4 = $.noConflict(true);
 </script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
@@ -25,7 +28,7 @@ var jsPart = {
 <script type="text/javascript">
 	//加载业务datagrid
 	var find = false;
-	$('#bizlink').combogrid({    
+	jq1_11('#bizlink').combogrid({    
 	    panelWidth:540,    
 	    idField:'id',    
 	    multiple: true,
@@ -74,10 +77,11 @@ var jsPart = {
 	jq1_4(document).ready(function(){
 		$.post('../office/tree',function(obj){
 			// init tree
-			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);selectedTreeNode();
 		},'json');
 		// bind focus
 		$('#officeSel').on('focus',showMenu);
+		
 	});
 	var setting = {
 			keep: {parent: true},
@@ -115,7 +119,14 @@ var jsPart = {
 		$("#status").val(status);
 		$("#form").submit();
 	}
-	
+	//模拟点击树的节点达到显示节点名称在input上
+	function selectedTreeNode(){
+		var id = $("#officeId_text").val();
+		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");//获取ztree对象  
+        var node = zTree.getNodeByParam('id', id);//获取id的点  
+        zTree.selectNode(node);//选择点  
+        zTree.setting.callback.onClick(null, zTree.setting.treeId, node);//调用事件  
+	}
 </script>
 <%};%>
 <%
@@ -132,20 +143,21 @@ var htmlPart = {
    		<form id="form" action="/admin/job/doedit" method="post">
    	<%}%>
    			<input type="hidden" id="status" name="status" value=""/>
+   			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
-				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name" value="${job.id==''?'':job.name}">
+				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}">
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位职责</label>
-				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job.id==''?'':job.duty}</textarea>
+				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job==null?'':job.id==''?'':job.duty}</textarea>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel"/>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel" />
 		        <input type="hidden" id="officeId" name="officeId"/>
 			</div>
 			<div class="mb20 clearfix"></div>
@@ -161,7 +173,7 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位属性</label>
-				<select class="form-control c-f-width540" name="type">
+				<select class="form-control c-f-width540" name="type" >
 				  <option value="" >--请选择--</option>
 				  <option value="1" ${job==null?'':job.type == '1'?selected="selected":selected=""}>公务员编制</option>
 				  <option value="2" ${job==null?'':job.type == '2'?selected="selected":selected=""}>事业编制</option>
@@ -183,10 +195,12 @@ var htmlPart = {
 	   		<div class="mb20 clearfix"></div>
 	   		<div class="btn-box fr mb20">
 	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
-	   			<%if(job.status ==null || job.status == '0'){%>
+	   			<%if(actionType =='create' || actionType == 'update'){%>
 	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(0)">保存</button>
+	   				 <button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
+	   			 <% }else{ %>
+	   				 <button class="btns-gray fl"  onclick="history.go(-1)">返回</button>
 	   			<%}%>
-	   			<button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
 	   		</div>
    		</form>
    	</div>

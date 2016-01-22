@@ -21,5 +21,17 @@ public interface MenuDao extends CrudDao<Menu> {
 	public int updateParentIds(Menu menu);
 	
 	public int updateSort(Menu menu);
+
+	/**查询系统管理员菜单
+	 * @param menu
+	 * @return
+	 */
+	public List<Menu> findSysAdminMenu(Menu menu);
+
+	/**查询部门管理员菜单
+	 * @param menu
+	 * @return
+	 */
+	public List<Menu> findDeptAdminMenu(Menu menu);
 	
 }

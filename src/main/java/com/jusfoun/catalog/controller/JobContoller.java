@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.entity.Job;
+import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.JobAndOfficeView;
@@ -122,11 +124,30 @@ public class JobContoller extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "${adminPath}/job/edit", method = RequestMethod.GET)
-	public String getJobEdit(HttpServletRequest request, HttpServletResponse response,Model model){
+	public ModelAndView getJobEdit(HttpServletRequest request, HttpServletResponse response,Model model){
 		String id = request.getParameter("id");
-		Job job =jobService.selectById(id);
-		model.addAttribute("job",job);
-		return "admin/job/jobEdit";
+//		Job job =jobService.selectById(id);
+//		model.addAttribute("job",job);
+//		return "admin/job/jobEdit";
+		String type =  request.getParameter("type");
+		ModelAndView mav=new ModelAndView("admin/job/jobEdit");
+    	if(null!=type&&!"".equals(type)&&(type.equals("update")||type.equals("view"))){
+    		if(null!=id){
+    			Job job=jobService.selectById(id);
+    			if(null!=job){
+    				mav.addObject("job", job);
+    				if(type.equals("view")){
+						mav.addObject("actionType", "view");
+					}else{
+						mav.addObject("actionType", "update");
+					}
+    			}
+    		}
+    	}else{
+    		mav.addObject("job", null);
+    		mav.addObject("actionType", "create");
+    	}
+    	return mav;
 	}
 	
 	/**
@@ -139,6 +160,7 @@ public class JobContoller extends BaseController {
 	public String getJobAdd(HttpServletRequest request, HttpServletResponse response,Model model){
 		Job job = new Job();
 		model.addAttribute("job", job);
+		model.addAttribute("actionType", "create");
 		return "admin/job/jobEdit";
 	}
 	/**
@@ -269,7 +291,8 @@ public class JobContoller extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.GET)
+	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.POST)
+	@ResponseBody
 	public String jobApplyFor(HttpServletRequest request, HttpServletResponse response){
 		String ids = request.getParameter("ids");
 		String delFlag="fail";
@@ -285,7 +308,8 @@ public class JobContoller extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.GET)
+	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.POST)
+	@ResponseBody
 	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){
 		String ids = request.getParameter("ids");
 		String delFlag="fail";

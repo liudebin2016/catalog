@@ -65,13 +65,16 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript">
+ 	var jq1_11 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	
 	//主题Datagrid
 	function subDg(subjectId){
-		$('#sb').datagrid({
+		jq1_11('#sb').datagrid({
 		    url:'/admin/subject/getListById.do', 
 		    queryParams: {
 		    	subjectId:subjectId
@@ -91,9 +94,9 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 		    	}
 		    }
 		}); 
@@ -101,7 +104,7 @@ var jsPart = {
 	
 	//业务Datagrid
 	function bizDg(subjectId){
-		$('#biz').datagrid({
+		jq1_11('#biz').datagrid({
 		    url:'/admin/business/findBySubId.do', 
 		    queryParams: {
 		    	subjectId:subjectId
@@ -130,9 +133,9 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 		    	}
 		    }
 		}); 
@@ -140,7 +143,7 @@ var jsPart = {
 	
 	//资源Datagrid
 	function rscDg(subjectId){
-		$('#rsc').datagrid({
+		jq1_11('#rsc').datagrid({
 		    url:'/admin/business/findBySubId.do', 
 		    queryParams: {
 		    	subjectId:subjectId
@@ -169,23 +172,23 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 7 })
+	                jq1_11(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 7 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 		    	}
 		    }
 		}); 
 	}
 	
 	//页面初始化加载
-	$(document).ready(function(){
+	jq1_11(document).ready(function(){
 		subDg(0);
 		bizDg(0);
 		rscDg(0);
 	});
 	
 	//加载业务datagrid
-	$('#bizlink').combogrid({    
+	jq1_11('#bizlink').combogrid({    
 	    panelWidth:450,    
 	    idField:'id',    
 	    multiple: true,
@@ -216,7 +219,7 @@ var jsPart = {
 	});  
 	
 	//加载资源datagrid
-	$('#rsclink').combogrid({    
+	jq1_11('#rsclink').combogrid({    
 	    panelWidth:450,    
 	    idField:'id',    
 	    url:'/admin/resource/rscList.do',   
