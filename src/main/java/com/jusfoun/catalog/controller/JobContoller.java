@@ -319,4 +319,4 @@ public class JobContoller extends BaseController {
 		}
 		return delFlag;
 	}
-}
+} 
