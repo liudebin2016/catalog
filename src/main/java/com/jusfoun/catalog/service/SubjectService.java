@@ -85,4 +85,22 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 	public List<ResourceInfo> findListByRscId(Map<String, Object> sqlMap) {
 		return dao.findListByRscId(sqlMap);
 	}
+
+	/**
+	 * 前端搜索使用
+	 * @param sub
+	 * @return
+	 */
+	public List<ResourceInfo> findSrhList(SubjectInfo sub) {
+		return dao.findSrhList(sub);
+	}
+
+	/**
+	 * 前端搜索使用
+	 * @param sub
+	 * @return
+	 */
+	public int findSrhListCount(SubjectInfo sub) {
+		return dao.findSrhListCount(sub);
+	}
 }

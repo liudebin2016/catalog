@@ -13,7 +13,6 @@ var cssPart = {
 <%
 var jsPart = {
 %>
-<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -66,28 +65,26 @@ function jobDg(name){
 			status: "2"
 		},
 	    pagination:true,
-	    checkbox:true,
 	    method:"get",
-	    rownumbers:true,
 	    columns:[[    
-			{field:'ck',title:'全选',width:120,checkbox:true},  
 			{field:'id',title:'id',width:0,hidden:true}, 
 	        {field:'name',title:'岗位名称/职位',width:150,align:"center"},    
 	        {field:'duty',title:'岗位职责',width:150,align:"center"},
 	        {field:'type',title:'岗位属性',width:150,align:"center"},
 	        {field:'status',title:'当前状态',width:150,align:"center",
 	        	formatter: function(value,row,index){
-	        		return value.replace("0","未注册").replace("1","未注册").replace("2","未注册").replace("3","未注册").replace("4","未注册").replace("5","未注册");
+	        		if(value){
+		        		return value.replace("0","未注册").replace("1","未注册").replace("2","未注册").replace("3","未注册").replace("4","未注册").replace("5","未注册");
+	        		}
 				} 	
 	        }
 	    ]],
 	    onLoadSuccess:function(data){
 	    	if (data.total == 0) {
                 //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
+                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
                 //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
                 $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
-                $("input[name=ck]").hide();
             }
 	    }
 	}); 
@@ -101,33 +98,36 @@ function bizDg(name){
 			status: "2"
 		},
 	    pagination:true,
-	    checkbox:true,
 	    method:"get",
-	    rownumbers:true,
 	    fitColumns:true,
 	    columns:[[    
-			{field:'ck',title:'全选',width:120,checkbox:true},
-			{field:'id',title:'全选',width:120},
+			{field:'id',hidden:true,width:120},
 	        {field:'name',title:'业务事项名称',width:300},    
 	        {field:'shareWith',title:'共享范围',width:300,
 	        	formatter:function(value,row,index){
-	        		var ds=value.replace(1,"所有人员").replace(2,"国家部委").replace(3,"市领导").replace(4,"委办局").replace(5,"委（局）内")
-	        		.replace(6,"本部门专员").replace(7,"其他");
-	        		return ds;
+	        		if(value){
+		        		var ds=value.replace(1,"所有人员").replace(2,"国家部委").replace(3,"市领导").replace(4,"委办局").replace(5,"委（局）内")
+		        		.replace(6,"本部门专员").replace(7,"其他");
+		        		return ds;
+	        		}
             	}
 	        },
 	        {field:'status',title:'当前状态',width:150,
 	        	formatter:function(value,row,index){
-	        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
-	        		return ds;
+	        		if(value){
+		        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
+		        		return ds;
+	        		}
             	}
 	        }
 	    ]],
 	    onLoadSuccess:function(data){
 	    	if (data.total == 0) {
                 //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
-            }
+                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	    	}
 	    }
 	}); 
 }
@@ -140,18 +140,18 @@ function rscDg(name){
 			status: 2
 		},
 	    pagination:true,
-	    checkbox:true,
 	    method:"get",
-	    rownumbers:true,
+	    fitColumns:true,
 	    columns:[[    
-			{field:'ck',title:'全选',width:120,checkbox:true},  
 			{field:'id',title:'id',width:300,hidden:true}, 
 	        {field:'name',title:'资源名称',width:300},    
 	        {field:'shareRegion',title:'共享范围',width:200,
 	        	formatter:function(value,row,index){
-	        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
-	        		.replace(5,"本部门专员").replace(6,"其他");
-	        		return ds;
+	        		if(value){
+		        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
+		        		.replace(5,"本部门专员").replace(6,"其他");
+		        		return ds;
+	        		}
             	}
 	        },
 	        {field:'status',title:'当前状态',width:150,
@@ -164,33 +164,32 @@ function rscDg(name){
 	        		}
             	}
 	        }
-	    ]]
+	    ]],
+	    onLoadSuccess:function(data){
+	    	if (data.total == 0) {
+                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	    	}
+	    }
 	}); 
 }
 
-function subDg(){
+function subDg(name){
 	//加载主题数据
 	$('#subDg').datagrid({
 	    url:'/srh/subDg.do', 
 	    fitColumns:true,
 	    queryParams: {
-			subjectId:7,
-			page:0,
-			rows:10
+			name:name
 		},
-		pagination:false,
-		height:50,
+		pagination:true,
 	    method:"get",
 	    columns:[[    
 			{field:'id',title:'id',hidden:true},
 	        {field:'name',title:'主题名称',width:300},
-	        {field:'descr',title:'主题描述',width:200},		        
-	        {field:'operator',title:'操作',width:120,align:"center",
-	        	formatter:function(value,row,index){
-                    var s = '<a href="/admin/subject/action.do?type=view&subjectId='+row.id+'">查看</a> ';
-                    return s;
-	            }
-	        }
+	        {field:'descr',title:'主题描述',width:200}
 	    ]],
 	    onLoadSuccess:function(data){
 	    	if (data.total == 0) {
@@ -227,13 +226,18 @@ var htmlPart = {
 		<div id="srhTabs" class="easyui-tabs" data-options="tabWidth:112" style="width:1000px;height:500px;">
 			<div title="机构职能" style="padding:10px">
 				<%
+					if(officeList==[]){
+				%>
+				<div class="section">没找到您要搜索的信息</div>
+				<%	
+					}else{
 			    	for(office in officeList){
 			    %>
 			      <div class="section">
 			        <h4><a href="javascript:location.reload();">${office.name}</a></h4>
 			        ${office.duty}
 			      </div>
-			    <%}%>
+			    <%}}%>
 			</div>
 			<div title="岗位" style="padding:10px"><table id="jobDg"> </table></div>
 			<div title="业务" style="padding:10px"><table id="bizDg"> </table></div>
@@ -242,7 +246,6 @@ var htmlPart = {
 		</div>
 	</div>
 </div>
-<%
-};
+<%};
 include("/layouts/front.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
 %>

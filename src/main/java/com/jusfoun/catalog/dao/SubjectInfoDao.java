@@ -49,4 +49,18 @@ public interface SubjectInfoDao  extends CrudDao<SubjectInfo> {
 	 */
 	Long getCount();
 
+	/**
+	 * 前端搜索使用
+	 * @param sub
+	 * @return
+	 */
+	List<ResourceInfo> findSrhList(SubjectInfo sub);
+
+	/**
+	 * 前端搜索使用
+	 * @param sub
+	 * @return
+	 */
+	int findSrhListCount(SubjectInfo sub);
+
 }

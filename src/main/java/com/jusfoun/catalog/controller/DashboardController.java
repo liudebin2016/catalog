@@ -32,7 +32,6 @@ import com.jusfoun.catalog.service.OfficeService;
 import com.jusfoun.catalog.service.ResourceService;
 import com.jusfoun.catalog.service.SearchLogService;
 import com.jusfoun.catalog.service.SubjectService;
-import com.jusfoun.catalog.utils.UserUtils;
 
 /**
  * Created by huanglei on 15/12/27.
@@ -138,7 +137,7 @@ public class DashboardController extends BaseController{
     
     @ResponseBody
     @RequestMapping(value = "/srh/rscDg")
-    public String rscJobDg(int page,int rows,HttpServletRequest request){
+    public String srhRscDg(int page,int rows,HttpServletRequest request){
     	//求得开始记录与结束记录
 		int start = (page-1)*rows;
 		int end = page * rows;
@@ -153,9 +152,20 @@ public class DashboardController extends BaseController{
     	return sb.toString();
     }
     
+    @ResponseBody
     @RequestMapping(value = "/srh/subDg")
-    public String subJobDg(int page,int rows,SubjectInfo sub){
-    	
-    	return null;
+    public String srhSubDg(int page,int rows,HttpServletRequest request){
+    	//求得开始记录与结束记录
+		int start = (page-1)*rows;
+		int end = page * rows;
+		SubjectInfo sub=new SubjectInfo();
+		sub.setName(request.getParameter("name"));
+		sub.getSqlMap().put("page", "limit "+start+","+end);
+    	List<ResourceInfo> rscList=subjectService.findSrhList(sub);
+    	int rscCount=subjectService.findSrhListCount(sub);
+    	String json = JsonMapper.toJsonString(rscList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(rscCount).append(",\"rows\":").append(json).append("}");
+    	return sb.toString();
     }
 }

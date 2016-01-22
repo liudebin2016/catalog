@@ -301,10 +301,42 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-      <!-- 查询有效个数 -->
+  <!-- 查询有效个数 -->
   <select id="getCount" resultType="java.lang.Long">
   	select count(id)
   	from subject_info
   	where del_flag = 0
   </select>
+  
+  <!-- 为前面搜索而生 -->
+  <select id="findSrhListCount" resultType="int">
+  	SELECT 
+  		count(id) 
+  	FROM 
+  		subject_info
+  	WHERE 
+  		status=2 
+  	AND 
+  		del_flag=0
+  	<if test="name!=null and name!='' ">  
+    AND name like CONCAT('%', #{name}, '%')
+    </if>
+  </select>
+  
+  <select id="findSrhList" resultType="com.jusfoun.catalog.entity.SubjectInfo">
+  	SELECT 
+  		*
+  	FROM 
+  		subject_info
+  	WHERE 
+  		status=2 
+  	AND 
+  		del_flag=0
+  	<if test="name!=null and name!='' ">  
+    AND name like CONCAT('%', #{name}, '%')
+    </if>
+    ORDER BY create_date desc
+    ${sqlMap.page}
+  </select>
+  
 </mapper>

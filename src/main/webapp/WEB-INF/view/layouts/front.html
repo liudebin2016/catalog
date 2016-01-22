@@ -112,30 +112,14 @@
 
     <%include("/partials/front-footer.html"){} %>
 </div>
-
-<!--[if lt IE 9]>
-<script src="/resources/assets/plugins/respond.min.js"></script>
-<script src="/resources/assets/plugins/excanvas.min.js"></script>
-<script type="text/javascript" src="/resources/assets/plugins/jQuery/jquery-1.11.1.min.js"></script>
-<![endif]-->
-<!--[if gte IE 9]><!-->
-<script src="/resources/assets/plugins/jQuery/jquery-2.1.1.min.js"></script>
-<!--<![endif]-->
-<script src="/resources/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script src="/resources/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="/resources/assets/plugins/iCheck/jquery.icheck.min.js"></script>
 <script src="/resources/assets/plugins/jquery.transit/jquery.transit.js"></script>
-<script src="/resources/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js"></script>
-<script src="/resources/assets/js/main.js"></script>
 <!-- end: MAIN JAVASCRIPTS -->
 <!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
 <script src="/resources/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
 <!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-<script>
-    jQuery(document).ready(function() {
-        Main.init();
-    });
-</script>
+
 ${jsSection}
 </body>
 </html>
