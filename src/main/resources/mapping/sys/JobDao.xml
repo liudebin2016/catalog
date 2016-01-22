@@ -320,6 +320,7 @@
 	    </if>  
 	</trim>	
 		 GROUP BY j.id
+		 ORDER BY j.status ASC,j.update_date desc
   		${sqlMap.page}
   </select>
   
@@ -351,6 +352,7 @@
 	    
 	</trim>	
 		 GROUP BY j.id
+		 ORDER BY j.status ASC,j.update_date desc
   		${sqlMap.page}
   </select>
   
@@ -402,13 +404,13 @@
   
   <select id="findJobByCondition" resultType="JobAndOfficeView">
   	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
-  	b.id as businessId,,GROUP_CONCAT(b.`name`) as businessName as businessName
+  	b.id as businessId,GROUP_CONCAT(b.`name`) as businessName
   	
   	from job j 
   	
 	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id   GROUP BY j.id
+	INNER JOIN business b ON jb.business_id = b.id   GROUP BY j.id ORDER BY j.status ASC,j.update_date desc
   </select>
   
   <insert id="insertJob_business" parameterType="Map" >
@@ -436,4 +438,37 @@
   	from job
   	where del_flag = 0
   </select>
+  
+    
+  <!-- 为前面搜索而生 -->
+  <select id="findSrhListCount" resultType="int">
+  	SELECT 
+  		count(id) 
+  	FROM 
+  		job
+  	WHERE 
+  		status=2 
+  	AND 
+  		del_flag=0
+  	<if test="name!=null and name!='' ">  
+    AND name like CONCAT('%', #{name}, '%')
+    </if>
+  </select>
+  
+  <select id="findSrhList" resultType="com.jusfoun.catalog.entity.Job">
+  	SELECT 
+  		*
+  	FROM 
+  		job
+  	WHERE 
+  		status=2 
+  	AND 
+  		del_flag=0
+  	<if test="name!=null and name!='' ">  
+    AND name like CONCAT('%', #{name}, '%')
+    </if>
+    ORDER BY create_date desc
+    ${sqlMap.page}
+  </select>
+  
 </mapper>

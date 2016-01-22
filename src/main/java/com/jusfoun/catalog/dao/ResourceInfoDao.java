@@ -60,4 +60,8 @@ public interface ResourceInfoDao extends CrudDao<ResourceInfo>{
 	 * @return
 	 */
 	Long getCount();
+
+	List<ResourceInfo> findSrhList(ResourceInfo rsc);
+
+	int findSrhListCount(ResourceInfo rsc);
 }

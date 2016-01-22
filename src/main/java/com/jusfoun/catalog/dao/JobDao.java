@@ -47,4 +47,18 @@ public interface JobDao extends CrudDao<Job>{
 	 */
 	public Long getCount();
 
+	/**
+	 * 前端搜索用
+	 * @param job
+	 * @return
+	 */
+	public int findSrhListCount(Job job);
+
+	/**
+	 * 前端搜索用
+	 * @param job
+	 * @return
+	 */
+	public List<Job> findSrhList(Job job);
+
 }

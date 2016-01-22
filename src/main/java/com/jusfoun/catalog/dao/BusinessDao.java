@@ -61,4 +61,8 @@ public interface BusinessDao extends CrudDao<Business> {
 	 */
 	Long getCount();
 
+	int findSrhListCount(Business biz);
+
+	List<Business> findSrhList(Business biz);
+
 }

@@ -81,4 +81,12 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 			dao.update(biz);
 		}
 	}
+
+	public int findSrhListCount(Business biz) {
+		return dao.findSrhListCount(biz);
+	}
+
+	public List<Business> findSrhList(Business biz) {
+		return dao.findSrhList(biz);
+	}
 }

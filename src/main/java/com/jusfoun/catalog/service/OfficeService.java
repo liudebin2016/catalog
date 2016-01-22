@@ -189,4 +189,9 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
 	}
+
+	@Transactional(readOnly = false)
+	public void update(Office office) {
+		dao.update(office);		
+	}
 }

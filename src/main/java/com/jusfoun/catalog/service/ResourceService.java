@@ -90,5 +90,13 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 			dao.update(rsc);
 		}
 	}
+
+	public List<ResourceInfo> findSrhList(ResourceInfo rsc) {
+		return dao.findSrhList(rsc);
+	}
+
+	public int findSrhListCount(ResourceInfo rsc) {
+		return dao.findSrhListCount(rsc);
+	}
 	
 }

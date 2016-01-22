@@ -11,12 +11,22 @@
 	var ueditor;
 	$(document).ready(function() {
 		ueditor = UE.getEditor('editor');
+		var content="${ofcDuty==null?'':ofcDuty}";
+		if(content){
+			ueditor.addListener("ready", function () {
+		        // editor准备好之后才可以使用
+		        ueditor.setContent(content);
+	        });
+		}
 	});
 	
 	function sendContent(){
 		var content=ueditor.getContent();
 		$.get("/admin/office/updateDuty.do", 
-			{ id:${officeId},content: content},
+			{ 
+				id:${officeId},
+				content: content
+			},
 		  	function(data){
 		    	alert("职责添加成功！");
 		  	}
@@ -24,7 +34,15 @@
 	}
 	
 	function applyRegister(){
-		
+		$.get("/admin/office/updateDuty.do", 
+			{ 
+				id:${officeId},
+				status: 1//申请注册
+			},
+		  	function(data){
+		    	alert("保存成功！");
+		  	}
+		);
 	}
 </script>
 <%};%>

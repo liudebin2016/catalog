@@ -85,10 +85,28 @@ public class JobService extends CrudService<JobDao,Job> {
 		for(int i=0;i<row.length;i++){
 			Job job = new Job();
 			job.setId(Integer.parseInt(row[i]));
-			job.setStatus("4");
+			job.setStatus("0");
 			dao.updateById(job);
 			index++;
 		}
 		return index;
+	}
+
+	/**
+	 * 前端搜索用
+	 * @param job
+	 * @return
+	 */
+	public int findSrhListCount(Job job) {
+		return dao.findSrhListCount(job);
+	}
+
+	/**
+	 * 前端搜索用
+	 * @param job
+	 * @return
+	 */
+	public List<Job> findSrhList(Job job) {
+		return dao.findSrhList(job);
 	}
 }

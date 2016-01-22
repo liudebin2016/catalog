@@ -33,6 +33,7 @@ public class Office extends TreeEntity<Office> {
 	private User primaryPerson;	//主负责人
 	private User deputyPerson;	//副负责人
 	private List<String> childDeptList;	//快速添加子部门
+	private String status;      //岗位状态
 	
 	public Office(){
 		super();
@@ -234,4 +235,13 @@ public class Office extends TreeEntity<Office> {
 	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }

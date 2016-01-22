@@ -1,6 +1,10 @@
 <%
 var cssPart = {
 %>
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -11,6 +15,9 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('#_search').on('click',function(){
@@ -19,6 +26,19 @@ $(function(){
 			return;
 		$('#searchForm').submit();
 	});
+	
+   	var tab = $('#srhTab').tabs('getSelected');
+   	var index = $('#srhTab').tabs('getTabIndex',tab);
+	$("#srhType").val(index+1);
+	
+	$('#srhTab').tabs({    
+	    border:false,   
+	    plain:true,
+	    onSelect:function(title,index){ 
+	    	$("#srhType").val(index+1);
+	    }    
+	});  
+
 });
 </script>
 
@@ -31,38 +51,32 @@ var htmlPart = {
     <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">
-        <form action="search" id="searchForm" method="post">
-            <div class="" style="margin-top: 100px;height: 100%;">
-                <div class="">
-                    <h4 class="panel-title" style="text-align: center;"><span class="text-bold">九次方</span>·政府资源目录检索</h4>
-                </div>
-                <div class="panel-body" style="padding-bottom: 0px;">
-                    <div>
-                        <!--<label for="form-field-mask-1">-->
-                            <!--Date <small class="text-success">99/99/9999</small>-->
-                        <!--</label>-->
-                        <div class="input-group">
-                            <input type="text" id="_ipt" name="search_value" class="form-control">
-                                <a href="#" class="input-group-btn">
-                                    <button type="button" class="btn btn-green" id="_search">
-                                        搜索
-                                    </button>
-                                </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-body" style="padding-top: 0px;">
-                <div class="toolbar toolbar-tools pull-left" style="border:0px;">
-                    <ul class="nav navbar-right">
-                        <li class=""><a href="#"><input type="radio" name="search_type" value="1" checked="checked"/>机构职责</a></li>
-                        <li class="dropdup"><a href="#"><input type="radio" name="search_type" value="2"/>岗位</a></li>
-                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="3"/>业务</a></li>
-                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="4"/>资源</a></li>
-                        <li class="dropdown"><a href="#"><input type="radio" name="search_type" value="5"/>主题</a></li>
-                    </ul>
-                </div>
-            </div>
+	        <form action="search" id="searchForm" method="post">
+	            <div class="" style="margin-top: 100px;height: 100%;">
+	                <div style="margin-bottom: 10px;">
+	                    <h4 class="panel-title" style="text-align: center;"><span class="text-bold">九次方</span>·政府资源目录检索</h4>
+	                </div>
+	                <input id="srhType" type="hidden" name="search_type" value="">
+	                <div class="panel-body" style="padding-bottom: 0px;width:610px;border-width: 0px; ">
+		                <div id="srhTab" class="easyui-tabs" data-options="tabWidth:100">
+							<div title="机构职能" style="padding:0px" id="1"></div>
+							<div title="岗位" style="padding:0px" id="2"></div>
+							<div title="业务" style="padding:0px" id="3"></div>
+							<div title="资源" style="padding:0px" id="4"></div>
+							<div title="主题" style="padding:0px" id="5"></div>
+						</div>
+		            </div>
+	                <div class="panel-body" style="padding-bottom: 0px;">
+	                    <div>
+	                        <div class="input-group">
+	                            <input type="text" id="_ipt" name="search_value" class="form-control">
+	                            <a href="javascript:void(0);" class="input-group-btn">
+	                                <button type="button" class="btn btn-green" id="_search">搜索 </button>
+	                            </a>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
             </form>
         </div>
         <div class="col-sm-2"></div>

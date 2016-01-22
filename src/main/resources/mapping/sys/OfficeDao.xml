@@ -25,6 +25,7 @@
         a.update_by AS "updateBy.id",
         a.update_date,
         a.del_flag,
+        a.status,
         a.useable AS useable,
         a.primary_person AS "primaryPerson.id",
         a.deputy_person AS "deputyPerson.id",
@@ -103,6 +104,7 @@
         update_date,
         remarks,
         del_flag,
+        status,
         useable,
         primary_person,
         deputy_person
@@ -128,6 +130,7 @@
         #{updateDate},
         #{remarks},
         #{delFlag},
+        #{status},
         #{useable},
         #{primaryPerson.id},
         #{deputyPerson.id}
@@ -135,10 +138,90 @@
     </insert>
 
     <update id="update">
-        UPDATE sys_office SET
-        name = #{name},
-        update_by = #{updateBy.id},
-        update_date = #{updateDate}
+        UPDATE sys_office 
+        <set >
+	        <if test="name != null" >
+	          name = #{name},
+	        </if>
+	        <if test="parent != null" >
+	          parent_id = #{parent.id},
+	        </if>
+	        <if test="parentIds != null" >
+	          parent_ids = #{parentIds},
+	        </if>
+	        <if test="area != null" >
+	          area_id = #{area.id},
+	        </if>
+	        <if test="code != null" >
+	          code = #{code},
+	        </if>
+	        <if test="duty != null" >
+	          duty = #{duty},
+	        </if>
+	        <if test="sort != null" >
+	          sort = #{sort},
+	        </if>
+        	<if test="type != null" >
+	          type = #{type},
+	        </if>
+        	<if test="grade != null" >
+	          grade = #{grade},
+	        </if>
+        	<if test="address != null" >
+	          address = #{address},
+	        </if>
+        	<if test="zipCode != null" >
+	          zip_code = #{zipCode},
+	        </if>
+        	<if test="master != null" >
+	          master = #{master},
+	        </if>
+        	<if test="phone != null" >
+	          phone = #{phone},
+	        </if>
+        	<if test="fax != null" >
+	          fax = #{fax},
+	        </if>
+        	<if test="email != null" >
+	          email = #{email},
+	        </if>
+        	<if test="createBy != null" >
+	          create_by = #{createBy.id},
+	        </if>
+        	<if test="createDate != null" >
+	          create_date = #{createDate},
+	        </if>
+        	<if test="updateBy != null" >
+	          update_by = #{updateBy.id},
+	        </if>
+        	<if test="updateDate != null" >
+	          update_date = #{updateDate},
+	        </if>
+        	<if test="remarks != null" >
+	          remarks = #{remarks},
+	        </if>
+        	<if test="delFlag != null" >
+	          del_flag = #{delFlag},
+	        </if>
+        	<if test="status != null" >
+	          status = #{status},
+	        </if>
+        	<if test="useable != null" >
+	          useable = #{useable},
+	        </if>
+        	<if test="primaryPerson != null" >
+	          primary_person = #{primaryPerson.id},
+	        </if>
+        	<if test="deputyPerson != null" >
+	          deputy_person = #{deputyPerson.id},
+	        </if>
+	        <if test="updateBy != null" >
+		        update_by = #{updateBy.id},
+		    </if>
+	        <if test="updateDate != null" >
+		        update_date = #{updateDate},
+		    </if>
+	    </set>
         WHERE id = #{id}
     </update>
 

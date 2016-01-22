@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,11 +52,16 @@ public class OfficeController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "${adminPath}/office/updateDuty")
-    public String updateDuty(@RequestParam(value="id")Integer id,@RequestParam(value="content")String content) {
+    public String updateDuty(@RequestParam(value="id")Integer id,@RequestParam(value="content",required=false)String content,@RequestParam(value="status",required=false)String status) {
     	Office office=new Office();
     	office.setId(id);
-    	office.setDuty(content);
-    	officeService.updateOfficeById(id,content);
+    	if(content!=null&&!"".equals(content)){
+    		office.setDuty(StringEscapeUtils.unescapeHtml4(content));
+    	}
+    	if(status!=null&&!"".equals(status)){
+    		office.setStatus(status);
+    	}
+    	officeService.update(office);
         return "success";
     }
     
@@ -69,6 +75,12 @@ public class OfficeController extends BaseController {
     	ModelAndView mav=new ModelAndView("admin/office/maintenance");
     	User user=UserUtils.getUser();
     	Integer sfd=user.getOffice().getId();
+    	String ofcDuty=user.getOffice().getDuty();
+    	if(null!=ofcDuty&&!"".equals(ofcDuty)){
+    		mav.addObject("ofcDuty", StringEscapeUtils.unescapeHtml4(ofcDuty));
+    	}else{
+    		mav.addObject("ofcDuty", null);
+    	}
     	mav.addObject("officeId", sfd);
     	return mav;
     }
