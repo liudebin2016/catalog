@@ -268,13 +268,16 @@
 	
 	<!-- queryOffices -->
 	<select id="queryOffices" parameterType="map" resultType="Office">
-		select id,name,duty
-		from sys_office
-		where duty like CONCAT('%', #{duty}, '%')
+		SELECT id,name,duty
+		FROM sys_office
+		WHERE duty like CONCAT('%', #{duty}, '%')
+		<if test="id != null" >
+	       AND id = #{id}
+	    </if>
 	</select>
 	<!-- 前端树 -->
 	<select id="findByPid" resultType="com.jusfoun.catalog.vo.ETreeNode" parameterType="int">
-		SELECT id,name as text from SYS_OFFICE o 
+		SELECT id,name as text FROM sys_office o 
 		WHERE o.parent_id=#{pid}
 	</select>
 </mapper>

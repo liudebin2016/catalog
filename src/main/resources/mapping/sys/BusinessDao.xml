@@ -401,6 +401,9 @@
   		AND del_flag=0
 	    <if test="name!=null and name!='' ">  
 	    AND name like CONCAT('%', #{name}, '%')
+	    </if>
+	    <if test="chargeOfficeId!=null and chargeOfficeId!='' ">  
+	    AND charge_office_id = #{chargeOfficeId}
 	    </if>  
 	</trim>	
   </select>
@@ -418,6 +421,9 @@
 	    <if test="name!=null and name!='' ">  
 	    AND name like CONCAT('%', #{name}, '%')
 	    </if>  
+	    <if test="chargeOfficeId!=null and chargeOfficeId!='' ">  
+	    AND charge_office_id = #{chargeOfficeId}
+	    </if>
 	</trim>
     order by b.status , b.create_date desc
     ${sqlMap.page}    

@@ -17,6 +17,21 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 $(function(){
+	//初始化树
+	$('#etree').tree({
+        url:'http://localhost:8090/build/eTreeNode',
+        animate:true,
+        onClick: function(node){
+    		$("#officeId").val(node.id);// 在用户点击的时候提示
+    	}
+
+    });
+	
+	//将树节点值赋给officeId，并且设置选中的树节点
+	$("#officeId").val(${officeId});
+	var node = $('#etree').tree('find', ${officeId});
+	$('#etree').tree('select', node.target);
+	
 	//绑定搜索按钮事件
 	$('#_search').on('click',function(){
 		var _v = $('#_ipt').val();
@@ -29,13 +44,6 @@ $(function(){
    	var index = $('#srhTabs').tabs('getTabIndex',tab);
 	$("#srhType").val(index+1);
 	
-	/* switch(index+1){
-		//case 1:jobDg();break;
-		case 2:jobDg();break;
-		case 3:bizDg();break;
-		case 4:rscDg();break;
-		case 5:subDg();break;	
-	}*/
 	
 	$('#srhTabs').tabs({    
 	    border:false,   
@@ -62,6 +70,7 @@ function jobDg(name){
 	    fitColumns:true,
 	    queryParams: {
 			name: name,
+			officeId:$("#officeId").val(),
 			status: "2"
 		},
 	    pagination:true,
@@ -95,6 +104,7 @@ function bizDg(name){
 	    url:'/srh/bizDg.do', 
 	    queryParams: {
 			name: name,
+			officeId:$("#officeId").val(),
 			status: "2"
 		},
 	    pagination:true,
@@ -137,6 +147,7 @@ function rscDg(name){
 	    url:'/srh/rscDg.do', 
 	    queryParams: {
 			name: name,
+			officeId:$("#officeId").val(),
 			status: 2
 		},
 	    pagination:true,
@@ -209,7 +220,15 @@ function subDg(name){
 var htmlPart = {
 %>
 <div class="content content-wrap1">
+	<div  style="width: 940px;">
+	<div style="background-color: #eaf2ff;float: left;width: 260px;height: 500px;margin-top: 100px;">
+     	<div>
+			<ul id="etree"></ul>
+		</div>
+    </div>
+    <div  class="" style="margin-top: 100px;height: 100%;float: right;width: 650px;">
 	<form action="search" id="searchForm" method="post">
+		<input id="officeId" type="hidden" name="officeId" value="">
 		<input id="srhType" type="hidden" name="search_type" value="">
 		<div class="panel-body" style="padding-bottom: 0px;font-size: 14px;width: 650px;margin-bottom: 15px;">
 			<div>
@@ -244,6 +263,8 @@ var htmlPart = {
 			<div title="资源" style="padding:10px"><table id="rscDg"> </table></div>
 			<div title="主题" style="padding:10px"><table id="subDg"> </table></div>
 		</div>
+	</div>
+	</div>
 	</div>
 </div>
 <%};

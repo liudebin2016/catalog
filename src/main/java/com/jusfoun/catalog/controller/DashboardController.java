@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,6 +84,7 @@ public class DashboardController extends BaseController{
     @RequestMapping(value = "/search",method = RequestMethod.POST)
 	public String search(@RequestParam(value = "search_value", required=true) String value,
 			@RequestParam(value = "search_type", required=true) int type,
+			@RequestParam(value = "officeId", required=false) Integer officeId,
 			Model model) {
     	SearchLog log = new SearchLog();
     	log.setKeyword(value);
@@ -91,12 +93,16 @@ public class DashboardController extends BaseController{
     	searchLogService.save(log);
     	Map<String,Object> param = new HashMap<String, Object>();
     	param.put("duty", value.trim());
+    	if(officeId!=null){
+    		param.put("id", officeId);
+    	}
     	List<Office> officeList = officeService.queryOffices(param);
     	for(Office office : officeList)
     		office.setDuty(StringEscapeUtils.unescapeHtml4(office.getDuty().replaceAll(value.trim(), "&lt;span style='color:orange'&gt;"+value.trim()+"&lt;/span&gt;")));
     	model.addAttribute("officeList", officeList);
     	model.addAttribute("searchValue", value);
     	model.addAttribute("searchType", type);
+    	model.addAttribute("officeId", officeId);
 		return "search";
 	}
     
@@ -104,11 +110,15 @@ public class DashboardController extends BaseController{
     @RequestMapping(value = "/srh/jobDg")
     public String srhJobDg(int page,int rows,HttpServletRequest request){
     	String name=request.getParameter("name");
+    	String officeId=StringUtils.trim(request.getParameter("officeId"));
     	//求得开始记录与结束记录
 		int start = (page-1)*rows;
 		int end = page * rows;
 		Job job=new Job();
 		job.setName(name);
+		if(StringUtils.isEmpty(officeId)){
+			job.setOfficeId(Integer.valueOf(officeId));
+		}
 		job.getSqlMap().put("page", "limit "+start+","+end);
 		int jobCount=jobService.findSrhListCount(job);
     	List<Job> jobList=jobService.findSrhList(job);
@@ -125,6 +135,10 @@ public class DashboardController extends BaseController{
 		int start = (page-1)*rows;
 		int end = page * rows;
 		Business biz=new Business();
+		String officeId=StringUtils.trim(request.getParameter("officeId"));
+		if(StringUtils.isEmpty(officeId)){
+			biz.setChargeOfficeId(Long.valueOf(officeId));
+		}
 		biz.setName(request.getParameter("name"));
 		biz.getSqlMap().put("page", "limit "+start+","+end);
     	int bizCount=businessService.findSrhListCount(biz);
@@ -138,10 +152,14 @@ public class DashboardController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "/srh/rscDg")
     public String srhRscDg(int page,int rows,HttpServletRequest request){
+    	String officeId=StringUtils.trim(request.getParameter("officeId"));
     	//求得开始记录与结束记录
 		int start = (page-1)*rows;
 		int end = page * rows;
 		ResourceInfo rsc=new ResourceInfo();
+		if(StringUtils.isEmpty(officeId)){
+			rsc.setResponseParty(officeId);
+		}
 		rsc.setName(request.getParameter("name"));
 		rsc.getSqlMap().put("page", "limit "+start+","+end);
     	List<ResourceInfo> rscList=resourceService.findSrhList(rsc);

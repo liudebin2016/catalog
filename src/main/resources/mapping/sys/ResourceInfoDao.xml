@@ -353,6 +353,9 @@
 	    <if test="name!=null and name!='' ">  
 	    AND name like CONCAT('%', #{name}, '%')
 	    </if>  
+	    <if test="responseParty!=null and responseParty!='' ">  
+	    AND response_party = #{responseParty}
+	    </if>  
 	</trim>	
   </select>
   
@@ -369,6 +372,9 @@
   	    AND del_flag = 0 
 	    <if test="name!=null and name!='' ">  
 	    AND name like CONCAT('%', #{name}, '%')
+	    </if>  
+	    <if test="responseParty!=null and responseParty!='' ">  
+	    AND response_party = #{responseParty}
 	    </if>  
 	</trim>	
 		order by r.status, r.create_date desc
