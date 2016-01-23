@@ -22,15 +22,20 @@ $(function(){
         url:'http://localhost:8090/build/eTreeNode',
         animate:true,
         onClick: function(node){
-    		$("#officeId").val(node.id);// 在用户点击的时候提示
+        	if(node){
+	    		$("#officeId").val(node.id);// 在用户点击的时候提示
+        	}
+    	},
+    	onLoadSuccess:function(node, data){
+    		//将树节点值赋给officeId，并且设置选中的树节点
+    		$("#officeId").val(${officeId});
+    		var node = $('#etree').tree('find', ${officeId});
+    		$('#etree').tree('select', node.target);
     	}
 
     });
 	
-	//将树节点值赋给officeId，并且设置选中的树节点
-	$("#officeId").val(${officeId});
-	var node = $('#etree').tree('find', ${officeId});
-	$('#etree').tree('select', node.target);
+	
 	
 	//绑定搜索按钮事件
 	$('#_search').on('click',function(){
