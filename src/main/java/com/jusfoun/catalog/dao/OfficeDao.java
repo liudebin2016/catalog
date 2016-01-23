@@ -6,6 +6,7 @@ import java.util.Map;
 import com.jusfoun.catalog.common.annotation.MyBatisDao;
 import com.jusfoun.catalog.common.dao.TreeDao;
 import com.jusfoun.catalog.entity.Office;
+import com.jusfoun.catalog.vo.ETreeNode;
 
 
 /**
@@ -25,4 +26,6 @@ public interface OfficeDao extends TreeDao<Office> {
 	Long getCount();
 
 	List<Office> queryOffices(Map<String, Object> param);
+	
+	List<ETreeNode> findByPid(int pid);
 }

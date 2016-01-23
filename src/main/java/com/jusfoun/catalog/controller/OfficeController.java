@@ -25,6 +25,7 @@ import com.jusfoun.catalog.service.CatalogInfoService;
 import com.jusfoun.catalog.service.OfficeService;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.CatalogTree;
+import com.jusfoun.catalog.vo.ETreeNode;
 
 /**
  * 机构Controller
@@ -190,5 +191,13 @@ public class OfficeController extends BaseController {
     public Object office(
     		@RequestParam(name = "officeId", required = true) Integer id) {
     	return JsonMapper.toJsonString(officeService.get(id));
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "build/eTreeNode")
+    public String buildETreeNode(@RequestParam(name = "pid", required = false) Integer pid){
+    	List<ETreeNode> etnList= officeService.buildETreeNode(pid==null?0:pid);
+    	String entStr=JsonMapper.toJsonString(etnList);
+    	return entStr;
     }
 }

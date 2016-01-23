@@ -7,7 +7,7 @@ public class ETreeNode {
 	private int id;//节点Id
 	private String text;//节点名称
 	private String state;//节点状态
-	private List<ETreeNode> etnList;//子节点
+	private List<ETreeNode> children;//子节点
 	
 	public int getId() {
 		return id;
@@ -27,11 +27,11 @@ public class ETreeNode {
 	public void setState(String state) {
 		this.state = state;
 	}
-	public List<ETreeNode> getEtnList() {
-		return etnList;
+	public List<ETreeNode> getChildren() {
+		return children;
 	}
-	public void setEtnList(List<ETreeNode> etnList) {
-		this.etnList = etnList;
+	public void setChildren(List<ETreeNode> children) {
+		this.children = children;
 	}
 
 }

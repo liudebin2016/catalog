@@ -272,4 +272,9 @@
 		from sys_office
 		where duty like CONCAT('%', #{duty}, '%')
 	</select>
+	<!-- 前端树 -->
+	<select id="findByPid" resultType="com.jusfoun.catalog.vo.ETreeNode" parameterType="int">
+		SELECT id,name as text from SYS_OFFICE o 
+		WHERE o.parent_id=#{pid}
+	</select>
 </mapper>

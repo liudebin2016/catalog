@@ -19,6 +19,7 @@ import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.CatalogTree;
+import com.jusfoun.catalog.vo.ETreeNode;
 
 /**
  * 机构Service
@@ -193,5 +194,23 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Transactional(readOnly = false)
 	public void update(Office office) {
 		dao.update(office);		
+	}
+	
+	public List<ETreeNode> getChildren(List<ETreeNode> etnList){
+		for(ETreeNode ent:etnList){
+			List<ETreeNode> sdf=dao.findByPid(ent.getId());
+			if(sdf!=null){
+				ent.setChildren(sdf);
+				getChildren(sdf);
+			}
+		}
+		
+		return etnList;
+	}
+	
+	public List<ETreeNode> buildETreeNode(int pid){
+		List<ETreeNode> etnList=dao.findByPid(0);
+		List<ETreeNode> last=getChildren(etnList);
+		return last;
 	}
 }
