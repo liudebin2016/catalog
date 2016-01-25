@@ -17,3 +17,4 @@ catalog.iws
 Thumbs.db
 *Thumbs.db
 /bin/
+/build/

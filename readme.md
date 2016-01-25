@@ -32,7 +32,7 @@ IDE    | IDEA or Eclipse    | Latest edition
 * In your MySQL to create `catalog` database.
 * Execute `catalog/db/init.sql` to create tables and initial datas.
 * In the root of project directory execute `gradle idea` or `gradle eclipse` to generate IDE config file.
-* execute `gradle apprun` to launch project.
+* execute `gradle apprun` to launch project. 
 
 
 
