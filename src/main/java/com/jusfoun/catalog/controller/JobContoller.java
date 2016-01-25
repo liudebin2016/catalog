@@ -207,7 +207,8 @@ public class JobContoller extends BaseController {
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = jobService.findListCount(job);
-		job.getSqlMap().put("page", "limit "+start+","+end);
+		job.getSqlMap().put("start", ""+start);
+		job.getSqlMap().put("end", ""+end);
 		List<JobAndOfficeView>jobList = jobService.findJobList(job);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(jobList);
@@ -276,7 +277,8 @@ public class JobContoller extends BaseController {
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = jobService.findListCountByOfficeId(job);
-		job.getSqlMap().put("page", "limit "+start+","+end);
+		job.getSqlMap().put("start", ""+start);
+		job.getSqlMap().put("end", ""+end);
 		List<JobAndOfficeView>jobList = jobService.findJobListByOfficeId(job);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(jobList);

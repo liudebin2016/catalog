@@ -303,8 +303,12 @@
 		 GROUP BY j.id ) a
   </select>
   <select id="findJobList" resultType="JobAndOfficeView">
-  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
-  	b.id as businessId,GROUP_CONCAT(b.`name`) as businessName
+  SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+   SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
+  	b.id as businessId,b.name as businessName
   	
   	from job j 
   	
@@ -319,14 +323,21 @@
 	        AND j.status=#{status}  
 	    </if>  
 	</trim>	
-		 GROUP BY j.id
+		 
 		 ORDER BY j.status ASC,j.update_date desc
-  		${sqlMap.page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
   <select id="findJobListByOfficeId" resultType="JobAndOfficeView">
-  SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
-  	b.id as businessId,GROUP_CONCAT(b.`name`) as businessName
+  SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+    	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
+  	b.id as businessId,b.name as businessName
   	
   	from job j 
   	
@@ -349,11 +360,13 @@
   				#{OfficeIds}  
  			</foreach>
 	    </if>
-	    
 	</trim>	
-		 GROUP BY j.id
+		 <!-- GROUP BY j.id -->
 		 ORDER BY j.status ASC,j.update_date desc
-  		${sqlMap.page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
   <select id="selectById" parameterType="java.lang.String" resultType="com.jusfoun.catalog.entity.Job">

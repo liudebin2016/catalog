@@ -5,89 +5,74 @@
 
     <select id="findListCount" resultType="int">
         SELECT 
-			count(1)  
-		FROM 
-			sys_office so ,(
-			SELECT 
-				tbr.*,count(j.office_id) as jCount 
-			FROM 
-				(
-					SELECT 
-						tb.*,count(r.response_party) as rCount 
-					FROM 
-						(
-							SELECT 
-								o.id,o.`name`,o.parent_id,o.parent_ids,o.duty,COUNT(b.charge_office_id) as bCount 
-							FROM 
-								sys_office o 
-							LEFT JOIN 
-								business b 
-							ON 
-								b.charge_office_id=o.id 
-							GROUP BY 
-								o.id
-						) tb
-					LEFT JOIN 
-						resource_info r 
-					ON 
-						r.response_party=tb.id 
-					GROUP BY 
-						tb.id
-				) tbr 
-			LEFT JOIN 
-				job j 
-			ON 
-				tbr.id=j.office_id 
-			GROUP BY 
-				tbr.id
-			) brj 
-		WHERE 
-			brj.parent_id=so.id
+      count(1)  
+    FROM 
+      sys_office so ,(
+      SELECT 
+        tbr.*,count(j.office_id) as jCount 
+      FROM 
+        (
+          SELECT 
+            tb.*,count(r.response_party) as rCount 
+          FROM 
+            (
+              SELECT 
+                o.id,o.name,o.parent_id,o.parent_ids,o.duty,COUNT(b.charge_office_id) as bCount 
+              FROM 
+                sys_office o 
+              LEFT JOIN 
+                business b 
+              ON 
+                b.charge_office_id=o.id 
+              GROUP BY 
+                o.id,o.name,o.parent_id,o.parent_ids,o.duty
+            ) tb
+          LEFT JOIN 
+            resource_info r 
+          ON 
+            r.response_party=tb.id 
+          GROUP BY 
+            tb.id,tb.name,tb.parent_id,tb.parent_ids,tb.duty,tb.bCount
+        ) tbr 
+      LEFT JOIN 
+        job j 
+      ON 
+        tbr.id=j.office_id 
+      GROUP BY 
+        tbr.id,tbr.name,tbr.parent_id,tbr.parent_ids,tbr.duty,tbr.rCount,tbr.bCount
+      ) brj 
+    WHERE 
+      brj.parent_id=so.id
 			
     </select>
 
     <select id="findList" parameterType="java.util.Map" resultType="com.jusfoun.catalog.entity.Statistic">
-        SELECT 
-			so.name as region,brj.name as office,brj.duty as ofcDuty,brj.bCount as bizCount,brj.rCount as rscCount,brj.jCount as jobCount  
-		FROM 
-			sys_office so ,(
-			SELECT 
-				tbr.*,count(j.office_id) as jCount 
-			FROM 
-				(
-					SELECT 
-						tb.*,count(r.response_party) as rCount 
-					FROM 
-						(
-							SELECT 
-								o.id,o.`name`,o.parent_id,o.parent_ids,o.duty,COUNT(b.charge_office_id) as bCount 
-							FROM 
-								sys_office o 
-							LEFT JOIN 
-								business b 
-							ON 
-								b.charge_office_id=o.id 
-							GROUP BY 
-								o.id
-						) tb
-					LEFT JOIN 
-						resource_info r 
-					ON 
-						r.response_party=tb.id 
-					GROUP BY 
-						tb.id
-				) tbr 
-			LEFT JOIN 
-				job j 
-			ON 
-				tbr.id=j.office_id 
-			GROUP BY 
-				tbr.id
-			) brj 
-		WHERE 
-			brj.parent_id=so.id
-			
-			${page}
+	SELECT * FROM (SELECT tt.*, ROWNUM AS rowno
+	    FROM (
+	      SELECT so.name as region,brj.name as office,brj.duty as ofcDuty,brj.bCount as bizCount,brj.rCount as rscCount,brj.jCount as jobCount
+	    FROM 
+	      sys_office so ,(
+	      SELECT tbr.*,count(j.office_id) as jCount 
+	      FROM 
+	        (
+	          SELECT tb.*,count(r.response_party) as rCount 
+	          FROM 
+	            (
+	              SELECT o.id,o.name,o.parent_id,o.parent_ids,o.duty,COUNT(b.charge_office_id) as bCount 
+	              FROM sys_office o 
+	              LEFT JOIN business b ON b.charge_office_id=o.id 
+	              GROUP BY o.id,o.name,o.parent_id,o.parent_ids,o.duty
+	            ) tb
+	          LEFT JOIN resource_info r ON r.response_party=tb.id 
+	          GROUP BY tb.id,tb.name,tb.parent_id,tb.parent_ids,tb.duty,tb.bCount
+	        ) tbr 
+	      LEFT JOIN job j ON tbr.id=j.office_id 
+	      GROUP BY tbr.id,tbr.name,tbr.parent_id,tbr.parent_ids,tbr.duty,tbr.rCount,tbr.bCount
+	      ) brj 
+	    WHERE brj.parent_id=so.id
+	                ) tt
+	         WHERE ROWNUM <![CDATA[<= ${end}]]>) tp
+	 WHERE tp.rowno >= <![CDATA[${start}]]>
     </select>
 
 </mapper>

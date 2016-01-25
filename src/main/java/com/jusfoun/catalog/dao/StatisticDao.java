@@ -11,6 +11,6 @@ public interface StatisticDao {
 	
 	int findListCount();
 
-	List<Statistic> findList(Map<String, String> paraMaps);
+	List<Statistic> findList(Map<String, Integer> paraMaps);
 
 }

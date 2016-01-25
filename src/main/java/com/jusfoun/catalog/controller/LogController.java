@@ -70,7 +70,8 @@ public class LogController extends BaseController {
 		int start = (page-1)*rows;
 		int end = rows;
 		int total = logService.reloadLogListCount(log);
-		log.getSqlMap().put("page", "limit "+start+","+end);
+		log.getSqlMap().put("start", ""+start);
+		log.getSqlMap().put("end", ""+end);
     	List<LogAndUserView> logList = logService.reloadList(log);
     	ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(logList);

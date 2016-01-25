@@ -44,33 +44,67 @@
     r.remarks
   </sql>
   
+  <select id="findListCount" parameterType="com.jusfoun.catalog.entity.SubjectInfo" resultType="int">
+  	SELECT 
+	    count(id)
+	    FROM subject_info r
+	    <trim prefix="WHERE" prefixOverrides="AND|OR">  
+		    <if test="name!=null and name!='' ">  
+		        name like #{name}
+		    </if> 
+		    <if test="parentId!= null ">  
+		        AND parent_id=#{parentId}  
+		    </if>  
+		    <if test="shareRegion!= null ">  
+		        AND share_region=#{shareRegion}  
+		    </if> 
+		    <if test="shareMode!= null ">  
+		        AND share_mode=#{shareMode}  
+		    </if> 
+		    <if test="status!= null ">  
+		        AND status=#{status}  
+		    </if> 
+		    <if test="id!= null ">  
+		        AND id = #{id}
+		    </if>
+		</trim>	
+  </select>
+  
   <!-- 根据条件进行查询  -->
-  <select id="findList" parameterType="java.lang.Integer" resultType="SubjectInfo">
-    SELECT 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    FROM subject_info r
-    <trim prefix="WHERE" prefixOverrides="AND|OR">  
-	    <if test="name!=null and name!='' ">  
-	        name like #{name}
-	    </if> 
-	    <if test="parentId!= null ">  
-	        AND parent_id=#{parentId}  
-	    </if>  
-	    <if test="shareRegion!= null ">  
-	        AND share_region=#{shareRegion}  
-	    </if> 
-	    <if test="shareMode!= null ">  
-	        AND share_mode=#{shareMode}  
-	    </if> 
-	    <if test="status!= null ">  
-	        AND status=#{status}  
-	    </if> 
-	    <if test="id!= null ">  
-	        AND id = #{id}
-	    </if>
-	</trim>	
+  <select id="findList" parameterType="SubjectInfo" resultType="SubjectInfo">
+    SELECT *
+	FROM (
+		SELECT tt.*, ROWNUM AS rowno
+	    FROM (  
+	    	SELECT 
+	    <include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />
+	    FROM subject_info r
+	    <trim prefix="WHERE" prefixOverrides="AND|OR">  
+		    <if test="name!=null and name!='' ">  
+		        name like #{name}
+		    </if> 
+		    <if test="parentId!= null ">  
+		        AND parent_id=#{parentId}  
+		    </if>  
+		    <if test="shareRegion!= null ">  
+		        AND share_region=#{shareRegion}  
+		    </if> 
+		    <if test="shareMode!= null ">  
+		        AND share_mode=#{shareMode}  
+		    </if> 
+		    <if test="status!= null ">  
+		        AND status=#{status}  
+		    </if> 
+		    <if test="id!= null ">  
+		        AND id = #{id}
+		    </if>
+		</trim>	
+	     ) tt
+	   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+	 ) ta  
+	 WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
   <!-- 根据业务id获取主题数量 -->
@@ -84,14 +118,21 @@
   
   <!-- 根据业务Id获取主题列表 -->
   <select id="findListByBizId" parameterType="Map" resultType="SubjectInfo">
-    SELECT 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    FROM subject_info r,business s
-    WHERE r.id=s.subject_id
-    AND s.id=#{businessId}
-    ${page}
+    SELECT *
+	FROM (
+		SELECT tt.*, ROWNUM AS rowno
+	    FROM (  
+	    SELECT 
+	    <include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />
+	    FROM subject_info r,business s
+	    WHERE r.id=s.subject_id
+	    AND s.id=#{businessId}
+	     ) tt
+	   WHERE ROWNUM <![CDATA[<= ${end}]]>
+	 ) ta  
+	 WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <!-- 根据资源id获取主题数量 -->
@@ -105,6 +146,10 @@
   
   <!-- 根据资源Id获取主题列表 -->
   <select id="findListByRscId" parameterType="Map" resultType="SubjectInfo">
+    SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
     SELECT 
     <include refid="Base_Column_List" />
     ,
@@ -112,7 +157,10 @@
     FROM subject_info r,resource_info s
     WHERE r.id=s.subject_id
     AND s.id=#{resourceId}
-    ${page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

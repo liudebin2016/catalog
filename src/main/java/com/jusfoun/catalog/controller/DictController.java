@@ -109,7 +109,8 @@ public class DictController extends BaseController{
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = dictService.findListCount(dict);
-		dict.getSqlMap().put("page", "limit "+start+","+end);
+		dict.getSqlMap().put("start", String.valueOf(start));
+		dict.getSqlMap().put("end", String.valueOf(end));
 		List<Dict> uList = dictService.findList(dict);
 		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();

@@ -36,11 +36,11 @@ public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>>
 				throw new ServiceException(e);
 			}
 			entity.setParent(parentEntity);
-			entity.getParent().setParentIds(0);
+			entity.getParent().setParentIds("0");
 		}
 		
 		// 获取修改前的parentIds，用于更新子节点的parentIds
-		Integer oldParentIds = entity.getParentIds();
+		String oldParentIds = entity.getParentIds();
 		
 		// 设置新的父节点串
 //		entity.setParentIds(entity.getParent().getParentIds()+entity.getParent().getId()+",");

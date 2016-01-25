@@ -66,6 +66,7 @@ gretty {
 }
 
 dependencies {
+	compile files('libs/ojdbc6.jar')
     compile(    		
             "org.springframework:spring-core:${springVersion}",
             "org.springframework:spring-jdbc:${springVersion}",
@@ -151,6 +152,7 @@ dependencies {
             "javax.servlet:javax.servlet-api:3.1.0"
 
     )
+    
     runtime(
             "javax.servlet:jstl:1.2",
 

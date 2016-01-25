@@ -32,7 +32,11 @@
   
   <!-- 分页查询列表 -->
   <select id="findList" resultType="ResourceInfo">
-  	SELECT 
+  	SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+    SELECT 
   		<include refid="Base_Column_List" />
 	    ,
 	    <include refid="Blob_Column_List" />	
@@ -50,7 +54,10 @@
 	    </if> 
 	</trim>	
 		order by r.status, r.create_date desc
-  		${sqlMap.page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
   <!-- 根据Id查询 -->
@@ -73,14 +80,21 @@
   </select>
   <!-- 根据主题Id获取资源列表 -->
   <select id="findListBySubId" parameterType="Map" resultType="ResourceInfo">
-    SELECT 
+    SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+    	SELECT 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     FROM resource_info r,subject_info s
     WHERE r.subject_id=s.id
     AND r.subject_id=#{subjectId}
-    ${page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <!-- 根据业务Id获取资源 -->
@@ -93,14 +107,21 @@
   </select>
   <!-- 根据业务Id获取资源列表 -->
   <select id="findListByBizId" parameterType="Map" resultType="ResourceInfo">
-    SELECT 
+    SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+    	SELECT 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
     FROM resource_info r,business_resource s
     WHERE r.id=s.resource_id
     AND s.business_id=#{businessId}
-    ${page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <!-- 根据id删除 -->

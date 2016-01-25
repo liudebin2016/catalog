@@ -57,14 +57,15 @@ public class StatisticController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping("${adminPath}/statistic/statb")
-	public  String bizList(int page,int rows,HttpServletRequest request) throws IOException{
+	public  String statisticList(int page,int rows,HttpServletRequest request) throws IOException{
 		//求得开始记录与结束记录
 		int start = (page-1)*rows;
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = statisticService.findListCount();
-		Map<String,String> paraMaps=new HashMap<String,String>();
-		paraMaps.put("page", "limit "+start+","+end);
+		Map<String,Integer> paraMaps=new HashMap<String,Integer>();
+		paraMaps.put("start",start);
+		paraMaps.put("end", end);
 		List<Statistic> uList = statisticService.findList(paraMaps);
 		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();

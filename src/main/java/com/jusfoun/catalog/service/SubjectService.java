@@ -103,4 +103,8 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 	public int findSrhListCount(SubjectInfo sub) {
 		return dao.findSrhListCount(sub);
 	}
+
+	public void findListCount(SubjectInfo si) {
+		dao.findListCount(si);
+	}
 }

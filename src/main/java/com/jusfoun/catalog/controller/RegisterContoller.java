@@ -72,7 +72,7 @@ public class RegisterContoller extends BaseController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "${adminPath}/register/applyList", method = RequestMethod.POST)
+	@RequestMapping(value = "${adminPath}/register/applyList")
 	public  String applyList(int page,int rows,HttpServletRequest request) throws IOException{
 		String applyName=WebUtils.getCleanParam(request,"applyName");
 		String applyType=WebUtils.getCleanParam(request,"applyType");
@@ -92,7 +92,8 @@ public class RegisterContoller extends BaseController {
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = registerService.findListCount(register);
-		register.getSqlMap().put("page", "limit "+start+","+end);
+		register.getSqlMap().put("start", ""+start);
+		register.getSqlMap().put("end", ""+end);
 		List<Register> pageList = registerService.findList(register);
 		String json = JsonMapper.toJsonString(pageList);
 		StringBuffer sb=new StringBuffer();
@@ -122,7 +123,8 @@ public class RegisterContoller extends BaseController {
 		int start = (page-1)*rows;
 		int end = page * rows;
 		int total = registerService.findListCount(register);
-		register.getSqlMap().put("page", "limit "+start+","+end);
+		register.getSqlMap().put("start", ""+start);
+		register.getSqlMap().put("end", ""+end);
 		List<Register> pageList = registerService.findList(register);
 		String json = JsonMapper.toJsonString(pageList);
 		StringBuffer sb=new StringBuffer();

@@ -17,15 +17,12 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
-<script type="text/javascript">
- 	var jq1_11 = $.noConflict(true);
-</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	//根据id删除资源
 	function delRscById(id){  
-		jq1_11.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
+		$.messager.confirm('确认','您确认想要删除记录吗？',function(r){    
 		    if (r){  
 		    	$.get("/admin/job/delJobById.do", { id: id },
 				    function(data){location.reload();
@@ -49,7 +46,7 @@ var jsPart = {
 		var srcName=$.trim($("#srcName").val());
 		var srcStatus=$.trim($("#srcStatus").val());
 		
-		jq1_11('#dg').datagrid({
+		$('#dg').datagrid({
 		    url:'/admin/job/reloadList.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -96,23 +93,23 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                jq1_11(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
+	                $(this).datagrid('appendRow', { jobName: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'jobName', colspan: 6 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
-	                jq1_11(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	                $("input[name=ck]").hide();
 	            }
 		    }
 		}); 
 	}
 	
-	jq1_11(document).ready(function(){
+	$(document).ready(function(){
 		getRscList();
 	});
 
 	$("#applyFor").on('click',function(){
-		var row=jq1_11("#dg").datagrid("getSelections");
+		var row=$("#dg").datagrid("getSelections");
 		if(row.length==0){
-			jq1_11.messager.alert("警告","请选择需要注册的数据！");
+			$.messager.alert("警告","请选择需要注册的数据！");
 		    return false;
 		}
 		var ids="";
@@ -129,12 +126,12 @@ var jsPart = {
 		    return false;
 		} */
 		ids = ids.substring(0,ids.length-1)
-	 	jq1_11.messager.confirm('确认','您确认提交申请吗？',function(r){    
+	 	$.messager.confirm('确认','您确认提交申请吗？',function(r){    
 		    if (r){  
 		    	$.post("/admin/job/jobApplyFor.do", { ids: ids },
 				    function(data){
 				    	if(data=="success"){
-				    		jq1_11.messager.alert("成功","注册申请已提交，请等待审批！")
+				    		$.messager.alert("成功","注册申请已提交，请等待审批！")
 				    		getRscList();
 				    	}
 				    }
@@ -143,9 +140,9 @@ var jsPart = {
 		});  
 	});
 	$("#logOff").on('click',function(){
-		var row=jq1_11("#dg").datagrid("getSelections");
+		var row=$("#dg").datagrid("getSelections");
 		if(row.length==0){
-			jq1_11.messager.alert("警告","请选择需要注销的数据!");
+			$.messager.alert("警告","请选择需要注销的数据!");
 		    return false;
 		}
 		var ids="";
@@ -162,12 +159,12 @@ var jsPart = {
 		    return false;
 		} */
 		ids = ids.substring(0,ids.length-1)
-	 	jq1_11.messager.confirm('确认','您确认申请注销吗？',function(r){    
+	 	$.messager.confirm('确认','您确认申请注销吗？',function(r){    
 		    if (r){  
 		    	$.post("/admin/job/logOff.do", { ids: ids },
 				    function(data){
 				    	if(data=="success"){
-				    		jq1_11.messager.alert("成功","注销申请已提交，请等待审批！")
+				    		$.messager.alert("成功","注销申请已提交，请等待审批！")
 				    		getRscList();
 				    	}
 				    }

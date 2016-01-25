@@ -16,9 +16,6 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
-<script type="text/javascript">
- 	var jq1_11 = $.noConflict(true);
-</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -33,7 +30,7 @@ var jsPart = {
 	
 	//字典Datagrid
 	function dictDg(label,value){
-		jq1_11('#dict').datagrid({
+		$('#dict').datagrid({
 		    url:'/admin/dict/dictList.do', 
 		    fitColumns:true,
 		    queryParams: {
@@ -90,7 +87,7 @@ var jsPart = {
 	}
 	
 	//页面初始化加载
-	jq1_11(document).ready(function(){
+	$(document).ready(function(){
 		dictDg("","");
 	});
 	

@@ -63,4 +63,6 @@ public interface SubjectInfoDao  extends CrudDao<SubjectInfo> {
 	 */
 	int findSrhListCount(SubjectInfo sub);
 
+	void findListCount(SubjectInfo si);
+
 }

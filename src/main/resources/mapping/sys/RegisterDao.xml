@@ -10,7 +10,7 @@
        	a.apply_name,
        	a.apply_flag,
        	a.approve_flag,
-       	a.apply_by as "approveBy.id",
+       	a.apply_by as "applyBy.id",
        	a.apply_date,
        	a.approve_by as "approveBy.id",
        	a.approve_date,
@@ -51,7 +51,7 @@
 		register
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="applyName != null and applyName != '' ">
-				apply_name like  CONCAT('%', #{applyName}, '%')
+				apply_name like '%'||#{applyName}||'%'
 			</if>
 			<if test="applyType != null ">
 				and apply_type = #{applyType}
@@ -67,24 +67,31 @@
   
   <!-- 分页查询列表 -->
   <select id="findList" parameterType="Register" resultType="Register">
-    select 
-    <include refid="registerColumns" />
-    from register a
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="applyName != null and applyName != '' ">
-				a.apply_name like CONCAT('%', #{applyName}, '%')
-			</if>
-			<if test="applyType != null ">
-				and a.apply_type = #{applyType}
-			</if>
-			<if test="applyFlag != null">
-				and a.apply_flag = #{applyFlag}
-			</if>
-			<if test="approveFlag != null">
-				and a.approve_flag = #{approveFlag}
-			</if>
-		</trim>
-    ${sqlMap.page}    
+   SELECT *
+	FROM (
+		SELECT tt.*, ROWNUM AS rowno
+	    FROM (  
+	    	select 
+	    <include refid="registerColumns" />
+	    from register a
+			<trim prefix="WHERE" prefixOverrides="AND|OR">
+				<if test="applyName != null and applyName != '' ">
+					a.apply_name like CONCAT('%', #{applyName}, '%')
+				</if>
+				<if test="applyType != null ">
+					and a.apply_type = #{applyType}
+				</if>
+				<if test="applyFlag != null">
+					and a.apply_flag = #{applyFlag}
+				</if>
+				<if test="approveFlag != null">
+					and a.approve_flag = #{approveFlag}
+				</if>
+			</trim>
+	     ) tt
+	   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+	 ) ta  
+	 WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>  
   </select>
   <update id="approve" parameterType="Register">
   	update register

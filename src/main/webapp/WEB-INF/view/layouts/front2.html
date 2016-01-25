@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8 no-js" lang="zh-CN"><![endif]-->
+<!--[if IE 9]><html class="ie9 no-js" lang="zh-CN"><![endif]-->
+<!--[if !IE]><!-->
+<html lang="zh-CN" class="no-js">
+<!--<![endif]-->
+<head>
+    <title>Jusfoun</title>
+    <!-- start: META -->
+    <meta charset="utf-8" />
+    <!--[if IE]>
+    <meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" />
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!-- end: META -->
+    <link rel="stylesheet" href="/resources/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/assets/plugins/animate.css/animate.min.css">
+    <link rel="stylesheet" href="/resources/assets/plugins/iCheck/skins/all.css">
+    <link rel="stylesheet" href="/resources/assets/css/styles.css">
+    <link rel="stylesheet" href="/resources/assets/css/styles-responsive.css">
+    <link rel="stylesheet" href="/resources/assets/plugins/iCheck/skins/all.css">
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="/resources/assets/plugins/font-awesome/css/font-awesome-ie7.min.css">
+    <![endif]-->
+    <!-- end: MAIN CSS -->
+    <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
+    <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
+    <style>
+        .navbar-inverse {
+            background-color: #0975c0;
+            border-color: #0975c0;
+        }
+        a {
+            color: #ffffff;
+        }
+        .navbar-inverse .navbar-brand {
+            line-height: 50px !important;
+            color: #ffffff;
+        }
+        .topbar .container .topbar-tools {
+            float: right;
+            height: 50px;
+            margin-top: 0px;
+            max-height: 50px;
+        }
+        .topbar .container .navbar-header {
+            margin: 0px auto 0;
+             float: left;
+            width: 140px;
+        }
+        .footer-fixed footer {
+            height: 80px;
+            border-top: 3px #0A75C0 solid !important;
+            background-color: #bfd2da;
+        }
+        footer .footer-inner {
+            margin-left: 0px;
+            text-align: center;
+            color: #000000;
+        }
+        footer .footer-inner {
+            padding: 10px 20px;
+            line-height: 29px;
+            margin-left: 0px;
+            font-size: 14px;
+        }
+        .topbar .container .topbar-tools > ul > li.current-user .dropdown-toggle {
+            line-height: 50px;
+            padding: 0px 10px;
+            height: 50px;
+        }
+        .topbar .container .topbar-tools > ul > li.right-menu-toggle a {
+            margin: 0px 0;
+            line-height: 50px;
+            padding: 0px 10px!important;
+            height: 50px;
+        }
+        .toolbar .navbar-right > li > a {
+            -moz-border-radius: 0px;
+            -webkit-border-radius: 0px;
+            /* border-radius: 3px; */
+            color: #111111;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0;
+             line-height: 31px !important;
+            margin-right: 3px;
+             margin-top: 0px !important;
+            filter: alpha(opacity=90);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+            -moz-opacity: 0.9;
+            -khtml-opacity: 0.9;
+            opacity: 0.9;
+            padding: 0px 0 0px 0;
+            position: relative;
+            text-align: center;
+            width: 60px;
+        }
+    </style>
+    ${cssSection}
+</head>
+<body class="footer-fixed">
+<div class="main-wrapper">
+    <%include("/partials/front-topbar.html"){} %>
+
+    ${htmlSection}
+
+    <%include("/partials/front-footer.html"){} %>
+</div>
+
+<!--[if lt IE 9]>
+<script src="/resources/assets/plugins/respond.min.js"></script>
+<script src="/resources/assets/plugins/excanvas.min.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/jQuery/jquery-1.11.1.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script src="/resources/assets/plugins/jQuery/jquery-2.1.1.min.js"></script>
+<!--<![endif]-->
+<script src="/resources/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
+<script src="/resources/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/resources/assets/plugins/iCheck/jquery.icheck.min.js"></script>
+<script src="/resources/assets/plugins/jquery.transit/jquery.transit.js"></script>
+<script src="/resources/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js"></script>
+<script src="/resources/assets/js/main.js"></script>
+<!-- end: MAIN JAVASCRIPTS -->
+<!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
+<script src="/resources/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+<!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
+<script>
+    jQuery(document).ready(function() {
+        Main.init();
+    });
+</script>
+${jsSection}
+</body>
+</html>

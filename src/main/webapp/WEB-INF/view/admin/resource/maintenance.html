@@ -16,9 +16,6 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
-<script type="text/javascript">
- 	var jq1_11 = $.noConflict(true);
-</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -44,7 +41,7 @@ var jsPart = {
 		var srcName=$.trim($("#srcName").val());
 		var srcStatus=$.trim($("#srcStatus").val());
 		
-		jq1_11('#dg').datagrid({
+		$('#dg').datagrid({
 		    url:'/admin/resource/rscList.do', 
 		    queryParams: {
 				name: srcName,
@@ -90,13 +87,13 @@ var jsPart = {
 		}); 
 	}
 	
-	jq1_11(document).ready(function(){
+	$(document).ready(function(){
 		getRscList();
 	});
 	
 	//申请注册
 	function applyRegister(){
-		var checkedItems = jq1_11('#dg').datagrid('getChecked');
+		var checkedItems = $('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
 			if(item.status=="0"){
@@ -111,7 +108,7 @@ var jsPart = {
 			   	function(data){
 			     	if(data="success"){
 			     		alert("注册申请已提交，请等待审批！");
-			     		jq1_11('#dg').datagrid('reload');
+			     		$('#dg').datagrid('reload');
 			     	}
 			   	}
 			);
@@ -122,7 +119,7 @@ var jsPart = {
 	
 	//申请注销
 	function applyCancel(){
-		var checkedItems = jq1_11('#dg').datagrid('getChecked');
+		var checkedItems = $('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
 			if(item.status=="2"){

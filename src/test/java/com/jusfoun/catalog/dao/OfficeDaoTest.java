@@ -9,7 +9,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.jusfoun.catalog.common.entity.Page;
-import com.jusfoun.catalog.entity.Office;  
+import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.entity.Office;
+import com.jusfoun.catalog.vo.ETreeNode;  
 
 @RunWith(SpringJUnit4ClassRunner.class)  
 @ContextConfiguration({"classpath:spring-context.xml"})  
@@ -20,14 +22,21 @@ public class OfficeDaoTest {
 
 	@Test
 	public void testFindPage() {
-		Office office=new Office();
-		Page<Office> page=new Page<Office>();
-		page.setPageSize(2);
-		office.setPage(page);
-		List<Office> ofcList=officeDao.findPageList(office);
-		System.out.println(ofcList.size());
-		System.out.println(page.getHtml());
+		List<ETreeNode> etnList=officeDao.findByPid(0);
+		List<ETreeNode> last=getChildren(etnList);
+		System.out.println(JsonMapper.toJsonString(last));
 	}
 
+	public List<ETreeNode> getChildren(List<ETreeNode> etnList){
+		for(ETreeNode ent:etnList){
+			List<ETreeNode> sdf=officeDao.findByPid(ent.getId());
+			if(sdf!=null){
+				ent.setChildren(sdf);
+				getChildren(sdf);
+			}
+		}
+		
+		return etnList;
+	}
 
 }

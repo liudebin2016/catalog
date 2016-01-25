@@ -233,7 +233,8 @@ public class ResourceController extends BaseController {
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = resourceService.findListCount(rsc);
-		rsc.getSqlMap().put("page", "limit "+start+","+end);
+		rsc.getSqlMap().put("start", ""+start);
+		rsc.getSqlMap().put("end", ""+end);
 		List<ResourceInfo> uList = resourceService.findList(rsc);
 		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();
@@ -252,7 +253,8 @@ public class ResourceController extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", start);
+			sqlMap.put("end", end);
 			sqlMap.put("subjectId", Integer.valueOf(subjectId));
 			int total = resourceService.findListCountBySubId(sqlMap);
 			List<ResourceInfo> bList = resourceService.findListBySubId(sqlMap);
@@ -274,7 +276,8 @@ public class ResourceController extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", ""+start);
+			sqlMap.put("end", ""+end);
 			sqlMap.put("businessId", Integer.valueOf(businessId));
 			int total = resourceService.findListCountByBizId(sqlMap);
 			List<ResourceInfo> bList = resourceService.findListByBizId(sqlMap);

@@ -1,0 +1,76 @@
+1、使用oracle的sqldeveloper将mysql的表结构迁移到oracle中
+
+2、表结构迁移完后，使用Navicat Premium先将mysql表的表的数据导出为csv，然后再将csv数据导入至oracle中即可。
+
+3、由于mysql的主键id自增与oracle不同，故需要将设置oracle的seq和trigger
+
+--表序列
+create sequence catalog_seq
+minvalue 1
+maxvalue 999999999999999999999999999
+start with 1
+increment by 1
+cache 20;
+
+--搜索报表的触发器
+CREATE OR REPLACE TRIGGER "RPT_SEARCH_TRI" BEFORE
+   INSERT ON RPT_SEARCH
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+--操作日志的触发器
+CREATE OR REPLACE TRIGGER "SYS_LOG_TRI" BEFORE
+   INSERT ON SYS_LOG
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--字典触发器
+CREATE OR REPLACE TRIGGER "SYS_DICT_TRI" BEFORE
+   INSERT ON SYS_DICT
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--申请触发器
+CREATE OR REPLACE TRIGGER "REGISTER_TRI" BEFORE
+   INSERT ON REGISTER
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--主题触发器
+CREATE OR REPLACE TRIGGER "SUBJECT_INFO_TRI" BEFORE
+   INSERT ON SUBJECT_INFO
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--资源触发器
+CREATE OR REPLACE TRIGGER "RESOURCE_INFO_TRI" BEFORE
+   INSERT ON RESOURCE_INFO
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--业务触发器
+CREATE OR REPLACE TRIGGER "BUSINESS_TRI" BEFORE
+   INSERT ON BUSINESS
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
+--岗位触发器
+CREATE OR REPLACE TRIGGER "JOB_TRI" BEFORE
+   INSERT ON JOB
+   FOR EACH ROW       
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;

@@ -17,9 +17,6 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
-<script type="text/javascript">
- 	var jq1_11 = $.noConflict(true);
-</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
@@ -44,10 +41,10 @@ function resetSrc(){
 //查询
 function getRscList(){
 	var userName=$.trim($("#userName").val());
-	var beginDate = jq1_11('#beginDate').datetimebox('getValue');		         // 获取日期时间输入框的值
-	var endDate = jq1_11('#endDate').datetimebox('getValue');
+	var beginDate = $('#beginDate').datetimebox('getValue');		         // 获取日期时间输入框的值
+	var endDate = $('#endDate').datetimebox('getValue');
 	
-	jq1_11('#dg').datagrid({
+	$('#dg').datagrid({
 	 url:'/admin/log/reloadList.do', 
 	    fitColumns:true,
 	    queryParams: {
@@ -83,7 +80,7 @@ function getRscList(){
 	}); 
 }
 
-jq1_11(document).ready(function(){
+$(document).ready(function(){
 	getRscList();
 });
 

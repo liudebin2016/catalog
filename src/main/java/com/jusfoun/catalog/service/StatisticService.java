@@ -65,7 +65,7 @@ public class StatisticService extends BaseService {
 		return statisticDao.findListCount();
 	}
 
-	public List<Statistic> findList(Map<String, String> paraMaps) {
+	public List<Statistic> findList(Map<String, Integer> paraMaps) {
 		return statisticDao.findList(paraMaps);
 	}
 	

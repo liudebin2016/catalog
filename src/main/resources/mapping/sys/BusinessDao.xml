@@ -47,7 +47,11 @@
   
   <!-- 分页查询列表 -->
   <select id="findList" parameterType="Business" resultType="Business">
-    SELECT 
+    SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+    	SELECT 
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
@@ -64,7 +68,10 @@
 	    </if> 
 	</trim>
     order by b.status , b.create_date desc
-    ${sqlMap.page}    
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
   <select id="findListCountBySubId" parameterType="Map" resultType="int">
@@ -76,14 +83,21 @@
   </select>
   
   <select id="findListBySubId" parameterType="Map" resultType="Business">
-    SELECT 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    FROM business b,subject_info s
-    WHERE b.subject_id=s.id
-    AND b.subject_id=#{subjectId}
-    ${page}
+    SELECT *
+	FROM (
+		SELECT tt.*, ROWNUM AS rowno
+	    FROM (  
+	    	SELECT 
+	    <include refid="Base_Column_List" />
+	    ,
+	    <include refid="Blob_Column_List" />
+	    FROM business b,subject_info s
+	    WHERE b.subject_id=s.id
+	    AND b.subject_id=#{subjectId}
+	     ) tt
+	   WHERE ROWNUM <![CDATA[<= ${end}]]>
+	 ) ta  
+	 WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <select id="findListCountByRscId" parameterType="Map" resultType="int">
@@ -95,6 +109,10 @@
   </select>
   
   <select id="findListByRscId" parameterType="Map" resultType="Business">
+    SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
     SELECT 
     <include refid="Base_Column_List" />
     ,
@@ -102,7 +120,10 @@
     FROM business b,business_resource s
     WHERE b.id=s.business_id
     AND s.resource_id=#{resourceId}
-    ${page}
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${start}]]>
   </select>
   
   <!-- 根据id删除 -->

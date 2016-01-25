@@ -182,7 +182,7 @@ public class SubjectContoller extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="${adminPath}/subject/getListById",method=RequestMethod.GET)
-	public String getSubListByPid(@RequestParam(value="pid",required=false)Integer pid,@RequestParam(value="subjectId",required=false)Integer subjectId) throws JsonProcessingException{
+	public String getSubListByPid(int page,int rows,@RequestParam(value="pid",required=false)Integer pid,@RequestParam(value="subjectId",required=false)Integer subjectId) throws JsonProcessingException{
 		SubjectInfo si=new SubjectInfo();
 		if(null!=pid){
 			si.setParentId(pid);		
@@ -190,6 +190,11 @@ public class SubjectContoller extends BaseController {
 		if(null!=subjectId){
 			si.setId(subjectId);
 		}
+		int start = (page-1)*rows;
+		int end = page * rows;
+		si.getSqlMap().put("start", ""+start);
+		si.getSqlMap().put("end", ""+end);
+		subjectService.findListCount(si);
 		List<SubjectInfo> siList=subjectService.findList(si);
 		String json = JsonMapper.toJsonString(siList);
 		return json;
@@ -211,7 +216,8 @@ public class SubjectContoller extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", ""+start);
+			sqlMap.put("end", ""+end);
 			sqlMap.put("businessId", Integer.valueOf(businessId));
 			int total = subjectService.findListCountByBizId(sqlMap);
 			List<ResourceInfo> bList = subjectService.findListByBizId(sqlMap);
@@ -238,7 +244,8 @@ public class SubjectContoller extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", ""+start);
+			sqlMap.put("end", ""+end);
 			sqlMap.put("resourceId", resourceId);
 			int total = subjectService.findListCountByRscId(sqlMap);
 			List<ResourceInfo> bList = subjectService.findListByRscId(sqlMap);

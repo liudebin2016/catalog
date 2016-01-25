@@ -62,21 +62,28 @@
     </insert>
 
 	<select id="reloadList" resultType="LogAndUserView">
-		select l.id,l.type,l.title as logTitle,l.create_by as userUserId,l.create_date as logBeginDate,l.remote_addr as logRemoteAddr ,l.user_agent,l.request_uri, l.method ,u.id,u.login_name as userName
-		
-		from sys_log l INNER JOIN sys_user u on l.create_by = u.id
-		<trim prefix="WHERE" prefixOverrides="AND|OR">  
-		    <if test="userName!=null and userName!='' ">  
-		        u.login_name like #{userName}
-		    </if> 
-		     <if test="logBeginDate!=null and logBeginDate!='' ">  
-		          AND l.create_date &gt;= #{logBeginDate}
-		    </if> 
-		     <if test="logEndDate!=null and logEndDate!='' ">  
-		         AND l.create_date &lt;= #{logEndDate}
-		    </if> 
-		</trim>	
-  			${sqlMap.page}
+		SELECT *
+		FROM (
+			SELECT tt.*, ROWNUM AS rowno
+		    FROM (  
+		    	select l.id,l.type,l.title as logTitle,l.create_by as userUserId,l.create_date as logBeginDate,l.remote_addr as logRemoteAddr ,l.user_agent,l.request_uri, l.method ,u.login_name as userName
+				
+				from sys_log l INNER JOIN sys_user u on l.create_by = u.id
+				<trim prefix="WHERE" prefixOverrides="AND|OR">  
+				    <if test="userName!=null and userName!='' ">  
+				        u.login_name like #{userName}
+				    </if> 
+				     <if test="logBeginDate!=null and logBeginDate!='' ">  
+				          AND l.create_date &gt;= #{logBeginDate}
+				    </if> 
+				     <if test="logEndDate!=null and logEndDate!='' ">  
+				         AND l.create_date &lt;= #{logEndDate}
+				    </if> 
+				</trim>	
+		     ) tt
+		   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+		 ) ta  
+		 WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
 	</select>
 	<select id="reloadLogListCount" resultType="int">
 		select count(l.id) from sys_log l INNER JOIN sys_user u on l.create_by = u.id

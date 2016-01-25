@@ -16,7 +16,7 @@ public abstract class TreeEntity<T> extends DataEntity<T> {
 	private static final long serialVersionUID = 1L;
 
 	protected T parent;				// 父级编号
-	protected Integer parentIds; 	// 所有父级编号
+	protected String parentIds; 	// 所有父级编号
 	protected String name; 			// 机构名称
 	protected Integer sort;			// 排序
 	
@@ -44,11 +44,11 @@ public abstract class TreeEntity<T> extends DataEntity<T> {
 	public abstract void setParent(T parent);
 
 	@Length(min=1, max=2000)
-	public Integer getParentIds() {
+	public String getParentIds() {
 		return parentIds;
 	}
 
-	public void setParentIds(Integer parentIds) {
+	public void setParentIds(String parentIds) {
 		this.parentIds = parentIds;
 	}
 

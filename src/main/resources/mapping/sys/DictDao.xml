@@ -17,10 +17,10 @@
             AND type = #{type}
         </if>
         <if test="label != null and label != ''">
-            AND label LIKE CONCAT('%', #{label}, '%')
+            AND label LIKE '%'||#{label}||'%'
         </if>
         <if test="value != null and value != ''">
-            AND value LIKE CONCAT('%', #{value}, '%')
+            AND value LIKE '%'||#{value}||'%'
         </if>
         <choose>
 			<when test="parentId != null and parentId != ''">  
@@ -34,40 +34,49 @@
             AND parent_id = #{parentId}
         </if> -->
         <if test="description != null and description != ''">
-            AND description LIKE CONCAT('%', #{description}, '%')            
+            AND description LIKE '%'||#{description}||'%'         
         </if>
 	</select>
 
     <select id="findList" resultType="Dict">
-        SELECT
-        *
-        FROM sys_dict
-        WHERE del_flag = #{DEL_FLAG_NORMAL}
-        <if test="type != null and type != ''">
-            AND type = #{type}
-        </if>
-        <if test="label != null and label != ''">
-            AND label LIKE CONCAT('%', #{label}, '%')
-        </if>
-        <if test="value != null and value != ''">
-            AND value LIKE CONCAT('%', #{value}, '%')
-        </if>
-        <choose>
-			<when test="parentId != null and parentId != ''">  
-			    AND parent_id = #{parentId}
-			</when>  
-			<otherwise>  
-			    AND (parent_id = '0' OR parent_id is null)  
-			</otherwise> 
-		</choose>
-        <!-- <if test="parentId != null and parentId != ''">
-            AND parent_id = #{parentId}
-        </if> -->
-        <if test="description != null and description != ''">
-            AND description LIKE CONCAT('%', #{description}, '%')
-        </if>
-        ORDER BY type, sort, update_date DESC
-        ${sqlMap.page} 
+        
+        SELECT *
+		FROM (
+			SELECT tt.*, ROWNUM AS rowno
+		    FROM (  
+		    	SELECT
+		        *
+		        FROM sys_dict
+		        WHERE del_flag = #{DEL_FLAG_NORMAL}
+		        <if test="type != null and type != ''">
+		            AND type = #{type}
+		        </if>
+		        <if test="label != null and label != ''">
+		            AND label LIKE '%'||#{label}||'%'
+		        </if>
+		        <if test="value != null and value != ''">
+		            AND value LIKE '%'||#{value}||'%'
+		        </if>
+		        <choose>
+					<when test="parentId != null and parentId != ''">  
+					    AND parent_id = #{parentId}
+					</when>  
+					<otherwise>  
+					    AND (parent_id = '0' OR parent_id is null)  
+					</otherwise> 
+				</choose>
+		        <!-- <if test="parentId != null and parentId != ''">
+		            AND parent_id = #{parentId}
+		        </if> -->
+		        <if test="description != null and description != ''">
+		            AND description LIKE '%'||#{description}||'%'
+		        </if>
+		        ORDER BY type, sort, update_date DESC
+		     ) tt
+		   WHERE <![CDATA[ROWNUM <= ${sqlMap.end}]]>
+		 ) ta  
+		 WHERE <![CDATA[ta.rowno >= ${sqlMap.start}]]>
+		 
     </select>
 
     <select id="findAllList" resultType="Dict">

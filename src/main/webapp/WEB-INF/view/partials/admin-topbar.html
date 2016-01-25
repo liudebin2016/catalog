@@ -9,7 +9,6 @@
             <!-- start: LOGO -->
             <a class="navbar-brand" href="/">
                 <img src="/resources/images/logo.png" alt="Shit"/>
-
             </a>
             <!-- end: LOGO -->
         </div>
@@ -18,16 +17,11 @@
             <ul class="nav navbar-nav">
                 <!-- start: USER DROPDOWN -->
                 <li class="right-menu-toggle" >
-                    <a style="border: 0px !important;">
-                        当前角色: ${session.userName}
-                    </a>
-
+                    <a style="border: 0px !important;">当前角色: ${session.userName}</a>
                 </li>
                 <!-- end: USER DROPDOWN -->
                 <li class="right-menu-toggle">
-                    <a href="/admin/logout" class="" style="border: 0px !important;">
-                       退出
-                    </a>
+                    <a href="/admin/logout" class="" style="border: 0px !important;">退出 </a>
                 </li>
             </ul>
             <!-- end: TOP NAVIGATION MENU -->
@@ -42,12 +36,10 @@
                         <i class="icon-arrow"></i>
                     </a>
                     <%if(menu.children.~size > 0){%>
-                    <ul class="dropdown-menu" style="display: none;">
+                    <ul class="dropdown-menu" >
                         <%for(secMenu in menu.children){ %>
                         <li>
-                            <a href="${secMenu.href}">
-                                <span class="title">${secMenu.name} </span>
-                            </a>
+                            <a href="${secMenu.href}"><span class="title">${secMenu.name} </span></a>
                         </li>
                         <%}%>
                     </ul>

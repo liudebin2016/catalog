@@ -234,7 +234,8 @@ public class BusinessContoller extends BaseController {
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = businessService.findListCount(rsc);
-		rsc.getSqlMap().put("page", "limit "+start+","+end);
+		rsc.getSqlMap().put("start", ""+start);
+		rsc.getSqlMap().put("end", ""+end);
 		List<Business> uList = businessService.findList(rsc);
 		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();
@@ -253,7 +254,8 @@ public class BusinessContoller extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", start);
+			sqlMap.put("end", end);
 			sqlMap.put("subjectId", Integer.valueOf(subjectId));
 			int total = businessService.findListCountBySubId(sqlMap);
 			List<Business> bList = businessService.findListBySubId(sqlMap);
@@ -275,7 +277,8 @@ public class BusinessContoller extends BaseController {
 			//求得开始记录与结束记录
 			int start = (page-1)*rows;
 			int end = page * rows;
-			sqlMap.put("page", "limit "+start+","+end);
+			sqlMap.put("start", ""+start);
+			sqlMap.put("end", ""+end);
 			sqlMap.put("resourceId", Integer.valueOf(resourceId));
 			int total = businessService.findListCountByRscId(sqlMap);
 			List<Business> bList = businessService.findListByRscId(sqlMap);
