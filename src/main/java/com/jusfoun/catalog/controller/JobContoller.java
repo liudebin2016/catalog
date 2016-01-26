@@ -46,23 +46,7 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/info", method = RequestMethod.GET)
 	public String getJobInfoList(HttpServletRequest request, HttpServletResponse response,Model model){
-		String name = request.getParameter("name");
-		String office = request.getParameter("office");
-		String office1 = request.getParameter("office");
-		HashMap<String, String> cMap = new HashMap<String, String>();
-		cMap.put("name", name);
-		cMap.put("office", office);
-		cMap.put("office1", office1);
-		//当前只查询了job一张表，后期还要添加表
-		try {
-			List jobList = jobService.findJobByCondition(cMap);
-			model.addAttribute("jobList", jobList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
-		
-		model.addAttribute("cMap", cMap);
 		return "admin/job/jobInfo";
 	}
 	

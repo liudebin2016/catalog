@@ -121,10 +121,10 @@ var jsPart = {
 		    }
 		    ids+=row[i].id+",";
 		}
-		/* if(ishave){
-			jq1_11.messager.alert("警告","您只能选择未注册的数据！");
+		if(ids==""){
+			$.messager.alert("警告","请选择需要注册的数据！");
 		    return false;
-		} */
+		} 
 		ids = ids.substring(0,ids.length-1)
 	 	$.messager.confirm('确认','您确认提交申请吗？',function(r){    
 		    if (r){  
@@ -154,10 +154,10 @@ var jsPart = {
 		    }
 		    ids+=row[i].id+",";
 		}
-		/* if(ishave){
-			jq1_11.messager.alert("警告","您只能选择已注册的岗位!");
+		 if(ids==""){
+			$.messager.alert("警告","请选择需要注销的数据!");
 		    return false;
-		} */
+		} 
 		ids = ids.substring(0,ids.length-1)
 	 	$.messager.confirm('确认','您确认申请注销吗？',function(r){    
 		    if (r){  
@@ -213,7 +213,7 @@ var htmlPart = {
 	      </li>
 	      <li>
 	        <button class="btns mlt30" type="button" onclick="getSearch()">检索</button>
-	        <button class="btns mlt30" type="button" onclick="resetSrc()">清空</button>
+	        <input class="nobg mlt10" name="清空" type="button" value="清空" onclick="resetSrc()">
 	      </li>
 	    </ul>
 	  </div>

@@ -176,8 +176,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
-  <insert id="createJob" parameterType="com.jusfoun.catalog.entity.Job" useGeneratedKeys="true" keyProperty="id">
- 
+  <insert id="createJob" parameterType="com.jusfoun.catalog.entity.Job"  keyProperty="id">
+ <selectKey resultType="int" keyProperty="id">  
+   SELECT catalog_seq.currval  as id FROM DUAL  
+   </selectKey> 
    insert into job
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -312,9 +314,10 @@ FROM (
   	
   	from job j 
   	
-	INNER JOIN sys_office s ON j.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id	
+	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id 
+	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        j.name like #{name}
@@ -341,9 +344,10 @@ FROM (
   	
   	from job j 
   	
-	INNER JOIN sys_office s ON j.office_id = s.id
+	INNER JOIN sys_office s ON j.office_id = s.id	
+	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id  
+	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id 
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="jobName!=null and jobName!='' ">  
 	        j.name like #{jobName}
@@ -427,11 +431,7 @@ FROM (
   </select>
   
   <insert id="insertJob_business" parameterType="Map" >
-      insert into job_business (job_id,business_id) 
-      values
-      <foreach item="businessId" index="index" collection="businessId" separator=",">  
-  				(#{jobId},#{businessId})
- 	  </foreach>
+      insert into job_business (job_id,business_id) values(#{jobId},#{businessId})
   </insert>
    <update id="updateJob_business" parameterType="com.jusfoun.catalog.entity.Job" >
       update job_business set business_id=#{businessId} where job_id=#{jobId}

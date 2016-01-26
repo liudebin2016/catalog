@@ -18,9 +18,6 @@ var jsPart = {
 <script type="text/javascript">
 	var jq1_4 = $.noConflict(true);
 </script>
-<script type="text/javascript">
- 	var jq1_11 = $.noConflict(true);
-</script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
@@ -28,7 +25,7 @@ var jsPart = {
 <script type="text/javascript">
 	//加载业务datagrid
 	var find = false;
-	jq1_11('#bizlink').combogrid({    
+	$('#bizlink').combogrid({    
 	    panelWidth:540,    
 	    idField:'id',    
 	    multiple: true,
@@ -116,6 +113,14 @@ var jsPart = {
 	}
 	
 	function submitForm(status){
+		if($("#officeSel").val() ==""){
+			alert("所属单位不能为空");
+			return false;
+		}
+		if($("#bizlink").val() == ""){
+			alert("相关业务不能为空");
+			return false;
+		}
 		$("#status").val(status);
 		$("#form").submit();
 	}
@@ -147,23 +152,23 @@ var htmlPart = {
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
-				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}">
+				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位职责</label>
-				<textarea class="form-control fl c-f-width540" rows="3" name="duty">${job==null?'':job.id==''?'':job.duty}</textarea>
+				<textarea class="form-control fl c-f-width540" rows="3" name="duty" ${job==null?'':actionType == 'view'?disabled="disabled":""}>${job==null?'':job.id==''?'':job.duty}</textarea>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel" />
+		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel" ${job==null?'':actionType == 'view'?disabled="disabled":""}/>
 		        <input type="hidden" id="officeId" name="officeId"/>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">相关业务</label>
-				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="">
+				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
 				</select>
 		        
 		        <!-- 
@@ -173,7 +178,7 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位属性</label>
-				<select class="form-control c-f-width540" name="type" >
+				<select class="form-control c-f-width540" name="type" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
 				  <option value="" >--请选择--</option>
 				  <option value="1" ${job==null?'':job.type == '1'?selected="selected":selected=""}>公务员编制</option>
 				  <option value="2" ${job==null?'':job.type == '2'?selected="selected":selected=""}>事业编制</option>

@@ -153,6 +153,31 @@ var jsPart = {
 		var ids = [-100];
 		getRscList("",ids);
 	})
+	 ///根据文本框的关键词输入情况自动匹配树内节点 进行模糊查找
+        function AutoMatch(txtObj) {
+            if (txtObj.value.length > 0) {
+                InitialZtree();
+                var zTree = $.fn.zTree.getZTreeObj("officeTree");
+                var nodeList = zTree.getNodesByParamFuzzy("name", txtObj.value, false);
+                var nodeArr = new Array();
+                //这里之所以做处理是为了避免父节点模糊匹配出的数据会自动带入旗下所有子节点
+                for (var i = 0; i < nodeList.length; i++) {
+                    var obj = new Object();
+                    obj.id = nodeList[i].id;
+                    obj.pId = nodeList[i].pId;
+                    obj.name = nodeList[i].name;
+                    nodeArr.push(obj); 
+                }
+                //将找到的nodelist节点更新至Ztree内
+                $.fn.zTree.init($("#officeTree"), setting, nodeArr);
+                showMenu();
+            } else {
+                //隐藏树
+                hideMenu();
+                InitialZtree();                
+            }              
+        }
+	
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
@@ -169,7 +194,7 @@ var htmlPart = {
   <div class="col1">
     <h3 class="h3tit1">部门岗位信息</h3>
     <div>
-      <input class="form-control noradius wd120" type="text" id="searchNodes" placeholder="检索">
+      <input class="form-control noradius wd120" type="text" id="searchNodes" onchange="AutoMatch(this)" placeholder="检索">
     </div>
 	<!-- 组织机构树 start -->
 	<div class="zTreeDemoBackground left">
