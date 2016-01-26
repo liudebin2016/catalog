@@ -51,11 +51,6 @@ public class JobService extends CrudService<JobDao,Job> {
 		return index>0?true:false;
 	}
 
-	public List findJobByCondition(HashMap<String, String> cMap) {
-		
-		return dao.findJobByCondition(cMap);
-	}
-
 	public int findListCount(Job job) {
 		
 		return dao.findListCount(job);

@@ -110,9 +110,6 @@ public class JobContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/job/edit", method = RequestMethod.GET)
 	public ModelAndView getJobEdit(HttpServletRequest request, HttpServletResponse response,Model model){
 		String id = request.getParameter("id");
-//		Job job =jobService.selectById(id);
-//		model.addAttribute("job",job);
-//		return "admin/job/jobEdit";
 		String type =  request.getParameter("type");
 		ModelAndView mav=new ModelAndView("admin/job/jobEdit");
     	if(null!=type&&!"".equals(type)&&(type.equals("update")||type.equals("view"))){
@@ -218,8 +215,6 @@ public class JobContoller extends BaseController {
 			delFlag="success";
 		}
 		return delFlag;
-		
-		//return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
 	/**

@@ -68,7 +68,7 @@ public class LogController extends BaseController {
 		}
 		//求得开始记录与结束记录
 		int start = (page-1)*rows;
-		int end = rows;
+		int end = page * rows;
 		int total = logService.reloadLogListCount(log);
 		log.getSqlMap().put("start", ""+start);
 		log.getSqlMap().put("end", ""+end);

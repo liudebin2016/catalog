@@ -24,8 +24,6 @@ public interface JobDao extends CrudDao<Job>{
 
 	public int updateById(Job job);
 
-	public List findJobByCondition(HashMap<String, String> cMap);
-
 	public int findListCount(Job job);
 
 	public int deleteById(Job job);
