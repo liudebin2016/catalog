@@ -80,6 +80,7 @@
 				         AND l.create_date &lt;= #{logEndDate}
 				    </if> 
 				</trim>	
+				ORDER BY l.create_date desc
 		     ) tt
 		   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
 		 ) ta  
