@@ -25,6 +25,7 @@ var jsPart = {
 <script type="text/javascript">
 	//加载业务datagrid
 	var find = false;
+	var busId = $("#busId").val().split(',');
 	$('#bizlink').combogrid({    
 	    panelWidth:540,    
 	    idField:'id',    
@@ -54,15 +55,32 @@ var jsPart = {
 		    }    
 	    ]],
 	    onLoadSuccess: function(data) { // 当前请求的页面数据。
-	        /* alert(45);
-	    	$.each(data.rows, function(index, value) {//alert(value.id);
-	            if ("5" == value.id) { // value.id与idField属性对应的值
-	               // find = true;// 循环当前请求页面数据，如果取出的值与默认值一致，则设置成找到
-	                $('#bizlink').combogrid('grid').datagrid('selectRecord',value.id);
-	               // $('#bizlink').combogrid('setValue',11);
-	            } 
-	        
-	        }); */
+	    	if(find != true){
+		    	$.each(data.rows, function(index, value) {
+			    		for(var i in busId){
+			    			 // alert(busId[i]+" "+value.id)
+			    			if (busId[i] == value.id){
+			    				//alert(busId[i]);
+			 	            	   //$('#bizlink').combogrid('setValue',5);
+			 	            	   $('#bizlink').combogrid('grid').datagrid('selectRecord',busId[i]);
+			 		               
+			 	              
+			    			}
+			    		}
+			    		 find = true;
+		           // if ("5" == value.id) { // value.id与idField属性对应的值
+		               // find = true;// 循环当前请求页面数据，如果取出的值与默认值一致，则设置成找到
+		               // $('#bizlink').combogrid('grid').datagrid('selectRecord',value.id);
+		               //if(find != true){
+		            	   //$('#bizlink').combogrid('setValue',5);
+		            	//   $('#bizlink').combogrid('grid').datagrid('selectRecord',5);
+			            //    find = true;
+		            //   }
+		                
+		           // } 
+		        
+		        }); 
+	    	}
 	         /* if (!find) {
 	            // combogrid获取下一页页码
 	            var nextPage = $('#bizlink').combogrid('grid').datagrid('options').pageNumber + 1;
@@ -117,10 +135,10 @@ var jsPart = {
 			alert("所属单位不能为空");
 			return false;
 		}
-		/* if($("#bizlink").val() == ""){
+		 if($("[name='businessId']").length == 0){
 			alert("相关业务不能为空");
 			return false;
-		} */
+		} 
 		$("#status").val(status);
 		$("#form").submit();
 	}
@@ -148,6 +166,7 @@ var htmlPart = {
    		<form id="form" action="/admin/job/doedit" method="post">
    	<%}%>
    			<input type="hidden" id="status" name="status" value=""/>
+   			<input type="hidden" id="busId" name="busId" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
 			<div class="c-formbox">

@@ -115,8 +115,10 @@ public class JobContoller extends BaseController {
     	if(null!=type&&!"".equals(type)&&(type.equals("update")||type.equals("view"))){
     		if(null!=id){
     			Job job=jobService.selectById(id);
+    			String seleBusId = jobService.selectBusinessIdByJobId(id);
     			if(null!=job){
     				mav.addObject("job", job);
+    				mav.addObject("busId", seleBusId);
     				if(type.equals("view")){
 						mav.addObject("actionType", "view");
 					}else{
@@ -142,6 +144,7 @@ public class JobContoller extends BaseController {
 		Job job = new Job();
 		model.addAttribute("job", job);
 		model.addAttribute("actionType", "create");
+		model.addAttribute("busId", "");
 		return "admin/job/jobEdit";
 	}
 	/**

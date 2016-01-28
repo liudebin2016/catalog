@@ -489,5 +489,7 @@ FROM (
     ORDER BY create_date desc
     ${sqlMap.page}
   </select>
-  
+  <select id="selectBusinessIdByJobId" resultType="java.lang.String" parameterType="java.lang.String">
+  	select wm_concat(business_id) from job_business where job_id=#{id}
+  </select>
 </mapper> 

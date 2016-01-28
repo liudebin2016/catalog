@@ -112,4 +112,8 @@ public class JobService extends CrudService<JobDao,Job> {
 	public List<Job> findSrhList(Job job) {
 		return dao.findSrhList(job);
 	}
+
+	public String selectBusinessIdByJobId(String id) {
+		return dao.selectBusinessIdByJobId(id);
+	}
 }
