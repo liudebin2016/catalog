@@ -85,10 +85,9 @@ public class UserUtils {
 			user.setRoleList(roleDao.findList(new Role(user)));
 			CacheTool.put(USER_CACHE, USER_CACHE_ID_ + user.getId(), user);
 			CacheTool.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
-			putCache("userName", user.getName());
-			System.out.println("=========================="+user.getName());
-			putCache("userId", user.getId());
 		}
+		putCache("userName", user.getName());
+		putCache("userId", user.getId());
 		return user;
 	}
 
