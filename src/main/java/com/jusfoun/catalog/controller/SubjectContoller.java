@@ -18,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.entity.SubjectInfo;
 import com.jusfoun.catalog.service.SubjectService;
+import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.CatalogTree;
 
@@ -105,7 +107,7 @@ public class SubjectContoller extends BaseController {
 		si.setCreateBy(UserUtils.getUser());
 		si.setCreateDate(new Date());
 		subjectService.saveSubjectInfo(si);
-		
+		LogUtils.saveLog(ServletTool.getRequest(), "目录管理-主题目录管理-主题创建");
 		return "admin/subject/subjectManage";
 	}
 	
@@ -130,7 +132,7 @@ public class SubjectContoller extends BaseController {
 		si.setCreateBy(UserUtils.getUser());
 		si.setCreateDate(new Date());
 		subjectService.update(si);
-		
+		LogUtils.saveLog(ServletTool.getRequest(), "目录管理-主题目录管理-主题更新");
 		return "admin/subject/subjectManage";
 	}
 	
@@ -144,7 +146,7 @@ public class SubjectContoller extends BaseController {
 		SubjectInfo si=new SubjectInfo();
 		si.setId(subjectId);
 		subjectService.delete(si);
-		
+		LogUtils.saveLog(ServletTool.getRequest(), "目录管理-主题目录管理-主题删除");
 		return "admin/subject/subjectManage";
 	}
 	

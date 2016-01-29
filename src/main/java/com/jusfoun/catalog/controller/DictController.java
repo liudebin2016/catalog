@@ -16,8 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Dict;
 import com.jusfoun.catalog.service.DictService;
+import com.jusfoun.catalog.utils.LogUtils;
 
 /**
  * 统计Controller
@@ -59,8 +61,10 @@ public class DictController extends BaseController{
     public String createDict(Dict dict,RedirectAttributes attr) {
     	if(dict.getId()!=null){
     		dictService.update(dict);
+    		LogUtils.saveLog(ServletTool.getRequest(), "系统管理-字典管理-编辑创建");
     	}else{
     		dictService.save(dict);
+    		LogUtils.saveLog(ServletTool.getRequest(), "系统管理-字典管理-字典创建");
     	}
     	String reVal="redirect:/admin/dict/list";
     	if(dict.getParentId()!=null){

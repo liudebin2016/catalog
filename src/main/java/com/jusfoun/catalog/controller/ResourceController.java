@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.ResourceService;
+import com.jusfoun.catalog.utils.LogUtils;
 
 /**
  * 资源Controller
@@ -132,6 +134,7 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "${adminPath}/resource/createRsc", method = RequestMethod.POST)
     public String createRsc(ResourceInfo rsc) {
     	resourceService.save(rsc);
+    	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-资源创建");
     	return "redirect:"+adminPath+"/resource/maintenance";
     }
     
@@ -143,6 +146,7 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "${adminPath}/resource/updateRsc", method = RequestMethod.POST)
     public String updateRsc(ResourceInfo rsc) {
     	resourceService.updateRsc(rsc);
+    	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-资源编辑");
     	return "redirect:"+adminPath+"/resource/maintenance";
     }
     
@@ -155,6 +159,7 @@ public class ResourceController extends BaseController {
     @ResponseBody
     public String batchUpdateRsc(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params) {
     	resourceService.batchUpdateRsc(subId,opType,params);
+    	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-批量资源更新");
     	return "success";
     }
     
@@ -181,6 +186,7 @@ public class ResourceController extends BaseController {
 			ResourceInfo rsc=new ResourceInfo();
 			rsc.setId(id);
 			resourceService.delete(rsc);
+			LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-资源删除");
 			delFlag="success";
 		}
 		return delFlag;
@@ -200,6 +206,7 @@ public class ResourceController extends BaseController {
 			rsc.setId(id);
 			rsc.setSubjectId(null);
 			resourceService.updateRsc(rsc);
+			LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-取消资源与主题关联");
 			delFlag="success";
 		}
 		return delFlag;

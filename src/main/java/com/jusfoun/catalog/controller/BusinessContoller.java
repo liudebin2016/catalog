@@ -21,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Business;
 import com.jusfoun.catalog.service.BusinessService;
+import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 
 /**
@@ -109,6 +111,7 @@ public class BusinessContoller extends BaseController {
 		biz.setCreateBy(UserUtils.getUser());
 		biz.setCreateDate(new Date());
 		businessService.save(biz);
+		LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-新建业务");
 		return "redirect:"+adminPath+"/business/maintenance";
 	}
 	
@@ -120,6 +123,7 @@ public class BusinessContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/business/updateBiz", method = RequestMethod.POST)
 	public String updateBiz(Business biz){
 		businessService.updateBiz(biz);		
+		LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-编辑业务");
 		return "redirect:"+adminPath+"/business/maintenance";
 	}
 	
@@ -143,6 +147,7 @@ public class BusinessContoller extends BaseController {
 			Business biz=new Business();
 			biz.setId(id);
 			businessService.delete(biz);
+			LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-删除业务");
 			delFlag="success";
 		}
 		return delFlag;
@@ -157,6 +162,7 @@ public class BusinessContoller extends BaseController {
 			biz.setId(id);
 			biz.setSubjectId(null);
 			businessService.updateBiz(biz);
+			LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-删除业务与主题间的关联");
 			delFlag="success";
 		}
 		return delFlag;

@@ -58,15 +58,23 @@ var jsPart = {
 		        {field:'name',title:'业务事项名称',width:300},    
 		        {field:'shareWith',title:'共享范围',width:300,
 		        	formatter:function(value,row,index){
-		        		var ds=value.replace(1,"所有人员").replace(2,"国家部委").replace(3,"市领导").replace(4,"委办局").replace(5,"委（局）内")
-		        		.replace(6,"本部门专员").replace(7,"其他");
-		        		return ds;
+		        		if(value){
+			        		var ds=value.replace(1,"所有人员").replace(2,"国家部委").replace(3,"市领导").replace(4,"委办局").replace(5,"委（局）内")
+			        		.replace(6,"本部门专员").replace(7,"其他");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
 	            	}
 		        },
 		        {field:'status',title:'当前状态',width:150,
 		        	formatter:function(value,row,index){
-		        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
-		        		return ds;
+		        		if(value){
+			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
 	            	}
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
