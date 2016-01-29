@@ -32,14 +32,6 @@ var jsPart = {
 	    multiple: true,
 	    url:'/admin/business/bizList.do',    
 	    pagination:true,
-	   /*  toolbar:[{
-			text:'提交',
-			handler:function(){
-				var vals = $('#bizlink').combogrid('getValues');
-				var subId=$('#subId').html();
-				sendLinkReq("/admin/business/batchUpdateBiz.do",subId,vals);
-			}
-		}], */
 	    columns:[[    
 			{field:'ck',checkbox:true},
 	        {field:'code',title:'业务编码',width:150},    

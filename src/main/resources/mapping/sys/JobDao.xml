@@ -266,7 +266,7 @@
   		job j
 	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id 
+	INNER JOIN business b ON jb.business_id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        j.name like #{name}
@@ -284,7 +284,7 @@
   	
 	INNER JOIN sys_office s ON j.office_id = s.id
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id  
+	INNER JOIN business b ON jb.business_id = b.id  and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="jobName!=null and jobName!='' ">  
 	        j.name like #{jobName}
@@ -317,7 +317,7 @@ FROM (
 	INNER JOIN sys_office s ON j.office_id = s.id	
 	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id
+	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        j.name like #{name}
@@ -347,7 +347,7 @@ FROM (
 	INNER JOIN sys_office s ON j.office_id = s.id	
 	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
-	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id 
+	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="jobName!=null and jobName!='' ">  
 	        j.name like #{jobName}

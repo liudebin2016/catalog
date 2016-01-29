@@ -81,16 +81,6 @@ function getRscList(){
 	    }
 	}); 
 }
-function setFirstPage(ids){
-    var opts = $(ids).datagrid('options');
-var pager = $(ids).datagrid('getPager');
-opts.pageNumber = 1;
-    opts.pageSize = opts.pageSize;
-pager.pagination('refresh',{
-	    	pageNumber:1,
-	    	pageSize:opts.pageSize
-	});
-}
 $(document).ready(function(){
 	getRscList();
 });
