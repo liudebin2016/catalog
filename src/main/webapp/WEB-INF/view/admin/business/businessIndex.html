@@ -112,8 +112,7 @@ var jsPart = {
 				{field:'id',title:'id',hidden:true},
 		        {field:'name',title:'资源名称',width:80},
 		        {field:'type',title:'资源编码',width:100},
-		        {field:'basis',title:'一级子项名称',width:120},
-		        {field:'chargeOfficeId',title:'业务所属部门',width:110},
+		        {field:'chargeOfficeId',title:'所属部门',width:110},
 		        {field:'shareLevel',title:'资源共享范围',width:90},
 		        {field:'shareRegion',title:'共享方式',width:100},
 		        {field:'shareRegion',title:'安全级别',width:100},
@@ -127,7 +126,7 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 8 })
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 7 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
 	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	            }
@@ -148,8 +147,9 @@ var jsPart = {
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
-		        {field:'name',title:'主题名称',width:300},
-		        {field:'descr',title:'主题描述',width:200},		        
+		        {field:'name',title:'主题名称',width:200},
+		        {field:'descr',title:'主题描述',width:200},
+		        {field:'shareRegion',title:'共享范围',width:200},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
 	                    var s = '<a href="/admin/subject/action.do?type=view&subjectId='+row.id+'">查看</a> ';
@@ -160,7 +160,7 @@ var jsPart = {
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+	                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 4 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
 	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	            }
