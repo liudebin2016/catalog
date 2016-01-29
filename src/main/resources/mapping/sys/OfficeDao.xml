@@ -81,60 +81,59 @@
         ORDER BY a.code
     </select>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_office(
-        parent_id,
-        parent_ids,
-        area_id,
-        code,
-        name,
-        duty,
-        sort,
-        type,
-        grade,
-        address,
-        zip_code,
-        master,
-        phone,
-        fax,
-        email,
-        create_by,
-        create_date,
-        update_by,
-        update_date,
-        remarks,
-        del_flag,
-        status,
-        useable,
-        primary_person,
-        deputy_person
-        ) VALUES (
-        #{parent.id},
-        #{parentIds},
-        #{area.id},
-        #{code},
-        #{name},
-        #{duty},
-        #{sort},
-        #{type},
-        #{grade},
-        #{address},
-        #{zipCode},
-        #{master},
-        #{phone},
-        #{fax},
-        #{email},
-        #{createBy.id},
-        #{createDate},
-        #{updateBy.id},
-        #{updateDate},
-        #{remarks},
-        #{delFlag},
-        #{status},
-        #{useable},
-        #{primaryPerson.id},
-        #{deputyPerson.id}
-        )
+    <insert id="insert" keyProperty="id" parameterType="com.jusfoun.catalog.entity.Office" >
+		<selectKey resultType="int" keyProperty="id">  
+			SELECT SYS_OFFICE_SEQ.currval  as id FROM DUAL  
+		</selectKey> 
+        INSERT INTO sys_office
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="parent != null and parent.id != null" >
+		        parent_id,
+	        </if>
+			<if test="name != null">
+		        name,
+			</if>
+			<if test="duty != null">
+		        duty,
+			</if>
+			<if test="createBy != null and createBy.id != null">
+		        create_by,
+			</if>
+			<if test="createDate != null">
+		        create_date,
+			</if>
+			<if test="updateBy != null and updateBy.id != null">
+		        update_by,
+			</if>
+			<if test="updateDate != null">
+		        update_date,
+			</if>
+	        del_flag
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="parent != null and parent.id != null" >
+			  #{parent.id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null" >
+			  #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="duty != null" >
+			  #{duty,jdbcType=LONGVARCHAR},
+			</if>
+			<if test="createBy != null and createBy.id != null" >
+			  #{createBy.id,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null" >
+			  #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null and updateBy.id != null" >
+			  #{updateBy.id,jdbcType=INTEGER},
+			</if>
+			<if test="updateDate != null" >
+			  #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			0
+        </trim>
     </insert>
 
     <update id="update">
@@ -146,44 +145,8 @@
 	        <if test="parent != null" >
 	          parent_id = #{parent.id},
 	        </if>
-	        <if test="parentIds != null" >
-	          parent_ids = #{parentIds},
-	        </if>
-	        <if test="area != null" >
-	          area_id = #{area.id},
-	        </if>
-	        <if test="code != null" >
-	          code = #{code},
-	        </if>
 	        <if test="duty != null" >
 	          duty = #{duty},
-	        </if>
-	        <if test="sort != null" >
-	          sort = #{sort},
-	        </if>
-        	<if test="type != null" >
-	          type = #{type},
-	        </if>
-        	<if test="grade != null" >
-	          grade = #{grade},
-	        </if>
-        	<if test="address != null" >
-	          address = #{address},
-	        </if>
-        	<if test="zipCode != null" >
-	          zip_code = #{zipCode},
-	        </if>
-        	<if test="master != null" >
-	          master = #{master},
-	        </if>
-        	<if test="phone != null" >
-	          phone = #{phone},
-	        </if>
-        	<if test="fax != null" >
-	          fax = #{fax},
-	        </if>
-        	<if test="email != null" >
-	          email = #{email},
 	        </if>
         	<if test="createBy != null" >
 	          create_by = #{createBy.id},
@@ -197,30 +160,9 @@
         	<if test="updateDate != null" >
 	          update_date = #{updateDate},
 	        </if>
-        	<if test="remarks != null" >
-	          remarks = #{remarks},
-	        </if>
         	<if test="delFlag != null" >
 	          del_flag = #{delFlag},
 	        </if>
-        	<if test="status != null" >
-	          status = #{status},
-	        </if>
-        	<if test="useable != null" >
-	          useable = #{useable},
-	        </if>
-        	<if test="primaryPerson != null" >
-	          primary_person = #{primaryPerson.id},
-	        </if>
-        	<if test="deputyPerson != null" >
-	          deputy_person = #{deputyPerson.id},
-	        </if>
-	        <if test="updateBy != null" >
-		        update_by = #{updateBy.id},
-		    </if>
-	        <if test="updateDate != null" >
-		        update_date = #{updateDate},
-		    </if>
 	    </set>
         WHERE id = #{id}
     </update>
