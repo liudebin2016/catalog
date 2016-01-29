@@ -45,7 +45,6 @@ function getRscList(){
 	var userName=$.trim($("#userName").val());
 	var beginDate = $('#beginDate').datetimebox('getValue');		         // 获取日期时间输入框的值
 	var endDate = $('#endDate').datetimebox('getValue');
-	
 	$('#dg').datagrid({
 	 url:'/admin/log/reloadList.do', 
 	    fitColumns:true,
@@ -57,19 +56,20 @@ function getRscList(){
 	    pagination:true,
 	    checkbox:true,
 	    method:"get",
+	    pageNumber:1,
 	    rownumbers:true,
 	    columns:[[ 
 			{field:'ck',title:'',width:0,checkbox:false},   
 			{field:'id',title:'id',width:0,hidden:true}, 
 	        {field:'userName',title:'用户名',width:150,align:"center"},    
 	        {field:'logTitle',title:'模块',width:150,align:"center"},
+	        {field:'logRemoteAddr',title:'IP',width:150,align:"center"},
 	        {field:'logBeginDate',title:'操作时间',width:150,align:"center",
 	        	formatter:function(value,row,index){ 
                     var unixTimestamp = new Date(value); 
                     return unixTimestamp.toLocaleString(); 
                     } 	
-	        },
-	        {field:'logRemoteAddr',title:'IP',width:150,align:"center"}
+	        }
 	    ]],
 	    onLoadSuccess:function(data){
 	    	if (data.total == 0) {
@@ -81,7 +81,16 @@ function getRscList(){
 	    }
 	}); 
 }
-
+function setFirstPage(ids){
+    var opts = $(ids).datagrid('options');
+var pager = $(ids).datagrid('getPager');
+opts.pageNumber = 1;
+    opts.pageSize = opts.pageSize;
+pager.pagination('refresh',{
+	    	pageNumber:1,
+	    	pageSize:opts.pageSize
+	});
+}
 $(document).ready(function(){
 	getRscList();
 });
@@ -104,10 +113,10 @@ var htmlPart = {
 	             </li>
 	         	<li>
 	            <label>时间筛选</label>
-	            <input class="easyui-datetimebox" required style="width:200px" id="beginDate">
+	            <input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="beginDate">
 	             
 	             <label>至</label>
-	             <input class="easyui-datetimebox" required style="width:200px" id="endDate">                    
+	             <input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="endDate">                    
 	                 
 	             </li>
 	            
