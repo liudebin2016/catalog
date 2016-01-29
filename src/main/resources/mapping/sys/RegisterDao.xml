@@ -24,7 +24,6 @@
         	office_id,
 	       	apply_type,
 	       	apply_id,
-	       	apply_name,
 	       	apply_flag,
 	       	approve_flag,
 	       	apply_by,
@@ -36,15 +35,14 @@
         </trim>
            
         ) VALUES (
-	        #{officeId},
-	        #{officeName},
+	        #{office.id},
 			#{applyType},
 			#{applyId},
 			#{applyFlag},
 			#{approveFlag},
-			#{applyBy},
+			#{applyBy.id},
 			#{applyDate},
-			#{approveBy},
+			#{approveBy.id},
 			#{approveDate}
         )
     </insert>
