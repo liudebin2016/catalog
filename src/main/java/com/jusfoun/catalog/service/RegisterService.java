@@ -30,6 +30,23 @@ public class RegisterService extends CrudService<RegisterDao, Register> {
 		register.setApproveFlag(Register.STATUS_APPROVALING);
 		dao.insert(register);
 	}
+	
+	/**申请注销
+	 * @param applyId 申请注销的id
+	 * @param applyType 申请注销的类型
+	 */
+	@Transactional(readOnly=false)
+	public void cancel(Integer cancelId, Integer cancelType) {
+		Register register = new Register();
+		register.setOffice(UserUtils.getUser().getOffice());
+		register.setApplyType(cancelType);
+		register.setApplyId(cancelId);
+		register.setApplyBy(UserUtils.getUser());
+		register.setApplyDate(new Date());
+		register.setApplyFlag(Register.STATUS_CANCEL);
+		register.setApproveFlag(Register.STATUS_APPROVALING);
+		dao.insert(register);
+	}
 
 	public int findListCount(Register register) {
 		return dao.findListCount(register);
