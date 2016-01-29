@@ -84,7 +84,12 @@ function getRscList(){
 $(document).ready(function(){
 	getRscList();
 });
-
+//输入框回车事件
+$('#userName').bind('keypress',function(event){
+        if(event.keyCode == "13"){
+        	getRscList();
+        }
+ });
 </script>
 
 <%};%>

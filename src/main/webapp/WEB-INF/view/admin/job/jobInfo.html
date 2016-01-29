@@ -178,7 +178,13 @@ var jsPart = {
                 InitialZtree();                
             }              
         }
-	
+	//输入框回车事件
+	$('#jobName').bind('keypress',function(event){
+            if(event.keyCode == "13"){
+            	var ids = [-100];
+        		getRscList("",ids);
+            }
+     });
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>

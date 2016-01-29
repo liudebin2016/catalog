@@ -194,6 +194,12 @@ var jsPart = {
 		} */
 		getRscList();
 	}
+	//输入框回车事件
+	$('#srcName').bind('keypress',function(event){
+            if(event.keyCode == "13"){
+            	getSearch();
+            }
+     });
 </script>
 
 <%};%>
