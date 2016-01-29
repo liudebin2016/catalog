@@ -18,11 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.entity.User;
 import com.jusfoun.catalog.service.CatalogInfoService;
 import com.jusfoun.catalog.service.OfficeService;
+import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.CatalogTree;
 import com.jusfoun.catalog.vo.ETreeNode;
@@ -63,6 +65,7 @@ public class OfficeController extends BaseController {
     		office.setStatus(status);
     	}
     	officeService.update(office);
+    	LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-编辑机构职责");
         return "success";
     }
     
@@ -131,6 +134,7 @@ public class OfficeController extends BaseController {
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("succ", 1);
 		result.put("msg", "新增操作成功!");
+		LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-新增机构");
 		return result;
 	}
     
@@ -142,6 +146,7 @@ public class OfficeController extends BaseController {
     	Map<String,Object> result = new HashMap<String, Object>();
     	result.put("succ", 1);
     	result.put("msg", "删除操作成功!");
+    	LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-删除机构");
     	return result;
     }
     
@@ -170,6 +175,7 @@ public class OfficeController extends BaseController {
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("succ", 1);
 		result.put("msg", "更新操作成功!");
+		LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-更新机构");
 		return result;
 	}
     
@@ -183,6 +189,7 @@ public class OfficeController extends BaseController {
     	Map<String,Object> result = new HashMap<String, Object>();
     	result.put("succ", 1);
     	result.put("msg", "更新操作成功!");
+    	LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-更新机构");
     	return result;
     }
     
