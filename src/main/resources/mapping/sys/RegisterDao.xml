@@ -18,8 +18,10 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_office(
-            office_id,
+        INSERT INTO sys_office
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        	<if test=""></if>
+        	office_id,
 	       	apply_type,
 	       	apply_id,
 	       	apply_name,
@@ -29,6 +31,10 @@
 	       	apply_date,
 	       	approve_by,
 	       	approve_date
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        </trim>
+           
         ) VALUES (
 	        #{officeId},
 	        #{officeName},
