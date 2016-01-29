@@ -21,9 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Job;
+import com.jusfoun.catalog.entity.Register;
 import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.JobService;
+import com.jusfoun.catalog.service.RegisterService;
+import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.JobAndOfficeView;
 
@@ -37,7 +41,8 @@ public class JobContoller extends BaseController {
 	
 	@Autowired
 	private JobService jobService;
-
+	@Autowired
+	private RegisterService registerService;
 	/**
 	 * 部门岗位信息列表
 	 * @param request
@@ -86,6 +91,7 @@ public class JobContoller extends BaseController {
 		job.setDelFlag("0");
 		job.setOfficeId(Integer.parseInt(officeId));
 		int index = jobService.createJob(job,officeId,businessId);
+		LogUtils.saveLog(ServletTool.getRequest(), "部门岗位创建");
 		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
@@ -164,6 +170,7 @@ public class JobContoller extends BaseController {
 		job.setUpdateBy(UserUtils.getUser());
 		job.setUpdateDate(new Date());
 		boolean flag = jobService.updateById(job,cMap);
+		LogUtils.saveLog(ServletTool.getRequest(), "部门岗位编辑");
 		return "redirect:"+adminPath+"/job/maintenance";
 	}
 	
@@ -278,12 +285,20 @@ public class JobContoller extends BaseController {
 	@RequestMapping(value = "${adminPath}/job/jobApplyFor", method = RequestMethod.POST)
 	@ResponseBody
 	public String jobApplyFor(HttpServletRequest request, HttpServletResponse response){
-		String ids = request.getParameter("ids");
+		String ids = request.getParameter("ids");//registerService
 		String delFlag="fail";
-		if(ids != null){
+		/*if(ids != null){
 			int temp = jobService.jobApplyFor(ids);
 			delFlag="success";
+		}*/
+		String[] row = ids.split(",");
+		if(row.length>0){
+			for(int i=0;i<row.length;i++){
+				registerService.apply(Integer.parseInt(row[i]), Register.TYPE_JOB);
+			}
+			delFlag="success";
 		}
+		
 		return delFlag;
 	}
 	/**
