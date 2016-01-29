@@ -24,6 +24,7 @@ import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Business;
 import com.jusfoun.catalog.service.BusinessService;
+import com.jusfoun.catalog.service.RegisterService;
 import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 

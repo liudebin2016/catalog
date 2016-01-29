@@ -3,11 +3,13 @@ package com.jusfoun.catalog.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.ResourceInfoDao;
+import com.jusfoun.catalog.entity.Register;
 import com.jusfoun.catalog.entity.ResourceInfo;
 
 /**
@@ -18,6 +20,9 @@ import com.jusfoun.catalog.entity.ResourceInfo;
 @Service
 public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 
+	@Autowired
+	private RegisterService registerService;
+	
 	/**
 	 * 获取列表个数
 	 * @param rsc
@@ -88,6 +93,7 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 				rsc.setStatus(opType.toString());
 			}
 			dao.update(rsc);
+			registerService.apply(Integer.valueOf(str), Register.TYPE_BUSINESS);
 		}
 	}
 

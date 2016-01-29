@@ -81,7 +81,7 @@ public class DashboardController extends BaseController{
         return "";
     }
     
-    @RequestMapping(value = "/search",method = RequestMethod.POST)
+    @RequestMapping(value = "/search")
 	public String search(@RequestParam(value = "search_value", required=true) String value,
 			@RequestParam(value = "search_type", required=true) int type,
 			@RequestParam(value = "officeId", required=false) Integer officeId,

@@ -3,16 +3,21 @@ package com.jusfoun.catalog.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.BusinessDao;
 import com.jusfoun.catalog.entity.Business;
+import com.jusfoun.catalog.entity.Register;
 
 @Service
 @Transactional(readOnly = true)
 public class BusinessService extends CrudService<BusinessDao, Business>{
+	
+	@Autowired
+	private RegisterService registerService;
 	
 	/**
 	 * 更新业务
@@ -79,6 +84,7 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 				biz.setStatus(opType.toString());
 			}
 			dao.update(biz);
+			registerService.apply(Integer.valueOf(str), Register.TYPE_BUSINESS);
 		}
 	}
 
