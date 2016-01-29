@@ -157,7 +157,7 @@ var htmlPart = {
 %>
 <!-- start:content -->
 <div class="content">
-   	<h2 class="compile-title mt40">岗位信息维护</h2>
+   	<h2 class="compile-title mt40">岗位信息${actionType=="update"?"编辑":actionType=="view"?"查看":"创建"}</h2>
    	<span class="imaginary-line"></span>
    	<div class="compile-form">
    <%if(job.id==null){%>

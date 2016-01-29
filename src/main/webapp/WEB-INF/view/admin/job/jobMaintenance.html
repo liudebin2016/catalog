@@ -63,6 +63,16 @@ var jsPart = {
 		        {field:'jobName',title:'岗位名称/职位',width:150,align:"center"},    
 		        {field:'jobDuty',title:'岗位职责',width:150,align:"center"},
 		        {field:'officeName',title:'所属单位',width:150,align:"center"},
+		        {field:'jobType',title:'岗位属性',width:150,align:"center",
+		        	formatter: function(value,row,index){
+						if(value){
+			        		var ds=value.replace(0,"未知").replace(1,"公务员编制").replace(2,"事业编制").replace(3,"参公编制").replace(4,"工勤编制").replace(5,"其他");
+			        		return ds;
+		        		}else{
+		        			return "未知";
+		        		}
+					} 		
+		        },
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
