@@ -20,7 +20,7 @@ var jsPart = {
 $(function(){
 	
 	 $('#etree').tree({
-         url:'http://localhost:8090/build/eTreeNode',
+         url:'/build/eTreeNode',
          animate:true,
          onClick: function(node){
      		$("#officeId").val(node.id);// 在用户点击的时候提示
@@ -70,7 +70,7 @@ var htmlPart = {
 	                <div style="margin-bottom: 10px;">
 	                    <h4 class="panel-title" style="text-align: center;"><span class="text-bold">九次方</span>·政府资源目录检索</h4>
 	                </div>
-	                <input id="officeId" type="hidden" name="officeId" value="">
+	                <input id="officeId" type="hidden" name="officeId" value="-1">
 	                <input id="srhType" type="hidden" name="search_type" value="">
 	                <div class="panel-body" style="padding-bottom: 0px;width:610px;border-width: 0px; ">
 		                <div id="srhTab" class="easyui-tabs" data-options="tabWidth:100">
