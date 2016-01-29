@@ -1,20 +1,10 @@
 package com.jusfoun.catalog.controller;
 
-import com.jusfoun.catalog.common.config.Global;
-import com.jusfoun.catalog.common.security.shiro.session.SessionDAO;
-//import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
-import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
-import com.jusfoun.catalog.common.tool.CacheTool;
-import com.jusfoun.catalog.common.tool.CookieTool;
-import com.jusfoun.catalog.common.tool.IdGenTool;
-import com.jusfoun.catalog.common.tool.StringTool;
-import com.jusfoun.catalog.common.controller.BaseController;
-//import com.jusfoun.catalog.modules.sys.security.FormAuthenticationFilter;
-import com.jusfoun.catalog.security.FormAuthenticationFilter;
-import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
-//import com.jusfoun.catalog.modules.sys.utils.UserUtils;
-import com.google.common.collect.Maps;
-import com.jusfoun.catalog.utils.UserUtils;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.web.util.WebUtils;
@@ -26,9 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+//import com.jusfoun.catalog.modules.sys.utils.UserUtils;
+import com.google.common.collect.Maps;
+import com.jusfoun.catalog.common.config.Global;
+import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.security.shiro.session.SessionDAO;
+//import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
+import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
+import com.jusfoun.catalog.common.tool.CacheTool;
+import com.jusfoun.catalog.common.tool.CookieTool;
+import com.jusfoun.catalog.common.tool.IdGenTool;
+import com.jusfoun.catalog.common.tool.ServletTool;
+import com.jusfoun.catalog.common.tool.StringTool;
+//import com.jusfoun.catalog.modules.sys.security.FormAuthenticationFilter;
+import com.jusfoun.catalog.security.FormAuthenticationFilter;
+import com.jusfoun.catalog.security.SystemAuthorizingRealm.Principal;
+import com.jusfoun.catalog.utils.LogUtils;
+import com.jusfoun.catalog.utils.UserUtils;
 
 /**
  * 登录Controller
@@ -190,6 +194,16 @@ public class LoginController extends BaseController{
     		// 部门管理员
     		return new ModelAndView("redirect:/admin/register/applyIndex");
     	}
+	}
+	
+	/**
+	 * 退出系统
+	 */
+	@RequestMapping(value = "${adminPath}/logout")
+	public ModelAndView logout() {
+		LogUtils.saveLog(ServletTool.getRequest(), "退出系统");
+		UserUtils.getSubject().logout();
+		return new ModelAndView("redirect:/");
 	}
 	
 	/**
