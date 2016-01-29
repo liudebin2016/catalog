@@ -75,7 +75,7 @@
 			success : function(obj) {
 				$('#' + treeNode.tId).prepend(
 						'<span style="position:absolute;left:835px;" class="gcode">'
-								+ obj.data.typeValue + '</span>');
+								+ (obj.data =='' ? '--' : (obj.data.typeValue =='' ? '--' : obj.data.typeValue))+ '</span>');
 			}
 		});
 		return true;
