@@ -28,21 +28,23 @@
 				content: content
 			},
 		  	function(data){
-		    	alert("职责添加成功！");
+		    	alert("保存成功！");
 		  	}
 		);
 	}
 	
 	function applyRegister(){
-		$.get("/admin/office/updateDuty.do", 
-			{ 
-				id:${officeId},
-				status: 1//申请注册
-			},
-		  	function(data){
-		    	alert("保存成功！");
-		  	}
-		);
+		if(confirm("注册后不可修改，是否确认提交?")){
+			$.get("/admin/office/updateDuty.do", 
+				{ 
+					id:${officeId},
+					status: 1//申请注册
+				},
+			  	function(data){
+			    	alert("申请提交成功！");
+			  	}
+			);
+		}
 	}
 </script>
 <%};%>
@@ -63,8 +65,8 @@
 		<div class="mb30 clearfix"></div>
 		<div class="btn-box fl mb20">
 			<button class="btns fl mr20" type="button" onclick="applyRegister(${officeId})">申请注册</button>
-			<a class="btns-gray fl mr20" href="javascript:sendContent();">保存</a> <a
-				class="btns-gray fl" href="javascript:;">取消</a>
+			<a class="btns-gray fl mr20" href="javascript:sendContent();">保存</a><!--  <a
+				class="btns-gray fl" href="javascript:;">取消</a> -->
 		</div>
 	</div>
 </div>

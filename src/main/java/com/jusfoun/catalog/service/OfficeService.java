@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,7 @@ import com.jusfoun.catalog.dao.CatalogInfoDao;
 import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.entity.CatalogInfo;
 import com.jusfoun.catalog.entity.Office;
+import com.jusfoun.catalog.entity.Register;
 import com.jusfoun.catalog.utils.UserUtils;
 import com.jusfoun.catalog.vo.CatalogTree;
 import com.jusfoun.catalog.vo.ETreeNode;
@@ -31,6 +33,8 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	
 	@Resource
 	private CatalogInfoDao catalogInfoDao;
+	@Autowired
+	private RegisterService registerService;
 	
 	public List<CatalogTree> getOfficeTree(){
 		return UserUtils.getOfficeTree();
@@ -192,6 +196,9 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Transactional(readOnly = false)
 	public void update(Office office) {
 		dao.update(office);		
+		if(null!=office.getStatus()&&!"".equals(office.getStatus())){
+			registerService.apply(office.getId(), Register.TYPE_OFFICE);
+		}
 	}
 	
 	public List<ETreeNode> getChildren(List<ETreeNode> etnList){
