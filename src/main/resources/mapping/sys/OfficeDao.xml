@@ -48,7 +48,7 @@
         <include refid="officeColumns"/>
         FROM sys_office a
         <include refid="officeJoins"/>
-        WHERE a.id = #{id}
+        WHERE a.id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="findList" resultType="Office">

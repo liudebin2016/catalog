@@ -17,34 +17,74 @@
        	a.del_flag
     </sql>
 
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_office
+    <insert id="insert" keyProperty="id" parameterType="com.jusfoun.catalog.entity.Register" >
+        INSERT INTO register
         <trim prefix="(" suffix=")" suffixOverrides="," >
-        	<if test=""></if>
-        	office_id,
-	       	apply_type,
-	       	apply_id,
-	       	apply_flag,
-	       	approve_flag,
-	       	apply_by,
-	       	apply_date,
-	       	approve_by,
-	       	approve_date
+        	<if test="office != null and office.id != null">
+	        	office_id,
+        	</if>
+        	<if test="applyType != null">
+		       	apply_type,
+        	</if>
+        	<if test="applyId != null">
+		       	apply_id,
+        	</if>
+        	<if test="applyName != null">
+		       	apply_name,
+        	</if>
+        	<if test="applyFlag != null">
+		       	apply_flag,
+        	</if>
+        	<if test="approveFlag">
+		       	approve_flag,
+        	</if>
+        	<if test="applyBy != null and applyBy.id != null">
+		       	apply_by,
+        	</if>
+        	<if test="applyDate != null">
+		       	apply_date,
+        	</if>
+        	<if test="approveBy != null and approveBy.id != null">
+		       	approve_by,
+        	</if>
+        	<if test="approveDate != null">
+		       	approve_date,
+        	</if>
+        	del_flag
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
+        	<if test="office != null and office.id != null">
+	        	#{office.id,jdbcType=INTEGER},
+        	</if>
+        	<if test="applyType != null">
+		       #{applyType,jdbcType=INTEGER},
+        	</if>
+        	<if test="applyId != null">
+		       	#{applyId,jdbcType=INTEGER},
+        	</if>
+        	<if test="applyName != null">
+		       	#{applyName,jdbcType=VARCHAR},
+        	</if>
+        	<if test="applyFlag != null">
+		       	#{applyFlag,jdbcType=VARCHAR},
+        	</if>
+        	<if test="approveFlag">
+		       	#{approveFlag,jdbcType=VARCHAR},
+        	</if>
+        	<if test="applyBy != null and applyBy.id != null">
+		       	#{applyBy.id,jdbcType=INTEGER},
+        	</if>
+        	<if test="applyDate != null">
+		       	#{applyDate,jdbcType=TIMESTAMP},
+        	</if>
+        	<if test="approveBy != null and approveBy.id != null">
+		       	#{approveBy.id,jdbcType=INTEGER},
+        	</if>
+        	<if test="approveDate != null">
+		       	#{approveDate,jdbcType=TIMESTAMP},
+        	</if>
+        	0
         </trim>
-           
-        ) VALUES (
-	        #{office.id},
-			#{applyType},
-			#{applyId},
-			#{applyFlag},
-			#{approveFlag},
-			#{applyBy.id},
-			#{applyDate},
-			#{approveBy.id},
-			#{approveDate}
-        )
     </insert>
     
       <!-- 查询列表数量 -->
@@ -97,6 +137,8 @@
 	 ) ta  
 	 WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>  
   </select>
+  
+  <!-- 审批 -->
   <update id="approve" parameterType="Register">
   	update register
  	set

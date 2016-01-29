@@ -155,17 +155,16 @@ DROP TABLE "ORACLE"."REGISTER";
 CREATE TABLE "ORACLE"."REGISTER" (
 "ID" NUMBER(10) NOT NULL ,
 "OFFICE_ID" NUMBER(20) NOT NULL ,
-"TYPE" NUMBER(10) NOT NULL ,
-"APPLY_FLAG" NVARCHAR2(255) NOT NULL ,
-"APPROVE_FLAG" NVARCHAR2(255) NOT NULL ,
+"APPLY_TYPE" VARCHAR2(255 BYTE) NULL ,
+"APPLY_ID" NUMBER(9) NULL ,
+"APPLY_NAME" NVARCHAR2(255) NULL ,
 "APPLY_BY" NUMBER(20) NULL ,
 "APPLY_DATE" TIMESTAMP(4)  NULL ,
 "APPROVE_BY" NUMBER(20) NULL ,
 "APPROVE_DATE" TIMESTAMP(4)  NULL ,
-"DEL_FLAG" NVARCHAR2(255) NOT NULL ,
-"APPLY_NAME" NVARCHAR2(255) NULL ,
-"APPLY_ID" NUMBER(9) NULL ,
-"APPLY_TYPE" VARCHAR2(255 BYTE) NULL 
+"APPLY_FLAG" NVARCHAR2(255) NOT NULL ,
+"APPROVE_FLAG" NVARCHAR2(255) NOT NULL ,
+"DEL_FLAG" NVARCHAR2(255) NOT NULL
 );
 
 -- ----------------------------
@@ -502,7 +501,7 @@ INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('6', '1', '0,1,', '研发部', '50', '
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('7', '1', '0,1,', '济南市分公司', '20', '3', '200000', '1', '2', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', null, '0');
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('8', '7', '0,1,7,', '公司领导', '10', '3', '200001', '2', '2', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', null, '0');
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('9', '7', '0,1,7,', '综合部', '20', '3', '200002', '2', '2', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', null, '0');
-INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('10', '7', '0,1,7,', '市场部', '30', '3', '200003', '2', '2', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', '&lt;p&gt;asdfasdfasdf&lt;br/&gt;&lt;/p&gt;', '0');
+INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('10', '7', '0,1,7,', '市场部', '30', '3', '200003', '2', '2', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', '<p>asdfasdfasdf<br/></p>', '0');
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('11', '2', null, 'test', null, null, null, '2', null, null, null, null, null, null, null, null, null, null, '1', TO_TIMESTAMP(' 2016-01-21 09:29:32:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, null, null, '0', null, '0');
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('1', '0', '0,', '市级单位', '10', '2', '100000', '1', '1', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', null, '0');
 INSERT INTO "ORACLE"."SYS_OFFICE" VALUES ('2', '1', '0,1,', '吴中区', '10', '2', '100001', '2', '1', null, null, null, null, null, null, '1', null, null, '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), '1', TO_TIMESTAMP(' 1015-12-22 00:00:00:0000', 'YYYY-MM-DD HH24:MI:SS:FF4'), null, '0', '<p>sa杜上睛234646df丰不求上进<br/></p>', '1');
@@ -678,7 +677,12 @@ ALTER TABLE "ORACLE"."BUSINESS" ADD PRIMARY KEY ("ID");
 -- ----------------------------
 -- Indexes structure for table CATALOG_INFO
 -- ----------------------------
-
+CREATE OR REPLACE TRIGGER "ORACLE"."CATALOG_INFO_TRI" 
+BEFORE 
+	INSERT ON "ORACLE"."CATALOG_INFO" REFERENCING OLD AS "OLD" NEW AS "NEW" FOR EACH ROW ENABLE
+BEGIN
+   SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
 -- ----------------------------
 -- Checks structure for table CATALOG_INFO
 -- ----------------------------
@@ -752,7 +756,7 @@ END;
 -- ----------------------------
 ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("ID" IS NOT NULL);
 ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("OFFICE_ID" IS NOT NULL);
-ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("TYPE" IS NOT NULL);
+ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("APPLY_TYPE" IS NOT NULL);
 ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("APPLY_FLAG" IS NOT NULL);
 ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("APPROVE_FLAG" IS NOT NULL);
 ALTER TABLE "ORACLE"."REGISTER" ADD CHECK ("DEL_FLAG" IS NOT NULL);
