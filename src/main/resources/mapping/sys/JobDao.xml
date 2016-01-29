@@ -315,7 +315,7 @@ FROM (
   	from job j 
   	
 	INNER JOIN sys_office s ON j.office_id = s.id	
-	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
+	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(to_char(b.name)) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
@@ -345,7 +345,7 @@ FROM (
   	from job j 
   	
 	INNER JOIN sys_office s ON j.office_id = s.id	
-	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(b.name) as name from job j 	
+	INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(to_char(b.name)) as name from job j 	
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
