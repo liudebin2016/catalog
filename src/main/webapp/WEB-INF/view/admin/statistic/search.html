@@ -24,7 +24,7 @@ var htmlPart = {
     <h3 class="h3tit mt30">检索统计</h3>
     <div class="chart-box mb50 mt20">
     <h3 class="chart-tit">检索量</h3>
-    <div class="chart-in chart-in2"> <img src="images/echart01.png" alt=""> 
+    <div class="chart-in chart-in2">
     	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 	    <div id="main" style="height:400px"></div>
 	    <!-- ECharts单文件引入 -->
@@ -58,7 +58,7 @@ var htmlPart = {
                 	        show : true,
                 	        feature : {
                 	            mark : {show: false},
-                	            dataView : {show: true, readOnly: true},
+                	            dataView : {show: false, readOnly: true},
                 	            magicType : {show: false, type: ['line']},
                 	            restore : {show: false},
                 	            saveAsImage : {show: true}

@@ -27,10 +27,13 @@ $(function(){
         	}
     	},
     	onLoadSuccess:function(node, data){
-    		//将树节点值赋给officeId，并且设置选中的树节点
-    		$("#officeId").val(${officeId});
-    		var node = $('#etree').tree('find', ${officeId});
-    		$('#etree').tree('select', node.target);
+    		var oi=${officeId};
+    		if(oi!=-1){
+	    		//将树节点值赋给officeId，并且设置选中的树节点
+	    		$("#officeId").val(${officeId});
+	    		var node = $('#etree').tree('find', ${officeId});
+	    		$('#etree').tree('select', node.target);
+    		}
     	}
 
     });
