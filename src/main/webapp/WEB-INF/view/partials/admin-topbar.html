@@ -31,10 +31,16 @@
             <ul class="nav navbar-nav topmenu">
                 <%for(menu in session.menuTree){ %>
                 <li class="dropdown">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        ${menu.name}
-                        <i class="icon-arrow"></i>
-                    </a>
+                    <%if(menu.children.~size>0){%>
+	                    <a data-toggle="dropdown" class="dropdown-toggle"  href="#">
+	                        ${menu.name}
+	                        <i class="icon-arrow"></i>
+	                    </a>
+                    <%}else{%>
+                    	<a  href="${menu.href}">
+	                        ${menu.name}
+	                    </a>
+                    <%}%>
                     <%if(menu.children.~size > 0){%>
                     <ul class="dropdown-menu" >
                         <%for(secMenu in menu.children){ %>
@@ -44,7 +50,6 @@
                         <%}%>
                     </ul>
                     <%}%>
-
                 </li>
                 <%}%>
             </ul>

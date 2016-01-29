@@ -149,7 +149,7 @@
 		<include refid="menuColumns"/>
 		from sys_role sr
 		inner join sys_role_menu srm on sr.id = srm.role_id and sr.id=1
-		inner join sys_menu a on srm.menu_id = a.id
+		inner join sys_menu a on srm.menu_id = a.id and a.del_flag=0
 		LEFT JOIN sys_menu p ON p.id = a.parent_id
 		ORDER BY a.sort
 	</select>
@@ -159,7 +159,7 @@
 		<include refid="menuColumns"/>
 		from sys_role sr
 		inner join sys_role_menu srm on sr.id = srm.role_id and sr.id != 1
-		inner join sys_menu a on srm.menu_id = a.id
+		inner join sys_menu a on srm.menu_id = a.id and a.del_flag=0
 		LEFT JOIN sys_menu p ON p.id = a.parent_id
 		ORDER BY a.sort
 	</select>
