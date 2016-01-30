@@ -46,7 +46,7 @@
 			success : function(obj) {
 				$(obj.business).each(function(i,e){
 					$('#' + treeNode.tId).prepend(
-							'<a onclick="showBusiness('+e.id+')" style="position:absolute;left:835px;" class="gcode">'
+							'<a onclick="showBusiness('+e.id+')" style="position:absolute;left:835px;color:blue;" class="gcode">'
 									+ e.name + '</a>');
 				});
 			}

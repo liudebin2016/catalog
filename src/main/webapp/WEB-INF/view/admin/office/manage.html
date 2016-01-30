@@ -27,7 +27,11 @@
 			selectedMulti : false
 		},
 		data : {simpleData : {enable : true}},
-		edit : {enable : true},
+		edit : {
+			enable : true,
+			renameTitle : '编辑',
+			removeTitle: "删除"
+		},
 		callback : {
 			beforeDrop : beforeDrop,
 			onClick : onClick,
@@ -74,7 +78,7 @@
 			dataType : 'json',
 			success : function(obj) {
 				$('#' + treeNode.tId).prepend(
-						'<span style="position:absolute;left:835px;" class="gcode">'
+						'<span style="position:absolute;left:835px;color:blue;" class="gcode">'
 								+ (obj.data =='' ? '--' : (obj.data.typeValue =='' ? '--' : obj.data.typeValue))+ '</span>');
 			}
 		});

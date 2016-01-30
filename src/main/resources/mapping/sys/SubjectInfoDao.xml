@@ -19,6 +19,7 @@
     	id, name, parent_id, parent_name, descr, share_region, share_mode, status
     from 
     	subject_info
+    order by create_date desc
   </select>
   <!-- 根据Id得到主题列表 -->
   <select id="get" parameterType="java.lang.Integer" resultMap="CatalogTreeRm">
