@@ -237,7 +237,7 @@ public class BusinessContoller extends BaseController {
 			rsc.setId(Integer.valueOf(id));
 		}
 		//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = businessService.findListCount(rsc);
@@ -259,7 +259,7 @@ public class BusinessContoller extends BaseController {
 			//把总记录和当前记录写到前台
 			Map<String,Object> sqlMap=new HashMap<String,Object>();
 			//求得开始记录与结束记录
-			int start = (page-1)*rows;
+			int start = (page-1)*rows+1;
 			int end = page * rows;
 			sqlMap.put("start", start);
 			sqlMap.put("end", end);
@@ -282,7 +282,7 @@ public class BusinessContoller extends BaseController {
 			//把总记录和当前记录写到前台
 			Map<String,Object> sqlMap=new HashMap<String,Object>();
 			//求得开始记录与结束记录
-			int start = (page-1)*rows;
+			int start = (page-1)*rows+1;
 			int end = page * rows;
 			sqlMap.put("start", ""+start);
 			sqlMap.put("end", ""+end);

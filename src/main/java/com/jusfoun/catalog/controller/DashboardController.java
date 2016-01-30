@@ -112,7 +112,7 @@ public class DashboardController extends BaseController{
     	String name=request.getParameter("name");
     	String officeId=StringUtils.trim(request.getParameter("officeId"));
     	//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		Job job=new Job();
 		job.setName(name);
@@ -132,7 +132,7 @@ public class DashboardController extends BaseController{
     @RequestMapping(value = "/srh/bizDg")
     public String srhBizDg(int page,int rows,HttpServletRequest request){
     	//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		Business biz=new Business();
 		String officeId=StringUtils.trim(request.getParameter("officeId"));
@@ -154,7 +154,7 @@ public class DashboardController extends BaseController{
     public String srhRscDg(int page,int rows,HttpServletRequest request){
     	String officeId=StringUtils.trim(request.getParameter("officeId"));
     	//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		ResourceInfo rsc=new ResourceInfo();
 		if(StringUtils.isEmpty(officeId)){
@@ -174,7 +174,7 @@ public class DashboardController extends BaseController{
     @RequestMapping(value = "/srh/subDg")
     public String srhSubDg(int page,int rows,HttpServletRequest request){
     	//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		SubjectInfo sub=new SubjectInfo();
 		sub.setName(request.getParameter("name"));

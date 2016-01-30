@@ -88,7 +88,7 @@ public class RegisterContoller extends BaseController {
 			register.setApplyFlag(status);
 		}
 		//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = registerService.findListCount(register);
@@ -120,7 +120,7 @@ public class RegisterContoller extends BaseController {
 		// 只查询待审批状态数据 
 		register.setApproveFlag(Register.STATUS_APPROVALING);
 		
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		int total = registerService.findListCount(register);
 		register.getSqlMap().put("start", ""+start);

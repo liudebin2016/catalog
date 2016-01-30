@@ -59,7 +59,7 @@ public class StatisticController extends BaseController {
 	@RequestMapping("${adminPath}/statistic/statb")
 	public  String statisticList(int page,int rows,HttpServletRequest request) throws IOException{
 		//求得开始记录与结束记录
-		int start = (page-1)*rows;
+		int start = (page-1)*rows+1;
 		int end = page * rows;
 		//把总记录和当前记录写到前台
 		int total = statisticService.findListCount();
