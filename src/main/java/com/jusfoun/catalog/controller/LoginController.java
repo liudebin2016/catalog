@@ -203,7 +203,7 @@ public class LoginController extends BaseController{
 	public ModelAndView logout() {
 		LogUtils.saveLog(ServletTool.getRequest(), "退出系统");
 		UserUtils.getSubject().logout();
-		return new ModelAndView("redirect:/");
+		return new ModelAndView("redirect:/admin/login");
 	}
 	
 	/**
@@ -244,6 +244,6 @@ public class LoginController extends BaseController{
 		if (clean){
 			loginFailMap.remove(useruame);
 		}
-		return loginFailNum >= 3;
+		return loginFailNum >= 1;
 	}
 }
