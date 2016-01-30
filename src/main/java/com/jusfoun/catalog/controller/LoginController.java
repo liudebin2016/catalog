@@ -244,6 +244,6 @@ public class LoginController extends BaseController{
 		if (clean){
 			loginFailMap.remove(useruame);
 		}
-		return loginFailNum >= 3;
+		return loginFailNum >= 1;
 	}
 }
