@@ -99,6 +99,21 @@ var jsPart = {
 	 function submit(){
 		 $('#fm').submit();
 	 }
+	 
+	 function checkTautonym(obj){
+		 if(obj.value){
+			 $.get("/admin/dict/dictList",		  
+			 	{ label: obj.value },
+			  	function(data){
+			 		if(data.total!="0"){
+				    	alert("名称已经存在，请重新输入！");
+				    	obj.focus();
+			 		}
+			  	}
+			 );
+		 }
+	 }
+	 
 </script>
 <%};%>
 
@@ -133,7 +148,7 @@ var htmlPart = {
        <div class="fitem"> 
        		<input name="id" type="hidden" class="easyui-textbox">
            <label>字典名称</label> 
-           <input name="label" class="easyui-textbox" style="width:width:300px;height:32px">
+           <input name="label" class="easyui-textbox" style="width:width:300px;height:32px" onblur="checkTautonym(this)">
        </div> 
        <div class="fitem"> 
            <label>字典编码</label> 

@@ -96,7 +96,7 @@ $(document).ready(function(){
 	$("#forType2 option[value='"+types[1]+"']").attr("selected","selected"); */
 	
 	//编辑时初始化“业务事项办理依据”
-	if($("#basis").val()==0){
+	if($("#basis").val()==0||$("#basis").val()==""){
 		$("input[name=forBasis][value='0']").attr("checked",true);
 	}else{
 		var basis=$("#basis").val().split("-");
@@ -159,7 +159,7 @@ $(document).ready(function(){
  	});
 	
 	//编辑时初始化“资源共享范围”值
-	var srVal=$("input[name='shareWith']");
+	var srVal=$("input[name='shareWith']").val();
 	if(srVal=="1"){
 		$("input[name='shareWith1']").attr("checked",true);
 	}else{
