@@ -34,7 +34,6 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		if (password == null){
 			password = "";
 		}
-		System.out.println(username +"....."+password);
 		boolean rememberMe = isRememberMe(request);
 		String host = StringTool.getRemoteAddr((HttpServletRequest)request);
 		String captcha = getCaptcha(request);
@@ -88,7 +87,7 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 		String className = e.getClass().getName(), message = "";
 		if (IncorrectCredentialsException.class.getName().equals(className)
 				|| UnknownAccountException.class.getName().equals(className)){
-			message = "用户或密码错误, 请重试.";
+			message = "用户名或密码错误, 请重试.";
 		}
 		else if (e.getMessage() != null && StringTool.startsWith(e.getMessage(), "msg:")){
 			message = StringTool.replace(e.getMessage(), "msg:", "");

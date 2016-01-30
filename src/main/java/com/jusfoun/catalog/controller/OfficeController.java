@@ -150,6 +150,19 @@ public class OfficeController extends BaseController {
     	return result;
     }
     
+    @RequestMapping(value = "${adminPath}/office/isUse", method = RequestMethod.POST)
+    @ResponseBody
+    public Object isUse(
+    		@RequestParam(name = "id", required = true) Integer id,
+    		@RequestParam(name = "status", required = true) String status) {
+    	officeService.updateOfficeStatus(id, status);
+    	Map<String,Object> result = new HashMap<String, Object>();
+    	result.put("succ", 1);
+    	result.put("msg", "更新操作成功!");
+    	LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-更新机构");
+    	return result;
+    }
+    
     @RequestMapping(value = "${adminPath}/office/catalogInfo", method = RequestMethod.POST)
     @ResponseBody
     public Object catalogInfo(

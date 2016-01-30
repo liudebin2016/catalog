@@ -85,6 +85,8 @@ var jsPart = {
 		$("#jobName").val("");
 		$("#srcOffice").val("");
 		$("#srcType").val("");
+		var ids = [-100];
+		getRscList("",ids);
 	}
 	
 	//查询
@@ -122,11 +124,7 @@ var jsPart = {
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
-		        		if(value == "" || value == null){
-		        			var ds="未注册";
-		        			return ds;
-		        		}
-		        		else if(value){
+		        		if(value){
 			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
 			        		return ds;
 		        		}else{
@@ -189,6 +187,11 @@ var jsPart = {
         		getRscList("",ids);
             }
      });
+	//下拉框change时间
+	$("#srcType").on("change",function(){
+		var ids = [-100];
+		getRscList("",ids);
+	});
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>

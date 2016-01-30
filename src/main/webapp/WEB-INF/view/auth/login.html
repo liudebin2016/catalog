@@ -71,7 +71,10 @@
             <h1>政府资源目录平台</h1>
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="" style="padding: 0px 50px;color:red;">${message!}</div>
+                    <div class="alert alert-warning" style="margin-left: 35px;margin-right: 35px;">
+                   		<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>
+                   		<span style="color:red;font-size:14px;">${message!}</span>
+                   	</div>
                     <form role="form" class="form-horizontal"  action="/admin/login" method="post">
                         <div class="form-group">
                             <span class="input-icon">
@@ -82,11 +85,12 @@
                         <div class="form-group form-actions">
                             <span class="input-icon">
                                 <input type="password" class="form-control password" name="password" placeholder="密码" value="${password!}">
-                                <!-- <i class="fa fa-lock"></i>
-                                <a class="forgot" href="#">忘记密码  </a> -->
+                                 <i class="fa fa-lock"></i>
+<!--                                <a class="forgot" href="#">忘记密码  </a> -->
                             </span>
                         </div>
-                        <!-- <div class="form-group">
+                        ${isValidateCodeLogin!}
+                        <div class="form-group">
                             <div class="col-sm-6" style="padding-left: 0px;">
                                 <span class="input-icon">
                                     <input type="text" name="validateCode" placeholder="验证码" id="form-field-3" class="form-control" value="">
@@ -100,12 +104,13 @@
                                 <a href="javascript:void(0);" style="color: #ffffff;">换一张</a>
                             </div>
                         </div>
-
+                        <!-- 
                         <div class="from-group" style="margin-left: -15px;">
                             <label for="remember" class="checkbox-inline">
                                 <input type="checkbox" class="grey remember" id="remember" name="remember">记住我
                             </label>
-                        </div> -->
+                        </div>
+                         -->
                         <div class="from-group" style="text-align: center;">
                             <button type="submit" class="btn btn-orange " style="width: 100%;">
                             	登录 <i class="fa fa-arrow-circle-right"></i>

@@ -241,6 +241,7 @@ public class UserUtils {
 					node.setName(ofe.getName());
 					node.setOpen(false);
 					node.setpId(ofe.getParentId()==null ? 0 : ofe.getParentId());
+					node.setStatus(ofe.getStatus());
 					tree.add(node);
 				}
 				putCache(CACHE_OFFICE_TREE, tree);

@@ -108,7 +108,8 @@
 			<if test="updateDate != null">
 		        update_date,
 			</if>
-	        del_flag
+	        del_flag,
+	        status
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
 			<if test="parent != null and parent.id != null" >
@@ -132,6 +133,7 @@
 			<if test="updateDate != null" >
 			  #{updateDate,jdbcType=TIMESTAMP},
 			</if>
+			0,
 			0
         </trim>
     </insert>
@@ -162,6 +164,9 @@
 	        </if>
         	<if test="delFlag != null" >
 	          del_flag = #{delFlag},
+	        </if>
+        	<if test="status != null" >
+	          status = #{status},
 	        </if>
 	    </set>
         WHERE id = #{id}

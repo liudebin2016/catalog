@@ -38,10 +38,15 @@ function resetSrc(){
 	$('#beginDate').combo('setValue','');
 	$('#endDate').combo('setText','');
 	$('#endDate').combo('setValue','');
+	getRscList();
 }
 
 //查询
-function getRscList(){
+function getRscList(pageNumber,pageSize){
+	if(pageNumber == null && pageSize == null){
+		pageNumber = 1;
+		pageSize = 10;
+	}
 	var userName=$.trim($("#userName").val());
 	var beginDate = $('#beginDate').datetimebox('getValue');		         // 获取日期时间输入框的值
 	var endDate = $('#endDate').datetimebox('getValue');
@@ -56,7 +61,8 @@ function getRscList(){
 	    pagination:true,
 	    checkbox:true,
 	    method:"get",
-	    pageNumber:1,
+	    pageSize:pageSize,
+	    pageNumber:pageNumber,
 	    rownumbers:true,
 	    columns:[[ 
 			{field:'ck',title:'',width:0,checkbox:false},   
@@ -80,6 +86,16 @@ function getRscList(){
          }
 	    }
 	}); 
+	//选择一页出现多少行时返回第一行
+	var pager=$("#dg").datagrid("getPager");
+	pager.pagination({
+	    onSelectPage:function(pageNumber,pageSize){
+	    	getRscList(pageNumber,pageSize);
+	    },
+	    onChangePageSize:function(pageSize){      
+	    	getRscList(1,pageSize);
+	    }
+	});
 }
 $(document).ready(function(){
 	getRscList();
@@ -90,6 +106,7 @@ $('#userName').bind('keypress',function(event){
         	getRscList();
         }
  });
+ 
 </script>
 
 <%};%>
