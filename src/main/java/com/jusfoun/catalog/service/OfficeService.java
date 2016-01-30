@@ -218,4 +218,18 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		List<ETreeNode> last=getChildren(etnList);
 		return last;
 	}
+
+	/**更改机构状态
+	 * @param id
+	 * @param status
+	 */
+	public void updateOfficeStatus(Integer id, String status) {
+		Office office = new Office();
+		office.setId(id);
+		office.setStatus(status);
+		dao.update(office);
+		// remove cache
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_TREE);
+	}
 }

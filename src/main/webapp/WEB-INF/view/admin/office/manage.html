@@ -23,6 +23,7 @@
 	var setting = {
 		keep: { parent: true },
 		view : {
+			addHoverDom: addHoverDom,
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
@@ -39,32 +40,58 @@
 			beforeEditName : beforeEditName
 		}
 	};
-	function beforeDrop(treeId, treeNodes, targetNode, moveType){
-		var flag = false;
-		$.ajax({
-			type : 'post',
-			async : false,
-			url : 'drag',
-			data : {
-				'id' : treeNodes[0].id,
-				'targetId' : targetNode.id,
-				'mt' : moveType
-			},
-			dataType : 'json',
-			success : function(obj) {
-				var txt = '<div class="alert alert-success">'
-					+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-					+ '删除操作成功！</div>';
-				$('#_alert').html(txt).show();
-				flag = true;
-			},
-			error : function(){
-				var txt = '<div class="alert alert-danger">'
-					+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-					+ '删除操作失败，请重试！</div>';
-				$('#_alert').html(txt).show();
-			}
+	function addHoverDom(treeId, treeNode) {
+        var sObj = $("#" + treeNode.tId + "_span");
+        if (treeNode.editNameFlag || $("#cancelBtn_"+treeNode.tId).length>0) return;
+        var addStr ="<span id='cancelBtn_" + treeNode.tId
+    			+ "' onfocus='this.blur();' style='color:blue;margin-left:10px;'>启用</span>";
+    	var status = treeNode.status;
+        if(status=='0'){
+        	addStr = "<span id='cancelBtn_" + treeNode.tId
+            	+ "' onfocus='this.blur();' style='color:blue;margin-left:10px;'>废止</span>";
+        }
+        sObj.after(addStr);
+        var btn = $("#cancelBtn_"+treeNode.tId);
+        if (btn) btn.bind("click", function(){
+        	$.post('isUse',{'id':treeNode.id,'status':(status=='0'? '1' : '0')},function(obj){
+        		if(obj.succ == 1){
+        			window.location.href = "manage";
+				}
+			}, 'json');
+			return false;
 		});
+	};
+	function removeHoverDom(treeId, treeNode) {
+		$("#cancelBtn_" + treeNode.tId).unbind().remove();
+		$('#' + treeNode.tId).children('.gcode').remove();
+	};
+	function beforeDrop(treeId, treeNodes, targetNode, moveType) {
+		var flag = false;
+		$
+				.ajax({
+					type : 'post',
+					async : false,
+					url : 'drag',
+					data : {
+						'id' : treeNodes[0].id,
+						'targetId' : targetNode.id,
+						'mt' : moveType
+					},
+					dataType : 'json',
+					success : function(obj) {
+						var txt = '<div class="alert alert-success">'
+								+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+								+ '删除操作成功！</div>';
+						$('#_alert').html(txt).show();
+						flag = true;
+					},
+					error : function() {
+						var txt = '<div class="alert alert-danger">'
+								+ '<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+								+ '删除操作失败，请重试！</div>';
+						$('#_alert').html(txt).show();
+					}
+				});
 		return flag;
 	}
 	function onClick(event, treeId, treeNode) {
@@ -79,13 +106,13 @@
 			success : function(obj) {
 				$('#' + treeNode.tId).prepend(
 						'<span style="position:absolute;left:835px;color:blue;" class="gcode">'
-								+ (obj.data =='' ? '--' : (obj.data.typeValue =='' ? '--' : obj.data.typeValue))+ '</span>');
+								+ (obj.data == '' ? '--'
+										: (obj.data.typeValue == '' ? '--'
+												: obj.data.typeValue))
+								+ '</span>');
 			}
 		});
 		return true;
-	};
-	function removeHoverDom(treeId, treeNode) {
-		$('#' + treeNode.tId).children('.gcode').remove();
 	};
 	function beforeRemove(treeId, treeNode) {
 		var flag = false;
@@ -140,7 +167,6 @@
 		}
 		return false;
 	}
-	
 </script>
 <% var cssPart = { %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
@@ -230,7 +256,8 @@
 					treeObj.updateNode(selectedNode);
 					$('#'+selectedNode.tId).children('.gcode').html($('#areaCode').val());
 				} else{
-					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+// 					treeObj.reAsyncChildNodes(selectedNode, "refresh");
+					window.location.href = "manage";
 				}
 				$('#addArea').modal('hide');
 			}
