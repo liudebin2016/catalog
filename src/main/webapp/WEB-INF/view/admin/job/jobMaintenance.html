@@ -94,7 +94,7 @@ var jsPart = {
 		        		var s="";
 		        		var b="";
 		        		var c=""
-		        		if(row.jobStatus == 0){
+		        		if(row.jobStatus == null){
 		        			s = '<a href="/admin/job/edit?type=update&id='+row.id+'">编辑</a> ';
 		        		}else{
 		        			c = '<a href="/admin/job/edit?type=view&id='+row.id+'">查看</a>';
