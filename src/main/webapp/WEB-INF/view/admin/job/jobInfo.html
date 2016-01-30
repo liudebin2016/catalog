@@ -122,7 +122,11 @@ var jsPart = {
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
-		        		if(value){
+		        		if(value == "" || value == null){
+		        			var ds="未注册";
+		        			return ds;
+		        		}
+		        		else if(value){
 			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
 			        		return ds;
 		        		}else{

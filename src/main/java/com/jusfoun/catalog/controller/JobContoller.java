@@ -309,11 +309,18 @@ public class JobContoller extends BaseController {
 	 */
 	@RequestMapping(value = "${adminPath}/job/logOff", method = RequestMethod.POST)
 	@ResponseBody
-	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){
+	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){//cancel
 		String ids = request.getParameter("ids");
 		String delFlag="fail";
-		if(ids != null){
+		/*if(ids != null){
 			int temp = jobService.jobLogOff(ids);
+			delFlag="success";
+		}*/
+		String[] row = ids.split(",");
+		if(row.length>0){
+			for(int i=0;i<row.length;i++){
+				registerService.cancel(Integer.parseInt(row[i]), Register.TYPE_JOB);
+			}
 			delFlag="success";
 		}
 		return delFlag;
