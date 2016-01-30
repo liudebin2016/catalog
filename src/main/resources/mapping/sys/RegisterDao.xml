@@ -120,7 +120,7 @@
 	    from register a
 			<trim prefix="WHERE" prefixOverrides="AND|OR">
 				<if test="applyName != null and applyName != '' ">
-					a.apply_name like CONCAT('%', #{applyName}, '%')
+					a.apply_name like '%'||#{applyName}||'%'
 				</if>
 				<if test="applyType != null ">
 					and a.apply_type = #{applyType}
