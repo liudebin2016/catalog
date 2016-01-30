@@ -55,7 +55,7 @@ var jsPart = {
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
 		        		var obj=JSON.stringify(row);
-		        		var s = "<a onclick='sf("+obj+");'>编辑</a> ";
+		        		var s = "<a href='javascript:void(0);' onclick='sf("+obj+");'>编辑</a> ";
 		        		var d=" &nbsp;&nbsp;&nbsp;&nbsp;";
 		        		var f = "<a href='/admin/dict/subList.do?id="+row.id+"&label="+row.label+"&value="+row.value+"&description="+row.description+"'>字典项维护</a> ";
 	                    return s + d + f;
@@ -143,22 +143,22 @@ var htmlPart = {
   <!-- 字典Datagrid -->
   <table id="dict"></table>
   
-  <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
+  <div id="dlg" class="easyui-dialog" style="width: 450px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
        <form id="fm" method="post" method="post" action="/admin/dict/createDict.do"> 
        <div class="fitem"> 
-       		<input name="id" type="hidden" class="easyui-textbox">
-           <label>字典名称</label> 
-           <input name="label" class="easyui-textbox" style="width:width:300px;height:32px" onblur="checkTautonym(this)">
+           <label style="width: 48px;">字典名称</label> 
+       		<input name="id" type="hidden">
+           <input name="label"  style="width:width:300px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
        </div> 
-       <div class="fitem"> 
-           <label>字典编码</label> 
-           <input name="value" class="easyui-textbox" style="width:width:300px;height:32px">
+       <div class="fitem" style="margin-top: 10px;"> 
+           <label style="width: 48px;">字典编码</label> 
+           <input name="value"  style="width:width:300px;height:32px;border: 1px solid beige;">
        </div> 
-       <div class="fitem"> 
-           <label>备注</label> 
-           <input name="description" class="easyui-textbox" data-options="multiline:true" value="" style="width:300px;height:60px"> 
+       <div class="fitem" style="margin-top: 10px;"> 
+           <label style="width: 48px;">备注</label> 
+           <textarea name="description"  style="width:300px;height:60px;border: 1px solid beige;"></textarea> 
        </div> 
-       <div>
+       <div style="margin-top: 10px;">
 			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
 		</div>
        </form> 

@@ -71,7 +71,7 @@
 		        <if test="description != null and description != ''">
 		            AND description LIKE '%'||#{description}||'%'
 		        </if>
-		        ORDER BY type, sort, update_date DESC
+		        ORDER BY label
 		     ) tt
 		   WHERE <![CDATA[ROWNUM <= ${sqlMap.end}]]>
 		 ) ta  
