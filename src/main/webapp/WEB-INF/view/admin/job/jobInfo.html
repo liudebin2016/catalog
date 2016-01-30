@@ -185,6 +185,11 @@ var jsPart = {
         		getRscList("",ids);
             }
      });
+	//下拉框change时间
+	$("#srcType").on("change",function(){
+		var ids = [-100];
+		getRscList("",ids);
+	});
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>
