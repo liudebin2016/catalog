@@ -137,7 +137,7 @@ public class DashboardController extends BaseController{
 		int end = page * rows;
 		Business biz=new Business();
 		String officeId=StringUtils.trim(request.getParameter("officeId"));
-		if(StringUtils.isEmpty(officeId)){
+		if(StringUtils.isNotEmpty(officeId)){
 			biz.setChargeOfficeId(Long.valueOf(officeId));
 		}
 		biz.setName(request.getParameter("name"));
