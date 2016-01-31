@@ -39,6 +39,18 @@ function checkVal(){
 	}else{
 		$("#workload").val($(":radio[name='forWorkload']:checked").val()+"-"+$("#forWorkload2").val());
 	}
+	
+	var chargeOfficeId=$('#chargeOfficeId');
+	if(chargeOfficeId){
+		validNum(chargeOfficeId);
+		$('#chargeOfficeId').focus();
+	}
+	var implOfficeId=$('#implOfficeId');
+	if(implOfficeId){
+		validNum(implOfficeId);
+		$('#implOfficeId').focus();
+	}
+	
 	//设置业务事项办理涉及的其他相关单位
 	if($(":radio[name='forRelateOffice']:checked").val()==0){
 		$("#relateOffice").val($(":radio[name='forRelateOffice']:checked").val());
@@ -242,6 +254,17 @@ function addProduceData(){
 	$('#addProduceData').append(sdf)
 }
 
+function validNum(obj){
+	var val=$(obj).val();
+    var reg = new RegExp("^[0-9]*$");
+    if($.trim(val)){
+		if(!reg.test(val)){  
+		    alert("请输入数字!");  
+		}
+    }
+    $(obj).val("");
+    $(obj).focus();
+}
 </script>
 
 <%};%>
@@ -359,12 +382,12 @@ var htmlPart = {
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项主管单位</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="" value='${business==null?"":business.chargeOfficeId}'>
+      <input id="chargeOfficeId" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="" value='${business==null?"":business.chargeOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项实施单位</label>
-      <input class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="" value='${business==null?"":business.implOfficeId}'>
+      <input id="implOfficeId" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="" value='${business==null?"":business.implOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">

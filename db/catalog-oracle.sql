@@ -202,6 +202,22 @@ CREATE TABLE "ORACLE"."RESOURCE_INFO" (
 "SUBJECT_ID" NUMBER(10) NULL 
 );
 
+
+--表序列
+create sequence resource_info_seq
+minvalue 1
+maxvalue 999999999999999999999999999
+start with 1
+increment by 1
+cache 20;
+-- ----------------------------
+-- Triggers structure for table RESOURCE_INFO
+-- ----------------------------
+CREATE OR REPLACE TRIGGER "ORACLE"."RESOURCE_INFO_TRI" BEFORE INSERT ON "ORACLE"."RESOURCE_INFO" REFERENCING OLD AS "OLD" NEW AS "NEW" FOR EACH ROW ENABLE
+BEGIN
+   SELECT resource_info_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
 -- ----------------------------
 -- Records of RESOURCE_INFO
 -- ----------------------------
