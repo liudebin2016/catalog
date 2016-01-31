@@ -142,7 +142,10 @@ var htmlPart = {
   
   <!-- 字典Datagrid -->
   <table id="dict"></table>
-  
+  <div class="mb20 clearfix"></div>
+  <div class="btn-box fr mb20">
+  	<button class="btns-gray fl"  onclick="history.go(-1)">返回</button>
+  </div>
   <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
        <form id="fm" method="post" method="post" action="/admin/dict/createDict.do"> 
        <div class="fitem" style="margin-bottom: 10px;"> 
