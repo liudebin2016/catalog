@@ -23,7 +23,10 @@
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
-		data : {simpleData : {enable : true}},
+		data : {
+			simpleData : {enable : true},
+			key : {title: "fullName"}
+		},
 		edit : {enable : false},
 		callback : {
 			beforeDrag : beforeDrag,
@@ -48,7 +51,7 @@
 			success : function(obj) {
 				$(obj.jobs).each(function(i,e){
 					$('#' + treeNode.tId).prepend(
-							'<span style="position:absolute;left:835px;color:blue;" class="gcode">'
+							'<span style="position:absolute;left:925px;color:blue;" class="gcode">'
 									+ e.name + '</span>');
 				});
 			}
@@ -94,7 +97,7 @@ var htmlPart = {
       <i class="glyphicon glyphicon-search search-ico "></i> </div>
   </div>
   <div class="ml-wrap mt20 mb30">
-    <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>岗位</span></div>
+    <div class="top-title"><span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span style="margin-left: 100px;">岗位</span></div>
     <!-- 组织机构树 start -->
 	<div class="zTreeDemoBackground left">
 		<ul id="officeTree" class="ztree"></ul>

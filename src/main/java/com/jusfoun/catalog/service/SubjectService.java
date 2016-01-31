@@ -43,7 +43,8 @@ public class SubjectService extends CrudService<SubjectInfoDao, SubjectInfo>{
 			for(SubjectInfo si:siList){
 				CatalogTree ct=new CatalogTree();
 				ct.setId(si.getId());
-				ct.setName(si.getName());
+				ct.setFullName(si.getName());
+				ct.setName(si.getName().length()>10? (si.getName().substring(0, 10)+"...") : si.getName());
 				ct.setOpen(false);
 				ct.setStatus(si.getStatus().toString());
 				if(si.getParentId()!=null){

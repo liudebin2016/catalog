@@ -238,7 +238,8 @@ public class UserUtils {
 				for(Office ofe : officeList){
 					CatalogTree node = new CatalogTree();
 					node.setId(ofe.getId());
-					node.setName(ofe.getName());
+					node.setFullName(ofe.getName());
+					node.setName(ofe.getName().length()>10? (ofe.getName().substring(0, 10)+"...") : ofe.getName() );
 					node.setOpen(false);
 					node.setpId(ofe.getParentId()==null ? 0 : ofe.getParentId());
 					node.setStatus(ofe.getStatus());

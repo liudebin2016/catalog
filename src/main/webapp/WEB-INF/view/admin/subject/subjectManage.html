@@ -42,7 +42,10 @@ var jsPart = {
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
-		data : {simpleData : {enable : true}},
+		data : {
+			simpleData : {enable : true},
+			key : {title: "fullName"}
+		},
 		edit : {enable : true},
 		callback : {
 			onClick : onClick
@@ -50,7 +53,7 @@ var jsPart = {
 	};
 	function onClick(event, treeId, treeNode) {
 		jq1_4('#' + treeNode.tId).prepend(
-				'<span style="position:absolute;left:555px;" class="gcode">'
+				'<span style="position:absolute;left:595px;" class="gcode">'
 						+ treeNode.status.replace("1","使用").replace("2","草案").replace("3","废止").replace("4","标准") + '</span>');
 		jq1_4("#subsub").attr("href","/admin/subject/action.do?type=create&subjectId="+treeNode.id);
 		return true;
@@ -78,7 +81,7 @@ var htmlPart = {
   </div>
   <div class="ml-wrap mt20 mb30">
 		<div class="top-title">
-			<span>主题名称</span><span>子主题名称</span><span>主题状态</span>
+			<span>主题名称</span><span>子主题名称</span><span style="margin-left: 50px;">主题状态</span>
 		</div>
   		<!-- 组织机构树 start -->
 		<div class="zTreeDemoBackground left">

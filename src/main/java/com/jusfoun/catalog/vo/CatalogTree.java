@@ -19,6 +19,7 @@ public class CatalogTree implements Serializable {
 	private boolean isParent;//是否是父目录
 	private boolean open;//是否打开
 	private String status;//节点状态
+	private String fullName;// 节点提示信息
 	public int getId() {
 		return id;
 	}
@@ -54,5 +55,11 @@ public class CatalogTree implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

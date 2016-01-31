@@ -21,13 +21,16 @@
 		$('#officeSubmit').on('click', officeSubmit);
 	});
 	var setting = {
-		keep: { parent: true },
+		keep: { parent: true},
 		view : {
 			addHoverDom: addHoverDom,
 			removeHoverDom : removeHoverDom,
 			selectedMulti : false
 		},
-		data : {simpleData : {enable : true}},
+		data : {
+			simpleData : {enable : true},
+			key : {title: "fullName"}
+		},
 		edit : {
 			enable : true,
 			renameTitle : '编辑',
@@ -67,8 +70,7 @@
 	};
 	function beforeDrop(treeId, treeNodes, targetNode, moveType) {
 		var flag = false;
-		$
-				.ajax({
+		$.ajax({
 					type : 'post',
 					async : false,
 					url : 'drag',
@@ -105,11 +107,8 @@
 			dataType : 'json',
 			success : function(obj) {
 				$('#' + treeNode.tId).prepend(
-						'<span style="position:absolute;left:835px;color:blue;" class="gcode">'
-								+ (obj.data == '' ? '--'
-										: (obj.data.typeValue == '' ? '--'
-												: obj.data.typeValue))
-								+ '</span>');
+						'<span style="position:absolute;left:955px;color:blue;" class="gcode" title="'+obj.data.typeValue+'">'
+								+ (obj.data.typeValue.length>12 ? (obj.data.typeValue.substring(0,12)+'...') : obj.data.typeValue)+ '</span>');
 			}
 		});
 		return true;
@@ -316,7 +315,7 @@
 	</div>
 	<div class="ml-wrap mt20 mb30">
 		<div class="top-title">
-			<span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span>国际代码</span>
+			<span>一级域</span><span>二级域</span><span>一级部门</span><span>二级部门</span><span style="margin-left: 130px;">国际代码</span>
 		</div>
 		<!-- 组织机构树 start -->
 		<div class="zTreeDemoBackground left">

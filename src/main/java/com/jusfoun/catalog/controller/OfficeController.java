@@ -171,6 +171,13 @@ public class OfficeController extends BaseController {
     	catalog.setOfficeId(officeId);
     	catalog.setType(CatalogInfo.TYPE_OFFICE);
     	CatalogInfo c = catalogInfoService.get(catalog);
+    	if(null == c){
+    		c = catalog;
+    		c.setTypeValue("--");
+    	}
+    	if(StringUtils.isEmpty(c.getTypeValue())){
+    		c.setTypeValue("--");
+    	}
     	Map<String,Object> result = new HashMap<String, Object>();
     	result.put("data", c);
     	return result;
