@@ -264,18 +264,20 @@
 	}
 	function officeSubmit(){
 		if($.trim($('#officeName').val()) == ''){
-			$('<div class="alert alert-warning officeAlert">'
-					+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-					+'请输入部门名称！</div>').insertBefore($('#officeBtn'));
+			if($('.officeAlert').length==0){
+				$('<div class="alert alert-warning officeAlert">'
+						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+						+'请输入部门名称！</div>').insertBefore($('#officeBtn'));
+			}
 			return;
 		}
 		var _t = $('#office_type').val();
 		$.post(_t==1?'update':'save',$('#officeForm').serialize(),function(obj){
 			if(obj.succ==1){
-				$('#_alert').html('<div class="alert alert-success officeAlert">'
-						+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
-						+obj.msg
-						+'</div>').show();
+					$('#_alert').html('<div class="alert alert-success officeAlert">'
+							+'<button type="button" class="close" data-dismiss="alert"  aria-hidden="true">&times;</button>'
+							+obj.msg
+							+'</div>').show();
 				var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
 				if(treeObj == null)
 					return;
@@ -379,7 +381,7 @@
 					<input type="hidden" id="office_type"/>
 					<div class="form-group">
 						<label for="officeName">部门名称*</label> 
-						<input type="text"  name="name" class="form-control" id="officeName" placeholder="请输入域名称">
+						<input type="text"  name="name" class="form-control" id="officeName" placeholder="请输入部门名称">
 					</div>
 					<div class="form-group">
 						<label for="officeCode">国际代码</label>

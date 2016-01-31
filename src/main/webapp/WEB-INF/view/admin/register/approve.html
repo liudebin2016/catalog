@@ -93,9 +93,9 @@ var jsPart = {
 		        },
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
-	                    var s = '<a href="javascript:void(0);" onclick="apporve('+row.id+','+row.applyType+',0);">通过</a> ';
+	                    var s = '<a href="javascript:void(0);" onclick="apporve('+row.applyId+','+row.applyType+',0);">通过</a> ';
 	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	                    var c = '<a href="javascript:void(0);" onclick="apporve('+row.id+','+row.applyType+',1);">不通过</a>';
+	                    var c = '<a href="javascript:void(0);" onclick="apporve('+row.applyId+','+row.applyType+',1);">不通过</a>';
 	                    return s+b+c;
 		            }
 		        }
