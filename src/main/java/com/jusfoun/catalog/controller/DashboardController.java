@@ -116,10 +116,11 @@ public class DashboardController extends BaseController{
 		int end = page * rows;
 		Job job=new Job();
 		job.setName(name);
-		if(StringUtils.isEmpty(officeId)){
+		if(StringUtils.isNotEmpty(officeId)){
 			job.setOfficeId(Integer.valueOf(officeId));
 		}
-		job.getSqlMap().put("page", "limit "+start+","+end);
+		job.getSqlMap().put("start", ""+start);
+		job.getSqlMap().put("end", ""+end);
 		int jobCount=jobService.findSrhListCount(job);
     	List<Job> jobList=jobService.findSrhList(job);
     	String json = JsonMapper.toJsonString(jobList);
@@ -140,7 +141,8 @@ public class DashboardController extends BaseController{
 			biz.setChargeOfficeId(Long.valueOf(officeId));
 		}
 		biz.setName(request.getParameter("name"));
-		biz.getSqlMap().put("page", "limit "+start+","+end);
+		biz.getSqlMap().put("start", ""+start);
+		biz.getSqlMap().put("end", ""+end);
     	int bizCount=businessService.findSrhListCount(biz);
     	List<Business> bizList=businessService.findSrhList(biz);
     	String json = JsonMapper.toJsonString(bizList);
@@ -157,11 +159,12 @@ public class DashboardController extends BaseController{
 		int start = (page-1)*rows+1;
 		int end = page * rows;
 		ResourceInfo rsc=new ResourceInfo();
-		if(StringUtils.isEmpty(officeId)){
+		if(StringUtils.isNotEmpty(officeId)){
 			rsc.setResponseParty(officeId);
 		}
 		rsc.setName(request.getParameter("name"));
-		rsc.getSqlMap().put("page", "limit "+start+","+end);
+		rsc.getSqlMap().put("start", ""+start);
+		rsc.getSqlMap().put("end", ""+end);
     	List<ResourceInfo> rscList=resourceService.findSrhList(rsc);
     	int rscCount=resourceService.findSrhListCount(rsc);
     	String json = JsonMapper.toJsonString(rscList);
@@ -178,7 +181,8 @@ public class DashboardController extends BaseController{
 		int end = page * rows;
 		SubjectInfo sub=new SubjectInfo();
 		sub.setName(request.getParameter("name"));
-		sub.getSqlMap().put("page", "limit "+start+","+end);
+		sub.getSqlMap().put("start", ""+start);
+		sub.getSqlMap().put("end", ""+end);
     	List<ResourceInfo> rscList=subjectService.findSrhList(sub);
     	int rscCount=subjectService.findSrhListCount(sub);
     	String json = JsonMapper.toJsonString(rscList);

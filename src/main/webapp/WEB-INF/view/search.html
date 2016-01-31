@@ -86,8 +86,8 @@ function jobDg(name){
 	    method:"get",
 	    columns:[[    
 			{field:'id',title:'id',width:0,hidden:true}, 
-	        {field:'name',title:'岗位名称/职位',width:150,align:"center"},    
-	        {field:'duty',title:'岗位职责',width:150,align:"center"},
+	        {field:'name',title:'岗位名称/职位',width:100,align:"center"},    
+	        {field:'duty',title:'岗位职责',width:100,align:"center"},
 	        {field:'type',title:'岗位属性',width:150,align:"center"},
 	        {field:'status',title:'当前状态',width:150,align:"center",
 	        	formatter: function(value,row,index){
@@ -120,9 +120,9 @@ function bizDg(name){
 	    method:"get",
 	    fitColumns:true,
 	    columns:[[    
-			{field:'id',hidden:true,width:120},
-	        {field:'name',title:'业务事项名称',width:300},    
-	        {field:'shareWith',title:'共享范围',width:300,
+			{field:'id',hidden:true},
+	        {field:'name',title:'业务事项名称',width:100},    
+	        {field:'shareWith',title:'共享范围',width:100,
 	        	formatter:function(value,row,index){
 	        		if(value){
 		        		var ds=value.replace(1,"所有人员").replace(2,"国家部委").replace(3,"市领导").replace(4,"委办局").replace(5,"委（局）内")
@@ -163,9 +163,9 @@ function rscDg(name){
 	    method:"get",
 	    fitColumns:true,
 	    columns:[[    
-			{field:'id',title:'id',width:300,hidden:true}, 
-	        {field:'name',title:'资源名称',width:300},    
-	        {field:'shareRegion',title:'共享范围',width:200,
+			{field:'id',title:'id',hidden:true}, 
+	        {field:'name',title:'资源名称',width:100},    
+	        {field:'shareRegion',title:'共享范围',width:100,
 	        	formatter:function(value,row,index){
 	        		if(value){
 		        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
@@ -208,13 +208,13 @@ function subDg(name){
 	    method:"get",
 	    columns:[[    
 			{field:'id',title:'id',hidden:true},
-	        {field:'name',title:'主题名称',width:300},
+	        {field:'name',title:'主题名称',width:200},
 	        {field:'descr',title:'主题描述',width:200}
 	    ]],
 	    onLoadSuccess:function(data){
 	    	if (data.total == 0) {
                 //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 3 })
+                $(this).datagrid('appendRow', { name: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'name', colspan: 2 })
                 //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
                 $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
             }
@@ -247,16 +247,16 @@ var htmlPart = {
 		<div class="panel-body" style="padding-bottom: 0px;font-size: 14px;width: 650px;margin-bottom: 15px;">
 			<div>
 				<div class="input-group">
-				    <input type="text" id="_ipt" name="search_value" value="${searchValue}" id="_ipt" class="form-control">
+				    <input type="text" id="_ipt" name="search_value" value="${searchValue}" id="_ipt" class="form-control" style="border-top-color: #95B8E7;">
 				    <a href="javascript:void(0);" class="input-group-btn">
-				        <button type="button" class="btn btn-green" id="_search"><i class="glyphicon glyphicon-search fl"></i>搜索 </button>
+				        <button type="button" class="btn btn-green" id="_search"><!-- <i class="glyphicon glyphicon-search fl"></i> -->搜索 </button>
 				    </a>
 				</div>
 			</div>
 		</div>
 	</form>
 	<div class="tab-content container " style="padding-left: 0px;">
-		<div id="srhTabs" class="easyui-tabs" data-options="tabWidth:112" style="width:1000px;height:500px;">
+		<div id="srhTabs" class="easyui-tabs" data-options="tabWidth:112" style="width:650px;height:500px;">
 			<div title="机构职能" style="padding:10px">
 				<%
 					if(officeList==[]){

@@ -368,12 +368,16 @@ FROM (
   	AND 
   		del_flag=0
   	<if test="name!=null and name!='' ">  
-    AND name like CONCAT('%', #{name}, '%')
+    AND name like '%'||#{name}||'%'
     </if>
   </select>
   
   <select id="findSrhList" resultType="com.jusfoun.catalog.entity.SubjectInfo">
-  	SELECT 
+  	  SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (
+    		SELECT 
   		*
   	FROM 
   		subject_info
@@ -382,10 +386,14 @@ FROM (
   	AND 
   		del_flag=0
   	<if test="name!=null and name!='' ">  
-    AND name like CONCAT('%', #{name}, '%')
+    AND name like '%'||#{name}||'%'
     </if>
     ORDER BY create_date desc
-    ${sqlMap.page}
+    	
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   
 </mapper>

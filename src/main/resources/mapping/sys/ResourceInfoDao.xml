@@ -372,7 +372,7 @@ FROM (
   	    status=2
   	    AND del_flag = 0
 	    <if test="name!=null and name!='' ">  
-	    AND name like CONCAT('%', #{name}, '%')
+	    AND name like '%'||#{name}||'%' 
 	    </if>  
 	    <if test="responseParty!=null and responseParty!='' ">  
 	    AND response_party = #{responseParty}
@@ -382,7 +382,11 @@ FROM (
   
   <!-- 分页查询列表 -->
   <select id="findSrhList" resultType="ResourceInfo">
-  	SELECT 
+  	  SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (
+    		SELECT 
   		<include refid="Base_Column_List" />
 	    ,
 	    <include refid="Blob_Column_List" />	
@@ -392,13 +396,17 @@ FROM (
   		status=2
   	    AND del_flag = 0 
 	    <if test="name!=null and name!='' ">  
-	    AND name like CONCAT('%', #{name}, '%')
+	    AND name like '%'||#{name}||'%' 
 	    </if>  
 	    <if test="responseParty!=null and responseParty!='' ">  
 	    AND response_party = #{responseParty}
 	    </if>  
 	</trim>	
 		order by r.status, r.create_date desc
-  		${sqlMap.page}
+    	
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
 </mapper>

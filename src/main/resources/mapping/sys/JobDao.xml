@@ -482,7 +482,7 @@ FROM (
   	AND 
   		del_flag=0
   	<if test="name!=null and name!='' ">  
-    AND name like CONCAT('%', #{name}, '%')
+    AND name like '%'||#{name}||'%' 
     </if>
     <if test="officeId!=null and officeId!='' ">  
     AND office_id = #{officeId}
@@ -490,22 +490,30 @@ FROM (
   </select>
   
   <select id="findSrhList" resultType="com.jusfoun.catalog.entity.Job">
-  	SELECT 
-  		*
-  	FROM 
-  		job
-  	WHERE 
-  		status=2 
-  	AND 
-  		del_flag=0
-  	<if test="name!=null and name!='' ">  
-    AND name like CONCAT('%', #{name}, '%')
-    </if>
-    <if test="officeId!=null and officeId!='' ">  
-    AND office_id = #{officeId}
-    </if>
-    ORDER BY create_date desc
-    ${sqlMap.page}
+  	  SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (
+    		SELECT 
+		  		*
+		  	FROM 
+		  		job
+		  	WHERE 
+		  		status=2 
+		  	AND 
+		  		del_flag=0
+		  	<if test="name!=null and name!='' ">  
+		    AND name like '%'||#{name}||'%'
+		    </if>
+		    <if test="officeId!=null and officeId!='' ">  
+		    AND office_id = #{officeId}
+		    </if>
+		    ORDER BY create_date desc
+    	
+     ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
   </select>
   <select id="selectBusinessIdByJobId" resultType="java.lang.String" parameterType="java.lang.String">
   	select wm_concat(business_id) from job_business where job_id=#{id}
