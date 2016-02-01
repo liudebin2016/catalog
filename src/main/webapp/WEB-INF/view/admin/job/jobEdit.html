@@ -157,7 +157,7 @@ var htmlPart = {
    <% }else{ %>
    		<form id="form" action="/admin/job/doedit" method="post">
    	<%}%>
-   			<input type="hidden" id="status" name="status" value=""/>
+   			<input type="hidden" id="status" name="status" value="${job.id==''?'':job.status}"/>
    			<input type="hidden" id="busId" name="busId" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
@@ -215,7 +215,7 @@ var htmlPart = {
 	   		<div class="btn-box fr mb20">
 	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
 	   			<%if(actionType =='create' || actionType == 'update'){%>
-	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(0)">保存</button>
+	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(3)">保存</button>
 	   				 <button class="btns-gray fl"  onclick="history.go(-1)">取消</button>
 	   			 <% }else{ %>
 	   				 <button class="btns-gray fl"  onclick="history.go(-1)">返回</button>
