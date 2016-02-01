@@ -114,6 +114,10 @@
 		return true;
 	};
 	function beforeRemove(treeId, treeNode) {
+		if(treeNode.children.length>0){
+			alert('该节点下含有子节点，暂不能做删除操作！');
+			return false;
+		}
 		var flag = false;
 		$.ajax({
 			type : 'post',
