@@ -100,10 +100,10 @@
                                 </span>
                             </div>
                             <div class="col-sm-3" style="padding-left: 0px;">
-                                <img src="/servlet/validateCodeServlet" height="34px" alt="点击刷新">
+                                <img src="/servlet/validateCodeServlet" height="34px" alt="点击刷新" id="validateCodeImg">
                             </div>
                             <div class="col-sm-3" style="padding-right: 0px;line-height:34px;text-align:center;">
-                                <a href="javascript:void(0);" style="color: #ffffff;">换一张</a>
+                                <a href="javascript:void(0);" style="color: #ffffff;" onclick="changeImg();">换一张</a>
                             </div>
                         </div>
                         <%}%>
@@ -246,6 +246,9 @@
     jQuery(document).ready(function() {
         Login.init();
     });
+    function changeImg(){
+    	$('#validateCodeImg').attr('src','/servlet/validateCodeServlet?'+new Date().getTime());
+    }
 </script>
 </body>
 </html>
