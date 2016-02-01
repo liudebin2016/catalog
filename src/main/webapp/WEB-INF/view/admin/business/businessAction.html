@@ -43,12 +43,10 @@ function checkVal(){
 	var chargeOfficeId=$('#chargeOfficeId');
 	if(chargeOfficeId){
 		validNum(chargeOfficeId);
-		$('#chargeOfficeId').focus();
 	}
 	var implOfficeId=$('#implOfficeId');
 	if(implOfficeId){
 		validNum(implOfficeId);
-		$('#implOfficeId').focus();
 	}
 	
 	//设置业务事项办理涉及的其他相关单位
@@ -260,9 +258,9 @@ function validNum(obj){
     if($.trim(val)){
 		if(!reg.test(val)){  
 		    alert("请输入数字!");  
+		    $(obj).val("");
 		}
     }
-    $(obj).val("");
     $(obj).focus();
 }
 </script>

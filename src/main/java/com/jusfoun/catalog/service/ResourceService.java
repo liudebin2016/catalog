@@ -93,7 +93,7 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 				rsc.setStatus(opType.toString());
 			}
 			dao.update(rsc);
-			registerService.apply(Integer.valueOf(str), Register.TYPE_BUSINESS);
+			registerService.apply(Integer.valueOf(str), Register.TYPE_RESOURCE);
 		}
 	}
 
