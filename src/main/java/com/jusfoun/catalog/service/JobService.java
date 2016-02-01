@@ -117,4 +117,9 @@ public class JobService extends CrudService<JobDao,Job> {
 	public String selectBusinessIdByJobId(String id) {
 		return dao.selectBusinessIdByJobId(id);
 	}
+
+	public List<Job> findJobsByOfficeId(Integer officeId) {
+		
+		return dao.findJobsByOfficeId(officeId);
+	}
 }

@@ -518,4 +518,7 @@ FROM (
   <select id="selectBusinessIdByJobId" resultType="java.lang.String" parameterType="java.lang.String">
   	select wm_concat(business_id) from job_business where job_id=#{id}
   </select>
+  <select id="findJobsByOfficeId" resultType="com.jusfoun.catalog.entity.Job" parameterType="int">
+  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag,status,office_id as officeId from job where job.office_id=#{officeId}
+  </select>
 </mapper> 

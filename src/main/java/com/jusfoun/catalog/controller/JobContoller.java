@@ -2,9 +2,11 @@ package com.jusfoun.catalog.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -332,4 +334,18 @@ public class JobContoller extends BaseController {
 		
 		return delFlag;
 	}
+	@RequestMapping(value = "${adminPath}/job/jobTree", method = RequestMethod.POST)
+	     @ResponseBody
+	 	public Object jobTree(
+	 			@RequestParam(name = "officeId", required = false) Integer officeId) {
+	 		List<Job> jobs = jobService.findJobsByOfficeId(officeId);
+	 		if (jobs != null && jobs.size() > 0) {
+	 			Map<String, Object> result = new HashMap<String, Object>();
+	 			result.put("jobs", jobs);
+	 			return result;
+	 		} else {
+	 			return Collections.EMPTY_LIST;
+	 		}
+	 	}
+	
 } 
