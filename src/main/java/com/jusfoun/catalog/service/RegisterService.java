@@ -78,10 +78,25 @@ public class RegisterService extends CrudService<RegisterDao, Register> {
 	 */
 	@Transactional(readOnly=false)
 	public void cancel(Integer cancelId, Integer cancelType) {
+		String applyName = "";
+		if(cancelType.intValue() == Register.TYPE_BUSINESS){
+			Business business = businessDao.get(cancelId);
+			applyName = business.getName();
+		}else if(cancelType.intValue() == Register.TYPE_JOB){
+			Job job = jobDao.selectById(cancelId.toString());
+			applyName = job.getName();
+		}else if(cancelType.intValue() == Register.TYPE_OFFICE){
+			Office office = officeDao.get(cancelId);
+			applyName = office.getName();
+		}else if(cancelType.intValue() == Register.TYPE_RESOURCE){
+			ResourceInfo resourceInfo = resourceInfoDao.get(cancelId);
+			applyName = resourceInfo.getName();
+		}
 		Register register = new Register();
 		register.setOffice(UserUtils.getUser().getOffice());
 		register.setApplyType(cancelType);
 		register.setApplyId(cancelId);
+		register.setApplyName(applyName);
 		register.setApplyBy(UserUtils.getUser());
 		register.setApplyDate(new Date());
 		register.setApplyFlag(Register.STATUS_CANCEL);
