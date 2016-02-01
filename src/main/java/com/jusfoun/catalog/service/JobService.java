@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.entity.Job;
@@ -76,7 +77,7 @@ public class JobService extends CrudService<JobDao,Job> {
 		for(int i=0;i<row.length;i++){
 			Job job = new Job();
 			job.setId(Integer.parseInt(row[i]));
-			job.setStatus("1");
+			job.setStatus(DataEntity.STATUS_APPLYING);
 			dao.updateById(job);
 		}
 		return 0;
@@ -88,7 +89,7 @@ public class JobService extends CrudService<JobDao,Job> {
 		for(int i=0;i<row.length;i++){
 			Job job = new Job();
 			job.setId(Integer.parseInt(row[i]));
-			job.setStatus("0");
+			job.setStatus(DataEntity.STATUS_CANCELLING);
 			dao.updateById(job);
 			index++;
 		}

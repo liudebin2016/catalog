@@ -79,7 +79,7 @@ var jsPart = {
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
 						if(value){
-			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
+			        		var ds=value.replace(3,"未注册").replace(4,"注册中").replace(5,"已注册").replace(6,"注销中").replace(7,"已注销");
 			        		return ds;
 		        		}else{
 		        			return "未知";
@@ -91,7 +91,7 @@ var jsPart = {
 		        		var s="";
 		        		var b="";
 		        		var c=""
-		        		if(row.jobStatus == 0){
+		        		if(row.jobStatus == 3){
 		        			s = '<a href="/admin/job/edit?type=update&id='+row.id+'">编辑</a> ';
 		        		}else{
 		        			c = '<a href="/admin/job/edit?type=view&id='+row.id+'">查看</a>';
@@ -127,7 +127,7 @@ var jsPart = {
 		var ids="";
 		var ishave=false;
 		for(var i=0; i<row.length; i++){
-		    if(row[i].jobStatus != 0){
+		    if(row[i].jobStatus != 3){
 		    	ishave=true;
 		    	continue;
 		    }
@@ -160,7 +160,7 @@ var jsPart = {
 		var ids="";
 		var ishave=false;
 		for(var i=0; i<row.length; i++){
-		    if(row[i].jobStatus != 2){
+		    if(row[i].jobStatus != 5){
 		    	ishave=true;
 		    	continue;
 		    }
@@ -225,12 +225,11 @@ var htmlPart = {
 	        <label>当前状态</label>
 	        <select id="srcStatus" class="form-control sels wd148 noradius" name="status">
 	       	  <option value="">-选择-</option>
-	          <option value="0">未注册</option>
-	          <option value="1">注册中</option>
-	          <option value="2">已注册</option>
-	        <!--   <option value="3">未通过</option>
-	          <option value="4">注销中</option>
-	          <option value="5">已注销</option> -->
+	          <option value="3">未注册</option>
+	          <option value="4">注册中</option>
+	          <option value="5">已注册</option>
+	          <option value="6">注销中</option>
+	          <option value="7">已注销</option>
 	        </select>
 	      </li>
 	      <li>

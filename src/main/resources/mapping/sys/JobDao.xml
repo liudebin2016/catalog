@@ -265,21 +265,23 @@
   			FROM 
   		job j
 	INNER JOIN sys_office s ON j.office_id = s.id
-	left JOIN register r ON j.id = r.apply_id
 	INNER JOIN job_business jb ON j.id = jb.job_id
 	INNER JOIN business b ON jb.business_id = b.id and j.del_flag =0 and s.del_flag=0
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
 	    <if test="name!=null and name!='' ">  
 	        j.name like #{name}
 	    </if>  
-	    <choose>
+	   <!--  <choose>
 	    	<when test="status!= 0 and status != null">
 	    		 AND r.apply_flag=#{status}  
 	    	</when>
 	    	<when test="status == 0">
 	    		 AND r.apply_flag is null  
 	    	</when>
-	    </choose>
+	    </choose> -->
+	     <if test="status!= null ">  
+	        AND j.status=#{status}  
+	    </if> 
 	</trim>	
 		 GROUP BY j.id ) a
   </select>
@@ -315,13 +317,12 @@
 FROM (
 	SELECT tt.*, ROWNUM AS rowno
     FROM (  
-  	 SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,NVL(r.apply_flag,0) as jobStatus,s.name as officeName,
+  	 SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
    		 b.id as businessId,b.name as businessName
     
     		from job j 
 	    
 	  INNER JOIN sys_office s ON j.office_id = s.id
-	  left JOIN register r ON j.id = r.apply_id
 	  INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(to_char(b.name)) as name from job j   
 	  INNER JOIN job_business jb ON j.id = jb.job_id
 	  INNER JOIN business b ON jb.business_id = b.id 
@@ -330,17 +331,17 @@ FROM (
 	    <if test="name!=null and name!='' ">  
 	        j.name like #{name}
 	    </if>  
-	    <choose>
+	    <!--<choose>
 	    	<when test="status!= 0 and status != null">
 	    		 AND r.apply_flag=#{status}  
 	    	</when>
 	    	<when test="status == 0">
 	    		 AND r.apply_flag is null  
 	    	</when>
-	    </choose>
-	   <!--  <if test="status!= null ">  
-	        AND r.apply_flag=#{status}  
-	    </if>   -->
+	    </choose>-->
+	     <if test="status!= null ">  
+	        AND j.status=#{status}  
+	    </if>   
 	</trim>	
 		 
 		 ORDER BY j.status ASC,j.update_date desc
@@ -355,13 +356,12 @@ FROM (
 FROM (
 	SELECT tt.*, ROWNUM AS rowno
     FROM (  
-    	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,NVL(r.apply_flag,0) as jobStatus,s.name as officeName,
+    	SELECT j.id,j.name as jobName,j.duty as jobDuty,j.type as jobType,j.status as jobStatus,s.name as officeName,
    		 b.id as businessId,b.name as businessName
     
     		from job j 
 	    
 	  INNER JOIN sys_office s ON j.office_id = s.id
-	  left JOIN register r ON j.id = r.apply_id
 	  INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(to_char(b.name)) as name from job j   
 	  INNER JOIN job_business jb ON j.id = jb.job_id
 	  INNER JOIN business b ON jb.business_id = b.id 

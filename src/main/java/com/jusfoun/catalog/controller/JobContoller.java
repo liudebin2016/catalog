@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Job;
 import com.jusfoun.catalog.entity.Register;
@@ -85,7 +86,7 @@ public class JobContoller extends BaseController {
 		job.setName(name);
 		job.setDuty(duty);
 		job.setType(type);
-		job.setStatus(status);
+		job.setStatus(DataEntity.STATUS_UNAPPLY);
 		job.setCreateBy(UserUtils.getUser());
 		job.setCreateDate(createDate);
 		job.setDelFlag("0");
@@ -287,18 +288,20 @@ public class JobContoller extends BaseController {
 	public String jobApplyFor(HttpServletRequest request, HttpServletResponse response){
 		String ids = request.getParameter("ids");//registerService
 		String delFlag="fail";
-		/*if(ids != null){
+		boolean flag=false;
+		if(ids != null){
 			int temp = jobService.jobApplyFor(ids);
-			delFlag="success";
-		}*/
-		String[] row = ids.split(",");
-		if(row.length>0){
-			for(int i=0;i<row.length;i++){
-				registerService.apply(Integer.parseInt(row[i]), Register.TYPE_JOB);
-			}
-			delFlag="success";
+			flag=true;
 		}
-		
+		if(true){
+			String[] row = ids.split(",");
+			if(row.length>0){
+				for(int i=0;i<row.length;i++){
+					registerService.apply(Integer.parseInt(row[i]), Register.TYPE_JOB);
+				}
+				delFlag="success";
+			}
+		}
 		return delFlag;
 	}
 	/**
@@ -311,18 +314,22 @@ public class JobContoller extends BaseController {
 	@ResponseBody
 	public String jobLogOff(HttpServletRequest request, HttpServletResponse response){//cancel
 		String ids = request.getParameter("ids");
+		boolean flag=false;
 		String delFlag="fail";
-		/*if(ids != null){
+		if(ids != null){
 			int temp = jobService.jobLogOff(ids);
-			delFlag="success";
-		}*/
-		String[] row = ids.split(",");
-		if(row.length>0){
-			for(int i=0;i<row.length;i++){
-				registerService.cancel(Integer.parseInt(row[i]), Register.TYPE_JOB);
-			}
-			delFlag="success";
+			flag=true;
 		}
+		if(true){
+			String[] row = ids.split(",");
+			if(row.length>0){
+				for(int i=0;i<row.length;i++){
+					registerService.cancel(Integer.parseInt(row[i]), Register.TYPE_JOB);
+				}
+				delFlag="success";
+			}
+		}
+		
 		return delFlag;
 	}
 } 

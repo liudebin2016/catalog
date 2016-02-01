@@ -125,7 +125,7 @@ var jsPart = {
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
 		        	formatter: function(value,row,index){
 		        		if(value){
-			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册");
+		        			var ds=value.replace(3,"未注册").replace(4,"注册中").replace(5,"已注册").replace(6,"注销中").replace(7,"已注销");
 			        		return ds;
 		        		}else{
 		        			return "未知";
