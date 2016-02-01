@@ -49,10 +49,6 @@ public class Register extends DataEntity<Register> {
 	 * 资源信息
 	 */
 	public static final int TYPE_RESOURCE = 4;
-	/**
-	 * 主题信息
-	 */
-	public static final int TYPE_SUBJECT =5;
 	
 	private Office office; // 归属部门
 	private Integer applyType; // 信息类型

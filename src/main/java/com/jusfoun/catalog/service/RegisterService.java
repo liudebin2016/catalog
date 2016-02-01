@@ -20,7 +20,6 @@ import com.jusfoun.catalog.entity.Job;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.entity.Register;
 import com.jusfoun.catalog.entity.ResourceInfo;
-import com.jusfoun.catalog.entity.SubjectInfo;
 import com.jusfoun.catalog.utils.UserUtils;
 
 @Service
@@ -60,9 +59,6 @@ public class RegisterService extends CrudService<RegisterDao, Register> {
 		}else if(applyType.intValue() == Register.TYPE_RESOURCE){
 			ResourceInfo resourceInfo = resourceInfoDao.get(applyId);
 			applyName = resourceInfo.getName();
-		}else if(applyType.intValue() == Register.TYPE_SUBJECT){
-			SubjectInfo subject = subjectInfoDao.get(applyId);
-			applyName = subject.getName();
 		}
 		Register register = new Register();
 		register.setOffice(UserUtils.getUser().getOffice());
@@ -123,32 +119,26 @@ public class RegisterService extends CrudService<RegisterDao, Register> {
 			case Register.TYPE_BUSINESS:
 				Business bus = new Business();
 				bus.setId(register.getApplyId());
-				bus.setDelFlag(resultFlag);
+				bus.setStatus(resultFlag);
 				businessDao.update(bus);
 				break;
 			case Register.TYPE_JOB:
 				Job job = new Job();
 				job.setId(register.getApplyId());
-				job.setDelFlag(resultFlag);
+				job.setStatus(resultFlag);
 				jobDao.updateById(job);
 				break;
 			case Register.TYPE_OFFICE:
 				Office office = new Office();
 				office.setId(register.getApplyId());
-				office.setDelFlag(resultFlag);
+				office.setStatus(resultFlag);
 				officeDao.update(office);
 				break;
 			case Register.TYPE_RESOURCE:
 				ResourceInfo res = new ResourceInfo();
 				res.setId(register.getApplyId());
-				res.setDelFlag(resultFlag);
+				res.setStatus(resultFlag);
 				resourceInfoDao.update(res);
-				break;
-			case Register.TYPE_SUBJECT:
-				SubjectInfo sub = new SubjectInfo();
-				sub.setId(register.getApplyId());
-				sub.setDelFlag(resultFlag);
-				subjectInfoDao.update(sub);
 				break;
 		}
 	}
