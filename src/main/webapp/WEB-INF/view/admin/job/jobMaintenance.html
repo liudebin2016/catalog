@@ -134,7 +134,7 @@ var jsPart = {
 		    ids+=row[i].id+",";
 		}
 		if(ids==""){
-			$.messager.alert("警告","请选择需要注册的数据！");
+			$.messager.alert("警告","您选择的数据不可注册，请重新选择！");
 		    return false;
 		} 
 		ids = ids.substring(0,ids.length-1)
@@ -167,7 +167,7 @@ var jsPart = {
 		    ids+=row[i].id+",";
 		}
 		 if(ids==""){
-			$.messager.alert("警告","请选择需要注销的数据!");
+			$.messager.alert("警告","您选择的数据不可注销，请重新选择!");
 		    return false;
 		} 
 		ids = ids.substring(0,ids.length-1)
