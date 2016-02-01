@@ -57,9 +57,11 @@ var jsPart = {
 		        {field:'name',title:'资源名称',width:300},    
 		        {field:'shareRegion',title:'共享范围',width:200,
 		        	formatter:function(value,row,index){
-		        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
-		        		.replace(5,"本部门专员").replace(6,"其他");
-		        		return ds;
+		        		if(value){
+			        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
+			        		.replace(5,"本部门专员").replace(6,"其他");
+			        		return ds;
+		        		}
 	            	}
 		        },
 		        {field:'status',title:'当前状态',width:150,

@@ -102,7 +102,7 @@ var jsPart = {
 	 
 	 function checkTautonym(obj){
 		 if(obj.value){
-			 $.get("/admin/dict/dictList",		  
+			 $.get("/admin/dict/dictList",
 			 	{ label: obj.value },
 			  	function(data){
 			 		if(data.total!="0"){
@@ -143,22 +143,22 @@ var htmlPart = {
   <!-- 字典Datagrid -->
   <table id="dict"></table>
   
-  <div id="dlg" class="easyui-dialog" style="width: 450px; height: 280px; padding: 10px 20px;" closed="true" buttons="#dlg-buttons"> 
+  <div id="dlg" class="easyui-dialog" style="width: 450px; height: 280px; padding: 30px 35px;" closed="true" buttons="#dlg-buttons"> 
        <form id="fm" method="post" method="post" action="/admin/dict/createDict.do"> 
        <div class="fitem"> 
-           <label style="width: 48px;">字典名称</label> 
+           <label style="width: 60px;">字典名称：</label> 
        		<input name="id" type="hidden">
-           <input name="label"  style="width:width:300px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
+           <input name="label" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
        </div> 
        <div class="fitem" style="margin-top: 10px;"> 
-           <label style="width: 48px;">字典编码</label> 
-           <input name="value"  style="width:width:300px;height:32px;border: 1px solid beige;">
+           <label style="width: 60px;">字典编码：</label> 
+           <input name="value" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
        </div> 
        <div class="fitem" style="margin-top: 10px;"> 
-           <label style="width: 48px;">备注</label> 
-           <textarea name="description"  style="width:300px;height:60px;border: 1px solid beige;"></textarea> 
+           <label style="width: 60px;">备注：</label> 
+           <textarea name="description" class="easyui-textbox" data-options="multiline:true" style="width:260px;height:60px;border: 1px solid beige;"></textarea> 
        </div> 
-       <div style="margin-top: 10px;">
+       <div style="margin-top: 10px;text-align: center;">
 			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
 		</div>
        </form> 
