@@ -17,6 +17,27 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 未申请注册
+	 */
+	public static final String STATUS_UNAPPLY = "3";
+	/**
+	 * 申请注册中
+	 */
+	public static final String STATUS_APPLYING= "4";
+	/**
+	 * 已注册
+	 */
+	public static final String STATUS_APPLYED = "5";
+	/**
+	 * 申请注销中
+	 */
+	public static final String STATUS_CANCELLING = "6";
+	/**
+	 * 已注销
+	 */
+	public static final String STATUS_CANCELLED = "7";
+	
 	protected String remarks;	// 备注
 	protected User createBy;	// 创建者
 	protected Date createDate;	// 创建日期
