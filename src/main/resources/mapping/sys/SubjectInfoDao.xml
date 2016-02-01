@@ -349,6 +349,49 @@ FROM (
       del_flag = #{delFlag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!-- 更新操作 -->
+  <update id="update" parameterType="com.jusfoun.catalog.entity.SubjectInfo" >
+    update subject_info
+    <set>
+    	<if test="name != null">
+    		name = #{name,jdbcType=VARCHAR},
+    	</if>
+    	<if test="parentId != null">
+    		parent_id = #{parentId,jdbcType=INTEGER},
+    	</if>
+    	<if test="parentName != null">
+    		parent_name = #{parentName,jdbcType=VARCHAR},
+    	</if>
+    	<if test="descr != null">
+    		descr = #{descr,jdbcType=VARCHAR},
+    	</if>
+    	<if test="shareRegion != null">
+    		share_region = #{shareRegion,jdbcType=VARCHAR},
+    	</if>
+    	<if test="shareMode != null">
+    		share_mode = #{shareMode,jdbcType=VARCHAR},
+    	</if>
+    	<if test="status != null">
+    		status = #{status,jdbcType=INTEGER},
+    	</if>
+    	<if test="createDate != null">
+    		create_date = #{createDate,jdbcType=TIMESTAMP},
+    	</if>
+    	<if test="createBy != null and createBy.id != null">
+    		create_by = #{createBy.id,jdbcType=INTEGER},
+    	</if>
+    	<if test="updateDate != null">
+    		update_date = #{updateDate,jdbcType=TIMESTAMP},
+    	</if>
+    	<if test="updateBy != null and updateBy.id != null">
+    		update_by = #{updateBy.id,jdbcType=INTEGER},
+    	</if>
+    	<if test="delFlag != null">
+    		del_flag = #{delFlag,jdbcType=VARCHAR},
+    	</if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
   
   <!-- 查询有效个数 -->
   <select id="getCount" resultType="java.lang.Long">

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.BusinessDao;
 import com.jusfoun.catalog.dao.JobDao;
@@ -97,18 +98,58 @@ public class RegisterService extends CrudService<RegisterDao, Register> {
 	}
 
 	/**审批
-	 * @param applyId 信息id
-	 * @param applyType 信息类型
-	 * @param statusApproved 审批意见（通过，不通过）
+	 * @param id 主键
+	 * @param approveFlag 审批意见（0：通过，1：不通过）
 	 */
 	@Transactional(readOnly=false)
-	public void approve(Integer applyId, Integer applyType, String statusApproved) {
+	public void approve(Integer id, String approveFlag) {
 		Register register = new Register();
-		register.setApplyId(applyId);
-		register.setApplyType(applyType); 
-		register.setApproveFlag(statusApproved);
+		register.setId(id);
+		register.setApproveFlag(approveFlag);
 		register.setApproveBy(UserUtils.getUser());
 		register.setApproveDate(new Date());
 		dao.approve(register);
+		
+		//更新模块主表del_flag值
+		register = dao.get(id);
+		String applyFlag = register.getApplyFlag();
+		String resultFlag = "";
+		if(Register.STATUS_UNAPPROVAL.equals(approveFlag)){
+			resultFlag = Register.STATUS_REGISTER.equals(applyFlag) ? DataEntity.STATUS_UNAPPLY : DataEntity.STATUS_APPLYED;
+		}else{
+			resultFlag = Register.STATUS_REGISTER.equals(applyFlag) ? DataEntity.STATUS_APPLYED : DataEntity.STATUS_CANCELLED;
+		}
+		switch (register.getApplyType().intValue()) {
+			case Register.TYPE_BUSINESS:
+				Business bus = new Business();
+				bus.setId(register.getApplyId());
+				bus.setDelFlag(resultFlag);
+				businessDao.update(bus);
+				break;
+			case Register.TYPE_JOB:
+				Job job = new Job();
+				job.setId(register.getApplyId());
+				job.setDelFlag(resultFlag);
+				jobDao.updateById(job);
+				break;
+			case Register.TYPE_OFFICE:
+				Office office = new Office();
+				office.setId(register.getApplyId());
+				office.setDelFlag(resultFlag);
+				officeDao.update(office);
+				break;
+			case Register.TYPE_RESOURCE:
+				ResourceInfo res = new ResourceInfo();
+				res.setId(register.getApplyId());
+				res.setDelFlag(resultFlag);
+				resourceInfoDao.update(res);
+				break;
+			case Register.TYPE_SUBJECT:
+				SubjectInfo sub = new SubjectInfo();
+				sub.setId(register.getApplyId());
+				sub.setDelFlag(resultFlag);
+				subjectInfoDao.update(sub);
+				break;
+		}
 	}
 }

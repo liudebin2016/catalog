@@ -134,10 +134,9 @@ public class RegisterContoller extends BaseController {
 	
 	@RequestMapping(value = "${adminPath}/register/approved", method = RequestMethod.POST)
 	@ResponseBody
-	public Object approved(@RequestParam(value="applyId", required=true) Integer applyId,
-			@RequestParam(value = "applyType", required = true) Integer applyType,
+	public Object approved(@RequestParam(value="id", required=true) Integer id,
 			@RequestParam(value = "flag", required = true) Integer flag) {
-		registerService.approve(applyId,applyType,flag.intValue()==0 ? Register.STATUS_APPROVED : Register.STATUS_UNAPPROVAL);
+		registerService.approve(id,flag.intValue()==0 ? Register.STATUS_APPROVED : Register.STATUS_UNAPPROVAL);
 		Map<String,Object> result = new HashMap<String, Object>();
 		result.put("succ", 1);
 		result.put("msg", "审批成功！");

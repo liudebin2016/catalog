@@ -146,7 +146,14 @@
 	 	approve_by = #{approveBy.id},
 	 	approve_date = #{approveDate}
  	where 
- 		apply_id = #{applyId} 
- 		and apply_type = #{applyType}
+ 		id = #{id} 
   </update>
+  
+  <!-- 根据主键查询 -->
+  <select id="get" parameterType="java.lang.Integer" resultType="Register">
+  	select 
+  	<include refid="registerColumns"/>
+  	from register a
+  	where a.id = #{id}
+  </select>
 </mapper>
