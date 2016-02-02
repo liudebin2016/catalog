@@ -204,7 +204,7 @@ public class ResourceController extends BaseController {
 		if(null!=id){
 			ResourceInfo rsc=new ResourceInfo();
 			rsc.setId(id);
-			rsc.setSubjectId(null);
+			rsc.setSubjectId(0);
 			resourceService.updateRsc(rsc);
 			LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-取消资源与主题关联");
 			delFlag="success";

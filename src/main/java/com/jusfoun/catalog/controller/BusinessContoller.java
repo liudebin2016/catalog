@@ -161,7 +161,7 @@ public class BusinessContoller extends BaseController {
 		if(null!=id){
 			Business biz=new Business();
 			biz.setId(id);
-			biz.setSubjectId(null);
+			biz.setSubjectId(0);
 			businessService.updateBiz(biz);
 			LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-删除业务与主题间的关联");
 			delFlag="success";

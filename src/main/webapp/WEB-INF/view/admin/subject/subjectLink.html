@@ -108,7 +108,8 @@ var jsPart = {
 		    queryParams: {
 		    	subjectId:subjectId
 			},
-			rownumbers:true,
+// 			rownumbers:true,
+			fitColumns:true,
 			pagination:true,
 		    method:"get",
 		    columns:[[    
@@ -122,9 +123,9 @@ var jsPart = {
 		        {field:'shareWith',title:'共享范围',width:130},
 		        {field:'operator',title:'操作',width:120,align:"center",
 		        	formatter:function(value,row,index){
-		        		var s = '<a href="/admin/resource/action.do?type=view&id='+row.id+'">查看</a> ';
+		        		var s = '<a href="/admin/business/action.do?type=view&id='+row.id+'">查看</a> ';
 	                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	                    var c = '<a href="#" onclick="javascript:delRscLinkById('+row.id+');">删除</a>';
+	                    var c = '<a href="#" onclick="javascript:delBizLinkById('+row.id+');">删除</a>';
 	                    return s+b+c;
 		            }
 		        }
@@ -143,18 +144,19 @@ var jsPart = {
 	//资源Datagrid
 	function rscDg(subjectId){
 		$('#rsc').datagrid({
-		    url:'/admin/business/findBySubId.do', 
+		    url:'/admin/resource/findBySubId.do', 
 		    queryParams: {
 		    	subjectId:subjectId
 			},
-			rownumbers:true,
+// 			rownumbers:true,
+			fitColumns:true,
 			pagination:true,
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
 		        {field:'name',title:'资源名称',width:120},
 		        {field:'code',title:'资源代码',width:130},
-		        {field:'name',title:'一级子项名称',width:120},
+// 		        {field:'name',title:'一级子项名称',width:120},
 		        {field:'responseParty',title:'业务所属部门',width:130},
 		        {field:'shareRegion',title:'资源共享范围',width:120},
 		        {field:'collectWay',title:'共享方式',width:130},
@@ -196,9 +198,19 @@ var jsPart = {
 	    toolbar:[{
 			text:'提交',
 			handler:function(){
-				var vals = $('#bizlink').combogrid('getValues');
-				var subId=$('#subId').html();
-				sendLinkReq("/admin/business/batchUpdateBiz.do",subId,vals);
+				var vals = $('#bizlink').combogrid('getValues')+"";
+				if($('#bizlink').combogrid('getValues')){
+					var subId=$('#subId').html();
+					if(subId){
+						sendLinkReq("/admin/business/batchUpdateBiz.do",subId,vals);
+						$('#bizlink').combogrid('hidePanel');
+					}else{
+						alert('请选择左侧的主题！');
+	// 					$.messager.alert('提示','请选择左侧的主题！'); 
+					}
+				}else{
+					alert("请选择要关联的业务");
+				}
 			}
 		}],
 	    columns:[[    
@@ -227,9 +239,18 @@ var jsPart = {
 	    toolbar:[{
 			text:'提交',
 			handler:function(){
-				var vals = $('#rsclink').combogrid('getValues');
-				var subId=$('#subId').html();
-				sendLinkReq("/admin/resource/batchUpdateRsc.do",subId,vals);
+				var vals = $('#rsclink').combogrid('getValues')+"";
+				if($('#rsclink').combogrid('getValues')){
+					var subId=$('#subId').html();
+					if(subId){
+						sendLinkReq("/admin/resource/batchUpdateRsc.do",subId,vals);
+						$('#rsclink').combogrid('hidePanel');
+					}else{
+						alert('请选择左侧的主题！');
+					}
+				}else{
+					alert("请选择要关联的资源");
+				}
 			}
 		}],
 	    columns:[[    
@@ -258,7 +279,8 @@ var jsPart = {
 		$.post(url, { subId: subId, params: params },
 		    function(data){
 				if(data=="success"){
-					alert("关联成功！");
+					alert('关联成功！');
+// 					$.messager.alert('提示','关联成功！');
 				    bizDg($('#subId').html());
 				    rscDg($('#subId').html());
 				}
@@ -271,7 +293,8 @@ var jsPart = {
 		$.get("/admin/business/delBizLinkSub.do", { id: id },
 	    function(data){
 	    	if(data=="success"){
-	    		alert("删除成功！");
+	    		alert('删除成功！');
+// 	    		$.messager.alert('提示','删除成功！');
 	    		location.reload();
 	    	}
 	    });
@@ -282,7 +305,8 @@ var jsPart = {
 		$.get("/admin/resource/delRscLinkSub.do", { id: id },
 	    function(data){
 	    	if(data=="success"){
-	    		alert("删除成功！");
+	    		alert('删除成功！');
+// 	    		$.messager.alert('提示','删除成功！');
 	    		location.reload();
 	    	}
 	    });

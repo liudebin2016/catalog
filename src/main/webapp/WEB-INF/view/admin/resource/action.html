@@ -23,6 +23,11 @@ function checkVal(){
 		$("#ofBusiness").val($(":radio[name='forOfBusiness']:checked").val()+"-"+$("#forOfBusiness2").val());
 	}
 	
+	var responseParty=$('#responseParty');
+	if(responseParty){
+		validNum(responseParty);
+	}
+	
 	if($(":radio[name='shareRegion1']:checked").val()=='1'){
 		$("#shareRegion").val("1");
 	}else{
@@ -113,6 +118,18 @@ function addField(){
 	var sdf='<div style="margin-left:10px;">'+$('#forInfoField').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeField(this)">删除</a></div>'
 	$('#addField').append(sdf)
 }
+
+function validNum(obj){
+	var val=$(obj).val();
+    var reg = new RegExp("^[0-9]*$");
+    if($.trim(val)){
+		if(!reg.test(val)){  
+		    alert("请输入数字!");  
+		    $(obj).val("");
+		}
+    }
+    $(obj).focus();
+}
 </script>
 <%};%>
 
@@ -174,7 +191,7 @@ function addField(){
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源责任方</label>
-			<input class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="" value='${rsc==null?"":rsc.responseParty}'>
+			<input id="responseParty" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="" value='${rsc==null?"":rsc.responseParty}'>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
