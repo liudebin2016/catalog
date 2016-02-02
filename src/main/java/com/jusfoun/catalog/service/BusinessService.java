@@ -84,7 +84,7 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 				biz.setStatus(opType.toString());
 			}
 			dao.update(biz);
-			registerService.cancel(Integer.valueOf(str), Register.TYPE_BUSINESS);
+			registerService.apply(Integer.valueOf(str), Register.TYPE_BUSINESS);
 		}
 	}
 
@@ -94,5 +94,21 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 
 	public List<Business> findSrhList(Business biz) {
 		return dao.findSrhList(biz);
+	}
+
+	public void batchUpdateBizCancel(Integer subId, Integer opType, String params) {
+		for(String str:params.split(",")){
+			Business biz=new Business();
+			biz.setId(Integer.valueOf(str));
+			if(subId!=null){
+				biz.setSubjectId(subId);
+			}
+			if(opType!=null){
+				biz.setStatus(opType.toString());
+			}
+			dao.update(biz);
+			registerService.cancel(Integer.valueOf(str), Register.TYPE_BUSINESS);
+		}
+		
 	}
 }

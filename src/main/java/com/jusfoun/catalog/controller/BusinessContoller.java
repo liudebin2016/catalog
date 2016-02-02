@@ -141,6 +141,17 @@ public class BusinessContoller extends BaseController {
 		businessService.batchUpdateBiz(subId,opType,params);		
 		return "success";
 	}
+	/**
+	 * 批量更新业务
+	 * @param biz
+	 * @return
+	 */	
+	@RequestMapping(value = "${adminPath}/business/batchUpdateBizCancel", method = RequestMethod.POST)
+	@ResponseBody
+	public String batchUpdateBizCancel(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params){
+		businessService.batchUpdateBizCancel(subId,opType,params);		
+		return "success";
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "${adminPath}/business/delBiz", method = RequestMethod.GET)

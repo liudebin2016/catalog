@@ -200,6 +200,9 @@ FROM (
       <if test="descr != null" >
         descr,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -267,6 +270,9 @@ FROM (
       </if>
       <if test="descr != null" >
         #{descr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
