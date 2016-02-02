@@ -16,90 +16,6 @@ var jsPart = {
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
-	//查询
-	function queryList(){
-		var applyName=$.trim($("#applyName").val());
-		var applyType=$.trim($("#applyType").val());
-		var status=$.trim($("#status").val());
-		$('#dg').datagrid({
-		    url:'/admin/statistic/applyList', 
-		    queryParams: {
-		    	applyName : applyName,
-		    	applyType : applyType,
-		    	status : status
-			},
-		    pagination:true,
-		    method:"post",
-		    rownumbers:true,
-		    columns:[[    
-				{field:'id',title:'id',width:300,hidden:true}, 
-		        {field:'applyName',title:'名称',width:300},
-		        {field:'applyType',title:'信息类型',width:200,align:"center",
-		        	formatter:function(value,row,index){
-		        		var tmp = "--";
-		        		switch(value){
-		        		case 1:
-		        			tmp = '机构职责';
-		        			break;
-		        		case 2:
-		        			tmp = '部门岗位';
-		        			break;
-		        		case 3:
-		        			tmp = '业务信息';
-		        			break;
-		        		case 4:
-		        			tmp = '资源信息';
-		        			break;
-		        		case 5:
-		        			tmp = '主题信息';
-		        			break;
-		        		}
-		        		return tmp;
-		        	}},
-		        {field:'applyFlag',title:'申请状态',width:150,align:"center",
-	        		formatter:function(value,row,index){
-		    				var tmp = '--';
-		    				switch(value){
-			        		case '1':
-			        			tmp = '注册';
-			        			break;
-			        		case '2':
-			        			tmp = '注销';
-			        			break;
-			        		}
-			        		return tmp;
-		    		}
-		        },
-		        {field:'approveFlag',title:'申请结果',width:150,align:"center",
-	        		formatter:function(value,row,index){
-		    				var tmp = '--';
-		    				switch(value){
-			        		case '0':
-			        			tmp = '待审批';
-			        			break;
-			        		case '1':
-			        			tmp = '通过';
-			        			break;
-			        		case '2':
-			        			tmp = '未通过';
-			        			break;
-			        		}
-			        		return tmp;
-		    		}
-		        },
-		        {field:'operator',title:'审核意见',width:220,align:"center",
-		        	formatter:function(value,row,index){
-	//		                    var s = '<a href="/admin/business/action.do?type=update&id='+row.id+'">编辑</a> ';
-	//		                    var b = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-	//		                    var c = '<a href="#" onclick="javascript:delBizById('+row.id+');">删除</a>';
-	//		                    return s+b+c;
-							return '';
-		            }
-		        }
-		    ]]
-		}); 
-	}
-	
 	function statbDg(){
 		$('#statb').datagrid({
 		    url:'/admin/statistic/statb.do',
@@ -122,12 +38,19 @@ var jsPart = {
 		        {field:'ofcCount',title:'岗位数',width:150},
 		        {field:'bizCount',title:'业务数',width:150},
 		        {field:'rscCount',title:'资源数',width:150}
-		    ]]
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { region: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'region', colspan: 6 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
 		}); 
 	}
 	
 	$(document).ready(function(){
-		queryList();
 		statbDg();
 	});
 </script>
