@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Business;
@@ -111,6 +112,7 @@ public class BusinessContoller extends BaseController {
 	public String createBiz(Business biz){
 		biz.setCreateBy(UserUtils.getUser());
 		biz.setCreateDate(new Date());
+		biz.setStatus(DataEntity.STATUS_UNAPPLY);
 		businessService.save(biz);
 		LogUtils.saveLog(ServletTool.getRequest(), "部门目录-业务信息维护-新建业务");
 		return "redirect:"+adminPath+"/business/maintenance";
@@ -137,6 +139,17 @@ public class BusinessContoller extends BaseController {
 	@ResponseBody
 	public String batchUpdateBiz(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params){
 		businessService.batchUpdateBiz(subId,opType,params);		
+		return "success";
+	}
+	/**
+	 * 批量更新业务
+	 * @param biz
+	 * @return
+	 */	
+	@RequestMapping(value = "${adminPath}/business/batchUpdateBizCancel", method = RequestMethod.POST)
+	@ResponseBody
+	public String batchUpdateBizCancel(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params){
+		businessService.batchUpdateBizCancel(subId,opType,params);		
 		return "success";
 	}
 	

@@ -104,5 +104,21 @@ public class ResourceService extends CrudService<ResourceInfoDao, ResourceInfo>{
 	public int findSrhListCount(ResourceInfo rsc) {
 		return dao.findSrhListCount(rsc);
 	}
+
+	public void batchUpdateRscCancel(Integer subId, Integer opType, String params) {
+		for(String str:params.split(",")){
+			ResourceInfo rsc=new ResourceInfo();
+			rsc.setId(Integer.valueOf(str));
+			if(subId!=null){
+				rsc.setSubjectId(subId);
+			}
+			if(opType!=null){
+				rsc.setStatus(opType.toString());
+			}
+			dao.update(rsc);
+			registerService.cancel(Integer.valueOf(str), Register.TYPE_RESOURCE);
+		}
+		
+	}
 	
 }

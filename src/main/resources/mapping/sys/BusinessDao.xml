@@ -219,6 +219,9 @@ FROM (
       <if test="remarks != null" >
         remarks,
       </if>
+      <if test="status != null" >
+        status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -301,6 +304,9 @@ FROM (
       </if>
       <if test="remarks != null" >
         #{remarks,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
       </if>
     </trim>
   </insert>

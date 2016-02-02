@@ -67,7 +67,7 @@ var jsPart = {
 		        {field:'status',title:'当前状态',width:150,
 		        	formatter:function(value,row,index){
 		        		if(value){
-			        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
+		        			var ds=value.replace(3,"未注册").replace(4,"注册中").replace(5,"已注册").replace(6,"注销中").replace(7,"已注销");
 			        		return ds;
 		        		}else{
 		        			return "未知";
@@ -98,14 +98,14 @@ var jsPart = {
 		var checkedItems = $('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
-			if(item.status=="0"){
+			if(item.status=="3"){
 				names=names+item.id+",";
 			}
 		});  
 		if(names!=''){
 			$.post("/admin/resource/batchUpdateRsc.do", 
 				{ 
-					opType: 1, params: names 
+					opType: 4, params: names 
 				},
 			   	function(data){
 			     	if(data="success"){
@@ -124,14 +124,14 @@ var jsPart = {
 		var checkedItems = $('#dg').datagrid('getChecked');
 		var names = "";
 		$.each(checkedItems, function(index, item){
-			if(item.status=="2"){
+			if(item.status=="5"){
 				names=names+item.id+",";
 			}
 		});  
 		if(names!=''){
-			$.post("/admin/resource/batchUpdateRsc.do", 
+			$.post("/admin/resource/batchUpdateRscCancel.do", 
 				{ 
-					opType: 4, params: names 
+					opType: 6, params: names 
 				},
 			   	function(data){
 			     	if(data="success"){
@@ -164,11 +164,11 @@ var htmlPart = {
         <label>当前状态</label>
         <select id="srcStatus" class="form-control sels wd148" name="status" >
           <option value="">请选择</option>
-          <option value="0">未注册</option>
-          <option value="1">注册中</option>
-          <option value="2">已注册</option>
-          <option value="3">未通过</option>
-          <option value="4">删除中</option>
+          <option value="3">未注册</option>
+	      <option value="4">注册中</option>
+	      <option value="5">已注册</option>
+	      <option value="6">注销中</option>
+	      <option value="7">已注销</option>
         </select>
       </li>
       <li>

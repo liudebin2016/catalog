@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jusfoun.catalog.common.controller.BaseController;
+import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.ResourceInfo;
@@ -133,6 +134,7 @@ public class ResourceController extends BaseController {
      */
     @RequestMapping(value = "${adminPath}/resource/createRsc", method = RequestMethod.POST)
     public String createRsc(ResourceInfo rsc) {
+    	rsc.setStatus(DataEntity.STATUS_UNAPPLY);
     	resourceService.save(rsc);
     	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-资源创建");
     	return "redirect:"+adminPath+"/resource/maintenance";
@@ -159,6 +161,18 @@ public class ResourceController extends BaseController {
     @ResponseBody
     public String batchUpdateRsc(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params) {
     	resourceService.batchUpdateRsc(subId,opType,params);
+    	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-批量资源更新");
+    	return "success";
+    }
+    /**
+     * 批量更新资源
+     * @param rsc
+     * @return
+     */
+    @RequestMapping(value = "${adminPath}/resource/batchUpdateRscCancel", method = RequestMethod.POST)
+    @ResponseBody
+    public String batchUpdateRscCancel(@RequestParam(value="subId",required=false)Integer subId,@RequestParam(value="opType",required=false)Integer opType,@RequestParam(value="params")String params) {
+    	resourceService.batchUpdateRscCancel(subId,opType,params);
     	LogUtils.saveLog(ServletTool.getRequest(), "目录管理-资源目录管理-批量资源更新");
     	return "success";
     }
