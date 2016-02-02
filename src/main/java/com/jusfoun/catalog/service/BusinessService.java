@@ -84,7 +84,7 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 				biz.setStatus(opType.toString());
 			}
 			dao.update(biz);
-			registerService.apply(Integer.valueOf(str), Register.TYPE_BUSINESS);
+			registerService.cancel(Integer.valueOf(str), Register.TYPE_BUSINESS);
 		}
 	}
 
