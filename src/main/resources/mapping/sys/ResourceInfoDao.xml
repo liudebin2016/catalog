@@ -369,7 +369,7 @@ FROM (
   	FROM 
   		resource_info r
   	<trim prefix="WHERE" prefixOverrides="AND|OR">  
-  	    status=2
+  	    status=5
   	    AND del_flag = 0
 	    <if test="name!=null and name!='' ">  
 	    AND name like '%'||#{name}||'%' 
@@ -393,7 +393,7 @@ FROM (
   	FROM 
   		resource_info r
   	<trim prefix="WHERE" prefixOverrides="AND|OR"> 
-  		status=2
+  		status=5
   	    AND del_flag = 0 
 	    <if test="name!=null and name!='' ">  
 	    AND name like '%'||#{name}||'%' 

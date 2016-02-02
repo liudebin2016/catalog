@@ -88,11 +88,13 @@ function jobDg(name){
 			{field:'id',title:'id',width:0,hidden:true}, 
 	        {field:'name',title:'岗位名称/职位',width:100,align:"center"},    
 	        {field:'duty',title:'岗位职责',width:100,align:"center"},
-	        {field:'type',title:'岗位属性',width:150,align:"center"},
-	        {field:'status',title:'当前状态',width:150,align:"center",
+	        {field:'type',title:'岗位属性',width:150,align:"center",
 	        	formatter: function(value,row,index){
-	        		if(value){
-		        		return value.replace("0","未注册").replace("1","未注册").replace("2","未注册").replace("3","未注册").replace("4","未注册").replace("5","未注册");
+					if(value){
+		        		var ds=value.replace(0,"未知").replace(1,"公务员编制").replace(2,"事业编制").replace(3,"参公编制").replace(4,"工勤编制").replace(5,"其他");
+		        		return ds;
+	        		}else{
+	        			return "未知";
 	        		}
 				} 	
 	        }
@@ -130,14 +132,6 @@ function bizDg(name){
 		        		return ds;
 	        		}
             	}
-	        },
-	        {field:'status',title:'当前状态',width:150,
-	        	formatter:function(value,row,index){
-	        		if(value){
-		        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
-		        		return ds;
-	        		}
-            	}
 	        }
 	    ]],
 	    onLoadSuccess:function(data){
@@ -171,16 +165,6 @@ function rscDg(name){
 		        		var ds=value.replace(1,"国家部委").replace(2,"市领导").replace(3,"委办局").replace(4,"委（局）内")
 		        		.replace(5,"本部门专员").replace(6,"其他");
 		        		return ds;
-	        		}
-            	}
-	        },
-	        {field:'status',title:'当前状态',width:150,
-	        	formatter:function(value,row,index){
-	        		if(value){
-		        		var ds=value.replace(0,"未注册").replace(1,"注册中").replace(2,"已注册").replace(3,"未通过").replace(4,"删除中");
-		        		return ds;
-	        		}else{
-	        			return "未知";
 	        		}
             	}
 	        }
