@@ -115,6 +115,21 @@ var jsPart = {
 	$(document).ready(function(){
 		queryList();
 	});
+	
+	//输入框回车事件
+	$('#applyName').bind('keypress',function(event){
+            if(event.keyCode == "13"){
+            	queryList();
+            }
+     });
+	//下拉框change时间
+	$("#status").on("change",function(){
+		queryList();
+	});
+	//下拉框change时间
+	$("#applyType").on("change",function(){
+		queryList();
+	});
 </script>
 <%};%>
 <%
