@@ -125,10 +125,9 @@ function validNum(obj){
     if($.trim(val)){
 		if(!reg.test(val)){  
 		    alert("请输入数字!");  
-		    $(obj).val("");
+		    $(obj).val("").focus();
 		}
     }
-    $(obj).focus();
 }
 </script>
 <%};%>

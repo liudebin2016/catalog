@@ -66,6 +66,10 @@ public class OfficeController extends BaseController {
     	}
     	officeService.update(office);
     	LogUtils.saveLog(ServletTool.getRequest(), "部门目录-机构职责维护-编辑机构职责");
+    	User user=UserUtils.getUser();
+    	if(user.getOffice() != null){
+    		user.getOffice().setDuty(office.getDuty());
+    	}
         return "success";
     }
     
