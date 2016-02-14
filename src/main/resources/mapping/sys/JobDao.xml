@@ -344,7 +344,7 @@ FROM (
 	    </if>   
 	</trim>	
 		 
-		 ORDER BY j.status ASC,j.update_date desc
+		 ORDER BY j.status ASC,j.create_date desc
      ) tt
    WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
  ) ta  
@@ -384,7 +384,7 @@ FROM (
 	    </if>
 	</trim>	
 		 <!-- GROUP BY j.id -->
-		 ORDER BY j.status ASC,j.update_date desc
+		 ORDER BY j.status ASC,j.create_date desc
      ) tt
    WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
  ) ta  
