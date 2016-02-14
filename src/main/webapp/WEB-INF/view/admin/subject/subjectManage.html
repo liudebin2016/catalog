@@ -52,7 +52,10 @@ var jsPart = {
 			removeTitle: "删除"
 		},
 		callback : {
-			onClick : onClick
+			onClick : onClick,
+			beforeRemove:beforeRemove,
+			onRemove: onRemove,
+			onRename: zTreeOnRename
 		}
 	};
 	function onClick(event, treeId, treeNode) {
@@ -65,6 +68,27 @@ var jsPart = {
 	function removeHoverDom(treeId, treeNode) {
 		jq1_4('#' + treeNode.tId).children('.gcode').remove();
 	};
+	function beforeRemove(event, treeId, treeNode){
+	    return confirm("确认删除节点吗？");
+	}
+	function onRemove( event,treeNode,treeId){
+		var id = treeId.id;
+		if(treeNode.isParent){
+			alert("当前节点有子节点，不能直接删除!");
+		}else{
+			$.post('../subject/del',{subjectId:id},function(obj){
+				//完成删除动作
+			},'json');
+		}
+	}
+	function zTreeOnRename(event,treeNode,treeId){
+		var id = treeId.id;
+		var name = treeId.name;
+		var status = treeId.status;
+		$.post('../subject/doUpdate',{id:id,name:name,status:status},function(obj){
+			//完成编辑动作
+		},'json');
+	}
 </script>
 
 <script type="text/javascript">

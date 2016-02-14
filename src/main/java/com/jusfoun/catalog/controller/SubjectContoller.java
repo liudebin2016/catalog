@@ -123,7 +123,11 @@ public class SubjectContoller extends BaseController {
 		String shareRegion=request.getParameter("shareRegion");
 		String shareMode=request.getParameter("shareMode");
 		String status=request.getParameter("status");
+		String id=request.getParameter("id");
 		SubjectInfo si=new SubjectInfo();
+		if(id != null && id != ""){
+			si.setId(Integer.parseInt(id));
+		}
 		si.setName(name);
 		si.setDescr(descr);
 		si.setShareMode(shareMode);
