@@ -111,8 +111,13 @@ var jsPart = {
 	}
 	$(document).ready(function(){
 		queryList();
-		$('#applyType').on('change',queryList);
-		$('#status').on('change',queryList);
+		$('#applyName').bind('keypress',function(event){
+            if(event.keyCode == "13"){
+            	queryList();
+            }
+     });
+	$('#applyType').on('change',queryList);
+	$('#status').on('change',queryList);
 	});
 </script>
 <%};%>
