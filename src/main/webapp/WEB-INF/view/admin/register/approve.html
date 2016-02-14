@@ -111,6 +111,8 @@ var jsPart = {
 	}
 	$(document).ready(function(){
 		queryList();
+		$('#applyType').on('change',queryList);
+		$('#status').on('change',queryList);
 	});
 </script>
 <%};%>

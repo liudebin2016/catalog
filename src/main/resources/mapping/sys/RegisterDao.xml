@@ -132,6 +132,7 @@
 					and a.approve_flag = #{approveFlag}
 				</if>
 			</trim>
+			order by a.apply_date desc
 	     ) tt
 	   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
 	 ) ta  
