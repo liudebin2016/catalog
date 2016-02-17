@@ -125,9 +125,10 @@ public class JobContoller extends BaseController {
     		if(null!=id){
     			Job job=jobService.selectById(id);
     			String seleBusId = jobService.selectBusinessIdByJobId(id);
+    			String seleBusNa = jobService.selectBusinessNaByJobId(id);
     			if(null!=job){
     				mav.addObject("job", job);
-    				mav.addObject("busId", seleBusId);
+    				mav.addObject("busId", seleBusNa);
     				if(type.equals("view")){
 						mav.addObject("actionType", "view");
 					}else{
@@ -166,9 +167,10 @@ public class JobContoller extends BaseController {
 	public String getJobDoEdit(HttpServletRequest request, HttpServletResponse response,Job job,Model model){
 		String officeId=WebUtils.getCleanParam(request,"officeId");
 		String[] businessId=request.getParameterValues("businessId");
+		String[] realBusinessId=request.getParameter("realBusinessIds").split(",");
 		HashMap<String, Object> cMap = new HashMap<String, Object>();
 		cMap.put("officeId", officeId);
-		cMap.put("businessId", businessId);
+		cMap.put("businessId", realBusinessId);
 		cMap.put("jobId", job.getId());
 		job.setUpdateBy(UserUtils.getUser());
 		job.setUpdateDate(new Date());

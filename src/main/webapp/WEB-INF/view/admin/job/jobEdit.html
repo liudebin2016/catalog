@@ -28,7 +28,7 @@ var jsPart = {
 	var busId = $("#busId").val().split(',');
 	$('#bizlink').combogrid({    
 	    panelWidth:540,    
-	    idField:'id',    
+	    idField:'name',    
 	    multiple: true,
 	    url:'/admin/business/bizList.do',    
 	    pagination:true,
@@ -46,12 +46,34 @@ var jsPart = {
 				} */
 		    }    
 	    ]],
-	    onLoadSuccess: function(data) { // 当前请求的页面数据。
+	    onSelect: function (index, row) {
+	    	//alert(row.id);
+	    	var ids = $("#realBusinessIds").val();
+	    	$("#realBusinessIds").val(ids+row.id+",");
+		},
+        onUnselect: function (index, row) {
+	    	//alert(row.id);
+	    	var ids = $("#realBusinessIds").val();
+	    	//ids = ids.substring(0,ids.Length-1)
+	    	var idgroup = ids.split(',');
+	    	for(var i=0;i<idgroup.length;i++){
+	    		if(idgroup[i] == row.id){
+	    			idgroup.splice(i,1);
+	    		}
+	    	}
+	    	var id = row.id;
+	    	idgroup.pop();
+	    	//alert(idgroup);
+	    	$("#realBusinessIds").val(idgroup);
+        },
+	    onLoadSuccess: function(data) {//alert(data.rows); // 当前请求的页面数据。
 	    	if(find != true){
-		    	$.each(data.rows, function(index, value) {
+	    		var rowss = data.rows;
+		    	//$.each(data.rows, function(index, value) {
+		    		for(var index=0;index<rowss.length;index++){
 			    		for(var i in busId){
 			    			 // alert(busId[i]+" "+value.id)
-			    			if (busId[i] == value.id){
+			    			if (busId[i] == rowss[index].name){
 			    				//alert(busId[i]);
 			 	            	   //$('#bizlink').combogrid('setValue',5);
 			 	            	   $('#bizlink').combogrid('grid').datagrid('selectRecord',busId[i]);
@@ -59,19 +81,12 @@ var jsPart = {
 			 	              
 			    			}
 			    		}
-			    		 find = true;
-		           // if ("5" == value.id) { // value.id与idField属性对应的值
-		               // find = true;// 循环当前请求页面数据，如果取出的值与默认值一致，则设置成找到
-		               // $('#bizlink').combogrid('grid').datagrid('selectRecord',value.id);
-		               //if(find != true){
-		            	   //$('#bizlink').combogrid('setValue',5);
-		            	//   $('#bizlink').combogrid('grid').datagrid('selectRecord',5);
-			            //    find = true;
-		            //   }
-		                
-		           // } 
-		        
-		        }); 
+			    		
+		    		}
+		    		 find = true;
+		       // }); 
+		    		// $('#bizlink').combogrid('grid').datagrid('selectRecord','2098');
+		    		// $('#bizlink').combogrid('setValue',213123)
 	    	}
 	         /* if (!find) {
 	            // combogrid获取下一页页码
@@ -164,6 +179,7 @@ var htmlPart = {
    			<input type="hidden" id="busId" name="busId" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
+   			<input type="hidden" id="realBusinessIds" name="realBusinessIds" value=""/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
 				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}" ${job==null?'':actionType == 'view'?disabled="disabled":""}>

@@ -66,6 +66,12 @@ public interface JobDao extends CrudDao<Job>{
 	public String selectBusinessIdByJobId(String id);
 
 	/**
+	 * 获得该job所拥有的所有业务名字
+	 * @param id
+	 * @return
+	 */
+	public String selectBusinessNaByJobId(String id);
+	/**
 	 * 根据列获得所有的job
 	 * @param id
 	 * @return
