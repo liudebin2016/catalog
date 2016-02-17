@@ -36,25 +36,14 @@ var jsPart = {
 			{field:'ck',checkbox:true},
 	        {field:'code',title:'业务编码',width:150},    
 	        {field:'name',title:'业务名称',width:150},    
-	        {field:'subjectId',title:'状态',width:200//,
-	        	/* formatter: function(value,row,index){
-					if(value){
-						return "已关联";
-					}else{
-						return "";
-					}
-				} */
-		    }    
+	        {field:'status',title:'状态',width:200}    
 	    ]],
 	    onSelect: function (index, row) {
-	    	//alert(row.id);
 	    	var ids = $("#realBusinessIds").val();
 	    	$("#realBusinessIds").val(ids+row.id+",");
 		},
         onUnselect: function (index, row) {
-	    	//alert(row.id);
 	    	var ids = $("#realBusinessIds").val();
-	    	//ids = ids.substring(0,ids.Length-1)
 	    	var idgroup = ids.split(',');
 	    	for(var i=0;i<idgroup.length;i++){
 	    		if(idgroup[i] == row.id){
@@ -63,7 +52,6 @@ var jsPart = {
 	    	}
 	    	var id = row.id;
 	    	idgroup.pop();
-	    	//alert(idgroup);
 	    	$("#realBusinessIds").val(idgroup);
         },
 	    onLoadSuccess: function(data) {//alert(data.rows); // 当前请求的页面数据。
@@ -88,12 +76,17 @@ var jsPart = {
 		    		// $('#bizlink').combogrid('grid').datagrid('selectRecord','2098');
 		    		// $('#bizlink').combogrid('setValue',213123)
 	    	}
-	         /* if (!find) {
-	            // combogrid获取下一页页码
-	            var nextPage = $('#bizlink').combogrid('grid').datagrid('options').pageNumber + 1;
-	            $('#bizlink').combogrid('grid').datagrid('getPager').pagination("select", nextPage);
-	         } */
-	    }
+	    },
+	    keyHandler: {  
+            up: function() {},  
+            down: function() {},  
+            enter: function() {},  
+            query: function(q) {  
+                //动态搜索  
+                $('#bizlink').combogrid("grid").datagrid("reload", { 'name': q });  
+                $('#bizlink').combogrid("setValue", q);  
+            }  
+        }  
 	}); 
 	
 	jq1_4(document).ready(function(){
@@ -157,9 +150,7 @@ var jsPart = {
         zTree.selectNode(node);//选择点  
         zTree.setting.callback.onClick(null, zTree.setting.treeId, node);//调用事件  
 	}
-	function goBack(){
-		windows.location.href='/admin/job/reloadList.do';
-	}
+	
 </script>
 <%};%>
 <%
@@ -199,7 +190,6 @@ var htmlPart = {
 			<div class="c-formbox">
 				<label class="compile-form-title fl">相关业务</label>
 				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
-				</select>
 		        
 		        <!-- 
 				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
@@ -235,9 +225,9 @@ var htmlPart = {
 	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
 	   			<%if(actionType =='create' || actionType == 'update'){%>
 	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(3)">保存</button>
-	   				 <button class="btns-gray fl"  onclick="goBack()">取消</button>
+	   				 <button class="btns-gray fl"  onclick="/admin/job/reloadList.do">取消</button>
 	   			 <% }else{ %>
-	   				 <button class="btns-gray fl"  onclick="goBack()">返回</button>
+	   				 <button class="btns-gray fl"  onclick="/admin/job/reloadList.do">返回</button>
 	   			<%}%>
 	   		</div>
    		</form>
