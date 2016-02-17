@@ -217,7 +217,7 @@
 	<select id="queryOffices" parameterType="map" resultType="Office">
 		SELECT id,name,duty
 		FROM sys_office
-		WHERE duty like '%,'||#{duty}||',%' 
+		WHERE duty like '%'||#{duty}||'%' 
 		<if test="id != null" >
 	       AND id = #{id}
 	    </if>
