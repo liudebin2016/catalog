@@ -28,7 +28,8 @@ var jsPart = {
 	var busId = $("#busId").val().split(',');
 	$('#bizlink').combogrid({    
 	    panelWidth:540,    
-	    idField:'name',    
+	    idField:'id', 
+	    textField:'name',
 	    multiple: true,
 	    url:'/admin/business/bizList.do',    
 	    pagination:true,
@@ -39,11 +40,19 @@ var jsPart = {
 	        {field:'status',title:'状态',width:200}    
 	    ]],
 	    onSelect: function (index, row) {
+	    	$(".validatebox-text").val("");
 	    	var ids = $("#realBusinessIds").val();
-	    	$("#realBusinessIds").val(ids+row.id+",");
+	    	ids = uniQueue(ids+row.id);
+	    	$("#realBusinessIds").val(ids+",");
+	    	//将显示框内填充值
+	    	var busNa = $("#businessView").val();
+	    	busNa = uniQueue(busNa+row.name); 
+	    	$("#businessView").val(busNa+",");
 		},
         onUnselect: function (index, row) {
+        	$(".validatebox-text").val("");
 	    	var ids = $("#realBusinessIds").val();
+	    	var busNa = $("#businessView").val();
 	    	var idgroup = ids.split(',');
 	    	for(var i=0;i<idgroup.length;i++){
 	    		if(idgroup[i] == row.id){
@@ -51,17 +60,27 @@ var jsPart = {
 	    		}
 	    	}
 	    	var id = row.id;
-	    	idgroup.pop();
+	    	//idgroup.pop();
 	    	$("#realBusinessIds").val(idgroup);
+	    	//将取消的业务在显示框中进行删除
+	    	var busNa = $("#businessView").val();
+	    	var nagroup = busNa.split(',');
+	    	for(var i=0;i<nagroup.length;i++){
+	    		if(nagroup[i] == row.name){
+	    			nagroup.splice(i,1);
+	    		}
+	    	}
+	    	var name = row.name;
+	    	$("#businessView").val(nagroup);
         },
-	    onLoadSuccess: function(data) {//alert(data.rows); // 当前请求的页面数据。
-	    	if(find != true){
+	     onLoadSuccess: function(data) {//alert(data.rows); // 当前请求的页面数据。
+	    	/* if(find != true){
 	    		var rowss = data.rows;
 		    	//$.each(data.rows, function(index, value) {
 		    		for(var index=0;index<rowss.length;index++){
 			    		for(var i in busId){
 			    			 // alert(busId[i]+" "+value.id)
-			    			if (busId[i] == rowss[index].name){
+			    			if (busId[i] == rowss[index].id){
 			    				//alert(busId[i]);
 			 	            	   //$('#bizlink').combogrid('setValue',5);
 			 	            	   $('#bizlink').combogrid('grid').datagrid('selectRecord',busId[i]);
@@ -73,9 +92,34 @@ var jsPart = {
 		    		}
 		    		 find = true;
 		       // }); 
-		    		// $('#bizlink').combogrid('grid').datagrid('selectRecord','2098');
-		    		// $('#bizlink').combogrid('setValue',213123)
-	    	}
+		    		// $('#bizlink').combogrid('grid').datagrid('selectRecord',2487);
+		    		 //$('#bizlink').combogrid('setValue',2487)
+	    	} */
+	    	 var rowss = $("#bizlink").combogrid("grid").datagrid("getRows");
+		    	var busId =  $("#realBusinessIds").val();
+		    	var idgroup = busId.split(',');
+		    	for(var i=0;i<idgroup.length;i++){
+		    		for(var j=0;j<rowss.length;j++){
+		    			$(".validatebox-text").val("");
+		    			if(idgroup[i] == rowss[j].id){
+			    			$('#bizlink').combogrid('grid').datagrid('selectRecord',rowss[j].id);
+			    		}else{
+			    			$(".validatebox-text").val("");
+			    		}
+		    		}
+		    	}
+	    }, 
+	    onShowPanel: function(){
+	    	/* var rowss = $("#bizlink").combogrid("grid").datagrid("getRows");
+	    	var busId =  $("#realBusinessIds").val();
+	    	var idgroup = busId.split(',');
+	    	for(var i=0;i<idgroup.length;i++){
+	    		for(var j=0;j<rowss.length;j++){
+	    			if(idgroup[i] == rowss[j].id){
+		    			$('#bizlink').combogrid('grid').datagrid('selectRecord',rowss[j].id);
+		    		}
+	    		}
+	    	} */
 	    },
 	    keyHandler: {  
             up: function() {},  
@@ -88,6 +132,10 @@ var jsPart = {
             }  
         }  
 	}); 
+	
+	$(".validatebox-text").on('focus',function(){
+		$(".validatebox-text").val("");
+	})
 	
 	jq1_4(document).ready(function(){
 		$.post('../office/tree',function(obj){
@@ -150,7 +198,29 @@ var jsPart = {
         zTree.selectNode(node);//选择点  
         zTree.setting.callback.onClick(null, zTree.setting.treeId, node);//调用事件  
 	}
-	
+	//去除重复值
+	function uniQueue(array){
+		arr = array.split(",");
+		var new_arr=[];
+		/* var arr=[]; 
+		var m; 
+		while(array.length>0){ 
+			m=array[0]; 
+			arr.push(m); 
+			array=$.grep(array,function(n,i){ 
+				return n==m; 
+			},true); 
+		} 
+		return arr;  */
+		for(var i=0;i<arr.length;i++) {
+			　　var items=arr[i];
+			　　//判断元素是否存在于new_arr中，如果不存在则插入到new_arr的最后
+			　　if($.inArray(items,new_arr)==-1) {
+			　　　　new_arr.push(items);
+			　　}
+			}
+		return new_arr;
+	} 
 </script>
 <%};%>
 <%
@@ -170,7 +240,8 @@ var htmlPart = {
    			<input type="hidden" id="busId" name="busId" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
    			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
-   			<input type="hidden" id="realBusinessIds" name="realBusinessIds" value=""/>
+   			<input type="hidden" id="realBusinessIds" name="realBusinessIds" value="${job.id==''?'':busId}"/>
+   			<input type="hidden" id="busNa" name="busNa" value="${job.id==''?'':busNa}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
 				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
@@ -188,9 +259,14 @@ var htmlPart = {
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
+		        <label class="compile-form-title fl">&nbsp;</label>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="businessView"  value="${job.id==''?'':busNa}"/>
+		        <input type="hidden" id="officeId" name="businessView"/>
+			</div>
+			
+			<div class="c-formbox">
 				<label class="compile-form-title fl">相关业务</label>
 				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
-		        
 		        <!-- 
 				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
 				<span class="btn-select fr">选择</span> -->

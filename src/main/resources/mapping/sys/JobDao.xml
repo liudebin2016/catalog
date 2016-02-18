@@ -518,14 +518,8 @@ FROM (
   <select id="selectBusinessIdByJobId" resultType="java.lang.String" parameterType="java.lang.String">
   	select wm_concat(business_id) from job_business where job_id=#{id}
   </select>
-  <select id="selectBusinessNaByJobId" resultType="java.lang.String" parameterType="java.lang.String">
-  	SELECT b.name as businessName
-    
-        from job j 
-    INNER JOIN (SELECT j.id,jb.job_id as iid,wm_concat(to_char(b.name)) as name from job j   
-    INNER JOIN job_business jb ON j.id = jb.job_id
-    INNER JOIN business b ON jb.business_id = b.id 
-    group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and j.id=#{id}
+  <select id="selectBusinessNaByJobId" resultType="JobAndOfficeView" parameterType="java.lang.String">
+    select b.id as businessId,b.name as businessName from job_business jb,business b where jb.business_id=b.id and jb.job_id=#{id}
   </select>
   <select id="findJobsByOfficeId" resultType="com.jusfoun.catalog.entity.Job" parameterType="int">
   	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag,status,office_id as officeId from job where job.office_id=#{officeId}

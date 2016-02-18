@@ -70,7 +70,7 @@ public interface JobDao extends CrudDao<Job>{
 	 * @param id
 	 * @return
 	 */
-	public String selectBusinessNaByJobId(String id);
+	public List<JobAndOfficeView> selectBusinessNaByJobId(String id);
 	/**
 	 * 根据列获得所有的job
 	 * @param id

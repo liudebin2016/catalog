@@ -124,11 +124,18 @@ public class JobContoller extends BaseController {
     	if(null!=type&&!"".equals(type)&&(type.equals("update")||type.equals("view"))){
     		if(null!=id){
     			Job job=jobService.selectById(id);
-    			String seleBusId = jobService.selectBusinessIdByJobId(id);
-    			String seleBusNa = jobService.selectBusinessNaByJobId(id);
+    			//String seleBusId = jobService.selectBusinessIdByJobId(id);
+    			List<JobAndOfficeView> seleBusNa = jobService.selectBusinessNaByJobId(id);
+    			String ids = "";
+    			String names = "";
+    			for(JobAndOfficeView j : seleBusNa){
+    				ids += j.getBusinessId()+",";
+    				names += j.getBusinessName()+",";
+    			}
     			if(null!=job){
     				mav.addObject("job", job);
-    				mav.addObject("busId", seleBusNa);
+    				mav.addObject("busId", ids);
+    				mav.addObject("busNa", names);
     				if(type.equals("view")){
 						mav.addObject("actionType", "view");
 					}else{
@@ -138,6 +145,7 @@ public class JobContoller extends BaseController {
     		}
     	}else{
     		mav.addObject("job", null);
+    		model.addAttribute("busNa", "");
     		mav.addObject("actionType", "create");
     	}
     	return mav;
@@ -155,6 +163,7 @@ public class JobContoller extends BaseController {
 		model.addAttribute("job", job);
 		model.addAttribute("actionType", "create");
 		model.addAttribute("busId", "");
+		model.addAttribute("busNa", "");
 		return "admin/job/jobEdit";
 	}
 	/**
