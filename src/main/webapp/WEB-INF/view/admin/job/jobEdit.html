@@ -37,7 +37,16 @@ var jsPart = {
 			{field:'ck',checkbox:true},
 	        {field:'code',title:'业务编码',width:150},    
 	        {field:'name',title:'业务名称',width:150},    
-	        {field:'status',title:'状态',width:200}    
+	        {field:'status',title:'状态',width:200,
+	        	formatter:function(value,row,index){
+	        		if(value){
+	        			var ds=value.replace(3,"未注册").replace(4,"注册中").replace(5,"已注册").replace(6,"注销中").replace(7,"已注销");
+		        		return ds;
+	        		}else{
+	        			return "--";
+	        		}
+            	}
+	        }    
 	    ]],
 	    onSelect: function (index, row) {
 	    	$(".validatebox-text").val("");
