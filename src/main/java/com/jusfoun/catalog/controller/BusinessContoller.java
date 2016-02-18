@@ -25,7 +25,6 @@ import com.jusfoun.catalog.common.mapper.JsonMapper;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Business;
 import com.jusfoun.catalog.service.BusinessService;
-import com.jusfoun.catalog.service.RegisterService;
 import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
 
@@ -187,13 +186,15 @@ public class BusinessContoller extends BaseController {
 	public Object businessTree(
 			@RequestParam(name = "officeId", required = true) Integer officeId) {
 		List<Business> business = businessService.findBusinessByOfficeId(officeId);
+		Map<String, Object> result = new HashMap<String, Object>();
 		if (business != null && business.size() > 0) {
-			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("business", business);
-			return result;
+			result.put("businessSize", business.size());
 		} else {
-			return Collections.EMPTY_LIST;
+			result.put("business", Collections.EMPTY_LIST);
+			result.put("businessSize", 0);
 		}
+		return result;
 	}
 	
     @RequestMapping(value = "${adminPath}/business/tree", method = RequestMethod.POST)

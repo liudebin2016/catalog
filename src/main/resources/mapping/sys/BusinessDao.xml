@@ -407,7 +407,7 @@ FROM (
   <select id="findBusinessByOfficeId" parameterType="java.lang.Integer" resultType="Business">
 	select b.id,b.name
 	from business b
-	where charge_office_id = #{officeId}
+	where charge_office_id = #{officeId} and del_flag=0
   </select>
   
 	<!-- 查询有效个数 -->

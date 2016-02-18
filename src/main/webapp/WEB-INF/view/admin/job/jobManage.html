@@ -49,11 +49,17 @@
 			},
 			dataType : 'json',
 			success : function(obj) {
-				$(obj.jobs).each(function(i,e){
+				if(obj.jobsSize==0){
 					$('#' + treeNode.tId).prepend(
-							'<span style="position:absolute;left:925px;color:blue;" class="gcode">'
-									+ e.name + '</span>');
-				});
+							'<span style="position:absolute;left:925px;" class="gcode">--</span>');
+				}else{
+					$('#' + treeNode.tId).prepend(
+						'<a onclick="javascript:$(\'#jobList\').modal(\'show\');" style="position:absolute;left:925px;color:blue;" class="gcode">'+obj.jobsSize+'个</a>');
+					$(obj.jobs).each(function(i,e){
+						$('#jobContainer').append('<li class="list-group-item">'+e.name+'</li>');
+						
+					});
+				}
 			}
 		});
 		return true;
@@ -105,6 +111,30 @@ var htmlPart = {
 	<!-- 组织机构树 end -->
   </div>
 </div>
+<!-- 模态框start -->
+<div class="modal fade" id="jobList" tabindex="-1" role="dialog" 
+   aria-labelledby="jobLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="jobLabel">
+               关联岗位
+            </h4>
+         </div>
+			<div class="modal-body">
+				<ul class="list-group" id="jobContainer"></ul>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 模态框end -->
 <!-- end:content -->
 <%};
 include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}

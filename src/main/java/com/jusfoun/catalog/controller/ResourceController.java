@@ -51,13 +51,15 @@ public class ResourceController extends BaseController {
 	public Object resourceTree(
 			@RequestParam(name = "officeId", required = true) Integer officeId) {
 		List<ResourceInfo> resource = resourceService.findResourceByOfficeId(officeId);
+		Map<String, Object> result = new HashMap<String, Object>();
 		if (resource != null && resource.size() > 0) {
-			Map<String, Object> result = new HashMap<String, Object>();
 			result.put("resource", resource);
-			return result;
+			result.put("resourceSize", resource.size());
 		} else {
-			return Collections.EMPTY_LIST;
+			result.put("resource", Collections.EMPTY_LIST);
+ 			result.put("resourceSize", 0);
 		}
+		return result;
 	}
     
     @RequestMapping(value = "${adminPath}/resource/tree", method = RequestMethod.POST)

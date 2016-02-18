@@ -47,10 +47,18 @@
 			},
 			dataType : 'json',
 			success : function(obj) {
-				$(obj.business).each(function(i,e){
+				if(obj.businessSize==0){
 					$('#' + treeNode.tId).prepend(
-							'<a onclick="showBusiness('+e.id+')" style="position:absolute;left:925px;color:blue;" class="gcode">'
-									+ e.name + '</a>');
+						'<span style="position:absolute;left:925px;" class="gcode">--</span>');
+				}else{
+					$('#' + treeNode.tId).prepend(
+							'<a onclick="javascript:$(\'#businessList\').modal(\'show\');" style="position:absolute;left:925px;color:blue;" class="gcode">'+obj.businessSize+'个</a>');
+				}
+				$(obj.business).each(function(i,e){
+// 					$('#' + treeNode.tId).prepend(
+// 							'<a onclick="showBusiness('+e.id+')" style="position:absolute;left:925px;color:blue;" class="gcode">'
+// 									+ e.name + '</a>');
+					$('#businessContainer').append('<li class="list-group-item">'+e.name+'</li>');
 				});
 			}
 		});
@@ -235,6 +243,45 @@ var htmlPart = {
 					<span class="form-control" id="b_shareWith" ></span>
 				</div>
 				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 模态框end -->
+<!-- 模态框start -->
+<div class="modal fade" id="businessList" tabindex="-1" role="dialog" 
+   aria-labelledby="businessLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" 
+               data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="businessLabel">
+               关联业务
+            </h4>
+         </div>
+			<div class="modal-body">
+<!-- 				<table class="table table-bordered"> -->
+<!-- 					<thead> -->
+<!-- 				      <tr> -->
+<!-- 				         <th>名称</th> -->
+<!-- 				         <th>职责</th> -->
+<!-- 				      </tr> -->
+<!-- 				   </thead> -->
+<!-- 				   <tbody id="jobContainer"> -->
+<!-- 					   <tr> -->
+<!-- 				         <td>Tanmay</td> -->
+<!-- 				         <td>Bangalore</td> -->
+<!-- 				         <td>560001</td> -->
+<!-- 				      </tr> -->
+<!-- 				   </tbody> -->
+<!-- 				</table> -->
+				<ul class="list-group" id="businessContainer"></ul>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
