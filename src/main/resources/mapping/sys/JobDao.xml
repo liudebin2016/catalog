@@ -528,6 +528,8 @@ FROM (
     group by j.id,jb.job_id)b   ON j.id = b.id and j.del_flag =0 and j.id=#{id}
   </select>
   <select id="findJobsByOfficeId" resultType="com.jusfoun.catalog.entity.Job" parameterType="int">
-  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag,status,office_id as officeId from job where job.office_id=#{officeId}
+  	select id,name,duty,type,create_by,create_date,update_by,update_date,del_flag,status,office_id as officeId 
+  	from job 
+  	where job.office_id=#{officeId} and del_flag=0
   </select>
 </mapper> 

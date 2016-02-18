@@ -358,7 +358,7 @@ FROM (
   <select id="findResourceByOfficeId" parameterType="java.lang.Integer" resultType="ResourceInfo">
 	select ri.id,ri.name
 	from resource_info ri
-	where response_party = #{officeId}
+	where response_party = #{officeId} and del_flag=0
   </select>
   
       <!-- 查询有效个数 -->

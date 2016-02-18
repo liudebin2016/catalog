@@ -27,7 +27,6 @@ import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Job;
 import com.jusfoun.catalog.entity.Register;
-import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.service.JobService;
 import com.jusfoun.catalog.service.RegisterService;
 import com.jusfoun.catalog.utils.LogUtils;
@@ -341,13 +340,15 @@ public class JobContoller extends BaseController {
 	 	public Object jobTree(
 	 			@RequestParam(name = "officeId", required = false) Integer officeId) {
 	 		List<Job> jobs = jobService.findJobsByOfficeId(officeId);
+	 		Map<String, Object> result = new HashMap<String, Object>();
 	 		if (jobs != null && jobs.size() > 0) {
-	 			Map<String, Object> result = new HashMap<String, Object>();
 	 			result.put("jobs", jobs);
-	 			return result;
+	 			result.put("jobsSize", jobs.size());
 	 		} else {
-	 			return Collections.EMPTY_LIST;
+	 			result.put("jobs", Collections.EMPTY_LIST);
+	 			result.put("jobsSize", 0);
 	 		}
+	 		return result;
 	 	}
 	
 } 
