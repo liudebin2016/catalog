@@ -259,13 +259,13 @@ var htmlPart = {
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
-		        <label class="compile-form-title fl">&nbsp;</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="businessView"  value="${job.id==''?'':busNa}"/>
-		        <input type="hidden" id="officeId" name="businessView"/>
+		        <label class="compile-form-title fl" style="margin-top: 15px;">相关业务</label>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="businessView"  value="${job.id==''?'':busNa}" readonly="readonly"/>
+		        
 			</div>
 			
 			<div class="c-formbox">
-				<label class="compile-form-title fl">相关业务</label>
+				<label class="compile-form-title fl">&nbsp;</label>
 				<input class="form-control inp fl c-f-width540" type="text" name="businessId" placeholder="" id="bizlink" value="" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
 		        <!-- 
 				<textarea class="form-control fl c-f-width450" rows="3"></textarea>
