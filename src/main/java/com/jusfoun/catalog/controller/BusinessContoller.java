@@ -265,6 +265,25 @@ public class BusinessContoller extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("${adminPath}/business/getBusByBusId")
+	public  String getBusByBusId(int page,int rows,HttpServletRequest request) throws IOException{
+		String busId=WebUtils.getCleanParam(request,"busId");
+		Business rsc=new Business();
+		//求得开始记录与结束记录
+		int start = (page-1)*rows+1;
+		int end = page * rows;
+		//把总记录和当前记录写到前台
+		//int total = businessService.findListCount(busId);
+		rsc.getSqlMap().put("start", ""+start);
+		rsc.getSqlMap().put("end", ""+end);
+		List<Business> uList = businessService.getBusByBusId(busId);
+		String json = JsonMapper.toJsonString(uList);
+		StringBuffer sb=new StringBuffer();
+		sb.append("{\"total\":").append(0).append(",\"rows\":").append(json).append("}");
+		return sb.toString();
+	}
+	
+	@ResponseBody
 	@RequestMapping("${adminPath}/business/findBySubId")
 	public  String findListBySubjectId(int page,int rows,HttpServletRequest request) throws IOException{
 		String subjectId=WebUtils.getCleanParam(request,"subjectId");
