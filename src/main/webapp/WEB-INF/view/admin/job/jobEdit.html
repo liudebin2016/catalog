@@ -265,6 +265,10 @@ var jsPart = {
 			}
 		return new_arr;
 	}
+	
+	function cancle(){
+		location.href='/admin/job/maintenance.do';
+	}
 </script>
 <%};%>
 <%
@@ -345,9 +349,9 @@ var htmlPart = {
 	   			<!-- <button class="btns  fl mr20" type="button" onclick="submitForm(1)">申请注册</button> -->
 	   			<%if(actionType =='create' || actionType == 'update'){%>
 	   				 <button class="btns-gray fl mr20" type="button" onclick="submitForm(3)">保存</button>
-	   				 <button class="btns-gray fl"  onclick="/admin/job/reloadList.do">取消</button>
+	   				 <button class="btns-gray fl" type="button" onclick="cancle()">取消</button>
 	   			 <% }else{ %>
-	   				 <button class="btns-gray fl"  onclick="/admin/job/reloadList.do">返回</button>
+	   				 <button class="btns-gray fl" type="button" onclick="cancle()">返回</button>
 	   			<%}%>
 	   		</div>
    		</form>
