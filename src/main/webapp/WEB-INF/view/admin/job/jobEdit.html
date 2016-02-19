@@ -203,6 +203,26 @@ var jsPart = {
 	}
 	
 	function submitForm(status){
+		var id = $("#id").val();
+		var jobName = $("#jobName").val();
+		var success =false;
+		$.ajax({  
+	        url : '../job/checkjobName',  
+	        async : false, // 注意此处需要同步  
+	        type : "POST",
+	        data :{name:jobName,id:id},
+	        dataType : "text",  
+	        success : function(data) {
+	        	if(data == "ishave"){
+					success = true;
+					
+				}
+	        }  
+	    });  
+		if(success){
+			alert("系统中已存在该岗位名称，请更换其他名称");
+			return false;
+		}
 		if($("#officeSel").val() ==""){
 			alert("所属单位不能为空");
 			return false;
@@ -263,17 +283,17 @@ var htmlPart = {
    			<input type="hidden" id="status" name="status" value="${job.id==''?'':job.status}"/>
    			<input type="hidden" id="busId" name="busId" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="officeId_text" name="officeId_text" value="${job.id==''?'':job.officeId}"/>
-   			<input type="hidden" name="id" value="${job.id==''?'':job.id}"/>
+   			<input type="hidden" id="id" name="id" value="${job.id==''?'':job.id}"/>
    			<input type="hidden" id="realBusinessIds" name="realBusinessIds" value="${job.id==''?'':busId}"/>
    			<input type="hidden" id="busNa" name="busNa" value="${job.id==''?'':busNa}"/>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位名称/职位</label>
-				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" name="name" value="${job.id==''?'':job.name}" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
+				<input class="form-control inp fl c-f-width540" type="text"  placeholder="" id="jobName" name="name" maxlength="30" value="${job.id==''?'':job.name}" ${job==null?'':actionType == 'view'?disabled="disabled":""}>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 				<label class="compile-form-title fl">岗位职责</label>
-				<textarea class="form-control fl c-f-width540" rows="3" name="duty" ${job==null?'':actionType == 'view'?disabled="disabled":""}>${job==null?'':job.id==''?'':job.duty}</textarea>
+				<textarea class="form-control fl c-f-width540" rows="3" name="duty" maxlength="200" ${job==null?'':actionType == 'view'?disabled="disabled":""}>${job==null?'':job.id==''?'':job.duty}</textarea>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">

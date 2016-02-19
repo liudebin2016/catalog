@@ -526,4 +526,15 @@ FROM (
   	from job 
   	where job.office_id=#{officeId} and del_flag=0
   </select>
+  <select id="checkjobName" resultType="int" parameterType="com.jusfoun.catalog.entity.Job">
+  	select count(id) from job
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        name = #{name}
+	    </if>  
+	    <if test="id != null and id != '' ">  
+	        AND id !=#{id}  
+	    </if>  
+	</trim>	
+  </select>
 </mapper> 

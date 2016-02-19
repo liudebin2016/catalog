@@ -123,4 +123,8 @@ public class JobService extends CrudService<JobDao,Job> {
 		
 		return dao.findJobsByOfficeId(officeId);
 	}
+
+	public int checkjobName(Job job) {
+		return dao.checkjobName(job);
+	}
 }

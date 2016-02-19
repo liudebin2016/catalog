@@ -359,5 +359,29 @@ public class JobContoller extends BaseController {
 	 		}
 	 		return result;
 	 	}
-	
+	/**
+	 * 校验岗位名称是否已经存在
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(value = "${adminPath}/job/checkjobName", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkjobName(HttpServletRequest request, HttpServletResponse response){
+		String name = request.getParameter("name");
+		String id = request.getParameter("id");
+		String delFlag="nohave";
+		Job job=new Job();
+		if(null!=name){
+			job.setName(name);
+		}
+		if(id != null && !id.equals("")){
+			job.setId(Integer.parseInt(id));
+		}
+		int temp = jobService.checkjobName(job);
+		if(temp > 0){
+			delFlag="ishave";
+		}
+		return delFlag;
+	}
 } 
