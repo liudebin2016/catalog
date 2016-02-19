@@ -51,10 +51,11 @@
 			success : function(obj) {
 				if(obj.jobsSize==0){
 					$('#' + treeNode.tId).prepend(
-							'<span style="position:absolute;left:925px;" class="gcode">--</span>');
+							'<span style="position:absolute;right:0;width:300px;" class="gcode">--</span>');
 				}else{
 					$('#' + treeNode.tId).prepend(
-						'<a onclick="javascript:$(\'#jobList\').modal(\'show\');" style="position:absolute;left:925px;color:blue;" class="gcode">'+obj.jobsSize+'个</a>');
+						'<a onclick="javascript:$(\'#jobList\').modal(\'show\');" style="position:absolute;right:0;width:300px;color:blue;" class="gcode">'+obj.jobsSize+'个</a>');
+					$('#jobContainer').empty();
 					$(obj.jobs).each(function(i,e){
 						$('#jobContainer').append('<li class="list-group-item">'+e.name+'</li>');
 						
@@ -75,12 +76,11 @@ var cssPart = {
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-	.ztree .level0{
-		margin-left: 0px;
-	}
-	.ztree li{
-		margin-left: 120px;
-	}
+	.ztree li{ position:relative;margin-left: 120px;}
+	.ztree li.level0{width:958px;margin-left: 0px;}
+	.ztree li.level1{width:820px}
+	.ztree li.level2{width:682px}
+	.ztree li.level3{width:544px}
 </style>
 <%};%>
 <%

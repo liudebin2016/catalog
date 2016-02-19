@@ -47,16 +47,17 @@
 			success : function(obj) {
 				if(obj.resourceSize==0){
 					$('#' + treeNode.tId).prepend(
-						'<span style="position:absolute;left:925px;" class="gcode">--</span>');
+						'<span style="position:absolute;right:0;width:300px;" class="gcode">--</span>');
 				}else{
 					$('#' + treeNode.tId).prepend(
-							'<a onclick="javascript:$(\'#resourceList\').modal(\'show\');" style="position:absolute;left:925px;color:blue;" class="gcode">'+obj.resourceSize+'个</a>');
+							'<a onclick="javascript:$(\'#resourceList\').modal(\'show\');" style="position:absolute;right:0;width:300px;color:blue;" class="gcode">'+obj.resourceSize+'个</a>');
 				}
+				$('#resourceContainer').empty();
 				$(obj.resource).each(function(i,e){
 // 					$('#' + treeNode.tId).prepend(
 // 							'<a onclick="showResource('+e.id+')" style="position:absolute;left:925px;color:blue;" class="gcode">'
 // 									+ e.name + '</a>');
-					$('#jobContainer').append('<li class="list-group-item">'+e.name+'</li>');
+					$('#resourceContainer').append('<li class="list-group-item">'+e.name+'</li>');
 				});
 			}
 		});
@@ -73,12 +74,11 @@ var cssPart = {
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-	.ztree .level0{
-		margin-left: 0px;
-	}
-	.ztree li{
-		margin-left: 120px;
-	}
+	.ztree li{ position:relative;margin-left: 120px;}
+	.ztree li.level0{width:958px;margin-left: 0px;}
+	.ztree li.level1{width:820px}
+	.ztree li.level2{width:682px}
+	.ztree li.level3{width:544px}
 </style>
 
 <%};%>
@@ -245,7 +245,7 @@ var htmlPart = {
 <!-- 				         <th>职责</th> -->
 <!-- 				      </tr> -->
 <!-- 				   </thead> -->
-<!-- 				   <tbody id="jobContainer"> -->
+<!-- 				   <tbody id="resourceContainer"> -->
 <!-- 					   <tr> -->
 <!-- 				         <td>Tanmay</td> -->
 <!-- 				         <td>Bangalore</td> -->
@@ -253,7 +253,7 @@ var htmlPart = {
 <!-- 				      </tr> -->
 <!-- 				   </tbody> -->
 <!-- 				</table> -->
-				<ul class="list-group" id="jobContainer"></ul>
+				<ul class="list-group" id="resourceContainer"></ul>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
