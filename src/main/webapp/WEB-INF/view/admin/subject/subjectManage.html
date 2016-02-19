@@ -5,12 +5,11 @@ var cssPart = {
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-	.ztree .level0{
-		margin-left: 0px;
-	}
-	.ztree li{
-		margin-left: 120px;
-	}
+	.ztree li{ position:relative;margin-left: 120px;}
+	.ztree li.level0{width:688px;margin-left: 0px;}
+	.ztree li.level1{width:550px}
+	.ztree li.level2{width:412px}
+	.ztree li.level3{width:274px}
 </style>
 
 <%};%>
@@ -60,7 +59,7 @@ var jsPart = {
 	};
 	function onClick(event, treeId, treeNode) {
 		jq1_4('#' + treeNode.tId).prepend(
-				'<span style="position:absolute;left:695px;" class="gcode">'
+				'<span style="position:absolute;right:0;width:300px;" class="gcode">'
 						+ treeNode.status.replace("1","使用").replace("2","草案").replace("3","废止").replace("4","标准") + '</span>');
 		jq1_4("#subsub").attr("href","/admin/subject/action.do?type=create&subjectId="+treeNode.id);
 		return true;
@@ -106,7 +105,7 @@ var htmlPart = {
   </div>
   <div class="ml-wrap mt20 mb30">
 		<div class="top-title">
-			<span>主题名称</span><span>子主题名称</span><span style="margin-left: 50px;">主题状态</span>
+			<span>主题名称</span><span>子主题名称</span><span style="margin-left: 100px;">主题状态</span>
 		</div>
   		<!-- 组织机构树 start -->
 		<div class="zTreeDemoBackground left">
