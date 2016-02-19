@@ -34,7 +34,19 @@ var jsPart = {
 	function resetBiz(){
 		$("#bizName").val("");
 		$("#bizStatus").val("");
+		getBizList();
 	}
+	
+	//输入框回车事件
+	$('#bizName').bind('keypress',function(event){
+            if(event.keyCode == "13"){
+            	getBizList();
+            }
+     });
+	//下拉框change事件
+	$("#bizStatus").on("change",function(){
+		getBizList();
+	});
 	
 	//查询
 	function getBizList(){
