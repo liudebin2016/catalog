@@ -26,12 +26,23 @@ var jsPart = {
 	//加载业务datagrid
 	var find = false;
 	var busId = $("#busId").val().split(',');
+	var url = "";
+	var businessId = "";
+	//判断当前是创建还是编辑 选用不同的方法查询后台
+	if($("#realBusinessIds").val()!="" && $("#realBusinessIds").val()!=null){
+		url = '/admin/business/getBusByBusId.do';
+		businessId = $("#realBusinessIds").val();
+	}else{
+		url = '/admin/business/bizList.do'
+		
+	}
 	$('#bizlink').combogrid({    
 	    panelWidth:540,    
 	    idField:'id', 
 	    textField:'name',
 	    multiple: true,
-	    url:'/admin/business/bizList.do',    
+	    url:url,
+	    queryParams : { busId : businessId }, 
 	    pagination:true,
 	    columns:[[    
 			{field:'ck',checkbox:true},
@@ -51,11 +62,11 @@ var jsPart = {
 	    onSelect: function (index, row) {
 	    	$(".validatebox-text").val("");
 	    	var ids = $("#realBusinessIds").val();
-	    	ids = uniQueue(ids+row.id);
+	    	ids = uniQueue(ids+row.id);  //去掉重复的值
 	    	$("#realBusinessIds").val(ids+",");
-	    	//将显示框内填充值
+	    	//将业务显示框内填充值
 	    	var busNa = $("#businessView").val();
-	    	busNa = uniQueue(busNa+row.name); 
+	    	busNa = uniQueue(busNa+row.name);  //去掉重复的值
 	    	$("#businessView").val(busNa+",");
 		},
         onUnselect: function (index, row) {
@@ -117,6 +128,10 @@ var jsPart = {
 			    		}
 		    		}
 		    	}
+		    	//分页去掉
+		    	if (data.total == 0) {
+	                $(".pagination").hide();
+	            }
 	    }, 
 	    onShowPanel: function(){
 	    	/* var rowss = $("#bizlink").combogrid("grid").datagrid("getRows");

@@ -1,5 +1,6 @@
 package com.jusfoun.catalog.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -110,5 +111,14 @@ public class BusinessService extends CrudService<BusinessDao, Business>{
 			registerService.cancel(Integer.valueOf(str), Register.TYPE_BUSINESS);
 		}
 		
+	}
+
+	public List<Business> getBusByBusId(String busId) {
+		String[] ids = busId.split(",");
+		List<Business> BusList = new ArrayList<Business>();
+		for(String id : ids){
+			BusList.add(dao.get(Integer.parseInt(id)));
+		}
+		return BusList;
 	}
 }
