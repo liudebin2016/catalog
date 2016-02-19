@@ -65,6 +65,7 @@ public class SubjectContoller extends BaseController {
 						mav.addObject("actionType", "view");
 						mav.addObject("parentId", null);
 					}else{
+						mav.addObject("parentId", si.getParentId());
 						mav.addObject("actionType", "update");
 					}
 				}
@@ -127,16 +128,16 @@ public class SubjectContoller extends BaseController {
 		SubjectInfo si=new SubjectInfo();
 		if(id != null && id != ""){
 			si.setId(Integer.parseInt(id));
+			si.setName(name);
+			si.setDescr(descr);
+			si.setShareMode(shareMode);
+			si.setShareRegion(shareRegion);
+			si.setStatus(Integer.valueOf(status));
+			si.setUpdateBy(UserUtils.getUser());
+			si.setUpdateDate(new Date());
+			subjectService.update(si);
+			LogUtils.saveLog(ServletTool.getRequest(), "目录管理-主题目录管理-主题更新");
 		}
-		si.setName(name);
-		si.setDescr(descr);
-		si.setShareMode(shareMode);
-		si.setShareRegion(shareRegion);
-		si.setStatus(Integer.valueOf(status));
-		si.setCreateBy(UserUtils.getUser());
-		si.setCreateDate(new Date());
-		subjectService.update(si);
-		LogUtils.saveLog(ServletTool.getRequest(), "目录管理-主题目录管理-主题更新");
 		return "admin/subject/subjectManage";
 	}
 	
