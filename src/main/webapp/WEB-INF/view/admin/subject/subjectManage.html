@@ -55,12 +55,12 @@ var jsPart = {
 			onClick : onClick,
 			beforeRemove:beforeRemove,
 			onRemove: onRemove,
-			onRename: zTreeOnRename
+			beforeEditName: beforeEditName
 		}
 	};
 	function onClick(event, treeId, treeNode) {
 		jq1_4('#' + treeNode.tId).prepend(
-				'<span style="position:absolute;left:595px;" class="gcode">'
+				'<span style="position:absolute;left:695px;" class="gcode">'
 						+ treeNode.status.replace("1","使用").replace("2","草案").replace("3","废止").replace("4","标准") + '</span>');
 		jq1_4("#subsub").attr("href","/admin/subject/action.do?type=create&subjectId="+treeNode.id);
 		return true;
@@ -81,13 +81,9 @@ var jsPart = {
 			},'json');
 		}
 	}
-	function zTreeOnRename(event,treeNode,treeId){
-		var id = treeId.id;
-		var name = treeId.name;
-		var status = treeId.status;
-		$.post('../subject/doUpdate',{id:id,name:name,status:status},function(obj){
-			//完成编辑动作
-		},'json');
+	function beforeEditName(treeId, treeNode){
+		location.href='/admin/subject/action.do?type=update&subjectId='+treeNode.id;
+// 		$.get('/admin/subject/action.do?type=update&subjectId='+treeNode.id);
 	}
 </script>
 

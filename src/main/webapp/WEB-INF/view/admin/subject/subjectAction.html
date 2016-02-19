@@ -29,6 +29,7 @@ var htmlPart = {
 		<span class="imaginary-line"></span>
 		<div class="compile-form">
 			<input type="hidden" name="parentId" value="${parentId!=null?parentId:''}">
+			<input type="hidden" name="id" value="${subject==null?'':subject.id}">
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">主题名称</label>
 				<input class="form-control inp fl c-f-width540" type="text" placeholder="" name="name" value="${subject==null?'':subject.name}">

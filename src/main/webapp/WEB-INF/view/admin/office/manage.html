@@ -107,7 +107,7 @@
 			dataType : 'json',
 			success : function(obj) {
 				$('#' + treeNode.tId).prepend(
-						'<span style="position:absolute;left:955px;color:blue;" class="gcode" title="'+obj.data.typeValue+'">'
+						'<span style="position:absolute;right:0;width:300px;color:blue;" class="gcode" title="'+obj.data.typeValue+'">'
 								+ (obj.data.typeValue.length>12 ? (obj.data.typeValue.substring(0,12)+'...') : obj.data.typeValue)+ '</span>');
 			}
 		});
@@ -178,12 +178,11 @@
 <link rel="stylesheet" href="/resources/assets/css/main.css">
 <link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <style type="text/css">
-	.ztree .level0{
-		margin-left: 0px;
-	}
-	.ztree li{
-		margin-left: 120px;
-	}
+	.ztree li{ position:relative;margin-left: 120px;}
+	.ztree li.level0{width:988px;margin-left: 0px;}
+	.ztree li.level1{width:850px}
+	.ztree li.level2{width:712px}
+	.ztree li.level3{width:574px}
 </style>
 <%};%>
 <% var jsPart = { %>
