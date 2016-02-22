@@ -201,13 +201,13 @@ function subDg(name){
 	    }
 	}); 
 }
-
+var idx=0;
 function search(){
 	var tab = $('#srhTabst').tabs('getSelected');
-   	var idx = $('#srhTabst').tabs('getTabIndex',tab);
+   	var idx1 = $('#srhTabst').tabs('getTabIndex',tab);
 	$("#srhHeader").attr("style","display:none;");
 	$("#srhBody").attr("style","display:block;padding:10px 0px;width: 650px;height:620px;");
-   	if(idx==0){
+   	if(idx1==0){
    		ofcDat($('#_ipt').val());
    	}
 	$('#srhTabsb').tabs({    
@@ -216,11 +216,11 @@ function search(){
 	    selected:idx,
 	    onSelect:function(title,index){
 	    	switch(index){
-				case 0:ofcDat($('#_ipt').val());break;
-				case 1:jobDg($('#_ipt').val());break;
-				case 2:bizDg($('#_ipt').val());break;
-				case 3:rscDg($('#_ipt').val());break;
-				case 4:subDg($('#_ipt').val());break;	
+				case 0:ofcDat($('#_ipt').val()); idx=0; break;
+				case 1:jobDg($('#_ipt').val()); idx=1;break;
+				case 2:bizDg($('#_ipt').val()); idx=2;break;
+				case 3:rscDg($('#_ipt').val()); idx=3;break;
+				case 4:subDg($('#_ipt').val()); idx=4;break;	
 			}
 	    }    
 	}); 
