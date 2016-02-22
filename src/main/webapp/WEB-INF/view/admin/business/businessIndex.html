@@ -25,7 +25,7 @@ var jsPart = {
 <script type="text/javascript">
 	//ready func
 	jq1_4(document).ready(function(){
-		jq1_4.post('../office/tree',function(obj){
+		jq1_4.post('../office/officeTree',function(obj){
 			// init tree
 			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
 		},'json');
@@ -39,7 +39,7 @@ var jsPart = {
 		edit : {enable : false},
 		async : {
 			enable : true,
-			url : "../business/tree",
+			url : "tree",
 			autoParam : [ "id"],
 			dataType : "json"
 		},
