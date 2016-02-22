@@ -22,7 +22,7 @@ $(function(){
 	//加载树
 	$('#etree').tree({
         url:'/build/eTreeNode',
-        animate:true,
+        animate:false,
         onClick: function(node){
      		$("#officeId").val(node.id);// 在用户点击的时候提示
      	}
