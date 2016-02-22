@@ -302,13 +302,13 @@ var htmlPart = {
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl">岗位所属单位</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel"  onkeydown="return false;" unselectable='true'  onfocus="this.blur();"/>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="officeSel"  onkeydown="return false;" unselectable='true'  onfocus="this.blur();" ${job==null?'':actionType == 'view'?disabled="disabled":""}/>
 		        <input type="hidden" id="officeId" name="officeId"/>
 			</div>
 			<div class="mb20 clearfix"></div>
 			<div class="c-formbox">
 		        <label class="compile-form-title fl" style="margin-top: 15px;">相关业务</label>
-		        <input class="form-control inp fl c-f-width540" type="text"  id="businessView"  value="${job.id==''?'':busNa}" onkeydown="return false;" onmousedown="return false" onkeyup="return false;"/>
+		        <input class="form-control inp fl c-f-width540" type="text"  id="businessView"  value="${job.id==''?'':busNa}" onkeydown="return false;" onmousedown="return false" onkeyup="return false;" ${job==null?'':actionType == 'view'?disabled="disabled":""}/>
 		        
 			</div>
 			
