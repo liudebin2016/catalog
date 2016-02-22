@@ -53,7 +53,7 @@ public class LogController extends BaseController {
     	String userName=WebUtils.getCleanParam(request,"userName");
 		String beginDate=WebUtils.getCleanParam(request,"beginDate");
 		String endDate=WebUtils.getCleanParam(request,"endDate");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LogAndUserView log = new LogAndUserView();
 		if(userName!=null){
 			log.setUserName("%"+userName+"%");
