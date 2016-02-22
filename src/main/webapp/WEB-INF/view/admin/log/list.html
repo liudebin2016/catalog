@@ -119,19 +119,18 @@ var htmlPart = {
 	    <h3 class="h3tit mt30">使用日志</h3>
 	 	<div class="form-list top-search">
 	     	<ul class="li-fl">
-	         	<li>
+	         	 <li>
 	             	<label>用户名</label>
-	                 <input class="form-control inp wd260 " type="text" placeholder="" id="userName">
+	                <input class="form-control inp wd260 " type="text" placeholder="" id="userName">
 	             </li>
-	         	<li>
-	            <label>时间筛选</label>
-	            <input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="beginDate">
-	             
-	             <label>至</label>
-	             <input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="endDate">                    
-	                 
+	         	 <li>
+	           		<label>时间</label>
+	           		<input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="beginDate">
 	             </li>
-	            
+	             <li>
+	             	<label>&nbsp;至</label>
+	             	<input class="easyui-datetimebox" editable="false" data-options="required:false" required style="width:200px" id="endDate">                        
+	             </li>
 	         	<li>
 	             	<button class="btns mlt30" type="button" onclick="getRscList()">检索</button>
 	                 <input class="nobg mlt10" name="清空" type="reset" value="清空" onclick="resetSrc()">                                       
