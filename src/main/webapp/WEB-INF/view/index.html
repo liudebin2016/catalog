@@ -28,25 +28,6 @@ $(function(){
      	}
     });
 	
-	/* $('#_search').on('click',function(){
-		var _v = $('#_ipt').val();
-		if($.trim(_v) ==='')
-			return;
-		$('#searchForm').submit();
-	}); */
-	
-   	/* var tab = $('#srhTab').tabs('getSelected');
-   	var index = $('#srhTab').tabs('getTabIndex',tab);
-	$("#srhType").val(index+1);
-	
-	$('#srhTab').tabs({    
-	    border:false,   
-	    plain:true,
-	    onSelect:function(title,index){ 
-	    	$("#srhType").val(index+1);
-	    }    
-	});   */
-
 });
 
 //搜索树
@@ -203,13 +184,15 @@ function subDg(name){
 }
 var idx=0;
 function search(){
-	var tab = $('#srhTabst').tabs('getSelected');
-   	var idx1 = $('#srhTabst').tabs('getTabIndex',tab);
 	$("#srhHeader").attr("style","display:none;");
 	$("#srhBody").attr("style","display:block;padding:10px 0px;width: 650px;height:620px;");
-   	if(idx1==0){
-   		ofcDat($('#_ipt').val());
-   	}
+  	switch(idx){
+		case 0:ofcDat($('#_ipt').val()); idx=0; break;
+		case 1:jobDg($('#_ipt').val()); idx=1;break;
+		case 2:bizDg($('#_ipt').val()); idx=2;break;
+		case 3:rscDg($('#_ipt').val()); idx=3;break;
+		case 4:subDg($('#_ipt').val()); idx=4;break;	
+	}
 	$('#srhTabsb').tabs({    
 	    border:true,   
 	    plain:true,
@@ -226,6 +209,22 @@ function search(){
 	}); 
 	
 }
+
+$(function(){
+	//设置按Enter键进行搜索
+	window.document.onkeydown = keySrh;
+	function keySrh(evt){
+		evt = (evt) ? evt : window.event
+		if (evt.keyCode) {
+			if (evt.keyCode==13){  //回车键的键值为13,即Enter键
+				 search();
+			}
+		}
+	}
+	
+}); 
+
+
 
 </script>
 
