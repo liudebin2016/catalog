@@ -21,11 +21,18 @@ var jsPart = {
 
 <script type="text/javascript">
 	// ready func
+	var initIds = [];
 	jq1_4(document).ready(function(){
 		$.post('../office/tree',function(obj){
 			// init tree
 			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+			for(var i=0;i<obj.length;i++){
+				//alert(obj[i].id);
+				initIds.push(obj[i].id);
+			}
+			getRscList("",initIds);
 		},'json');
+		
 		// search nodes
 		$('#searchNodes').bind("propertychange", searchNode).bind("input", searchNode);
 	});
@@ -87,7 +94,7 @@ var jsPart = {
 		$("#srcOffice").val("");
 		$("#srcType").val("");
 		var ids = [-100];
-		getRscList("",ids);
+		getRscList("",initIds);
 	}
 	
 	//查询
@@ -149,10 +156,10 @@ var jsPart = {
 	//$(document).ready(function(){
 	//	getRscList();
 	//});
-	window.onload=function(){
+	/* window.onload=function(){
 		var ids = [-100];
 		getRscList("",ids);
-	}
+	} */
 	$('#checkSearch').on('click',function(){
 		var ids = [];
 		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
@@ -161,7 +168,7 @@ var jsPart = {
 			//ids = getChildren(ids,treeNode[0]);
 			ids.push(treeNode.id);
 		}else{
-			ids = [-100]
+			ids = initIds;
 		}
 		getRscList("",ids);
 	})
@@ -199,7 +206,7 @@ var jsPart = {
         			//ids = getChildren(ids,treeNode[0]);
         			ids.push(treeNode[0].id);
         		}else{
-        			ids = [-100]
+        			ids = initIds;
         		}
         		getRscList("",ids);
             }
@@ -213,7 +220,7 @@ var jsPart = {
 			//ids = getChildren(ids,treeNode[0]);
 			ids.push(treeNode[0].id);
 		}else{
-			ids = [-100]
+			ids = initIds;
 		}
 		getRscList("",ids);
 	});
