@@ -90,7 +90,7 @@ var jsPart = {
 	}
 	
 	//查询
-	function getRscList(id,ids){
+	function getRscList(id,ids,officeId){
 		var srcOffice = "";
 		if(id == null || id == ""){
 			srcOffice = $.trim($("#srcOffice").val());
@@ -153,7 +153,14 @@ var jsPart = {
 		getRscList("",ids);
 	}
 	$('#checkSearch').on('click',function(){
-		var ids = [-100];
+		var ids = [];
+		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
+		var treeNode = zTree.getSelectedNodes();
+		if(treeNode.length>0){
+			ids = getChildren(ids,treeNode[0]);
+		}else{
+			ids = [-100]
+		}
 		getRscList("",ids);
 	})
 	 ///根据文本框的关键词输入情况自动匹配树内节点 进行模糊查找
@@ -183,15 +190,38 @@ var jsPart = {
 	//输入框回车事件
 	$('#jobName').bind('keypress',function(event){
             if(event.keyCode == "13"){
-            	var ids = [-100];
+            	var ids = [];
+            	var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
+        		var treeNode = zTree.getSelectedNodes();
+        		if(treeNode.length>0){
+        			ids = getChildren(ids,treeNode[0]);
+        		}else{
+        			ids = [-100]
+        		}
         		getRscList("",ids);
             }
      });
 	//下拉框change时间
 	$("#srcType").on("change",function(){
-		var ids = [-100];
+		var ids = [];
+		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
+		var treeNode = zTree.getSelectedNodes();
+		if(treeNode.length>0){
+			ids = getChildren(ids,treeNode[0]);
+		}else{
+			ids = [-100]
+		}
 		getRscList("",ids);
 	});
+	function getChildren(ids,treeNode){
+		ids.push(treeNode.id);
+		 if (treeNode.isParent){
+				for(var obj in treeNode.children){
+					getChildren(ids,treeNode.children[obj]);
+				}
+		    }
+		 return ids;
+	}
 </script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.exhide-3.5.js"></script>

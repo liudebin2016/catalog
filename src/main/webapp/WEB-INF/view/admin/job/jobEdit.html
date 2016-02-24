@@ -205,6 +205,10 @@ var jsPart = {
 	function submitForm(status){
 		var id = $("#id").val();
 		var jobName = $("#jobName").val();
+		if(jobName ==""){
+			alert("岗位名称不能为空");
+			return false;
+		}
 		var success =false;
 		$.ajax({  
 	        url : '../job/checkjobName',  
