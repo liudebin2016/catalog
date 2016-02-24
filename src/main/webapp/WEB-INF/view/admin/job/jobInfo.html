@@ -51,7 +51,8 @@ var jsPart = {
 			 return ids;
 		}
 		var ids=[];
-		ids=getChildren(ids,treeNode);
+		//ids=getChildren(ids,treeNode);
+		ids.push(treeNode.id);
 		$.ajax({
 			type : 'post',
 			async : false,
@@ -157,7 +158,8 @@ var jsPart = {
 		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
 		var treeNode = zTree.getSelectedNodes();
 		if(treeNode.length>0){
-			ids = getChildren(ids,treeNode[0]);
+			//ids = getChildren(ids,treeNode[0]);
+			ids.push(treeNode.id);
 		}else{
 			ids = [-100]
 		}
@@ -191,10 +193,11 @@ var jsPart = {
 	$('#jobName').bind('keypress',function(event){
             if(event.keyCode == "13"){
             	var ids = [];
-            	var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
+                var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
         		var treeNode = zTree.getSelectedNodes();
         		if(treeNode.length>0){
-        			ids = getChildren(ids,treeNode[0]);
+        			//ids = getChildren(ids,treeNode[0]);
+        			ids.push(treeNode[0].id);
         		}else{
         			ids = [-100]
         		}
@@ -205,9 +208,10 @@ var jsPart = {
 	$("#srcType").on("change",function(){
 		var ids = [];
 		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree");
-		var treeNode = zTree.getSelectedNodes();
+		var treeNode = zTree.getSelectedNodes(); 
 		if(treeNode.length>0){
-			ids = getChildren(ids,treeNode[0]);
+			//ids = getChildren(ids,treeNode[0]);
+			ids.push(treeNode[0].id);
 		}else{
 			ids = [-100]
 		}
