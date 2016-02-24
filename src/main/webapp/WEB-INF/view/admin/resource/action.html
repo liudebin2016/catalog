@@ -116,8 +116,12 @@ function removeField(obj){
 }
 //增加信息字段
 function addField(){
-	var sdf='<div style="margin-left:10px;">'+$('#forInfoField').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeField(this)">删除</a></div>'
-	$('#addField').append(sdf)
+	if($.trim($('#forInfoField').val())){
+		var sdf='<div style="margin-left:10px;">'+$('#forInfoField').val()+' &nbsp;&nbsp;<a href="javascript:void(0);" onclick="removeField(this)">删除</a></div>'
+		$('#addField').append(sdf)
+	}else{
+		alert("请输入信息字段值！");
+	}
 }
 
 function validNum(obj){

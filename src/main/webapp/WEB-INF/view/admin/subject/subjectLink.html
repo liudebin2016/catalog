@@ -347,7 +347,8 @@ var jsPart = {
 	    	if(data=="success"){
 	    		alert('删除成功！');
 // 	    		$.messager.alert('提示','删除成功！');
-	    		location.reload();
+// 	    		location.reload();
+	    		$('#biz').datagrid('reload'); 
 	    	}
 	    });
 	}
@@ -359,7 +360,8 @@ var jsPart = {
 	    	if(data=="success"){
 	    		alert('删除成功！');
 // 	    		$.messager.alert('提示','删除成功！');
-	    		location.reload();
+// 	    		location.reload();
+	    		$('#rsc').datagrid('reload'); 
 	    	}
 	    });
 	}

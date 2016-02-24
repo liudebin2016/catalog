@@ -24,8 +24,10 @@ var jsPart = {
 		$.get("/admin/resource/delRsc.do", { id: id },
 		    function(data){
 		    	if(data=="success"){
-		    		alert("删除成功！");
-		    		location.reload();
+		    		if (confirm("确定要删除？")){
+		    			alert("删除成功！");
+			    		$('#dg').datagrid('reload');
+		    		}
 		    	}
 		    }
 		);
