@@ -22,15 +22,15 @@ var jsPart = {
 <script type="text/javascript">
 	//根据id删除业务
 	function delBizById(id){
-		$.get("/admin/business/delBiz.do", { id: id },
-	    function(data){
-	    	if(data=="success"){
-    		  if (confirm("确定要删除？")){
-	    		alert("删除成功！");
-	    		$('#dg').datagrid('reload');
-    		  }
-	    	}
-	    });
+		if (confirm("确定要删除？")){
+			$.get("/admin/business/delBiz.do", { id: id },
+		    function(data){
+		    	if(data=="success"){
+		    		alert("删除成功！");
+		    		$('#dg').datagrid('reload');
+	    		}
+		    });
+		}
 	}
 	
 	function resetBiz(){

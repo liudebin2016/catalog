@@ -25,6 +25,7 @@ $(function(){
         animate:false,
         onClick: function(node){
      		$("#officeId").val(node.id);// 在用户点击的时候提示
+     		search();
      	}
     });
 	
@@ -37,7 +38,11 @@ function srhTree(obj){
 
 function ofcDat(val){
 	$.getJSON("/search",
-		{ search_value: val, search_type: 1, officeId:$("#officeId").val() }, 
+		{ 
+			search_value: val, 
+			search_type: 1, 
+			officeId:$("#officeId").val() 
+		}, 
 		function(data){
 			if(data!=""){
 			  	$.each(data, function(i,item){
@@ -57,6 +62,7 @@ function jobDg(name){
 	    queryParams: {
 			name: name,
 			officeId:$("#officeId").val(),
+			search_type: 2,
 			status: "2"
 		},
 	    pagination:true,
@@ -93,6 +99,7 @@ function bizDg(name){
 	    queryParams: {
 			name: name,
 			officeId:$("#officeId").val(),
+			search_type: 3,
 			status: "2"
 		},
 	    pagination:true,
@@ -128,6 +135,7 @@ function rscDg(name){
 	    queryParams: {
 			name: name,
 			officeId:$("#officeId").val(),
+			search_type: 4,
 			status: 2
 		},
 	    pagination:true,
@@ -163,7 +171,8 @@ function subDg(name){
 	    url:'/srh/subDg.do', 
 	    fitColumns:true,
 	    queryParams: {
-			name:name
+			name:name,
+			search_type: 1
 		},
 		pagination:true,
 	    method:"get",

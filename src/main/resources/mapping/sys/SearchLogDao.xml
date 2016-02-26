@@ -8,18 +8,53 @@
        	a.srhType,
        	a.remarks
     </sql>
-
+    
+	<!-- 搜索记录 -->
     <insert id="insert" parameterType="SearchLog">
         INSERT INTO rpt_search(
             keyword,
 	       	srhTime,
 	       	srhType,
+	       	officeId,
 	       	remarks
         ) VALUES (
 	        #{keyword},
 	        #{srhTime},
 			#{srhType},
+			#{officeId},
 			#{remarks}
         )
     </insert>
+    
+    <!-- 热词排行 -->
+    <select id="hotWord">
+    	SELECT *
+		FROM (SELECT t.keyword, count(t.keyword) AS kwCount
+		          FROM RPT_SEARCH t
+		         GROUP BY t.keyword
+		         ORDER BY kwCount DESC) v
+		WHERE ROWNUM<![CDATA[<=]]>10
+    </select>
+    
+    <!-- 热门机构 -->
+    <select id="hotOffice">
+    	SELECT 
+    		*
+    	FROM 
+		  (SELECT 
+		  	t.officeid,t.name,COUNT(t.officeid) AS oiCount
+		    FROM (
+		    	SELECT 
+		    		s.officeid AS officeid, o.name AS name
+		        FROM 
+		        	RPT_SEARCH s, SYS_OFFICE o
+		        WHERE s.officeid = o.id
+		        ) t
+		   GROUP BY t.officeid,t.name
+		   ORDER BY oiCount desc) v
+		WHERE ROWNUM<![CDATA[<=]]>10
+    
+    </select>
+    
+    
 </mapper>

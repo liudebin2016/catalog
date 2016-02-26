@@ -21,16 +21,16 @@ var jsPart = {
 <script type="text/javascript">
 	//根据id删除资源
 	function delRscById(id){
-		$.get("/admin/resource/delRsc.do", { id: id },
-		    function(data){
-		    	if(data=="success"){
-		    		if (confirm("确定要删除？")){
+		if (confirm("确定要删除？")){
+			$.get("/admin/resource/delRsc.do", { id: id },
+			    function(data){
+			    	if(data=="success"){
 		    			alert("删除成功！");
 			    		$('#dg').datagrid('reload');
-		    		}
-		    	}
-		    }
-		);
+			    	}
+			    }
+			);
+		}
 	}
 	
 	function resetSrc(){
