@@ -395,9 +395,9 @@ FROM (
   
   <!-- 查询有效个数 -->
   <select id="getCount" resultType="java.lang.Long">
-  	select count(id)
-  	from subject_info
-  	where del_flag = 0
+  	SELECT count(id)
+  	FROM subject_info
+  	WHERE del_flag = 0
   </select>
   
   <!-- 为前面搜索而生 -->

@@ -465,9 +465,9 @@ FROM (
   
     <!-- 查询有效个数 -->
   <select id="getCount" resultType="java.lang.Long">
-  	select count(id)
-  	from job
-  	where del_flag = 0
+  	SELECT count(id)
+  	FROM job
+  	WHERE del_flag = 0 AND status=5
   </select>
   
     

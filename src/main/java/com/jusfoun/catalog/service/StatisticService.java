@@ -43,7 +43,7 @@ public class StatisticService extends BaseService {
 	 * @return
 	 */
 	public Map<String, String> getAllModuleCount() {
-		Long areaCount = areaDao.getCount();
+		Long areaCount = officeDao.getDemainCount();
 		Long officeCount = officeDao.getCount();
 		Long jobCount = jobDao.getCount();
 		Long businessCount = businessDao.getCount();

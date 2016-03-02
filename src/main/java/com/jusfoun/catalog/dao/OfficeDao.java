@@ -28,4 +28,10 @@ public interface OfficeDao extends TreeDao<Office> {
 	List<Office> queryOffices(Map<String, Object> param);
 	
 	List<ETreeNode> findByPid(int pid);
+
+	/**
+	 * 获取域的个数
+	 * @return
+	 */
+	Long getDemainCount();
 }

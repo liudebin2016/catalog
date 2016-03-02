@@ -363,9 +363,9 @@ FROM (
   
       <!-- 查询有效个数 -->
   <select id="getCount" resultType="java.lang.Long">
-  	select count(id)
-  	from resource_info
-  	where del_flag = 0
+  	SELECT count(id)
+  	FROM resource_info
+  	WHERE del_flag = 0 and STATUS=5
   </select>
   
   <!-- 查询列表中元素数量 -->

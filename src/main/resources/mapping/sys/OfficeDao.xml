@@ -206,11 +206,28 @@
 		</choose>
     </select>
 
-	<!-- 查询有效个数 -->
+	<!-- 查询域的个数 -->
+	<select id="getDemainCount" resultType="java.lang.Long">
+		SELECT count(o.id)
+  		FROM SYS_OFFICE o,(SELECT t.name, t.id FROM SYS_OFFICE t WHERE t.parent_id = 0) s
+ 		WHERE o.parent_id = s.id
+	</select>
+	
+	<!-- 查询机构的个数 -->
 	<select id="getCount" resultType="java.lang.Long">
-		select count(id)
-		from sys_office
-		where del_flag = 0
+		SELECT count(c.id) FROM(
+			SELECT a.id from SYS_OFFICE a WHERE a.parent_id IN (
+				SELECT o.id
+  			    FROM SYS_OFFICE o,(SELECT t.name, t.id FROM SYS_OFFICE t WHERE t.parent_id = 0) s WHERE o.parent_id = s.id
+ 			)
+ 			UNION
+ 			SELECT b.id FROM SYS_OFFICE b WHERE b.parent_id IN(
+ 				SELECT a.id FROM SYS_OFFICE a WHERE a.parent_id IN (
+ 					SELECT o.id
+  				    FROM SYS_OFFICE o,(SELECT t.name, t.id FROM SYS_OFFICE t WHERE t.parent_id = 0) s WHERE o.parent_id = s.id
+ 				)
+ 			)
+ 		) c
 	</select>
 	
 	<!-- queryOffices -->
