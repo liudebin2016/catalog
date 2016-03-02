@@ -647,6 +647,14 @@ start with 1
 increment by 1
 cache 20;
 
+--sys_user表序列
+create sequence sys_user_seq
+minvalue 1
+maxvalue 999999999999999999999999999
+start with 1
+increment by 1
+cache 20;
+
 -- ----------------------------
 -- Records of SYS_USER
 -- ----------------------------
@@ -894,6 +902,15 @@ CREATE OR REPLACE TRIGGER "ORACLE"." SYS_LOG_TRI" BEFORE INSERT ON "ORACLE"."SYS
 BEGIN
    SELECT catalog_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
 END;
+
+-- ----------------------------
+-- Triggers structure for table SYS_LOG
+-- ----------------------------
+CREATE OR REPLACE TRIGGER "ORACLE"."SYS_USER_TRI" BEFORE INSERT ON "ORACLE"."SYS_USER" REFERENCING OLD AS "OLD" NEW AS "NEW" FOR EACH ROW ENABLE
+BEGIN
+   SELECT sys_user_seq.NEXTVAL INTO :NEW.ID FROM DUAL;
+END;
+
 
 -- ----------------------------
 -- Checks structure for table SYS_LOG
