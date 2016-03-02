@@ -107,6 +107,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         User user = getSystemService().getUserByLoginName(principal.getLoginName());
         if (user != null) {
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+            // 获取用户授权的菜单集合
             List<Menu> list = UserUtils.getMenuList();
             for (Menu menu : list){
                 if (StringUtils.isNotBlank(menu.getPermission())){
