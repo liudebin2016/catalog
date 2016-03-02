@@ -11,7 +11,34 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript">
+
+function getHotword(type){
+	$.getJSON("/admin/srh/hotwords.do",{type:type},function(data){
+		 var innerHtml="";
+		 $.each(data, function(i,item){
+			innerHtml+="<li>"+item.keyword+"</li>";
+		 });
+		 $("#hotwords").html(innerHtml);
+	});
+}
+
+function getHotOffice(type){
+	$.getJSON("/admin/srh/hotOffices.do",{type:"week"},function(data){
+		 var innerHtml="";
+		 $.each(data, function(i,item){
+			innerHtml+="<li>"+item.officeName+"</li>";
+		 });
+		 $("#hotOffices").html(innerHtml);
+	});
+}
+
+$(document).ready(function(){
+	getHotword("week");
+	getHotOffice("week");
+});
+
 
 </script>
 <%};%>
@@ -33,7 +60,7 @@ var htmlPart = {
 	        // 路径配置
 	        require.config({
 	            paths: {
-	                echarts: 'http://echarts.baidu.com/build/dist'
+	                echarts: 'http://echarts.baidu.com/build/dist/'
 	            }
 	        });
 	        
@@ -41,7 +68,7 @@ var htmlPart = {
 	        require(
 	            [
 	                'echarts',
-	                'echarts/chart/line' // 使用柱状图就加载bar模块，按需加载
+	                'echarts/chart/line' // 使用柱状图就加载line模块，按需加载
 	            ],
 	            function (ec) {
 	                // 基于准备好的dom，初始化echarts图表
@@ -52,7 +79,7 @@ var htmlPart = {
                 	        trigger: 'axis'
                 	    },
                 	    legend: {
-                	        data:['机构','岗位','业务','资源','主题']
+                	        data:${legend_data}
                 	    },
                 	    toolbox: {
                 	        show : true,
@@ -69,7 +96,7 @@ var htmlPart = {
                 	        {
                 	            type : 'category',
                 	            boundaryGap : false,
-                	            data : ['6月','7月','8月','9月','10月','11月','12月']
+                	            data : ${xAxis_data}
                 	        }
                 	    ],
                 	    yAxis : [
@@ -78,36 +105,7 @@ var htmlPart = {
                 	        }
                 	    ],
                 	    series : [
-                	        {
-                	            name:'机构',
-                	            type:'line',
-                	            stack: '总量',
-                	            data:[120, 132, 101, 134, 90, 230, 210]
-                	        },
-                	        {
-                	            name:'岗位',
-                	            type:'line',
-                	            stack: '总量',
-                	            data:[220, 182, 191, 234, 290, 330, 310]
-                	        },
-                	        {
-                	            name:'业务',
-                	            type:'line',
-                	            stack: '总量',
-                	            data:[150, 232, 201, 154, 190, 330, 410]
-                	        },
-                	        {
-                	            name:'资源',
-                	            type:'line',
-                	            stack: '总量',
-                	            data:[320, 332, 301, 334, 390, 330, 320]
-                	        },
-                	        {
-                	            name:'主题',
-                	            type:'line',
-                	            stack: '总量',
-                	            data:[820, 932, 901, 934, 990, 992, 995]
-                	        }
+                	        ${data}
                 	    ]
                 	};
 	        
@@ -118,53 +116,31 @@ var htmlPart = {
 	    </script>
     </div>
   </div>
-          <ul class = "hot-area ">
+  <ul class = "hot-area ">
     <li class = "chart-l mt20">
-              <div class = "text-area">
+      <div class = "text-area">
         <p><span><span class = "fs30">T</span>OP10</span> 热词排行</p>
         <ul  class = "time-option">
-                  <li><a>本周</a></li>
-                  <li><a>本月</a></li>
-                  <li><a>本年</a></li>
-                </ul>
+          <li><a href="javascript:getHotword('week');">本周</a></li>
+          <li><a href="javascript:getHotword('month');">本月</a></li>
+          <li><a href="javascript:getHotword('year');">本年</a></li>
+        </ul>
       </div>
-              <ul class = "img-area-l">
-        <li>大数据</li>
-        <li>北京交通</li>
-        <li>雾霾数据</li>
-        <li>财政</li>
-        <li>环保</li>
-        <li>福利</li>
-        <li>民生</li>
-        <li>计划生育</li>
-        <li>科技</li>
-        <li>注册</li>
-      </ul>
-            </li>
+      <ul class = "img-area-l" id="hotwords"></ul>
+    </li>
     <li class = "chart-r mt20">
-              <div class = "text-area">
+      <div class = "text-area">
         <p><span><span class = "fs30">T</span>OP10</span> 热门机构</p>
         <ul class = "time-option">
-                  <li><a>本周</a></li>
-                  <li><a>本月</a></li>
-                  <li><a>本年</a></li>
-                </ul>
+          <li><a href="javascript:getHotOffice('week');">本周</a></li>
+          <li><a href="javascript:getHotOffice('month');">本月</a></li>
+          <li><a href="javascript:getHotOffice('year');">本年</a></li>
+        </ul>
       </div>
-              <ul class = "img-area-r">
-        <li>大数据</li>
-        <li>北京交通</li>
-        <li>雾霾数据</li>
-        <li>财政</li>
-        <li>环保</li>
-        <li>福利</li>
-        <li>民生</li>
-        <li>计划生育</li>
-        <li>科技</li>
-        <li>注册</li>
-      </ul>
-            </li>
+      <ul class = "img-area-r" id="hotOffices"></ul>
+    </li>
   </ul>
-        </div>
+ </div>
     <!-- end: PAGE -->
 </div>
 <!-- end: MAIN CONTAINER -->

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jusfoun.catalog.dao.SearchLogDao">
+    
     <sql id="searchLogColumns">
         a.id,
        	a.keyword,
@@ -27,34 +28,86 @@
     </insert>
     
     <!-- 热词排行 -->
-    <select id="hotWord">
-    	SELECT *
-		FROM (SELECT t.keyword, count(t.keyword) AS kwCount
-		          FROM RPT_SEARCH t
-		         GROUP BY t.keyword
-		         ORDER BY kwCount DESC) v
+    <select id="hotWord" parameterType="java.util.Map" resultType="com.jusfoun.catalog.vo.SearchAnalysis">
+    	SELECT 
+    		v.keyword
+		FROM (
+			SELECT 
+				t.keyword AS keyword, count(t.keyword) AS kwCount
+		    FROM RPT_SEARCH t
+		    WHERE t.srhtime<![CDATA[<=]]>#{endTime} AND t.srhtime<![CDATA[>=]]>#{beginTime}
+		    GROUP BY t.keyword
+		    ORDER BY kwCount DESC
+		) v
 		WHERE ROWNUM<![CDATA[<=]]>10
     </select>
     
     <!-- 热门机构 -->
-    <select id="hotOffice">
+    <select id="hotOffice" parameterType="java.util.Map" resultType="com.jusfoun.catalog.vo.SearchAnalysis">
     	SELECT 
-    		*
-    	FROM 
-		  (SELECT 
-		  	t.officeid,t.name,COUNT(t.officeid) AS oiCount
+    		v.officeName
+    	FROM (
+    		SELECT 
+		  		t.officeid AS officeId,t.name AS officeName,COUNT(t.officeid) AS oiCount
 		    FROM (
 		    	SELECT 
 		    		s.officeid AS officeid, o.name AS name
 		        FROM 
 		        	RPT_SEARCH s, SYS_OFFICE o
-		        WHERE s.officeid = o.id
-		        ) t
-		   GROUP BY t.officeid,t.name
-		   ORDER BY oiCount desc) v
+		        WHERE s.officeid = o.id AND s.srhtime<![CDATA[<=]]>#{endTime} AND s.srhtime<![CDATA[>=]]>#{beginTime}
+		    ) t
+		    GROUP BY t.officeid,t.name
+		    ORDER BY oiCount desc) v
 		WHERE ROWNUM<![CDATA[<=]]>10
-    
     </select>
     
+    <!-- 获取统计图表的数据 -->
+    <select id="getRshDataByTime" parameterType="int" resultType="com.jusfoun.catalog.vo.SearchAnalysis">
+    	SELECT 
+    		v.srhTime,v.srhCount,srhType
+    	FROM (
+	    	SELECT 
+	    		to_char(r.srhtime,'yyyy-mm') AS srhTime,count(1) AS srhCount,r.srhtype AS srhType
+			FROM 
+				rpt_search  r
+			GROUP BY 
+				to_char(r.srhtime,'yyyy-mm') ,r.srhtype
+			ORDER BY 
+				r.srhtype ASC
+			) v
+		WHERE ROWNUM<![CDATA[<=]]>#{rshCount}
+    </select>
     
+    <!-- 获取半年内有搜索时间 -->
+    <select id="getHalfOfYearRshTime" resultType="String">
+    	SELECT 
+    		  ''''||rshTime||'''' 
+    	FROM (
+			SELECT to_char(r.srhtime,'yyyy-mm') AS rshTime
+			FROM rpt_search  r
+			GROUP BY to_char(r.srhtime,'yyyy-mm')
+			ORDER BY rshTime
+			) v
+		WHERE ROWNUM<![CDATA[<=]]>6 
+    </select>
+    
+    <!-- 获取搜索类型 -->
+    <select id="getRshTypeByTime" resultType="String">
+    	SELECT 
+    		r.srhType 
+    	FROM rpt_search  r 
+		WHERE to_char(r.srhtime,'yyyy-mm') IN (
+		   SELECT 
+		   	  * 
+		   FROM (
+			  SELECT to_char(r.srhtime,'yyyy-mm') AS rshTime
+			  FROM rpt_search r
+			  GROUP BY to_char(r.srhtime,'yyyy-mm')
+			  ORDER BY rshTime DESC
+		   ) v
+		   WHERE ROWNUM<![CDATA[<=]]>6
+		)
+		GROUP BY r.srhtype
+		ORDER BY r.srhtype
+    </select>
 </mapper>

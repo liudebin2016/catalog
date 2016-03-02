@@ -3,6 +3,7 @@ package com.jusfoun.catalog.common.tool;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -165,6 +166,19 @@ public class DateTool extends org.apache.commons.lang3.time.DateUtils {
 		long beforeTime = before.getTime();
 		long afterTime = after.getTime();
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
+	}
+	
+	/**
+	 * 获取给定时间之前或者之前的时间
+	 * @param date
+	 * @param day 为正时表示给定日期的后的时间，为负数时表示给定日期前的时间，为0时表示当前时间
+	 * @return
+	 */
+	public static Date getBeforOrAfterDate(Date date,int day){
+		Calendar calendar = Calendar.getInstance(); //得到日历
+		calendar.setTime(date);//把当前时间赋给日历
+		calendar.add(Calendar.DAY_OF_MONTH, day);  //设置为前一天
+		return calendar.getTime();   //得到前一天的时间
 	}
 	
 	/**
