@@ -437,11 +437,11 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 	}
 
-	private void saveActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String groupId = role.getEnname();
+//	private void saveActivitiGroup(Role role) {
+//		if (!Global.isSynActivitiIndetity()){
+//			return;
+//		}
+//		String groupId = role.getEnname();
 
 		// 如果修改了英文名，则删除原Activiti角色
 //		if (StringTool.isNotBlank(role.getOldEnname()) && !role.getOldEnname().equals(role.getEnname())){
@@ -478,23 +478,23 @@ public class SystemService extends BaseService implements InitializingBean {
 //			}
 //			identityService.createMembership(userId, groupId);
 //		}
-	}
+//	}
 
-	public void deleteActivitiGroup(Role role) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(role!=null) {
-			String groupId = role.getEnname();
+//	public void deleteActivitiGroup(Role role) {
+//		if (!Global.isSynActivitiIndetity()){
+//			return;
+//		}
+//		if(role!=null) {
+//			String groupId = role.getEnname();
 //			identityService.deleteGroup(groupId);
-		}
-	}
+//		}
+//	}
 
-	private void saveActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		String userId = user.getLoginName();//ObjectTool.toString(user.getId());
+//	private void saveActivitiUser(User user) {
+//		if (!Global.isSynActivitiIndetity()){
+//			return;
+//		}
+//		String userId = user.getLoginName();//ObjectTool.toString(user.getId());
 //		org.activiti.engine.identity.User activitiUser = identityService.createUserQuery().userId(userId).singleResult();
 //		if (activitiUser == null) {
 //			activitiUser = identityService.newUser(userId);
@@ -523,17 +523,17 @@ public class SystemService extends BaseService implements InitializingBean {
 //            }
 //			identityService.createMembership(userId, role.getEnname());
 //		}
-	}
+//	}
 
-	private void deleteActivitiUser(User user) {
-		if (!Global.isSynActivitiIndetity()){
-			return;
-		}
-		if(user!=null) {
-			String userId = user.getLoginName();//ObjectTool.toString(user.getId());
+//	private void deleteActivitiUser(User user) {
+//		if (!Global.isSynActivitiIndetity()){
+//			return;
+//		}
+//		if(user!=null) {
+//			String userId = user.getLoginName();//ObjectTool.toString(user.getId());
 //			identityService.deleteUser(userId);
-		}
-	}
+//		}
+//	}
 	
 	///////////////// Synchronized to the Activiti end //////////////////
 	

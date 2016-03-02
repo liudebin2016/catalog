@@ -1,10 +1,10 @@
 package com.jusfoun.catalog.entity;
 
-import com.jusfoun.catalog.common.entity.TreeEntity;
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import com.jusfoun.catalog.common.entity.TreeEntity;
 
 /**
  * 机构Entity
@@ -16,7 +16,6 @@ public class Office extends TreeEntity<Office> {
 	private static final long serialVersionUID = 1L;
 //	private Office parent;		// 父级编号
 //	private String parentIds; 	// 所有父级编号
-	private Area area;			// 归属区域
 	private String code; 		// 机构编码
 	private String name; 		// 机构名称
 	private String duty;        // 机构职责
@@ -96,14 +95,6 @@ public class Office extends TreeEntity<Office> {
 //		this.parentIds = parentIds;
 //	}
 
-	@NotNull
-	public Area getArea() {
-		return area;
-	}
-
-	public void setArea(Area area) {
-		this.area = area;
-	}
 //
 //	@Length(min=1, max=100)
 //	public String getName() {

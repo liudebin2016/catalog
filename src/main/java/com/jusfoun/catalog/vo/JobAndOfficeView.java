@@ -3,18 +3,20 @@ package com.jusfoun.catalog.vo;
 import java.util.List;
 
 import com.jusfoun.catalog.common.entity.DataEntity;
-import com.jusfoun.catalog.entity.Area;
 import com.jusfoun.catalog.entity.User;
 
 public class JobAndOfficeView extends DataEntity<JobAndOfficeView> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4851608712391093580L;
 	private String jobName;//名称
     private String jobDuty;//职责
     private String jobType;//岗位属性
     private String jobStatus; //当前状态
     
     private Integer officeId;
-    private Area officeArea;			// 归属区域
 	private String officeCode; 		// 机构编码
 	private String officeName; 		// 机构名称
 	private String officeDuty;        // 机构职责
@@ -72,12 +74,6 @@ public class JobAndOfficeView extends DataEntity<JobAndOfficeView> {
 	}
 	public void setJobStatus(String jobStatus) {
 		this.jobStatus = jobStatus;
-	}
-	public Area getOfficeArea() {
-		return officeArea;
-	}
-	public void setOfficeArea(Area officeArea) {
-		this.officeArea = officeArea;
 	}
 	public String getOfficeCode() {
 		return officeCode;

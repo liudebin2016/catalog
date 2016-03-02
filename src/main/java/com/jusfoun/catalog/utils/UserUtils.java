@@ -12,12 +12,10 @@ import org.apache.shiro.subject.Subject;
 import com.jusfoun.catalog.common.service.BaseService;
 import com.jusfoun.catalog.common.tool.CacheTool;
 import com.jusfoun.catalog.common.tool.SpringContextHolderTool;
-import com.jusfoun.catalog.dao.AreaDao;
 import com.jusfoun.catalog.dao.MenuDao;
 import com.jusfoun.catalog.dao.OfficeDao;
 import com.jusfoun.catalog.dao.RoleDao;
 import com.jusfoun.catalog.dao.UserDao;
-import com.jusfoun.catalog.entity.Area;
 import com.jusfoun.catalog.entity.Menu;
 import com.jusfoun.catalog.entity.Office;
 import com.jusfoun.catalog.entity.Role;
@@ -35,7 +33,6 @@ public class UserUtils {
 	private static UserDao userDao = SpringContextHolderTool.getBean(UserDao.class);
 	private static RoleDao roleDao = SpringContextHolderTool.getBean(RoleDao.class);
 	private static MenuDao menuDao = SpringContextHolderTool.getBean(MenuDao.class);
-	private static AreaDao areaDao = SpringContextHolderTool.getBean(AreaDao.class);
 	private static OfficeDao officeDao = SpringContextHolderTool.getBean(OfficeDao.class);
 
 	public static final String USER_CACHE = "userCache";
@@ -179,20 +176,6 @@ public class UserUtils {
 			putCache(CACHE_MENU_LIST, menuList);
 		}
 		return menuList;
-	}
-
-	/**
-	 * 获取当前用户授权的区域
-	 * @return
-	 */
-	public static List<Area> getAreaList(){
-		@SuppressWarnings("unchecked")
-		List<Area> areaList = (List<Area>)getCache(CACHE_AREA_LIST);
-		if (areaList == null){
-			areaList = areaDao.findAllList(new Area());
-			putCache(CACHE_AREA_LIST, areaList);
-		}
-		return areaList;
 	}
 
 	/**
