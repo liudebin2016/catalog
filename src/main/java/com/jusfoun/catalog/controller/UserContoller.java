@@ -32,6 +32,7 @@ import com.jusfoun.catalog.entity.ResourceInfo;
 import com.jusfoun.catalog.entity.SubjectInfo;
 import com.jusfoun.catalog.entity.User;
 import com.jusfoun.catalog.service.SubjectService;
+import com.jusfoun.catalog.service.SystemService;
 import com.jusfoun.catalog.service.UserService;
 import com.jusfoun.catalog.utils.LogUtils;
 import com.jusfoun.catalog.utils.UserUtils;
@@ -101,7 +102,7 @@ public class UserContoller extends BaseController {
 		Long total = userService.findListCount(user);
 		user.getSqlMap().put("start", String.valueOf(start));
 		user.getSqlMap().put("end", String.valueOf(end));
-		List<User> uList = userService.findList(user);
+		List<User> uList = userService.findUserList(user);
 		String json = JsonMapper.toJsonString(uList);
 		StringBuffer sb=new StringBuffer();
 		sb.append("{\"total\":").append(total).append(",\"rows\":").append(json).append("}");
@@ -121,7 +122,7 @@ public class UserContoller extends BaseController {
 		String officeId = request.getParameter("officeId");
 		Date createDate =new Date();
 		User user = new User();
-		//user.setCompany(new Office());
+		
 		user.setCreateBy(UserUtils.getUser());
 		user.setCreateDate(createDate);
 		user.setDelFlag("0");
@@ -131,7 +132,7 @@ public class UserContoller extends BaseController {
 		Office o = new Office();
 		o.setId(Integer.parseInt(officeId));
 		user.setOffice(o);
-		String newPassword = ServletTool.encodeHttpBasic(name, password);
+		user.setCompany(new Office());
 		int index = userService.createUser(user,officeId);
 		LogUtils.saveLog(ServletTool.getRequest(), "创建用户");
 		return "redirect:"+adminPath+"/job/maintenance";
@@ -146,6 +147,22 @@ public class UserContoller extends BaseController {
 		User user = new User();
 		user.setId(Integer.parseInt(id));
 		user.setDelFlag("1");
+		if(userService.updateUser(user)){
+			delFlag = "success";
+		}
+		return delFlag;
+	}
+	
+	@RequestMapping(value = "${adminPath}/user/editPassword", method = RequestMethod.POST)
+	@ResponseBody
+	public String editPassword(HttpServletRequest request, HttpServletResponse response){
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		String delFlag="fail";
+		boolean flag=false;
+		User user = new User();
+		user.setId(Integer.parseInt(id));
+		user.setPassword(SystemService.entryptPassword(password));
 		if(userService.updateUser(user)){
 			delFlag = "success";
 		}

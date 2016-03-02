@@ -1,8 +1,9 @@
 package com.jusfoun.catalog.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.jusfoun.catalog.common.service.CrudService;
 import com.jusfoun.catalog.dao.UserDao;
 import com.jusfoun.catalog.entity.User;
@@ -17,12 +18,17 @@ public class UserService extends CrudService<UserDao, User>{
 	}
 
 	public int createUser(User user, String officeId) {
-		
-		return dao.insert(user);
+		user.setPassword(SystemService.entryptPassword(user.getPassword()));
+		return dao.createUser(user);
 	}
 
 	public boolean updateUser(User user) {
 		
-		return dao.update(user)>0;
+		return dao.updateUser(user)>0;
+	}
+
+	public List<User> findUserList(User user) {
+		
+		return dao.findUserList(user);
 	}
 }

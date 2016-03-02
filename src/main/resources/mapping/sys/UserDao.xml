@@ -115,10 +115,10 @@
     </sql>
     
     <sql id="userJoins">
-		JOIN sys_office c ON c.id = a.company_id
-		JOIN sys_area ca ON ca.id = c.area_id
-		JOIN sys_office o ON o.id = a.office_id
-		JOIN sys_area oa ON oa.id = o.area_id
+		LEFT JOIN sys_office c ON c.id = a.company_id
+		LEFT JOIN sys_area ca ON ca.id = c.area_id
+		LEFT JOIN sys_office o ON o.id = a.office_id
+		LEFT JOIN sys_area oa ON oa.id = o.area_id
 		LEFT JOIN sys_user cu ON cu.id = c.primary_person
 		LEFT JOIN sys_user cu2 ON cu2.id = c.deputy_person
 		LEFT JOIN sys_user ou ON ou.id = o.primary_person
@@ -198,6 +198,45 @@
 			</otherwise>
 		</choose>
 	</select>
+	<!-- 分页查询用户信息 -->
+	<select id="findUserList" resultType="User">
+	SELECT *
+FROM (
+	SELECT tt.*, ROWNUM AS rowno
+    FROM (  
+		select u.id as id, u.office_id as officeId,u.login_name as loginName, u.create_date as createDate, o.name as name
+  		from sys_user u
+  		left join sys_office o
+   		 on u.office_id = o.id
+   		 
+   		<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        u.name like #{name}
+	    </if>  
+	     
+	</trim>	
+ 		where u.del_flag = '0'
+ 		 ORDER BY u.create_date desc
+ 		  ) tt
+   WHERE ROWNUM <![CDATA[<= ${sqlMap.end}]]>
+ ) ta  
+ WHERE ta.rowno <![CDATA[>= ${sqlMap.start}]]>
+	</select>
+	
+	<select id="findUserCount" resultType="long">
+		select count(u.id)
+  		from sys_user u
+  		left join sys_office o
+   		 on u.office_id = o.id
+   		 
+   		<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="name!=null and name!='' ">  
+	        u.name like #{name}
+	    </if>  
+	     
+	</trim>	
+ 		where u.del_flag = '0'
+	</select>
 	
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
 	<select id="findUserByOfficeId" resultType="User" useCache="true">
@@ -271,6 +310,56 @@
 			#{delFlag}
 		)
 	</insert>
+	<insert id="createUser">
+		INSERT INTO sys_user(
+			company_id, 
+			office_id, 
+			login_name, 
+			password, 
+			no, 
+			name, 
+			email, 
+			phone, 
+			mobile, 
+			user_type, 
+			create_by, 
+			create_date, 
+			update_by, 
+			update_date, 
+			remarks, 
+			del_flag
+		) VALUES (
+			#{company.id}, 
+			#{office.id}, 
+			#{loginName}, 
+			#{password}, 
+			#{no}, 
+			#{name}, 
+			#{email}, 
+			#{phone}, 
+			#{mobile}, 
+			#{userType}, 
+			#{createBy.id}, 
+			#{createDate}, 
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}, 
+			#{delFlag}
+		)
+	</insert>
+	<!-- 更新用户 -->
+	<update id="updateUser">
+		UPDATE sys_user 
+		 <set >
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+		WHERE id = #{id}
+	</update>
 	
 	<!-- 更新用户 -->
 	<update id="update">

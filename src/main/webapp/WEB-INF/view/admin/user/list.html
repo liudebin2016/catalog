@@ -23,14 +23,15 @@ var jsPart = {
 	//弹出编辑表单
 	function changPassword(row){
 		$("#win").dialog("open").dialog('setTitle', '修改密码');
-		var fm=$('#fm');
-		fm.form('clear');
-	}
-	function newUser(){
-		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
 		var changePassword=$('#changePassword');
 		changePassword.form('clear');
 		changePassword.form('load', row);
+	}
+	function newUser(){
+		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
+		var fm=$('#fm');
+		fm.form('clear');
+		fm.form('load', row);
 	}
 	function deleteUser(row){
 		$.messager.confirm('确认','您确认删除该用户吗？',function(r){    
@@ -39,7 +40,7 @@ var jsPart = {
 				    function(data){
 				    	if(data=="success"){
 				    		$.messager.alert("成功","删除成功！")
-				    		getRscList();
+				    		dictDg("","")
 				    	}
 				    }
 				);   
@@ -47,7 +48,7 @@ var jsPart = {
 		}); 
 	}
 	
-	//字典Datagrid
+	//
 	function dictDg(label,value){
 		$('#dict').datagrid({
 		    url:'/admin/user/userList.do', 
@@ -129,7 +130,23 @@ var jsPart = {
 			 );
 		 }
 	 }
-	 
+	 function editPassword(){
+		//$('#changePassword').submit();
+		var password = $('#newPassword').va();
+		var id = $('#byid').val();
+		$.ajax({  
+	        url : '../user/editPassword.do',  
+	        type : "POST",
+	        data :{password:password,id:id},
+	        dataType : "text",  
+	        success : function(data) {
+	        	if(data == "success"){
+					alert("asdasd");
+					
+				}
+	        }  
+	    }); 
+	 }
 </script>
 <%};%>
 
@@ -180,11 +197,12 @@ var htmlPart = {
        </form> 
    </div> 
 	<div id="win"  class="easyui-dialog" title="修改密码" style="width:300px;height:180px;" closed="true">  
-    <form id="changePassword" style="padding:10px 20px 10px 40px;" action="/admin/user/changePassword.do">  
+    <form id="changePassword" style="padding:10px 20px 10px 40px;" action="/admin/user/changePassword.do">
+    	<input type="hidden" id="byid" name="id"/>  
         <p>帐号: <input type="text" name="loginName" value="" autocomplete="off" readonly="readonly"></p>  
-        <p>密码: <input type="password" name="password" value="" autocomplete="off"></p>  
+        <p>密码: <input type="password" name="password" id="newPassword" value="" autocomplete="off"></p>  
         <div style="padding:5px;text-align:center;">  
-            <a href="#" class="easyui-linkbutton" icon="icon-ok">修改</a>  
+            <a href="javascript:editPassword()" class="easyui-linkbutton" icon="icon-ok">修改</a>  
             <a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>  
         </div>  
     </form>  

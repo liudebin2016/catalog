@@ -76,4 +76,15 @@ public interface UserDao extends CrudDao<User> {
 	 */
 	public int findListCount(User user);
 
+	/**
+	 * 插入用户
+	 * @param user
+	 * @return
+	 */
+	public int createUser(User user);
+
+	public List<User> findUserList(User user);
+
+	public int updateUser(User user);
+
 }

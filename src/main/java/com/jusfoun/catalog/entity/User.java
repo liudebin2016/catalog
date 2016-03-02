@@ -25,6 +25,8 @@ public class User extends DataEntity<User> {
 	private static final long serialVersionUID = 1L;
 	private Office company;		// 归属公司
 	private Office office;		// 归属部门
+	private Integer officeId;    // 归属部门的id
+	private String officeName;
 	private String loginName;	// 登录名
 	private String password;	// 密码
 	private String no;			// 工号
@@ -47,6 +49,22 @@ public class User extends DataEntity<User> {
 	private Role role;	// 根据角色查询用户条件
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+
+	public Integer getOfficeId() {
+		return officeId;
+	}
+
+	public String getOfficeName() {
+		return officeName;
+	}
+
+	public void setOfficeName(String officeName) {
+		this.officeName = officeName;
+	}
+
+	public void setOfficeId(Integer officeId) {
+		this.officeId = officeId;
+	}
 
 	public User() {
 		super();
