@@ -1,0 +1,198 @@
+<%
+var cssPart = {
+%>
+<link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
+<style type="text/css">
+
+</style>
+<%};%>
+
+
+<%
+var jsPart = {
+%>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+
+	//弹出编辑表单
+	function changPassword(row){
+		$("#win").dialog("open").dialog('setTitle', '修改密码');
+		var fm=$('#fm');
+		fm.form('clear');
+	}
+	function newUser(){
+		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
+		var changePassword=$('#changePassword');
+		changePassword.form('clear');
+		changePassword.form('load', row);
+	}
+	function deleteUser(row){
+		$.messager.confirm('确认','您确认删除该用户吗？',function(r){    
+		    if (r){  
+		    	$.post("/admin/user/deleteUser.do", { id: row.id },
+				    function(data){
+				    	if(data=="success"){
+				    		$.messager.alert("成功","删除成功！")
+				    		getRscList();
+				    	}
+				    }
+				);   
+		    }    
+		}); 
+	}
+	
+	//字典Datagrid
+	function dictDg(label,value){
+		$('#dict').datagrid({
+		    url:'/admin/user/userList.do', 
+		    fitColumns:true,
+		    queryParams: {
+		    	label:label,
+		    	value:value
+			},
+			toolbar:[{
+				iconCls: 'icon-add',
+				text:'新增用户',
+				handler:function(){
+					newUser();
+				}
+			}],
+			rownumbers:true,
+			pagination:true,
+		    method:"get",
+		    columns:[[    
+				{field:'id',title:'id',hidden:true},
+		        {field:'loginName',title:'用户帐号',width:220},
+		        {field:'createDate',title:'所属机构',width:230},
+		        {field:'createDate',title:'创建时间',width:220},
+		        {field:'operator',title:'操作',width:220,align:"center",
+		        	formatter:function(value,row,index){
+		        		var obj=JSON.stringify(row);
+		        		var s = "<a href='javascript:void(0);' onclick='changPassword("+obj+");'>修改密码</a> ";
+		        		var d = " &nbsp;&nbsp;&nbsp;&nbsp;";
+		        		var f = "<a href='/admin/dict/subList.do?id="+row.id+"&label="+row.loginName+"&value="+row.createDate+"&description="+row.createDate+"'>权限配置</a> ";
+		        		var g = " &nbsp;&nbsp;&nbsp;&nbsp;";
+		        		var h = "<a href='javascript:void(0);' onclick='deleteUser("+obj+");'>删除</a> ";
+		        		return s + d  + h;
+		            }
+		        }
+		    ]],
+		    onLoadSuccess:function(data){
+		    	if (data.total == 0) {
+	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
+	                $(this).datagrid('appendRow', { label: '<div style="text-align:center;color:red">未找到符合条件的数据！</div>' }).datagrid('mergeCells', { index: 0, field: 'label', colspan: 4 })
+	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
+	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
+	            }
+		    }
+		});
+	}
+	
+	//执行检索
+	function search(){
+		var label=$.trim($('#lblsrh').val());
+		var value=$.trim($('#valsrh').val());
+		dictDg(label,value);
+	}
+	
+	//清空检索内容
+	function reset(){
+		$('#lblsrh').val("");
+		$('#valsrh').val("");
+	}
+	
+	//页面初始化加载
+	$(document).ready(function(){
+		dictDg("","");
+	});
+	 
+	 function submit(){
+		 $('#fm').submit();
+	 }
+	 
+	 function checkTautonym(obj){
+		 if(obj.value){
+			 $.get("/admin/dict/dictList",
+			 	{ label: obj.value },
+			  	function(data){
+			 		if(data.total!="0"){
+				    	alert("名称已经存在，请重新输入！");
+				    	obj.focus();
+			 		}
+			  	}
+			 );
+		 }
+	 }
+	 
+</script>
+<%};%>
+
+<%
+var htmlPart = {
+%>
+<!-- start: MAIN CONTAINER -->
+<div class="content">
+  <h3 class="h3tit mt30">人员管理</h3>
+  <!-- <div class="form-list top-search">
+    <ul class="li-fl">
+      <li>
+        <label>字典名称</label>
+        <input id="lblsrh" class="form-control inp noradius " type="text" placeholder="">
+      </li>
+      <li>
+        <label>字典编码</label>
+        <input id="valsrh" class="form-control inp noradius " type="text" placeholder="">
+      </li>
+      <li>
+        <button class="btns mlt30" type="button" onclick="search()">检索</button>
+        <input class="nobg mlt10" name="清空" type="reset" value="清空" onclick="reset()">
+      </li>
+    </ul>
+  </div> -->
+  
+  <!-- 字典Datagrid -->
+  <table id="dict"></table>
+  
+  <div id="dlg" class="easyui-dialog" style="width: 450px; height: 280px; padding: 30px 35px;" closed="true" buttons="#dlg-buttons"> 
+       <form id="fm" method="post" method="post" action="/admin/user/createUser.do"> 
+       <div class="fitem"> 
+           <label style="width: 60px;">用户帐号：</label> 
+       		<input name="id" type="hidden">
+           <input name="name" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
+       </div> 
+       <div class="fitem" style="margin-top: 10px;"> 
+           <label style="width: 60px;">密码：</label> 
+           <input name="password" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
+       </div> 
+       <div class="fitem" style="margin-top: 10px;"> 
+           <label style="width: 60px;">所属机构：</label> 
+           <input name="officeId" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
+       </div> 
+       <div style="margin-top: 10px;text-align: center;">
+			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
+		</div>
+       </form> 
+   </div> 
+	<div id="win"  class="easyui-dialog" title="修改密码" style="width:300px;height:180px;" closed="true">  
+    <form id="changePassword" style="padding:10px 20px 10px 40px;" action="/admin/user/changePassword.do">  
+        <p>帐号: <input type="text" name="loginName" value="" autocomplete="off" readonly="readonly"></p>  
+        <p>密码: <input type="password" name="password" value="" autocomplete="off"></p>  
+        <div style="padding:5px;text-align:center;">  
+            <a href="#" class="easyui-linkbutton" icon="icon-ok">修改</a>  
+            <a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>  
+        </div>  
+    </form>  
+</div> 
+    <!-- end: PAGE -->
+</div>
+<!-- end: MAIN CONTAINER -->
+
+<%};
+include("/layouts/admin.html",{jsSection:jsPart,htmlSection:htmlPart,cssSection:cssPart}){}
+%> 
