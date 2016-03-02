@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jusfoun.catalog.common.service.BaseService;
-import com.jusfoun.catalog.dao.AreaDao;
 import com.jusfoun.catalog.dao.BusinessDao;
 import com.jusfoun.catalog.dao.JobDao;
 import com.jusfoun.catalog.dao.OfficeDao;
@@ -24,8 +23,6 @@ import com.jusfoun.catalog.entity.Statistic;
 @Transactional(readOnly=true)
 public class StatisticService extends BaseService {
 
-	@Resource
-	private AreaDao areaDao;
 	@Resource
 	private OfficeDao officeDao;
 	@Resource
