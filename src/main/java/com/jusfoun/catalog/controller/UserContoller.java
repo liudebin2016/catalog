@@ -48,6 +48,8 @@ public class UserContoller extends BaseController {
 	
 	@Autowired
 	private UserService userService ;
+	@Autowired
+	private SystemService systemService;
 
 	/**
 	 * 主题目录信息列表
@@ -132,10 +134,10 @@ public class UserContoller extends BaseController {
 		Office o = new Office();
 		o.setId(Integer.parseInt(officeId));
 		user.setOffice(o);
-		user.setCompany(new Office());
+		user.setCompanyId(Integer.parseInt(officeId));
 		int index = userService.createUser(user,officeId);
 		LogUtils.saveLog(ServletTool.getRequest(), "创建用户");
-		return "redirect:"+adminPath+"/job/maintenance";
+		return "redirect:"+adminPath+"/user/list";
 	}
 	
 	@RequestMapping(value = "${adminPath}/user/deleteUser", method = RequestMethod.POST)
@@ -158,13 +160,29 @@ public class UserContoller extends BaseController {
 	public String editPassword(HttpServletRequest request, HttpServletResponse response){
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
+		String loginName = request.getParameter("loginName");
 		String delFlag="fail";
 		boolean flag=false;
+//		User user = new User();
+//		user.setId(Integer.parseInt(id));
+//		user.setPassword(SystemService.entryptPassword(password));
+//		if(userService.updateUser(user)){
+//			delFlag = "success";
+//		}
+		systemService.updatePasswordById(Integer.parseInt(id), loginName, password);
+		delFlag = "success";
+		return delFlag;
+	}
+	@RequestMapping(value = "${adminPath}/user/checkUserName", method = RequestMethod.POST)
+	@ResponseBody
+	public String checkUserName(HttpServletRequest request, HttpServletResponse response){
+		String loginName = request.getParameter("loginName");
+		String delFlag="nohave";
+		boolean flag=false;
 		User user = new User();
-		user.setId(Integer.parseInt(id));
-		user.setPassword(SystemService.entryptPassword(password));
-		if(userService.updateUser(user)){
-			delFlag = "success";
+		user.setLoginName(loginName);
+		if(userService.checkUserName(user)){
+			delFlag = "ishave";
 		}
 		return delFlag;
 	}

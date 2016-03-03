@@ -31,4 +31,9 @@ public class UserService extends CrudService<UserDao, User>{
 		
 		return dao.findUserList(user);
 	}
+
+	public boolean checkUserName(User user) {
+		
+		return dao.checkUserName(user)>0;
+	}
 }

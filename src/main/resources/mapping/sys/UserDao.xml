@@ -110,7 +110,7 @@
 FROM (
 	SELECT tt.*, ROWNUM AS rowno
     FROM (  
-		select u.id as id, u.office_id as officeId,u.login_name as loginName, u.create_date as createDate, o.name as name
+		select u.id as id, u.office_id as officeId,u.login_name as loginName, u.create_date as createDate, o.name as officeName
   		from sys_user u
   		left join sys_office o
    		 on u.office_id = o.id
@@ -235,7 +235,7 @@ FROM (
 			remarks, 
 			del_flag
 		) VALUES (
-			#{company.id}, 
+			#{companyId}, 
 			#{office.id}, 
 			#{loginName}, 
 			#{password}, 
@@ -338,5 +338,13 @@ FROM (
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+	<!-- 检验用户名是否存在 -->
+	<select id="checkUserName" resultType="int">
+  	select count(id) from sys_user
+  	<trim prefix="WHERE" prefixOverrides="AND|OR">  
+	    <if test="loginName!=null and loginName!='' ">  
+	        login_name = #{loginName}
+	    </if>  
+	</trim>	
+  </select>
 </mapper>

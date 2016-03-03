@@ -3,9 +3,13 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" href="/resources/assets/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
+<style type="text/css">
+	ul.ztree {margin-top: 10px;border: 1px solid #617775;background: #f0f6e4;width:220px;height:250px;overflow-y:scroll;overflow-x:scroll;}
+</style>
 <style type="text/css">
 
 </style>
@@ -15,10 +19,62 @@ var cssPart = {
 <%
 var jsPart = {
 %>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript">
+	var jq1_4 = $.noConflict(true);
+</script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/plugins/ztree/js/jquery.ztree.core-3.5.js"></script>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
+	jq1_4(document).ready(function(){
+		/* $.post('../office/tree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json'); */
+		// bind focus
+		// $('#officeSel').next().find('input').first().on('focus',showMenu);
+		dictDg("","");
+	});
+	var setting = {
+			keep: {parent: true},
+			view : {selectedMulti : false,dblClickExpand: false},
+			data : {simpleData : {enable : true}},
+			edit : {enable : false},
+			callback : {
+				onClick : onClick
+			}
+		};
+	function onClick(e, treeId, treeNode) {
+		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree"),
+		nodes = zTree.getSelectedNodes();
+		$('#officeSel').next().find('input').first().next().attr("value", nodes[0].name);
+		$("#officeId").attr("value", nodes[0].id);
+		//$("#officeTree").fadeOut("fast");
+		hideMenu();
+	}
+	//销毁dialog事件
+	$('#dlg').dialog({
+	    onClose:function(){
+	    	$("#win").dialog("destory");
+	    }
+	});
+	function showMenu() {
+		var cityObj = $("#officeSel");
+		var cityOffset = $("#officeSel").offset();
+		$("#menuContent").css({left:(cityOffset.left+822) + "px", top:(cityOffset.top+348) + cityObj.outerHeight() + "px"}).slideDown("fast");
+		$("body").bind("mousedown", onBodyDown);
+	}
+	function hideMenu() {
+		$("#menuContent").fadeOut("fast");
+		$("body").unbind("mousedown", onBodyDown);
+	}
+	function onBodyDown(event) {
+		if (!(event.target.id == "officeSel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+			hideMenu();
+		}
+	}
 
 	//弹出编辑表单
 	function changPassword(row){
@@ -31,7 +87,11 @@ var jsPart = {
 		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
 		var fm=$('#fm');
 		fm.form('clear');
-		fm.form('load', row);
+		$.post('../office/tree',function(obj){
+			// init tree
+			jq1_4.fn.zTree.init(jq1_4("#officeTree"), setting,obj);
+		},'json');
+		$('#officeSel').next().find('input').first().on('focus',showMenu);
 	}
 	function deleteUser(row){
 		$.messager.confirm('确认','您确认删除该用户吗？',function(r){    
@@ -70,7 +130,7 @@ var jsPart = {
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
 		        {field:'loginName',title:'用户帐号',width:220},
-		        {field:'createDate',title:'所属机构',width:230},
+		        {field:'officeName',title:'所属机构',width:230},
 		        {field:'createDate',title:'创建时间',width:220},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
@@ -109,30 +169,51 @@ var jsPart = {
 	}
 	
 	//页面初始化加载
-	$(document).ready(function(){
-		dictDg("","");
-	});
+	/* $(document).ready(function(){
+		
+	}); */
 	 
 	 function submit(){
+		var loginName = $('#loginName').val();
+		var password = $('#password').val();
+		var officeid = $("#officeId").val();
+		if($.trim(loginName) == ""){
+			$.messager.alert("警告","请输入帐号！");
+		    return false;
+		}
+		var success =false;
+		$.ajax({  
+	        url : '../user/checkUserName',  
+	        async : false, // 注意此处需要同步  
+	        type : "POST",
+	        data :{loginName:loginName},
+	        dataType : "text",  
+	        success : function(data) {
+	        	if(data == "ishave"){
+					success = true;
+					
+				}
+	        }  
+	    }); 
+		if(success){
+			$.messager.alert("警告","系统中已存在该帐号名称，请更换为其他名称！");
+			return false;
+		}
+		if($.trim(password) == ""){
+			$.messager.alert("警告","请输入密码！");
+		    return false;
+		}
+		if($.trim(officeid) == ""){
+			$.messager.alert("警告","请选择机构！");
+		    return false;
+		}
+		
 		 $('#fm').submit();
 	 }
-	 
-	 function checkTautonym(obj){
-		 if(obj.value){
-			 $.get("/admin/dict/dictList",
-			 	{ label: obj.value },
-			  	function(data){
-			 		if(data.total!="0"){
-				    	alert("名称已经存在，请重新输入！");
-				    	obj.focus();
-			 		}
-			  	}
-			 );
-		 }
-	 }
+
 	 function editPassword(){
 		//$('#changePassword').submit();
-		var password = $('#newPassword').va();
+		var password = $('#newPassword').val();
 		var id = $('#byid').val();
 		$.ajax({  
 	        url : '../user/editPassword.do',  
@@ -141,11 +222,14 @@ var jsPart = {
 	        dataType : "text",  
 	        success : function(data) {
 	        	if(data == "success"){
-					alert("asdasd");
-					
+	        		$("#win").dialog("close")
+					$.messager.alert("成功","密码修改成功！")
 				}
 	        }  
 	    }); 
+	 }
+	 function cacelEditPassword(){
+		 $("#win").dialog("close")
 	 }
 </script>
 <%};%>
@@ -181,15 +265,16 @@ var htmlPart = {
        <div class="fitem"> 
            <label style="width: 60px;">用户帐号：</label> 
        		<input name="id" type="hidden">
-           <input name="name" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
+           <input name="name" id="loginName" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;" onblur="checkTautonym(this)">
        </div> 
        <div class="fitem" style="margin-top: 10px;"> 
            <label style="width: 60px;">密码：</label> 
-           <input name="password" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
+           <input name="password" id="password" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
        </div> 
        <div class="fitem" style="margin-top: 10px;"> 
            <label style="width: 60px;">所属机构：</label> 
-           <input name="officeId" class="easyui-textbox" style="width:260px;height:32px;border: 1px solid beige;">
+           <input  class="easyui-textbox" id="officeSel" style="width:260px;height:32px;border: 1px solid beige;">
+           <input type="hidden" id="officeId" name="officeId"/>
        </div> 
        <div style="margin-top: 10px;text-align: center;">
 			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
@@ -203,11 +288,14 @@ var htmlPart = {
         <p>密码: <input type="password" name="password" id="newPassword" value="" autocomplete="off"></p>  
         <div style="padding:5px;text-align:center;">  
             <a href="javascript:editPassword()" class="easyui-linkbutton" icon="icon-ok">修改</a>  
-            <a href="#" class="easyui-linkbutton" icon="icon-cancel">取消</a>  
+            <a href="javascript:cacelEditPassword()" class="easyui-linkbutton" icon="icon-cancel">取消</a>  
         </div>  
     </form>  
 </div> 
     <!-- end: PAGE -->
+</div>
+<div id="menuContent" class="menuContent" style="display :none;position: absolute;">
+	<ul id="officeTree" class="ztree " style="margin-top:0; width:258px;position: relative;z-index: 9999;"></ul>
 </div>
 <!-- end: MAIN CONTAINER -->
 

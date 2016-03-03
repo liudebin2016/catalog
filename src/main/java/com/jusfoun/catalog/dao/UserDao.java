@@ -87,4 +87,6 @@ public interface UserDao extends CrudDao<User> {
 
 	public int updateUser(User user);
 
+	public int checkUserName(User user);
+
 }
