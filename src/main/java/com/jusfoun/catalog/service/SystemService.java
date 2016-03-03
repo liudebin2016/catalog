@@ -183,10 +183,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		user.setPassword(entryptPassword(newPassword));
 		userDao.updatePasswordById(user);
 		// 清除用户缓存
-		user.setLoginName(loginName);
 		UserUtils.clearCache(user);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
 	}
 	
 	@Transactional(readOnly = false)

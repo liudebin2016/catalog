@@ -216,12 +216,13 @@ var jsPart = {
 
 	 function editPassword(){
 		//$('#changePassword').submit();
+		var loginName = $('#loginName1').val();
 		var password = $('#newPassword').val();
 		var id = $('#byid').val();
 		$.ajax({  
 	        url : '../user/editPassword.do',  
 	        type : "POST",
-	        data :{password:password,id:id},
+	        data :{password:password,id:id,loginName : loginName},
 	        dataType : "text",  
 	        success : function(data) {
 	        	if(data == "success"){
@@ -287,7 +288,7 @@ var htmlPart = {
 	<div id="win"  class="easyui-dialog" title="修改密码" style="width:300px;height:180px;" closed="true">  
     <form id="changePassword" style="padding:10px 20px 10px 40px;" action="/admin/user/changePassword.do">
     	<input type="hidden" id="byid" name="id"/>  
-        <p>帐号: <input type="text" name="loginName" value="" autocomplete="off" readonly="readonly"></p>  
+        <p>帐号: <input type="text" name="loginName" id="loginName1" value="" autocomplete="off" readonly="readonly"></p>  
         <p>密码: <input type="password" name="password" id="newPassword" value="" autocomplete="off"></p>  
         <div style="padding:5px;text-align:center;">  
             <a href="javascript:editPassword()" class="easyui-linkbutton" icon="icon-ok">修改</a>  
