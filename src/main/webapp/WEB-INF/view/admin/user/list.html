@@ -49,15 +49,18 @@ var jsPart = {
 	function onClick(e, treeId, treeNode) {
 		var zTree = jq1_4.fn.zTree.getZTreeObj("officeTree"),
 		nodes = zTree.getSelectedNodes();
-		$('#officeSel').next().find('input').first().next().attr("value", nodes[0].name);
+		//$('#officeSel').next().find('input').first().next().attr("value", nodes[0].name);
 		$("#officeId").attr("value", nodes[0].id);
-		//$("#officeTree").fadeOut("fast");
+		$("#officeSel").textbox('setValue',nodes[0].name);
 		hideMenu();
 	}
 	//销毁dialog事件
 	$('#dlg').dialog({
 	    onClose:function(){
 	    	$("#win").dialog("destory");
+	    	//关闭时 取消ztree的选中
+	    	var treeObj = jq1_4.fn.zTree.getZTreeObj("officeTree");
+	    	treeObj.cancelSelectedNode();
 	    }
 	});
 	function showMenu() {
@@ -273,7 +276,7 @@ var htmlPart = {
        </div> 
        <div class="fitem" style="margin-top: 10px;"> 
            <label style="width: 60px;">所属机构：</label> 
-           <input  class="easyui-textbox" id="officeSel" style="width:260px;height:32px;border: 1px solid beige;">
+           <input  class="easyui-textbox" id="officeSel" value="asdasd" style="width:260px;height:32px;border: 1px solid beige;" readonly="readonly">
            <input type="hidden" id="officeId" name="officeId"/>
        </div> 
        <div style="margin-top: 10px;text-align: center;">
