@@ -11,47 +11,55 @@ public class Statistic implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private String region;//区域
-	private String office;//机构
-	private String ofcDuty;//机构职责
-	private int jobCount;//岗位数量
-	private int bizCount;//业务数量
-	private int rscCount;//资源数量
+	private String demain;//区域
+	private String officeName;//机构
+	private String duty;//机构职责
+	private String status;//机构注册状态
+	private int jCount;//岗位数量
+	private int bCount;//业务数量
+	private int rCount;//资源数量
 	
-	public String getRegion() {
-		return region;
+	public String getDemain() {
+		return demain;
 	}
-	public void setRegion(String region) {
-		this.region = region;
+	public void setDemain(String demain) {
+		this.demain = demain;
 	}
-	public String getOffice() {
-		return office;
+	public String getOfficeName() {
+		return officeName;
 	}
-	public void setOffice(String office) {
-		this.office = office;
+	public void setOfficeName(String officeName) {
+		this.officeName = officeName;
 	}
-	public String getOfcDuty() {
-		return ofcDuty;
+	public String getDuty() {
+		return duty;
 	}
-	public void setOfcDuty(String ofcDuty) {
-		this.ofcDuty = ofcDuty;
+	public void setDuty(String duty) {
+		this.duty = duty;
 	}
-	public int getJobCount() {
-		return jobCount;
+	public String getStatus() {
+		return status;
 	}
-	public void setJobCount(int jobCount) {
-		this.jobCount = jobCount;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public int getBizCount() {
-		return bizCount;
+	public int getjCount() {
+		return jCount;
 	}
-	public void setBizCount(int bizCount) {
-		this.bizCount = bizCount;
+	public void setjCount(int jCount) {
+		this.jCount = jCount;
 	}
-	public int getRscCount() {
-		return rscCount;
+	public int getbCount() {
+		return bCount;
 	}
-	public void setRscCount(int rscCount) {
-		this.rscCount = rscCount;
+	public void setbCount(int bCount) {
+		this.bCount = bCount;
 	}
+	public int getrCount() {
+		return rCount;
+	}
+	public void setrCount(int rCount) {
+		this.rCount = rCount;
+	}
+	
 }

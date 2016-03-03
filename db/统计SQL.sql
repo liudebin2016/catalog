@@ -1,50 +1,42 @@
-SELECT 
-	so.name as region,brj.name as office,brj.duty as ofcDuty,brj.bCount as bizCount,brj.rCount as rscCount,brj.jCount as jobCount  
-FROM 
-	sys_office so ,(
-	SELECT 
-		tbr.*,count(j.office_id) as jCount 
-	FROM 
-		(
-			SELECT 
-				tb.*,count(r.response_party) as rCount 
-			FROM 
-				(
-					SELECT 
-						o.id,o.`name`,o.parent_id,o.parent_ids,o.duty,COUNT(b.charge_office_id) as bCount 
-					FROM 
-						sys_office o 
-					LEFT JOIN 
-						business b 
-					ON 
-						b.charge_office_id=o.id 
-					GROUP BY 
-						o.id
-				) tb
-			LEFT JOIN 
-				resource_info r 
-			ON 
-				r.response_party=tb.id 
-			GROUP BY 
-				tb.id
-		) tbr 
-	LEFT JOIN 
-		job j 
-	ON 
-		tbr.id=j.office_id 
-	GROUP BY 
-		tbr.id
-	) brj 
-WHERE 
-	brj.parent_id=so.id
-	
-	
-	
-	
-	
-	
-	
-	
-SELECT count(r.keyword) kwCount from rpt_search r GROUP BY r.keyword ORDER BY kwCount desc;
-
-SELECT count(r.keyword) kwCount from rpt_search r where r.srhType=1 GROUP BY r.keyword ORDER BY kwCount desc;
+--域的查询
+select 
+  c.id, c.firstDomain || '/' || c.secondDomain as demain
+from 
+  (select 
+        o.id,o.parent_id,o.name as secondDomain,s.name as firstDomain
+   from 
+        SYS_OFFICE o,(select t.name, t.id from SYS_OFFICE t where t.parent_id = 0) s
+   where 
+        o.parent_id = s.id
+  ) c;
+ 
+--机构的查询
+select d.id,e.demain,d.name as officeName from SYS_OFFICE d ,
+(select 
+  c.id, c.firstDomain || '/' || c.secondDomain as demain
+from 
+  (select 
+        o.id,o.parent_id,o.name as secondDomain,s.name as firstDomain
+   from 
+        SYS_OFFICE o,(select t.name, t.id from SYS_OFFICE t where t.parent_id = 0) s
+   where 
+        o.parent_id = s.id
+  ) c) e
+  where e.id=d.parent_id
+  union
+  select h.id,h.demain,h.firstOffice||'/'||h.secondOffice as officeName from (
+ select f.id,f.name as secondOffice,f.parent_id,g.firstOffice,g.demain from  SYS_OFFICE f,
+  (select d.id,d.name as firstOffice,d.parent_id,e.demain from SYS_OFFICE d ,
+(select 
+  c.id, c.firstDomain || '/' || c.secondDomain as demain
+from 
+  (select 
+        o.id,o.parent_id,o.name as secondDomain,s.name as firstDomain
+   from 
+        SYS_OFFICE o,(select t.name, t.id from SYS_OFFICE t where t.parent_id = 0) s
+   where 
+        o.parent_id = s.id
+  ) c) e
+  where e.id=d.parent_id)g
+  where g.id=f.parent_id)h
+  

@@ -24,9 +24,9 @@ var jsPart = {
 		    rownumbers:true,
 		    fitColumns:true,
 		    columns:[[
-				{field:'region',title:'域',width:300}, 
-		        {field:'office',title:'机构',width:300},    
-		        {field:'ofcDuty',title:'机构职责',width:300,
+				{field:'demain',title:'域',width:300}, 
+		        {field:'officeName',title:'机构',width:300},    
+		        {field:'duty',title:'机构职责',width:300,
 	        		formatter:function(value,row,index){
 	    				if(value){
 	    					return '已注册';
@@ -35,14 +35,14 @@ var jsPart = {
 	    				}
 	    			}		        	
 		        },
-		        {field:'ofcCount',title:'岗位数',width:150},
-		        {field:'bizCount',title:'业务数',width:150},
-		        {field:'rscCount',title:'资源数',width:150}
+		        {field:'jCount',title:'岗位数',width:150},
+		        {field:'bCount',title:'业务数',width:150},
+		        {field:'rCount',title:'资源数',width:150}
 		    ]],
 		    onLoadSuccess:function(data){
 		    	if (data.total == 0) {
 	                //添加一个新数据行，第一列的值为你需要的提示信息，然后将其他列合并到第一列来，注意修改colspan参数为你columns配置的总列数
-	                $(this).datagrid('appendRow', { region: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'region', colspan: 6 })
+	                $(this).datagrid('appendRow', { demain: '<div style="text-align:center;color:red">没有相关记录！</div>' }).datagrid('mergeCells', { index: 0, field: 'demain', colspan: 6 })
 	                //隐藏分页导航条，这个需要熟悉datagrid的html结构，直接用jquery操作DOM对象，easyui datagrid没有提供相关方法隐藏导航条
 	                $(this).closest('div.datagrid-wrap').find('div.datagrid-pager').hide();
 	            }
@@ -122,7 +122,7 @@ var htmlPart = {
 		                	        trigger: 'axis'
 		                	    },
 		                	    legend: {
-		                	        data:['机构','岗位','业务','资源','主题']
+		                	        data:${legend_data}
 		                	    },
 		                	    toolbox: {
 		                	        show : true,
@@ -134,12 +134,12 @@ var htmlPart = {
 		                	            saveAsImage : {show: true}
 		                	        }
 		                	    },
-		                	    calculable : false,
+		                	    calculable : true,
 		                	    xAxis : [
 		                	        {
 		                	            type : 'category',
 		                	            boundaryGap : false,
-		                	            data : ['6月','7月','8月','9月','10月','11月','12月']
+		                	            data : ${xAxis_data}
 		                	        }
 		                	    ],
 		                	    yAxis : [
@@ -148,36 +148,7 @@ var htmlPart = {
 		                	        }
 		                	    ],
 		                	    series : [
-		                	        {
-		                	            name:'机构',
-		                	            type:'line',
-		                	            stack: '总量',
-		                	            data:[120, 132, 101, 134, 90, 230, 210]
-		                	        },
-		                	        {
-		                	            name:'岗位',
-		                	            type:'line',
-		                	            stack: '总量',
-		                	            data:[220, 182, 191, 234, 290, 330, 310]
-		                	        },
-		                	        {
-		                	            name:'业务',
-		                	            type:'line',
-		                	            stack: '总量',
-		                	            data:[150, 232, 201, 154, 190, 330, 410]
-		                	        },
-		                	        {
-		                	            name:'资源',
-		                	            type:'line',
-		                	            stack: '总量',
-		                	            data:[320, 332, 301, 334, 390, 330, 320]
-		                	        },
-		                	        {
-		                	            name:'主题',
-		                	            type:'line',
-		                	            stack: '总量',
-		                	            data:[820, 932, 901, 934, 990, 992, 995]
-		                	        }
+		                	        ${data}
 		                	    ]
 		                	};
 		        

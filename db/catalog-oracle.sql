@@ -1046,3 +1046,76 @@ ALTER TABLE "ORACLE"."SYS_USER" ADD PRIMARY KEY ("ID");
 -- ----------------------------
 ALTER TABLE "ORACLE"."SYS_USER_ROLE" ADD CHECK ("USER_ID" IS NOT NULL);
 ALTER TABLE "ORACLE"."SYS_USER_ROLE" ADD CHECK ("ROLE_ID" IS NOT NULL);
+
+
+--创建机构统计的视图
+CREATE  OR  REPLACE  VIEW  office_stic_vw 
+(id,demain,officeName,duty,status) 
+AS 
+select 
+  d.id,e.demain,d.name as officeName ,d.duty,d.status
+from 
+  SYS_OFFICE d ,(select c.id, c.firstDomain || '/' || c.secondDomain as demain from (select 
+        o.id,o.parent_id,o.name as secondDomain,s.name as firstDomain
+    from 
+      SYS_OFFICE o,(select t.name, t.id from SYS_OFFICE t where t.parent_id = 0 and t.del_flag=0) s
+    where 
+        o.parent_id = s.id
+    ) c
+  ) e
+where e.id=d.parent_id
+union
+select h.id,h.demain,h.firstOffice||'/'||h.secondOffice as officeName,h.duty,h.status from (
+ select f.id,f.name as secondOffice,f.parent_id,g.firstOffice,g.demain,f.duty,f.status from  SYS_OFFICE f,
+  (select d.id,d.name as firstOffice,d.parent_id,e.demain from SYS_OFFICE d ,
+  (select c.id, c.firstDomain || '/' || c.secondDomain as demain
+  from (select o.id,o.parent_id,o.name as secondDomain,s.name as firstDomain
+   from SYS_OFFICE o,(select t.name, t.id from SYS_OFFICE t where t.parent_id = 0 and t.del_flag=0) s
+   where o.parent_id = s.id
+  ) c
+  ) e
+  where e.id=d.parent_id)g
+  where g.id=f.parent_id
+ )h;
+ 
+ --创建信息统计图表的集成视图
+ CREATE  OR  REPLACE  VIEW  integration_stic_vw 
+(stime,sCount,type) 
+AS 
+
+select t.stime,t.sCount,t.type from (
+SELECT 
+    to_char(o.create_date,'yyyy-mm') AS stime,count(o.id) as sCount ,'1' as type
+FROM 
+  sys_office  o
+GROUP BY 
+  to_char(o.create_date,'yyyy-mm') 
+union
+SELECT 
+    to_char(j.create_date,'yyyy-mm') AS stime,count(j.id) as sCount ,'2' as type
+FROM 
+  job  j
+GROUP BY 
+  to_char(j.create_date,'yyyy-mm')   
+union
+SELECT 
+    to_char(b.create_date,'yyyy-mm') AS stime,count(b.id) as sCount ,'3' as type
+FROM 
+  business  b
+GROUP BY 
+  to_char(b.create_date,'yyyy-mm') 
+union
+SELECT 
+    to_char(r.create_date,'yyyy-mm') AS stime,count(r.id) as sCount ,'4' as type
+FROM 
+  resource_info  r
+GROUP BY 
+  to_char(r.create_date,'yyyy-mm') 
+union
+SELECT 
+    to_char(s.create_date,'yyyy-mm') AS stime,count(s.id) as sCount ,'5' as type
+FROM 
+  subject_info  s
+GROUP BY 
+  to_char(s.create_date,'yyyy-mm') 
+) t order by t.type,stime

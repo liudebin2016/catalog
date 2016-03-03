@@ -118,6 +118,19 @@ public class StatisticController extends BaseController {
     public String info(Model model) {
     	Map<String,String> counts = statisticService.getAllModuleCount();
     	model.addAttribute("counts", counts);
+    	
+    	List<String> x=statisticService.integrStic4x();
+    	model.addAttribute("xAxis_data", x.toString());
+    	List<String> y=statisticService.integrStic4y();
+    	model.addAttribute("legend_data", y.toString()
+    			.replace("1", "'机构'")
+    			.replace("2", "'岗位'")
+    			.replace("3", "'业务'")
+    			.replace("4", "'资源'")
+    			.replace("5", "'主题'"));
+    	String sdf=statisticService.integrStic(y,x);
+    	model.addAttribute("data", sdf);
+    	
         return "admin/statistic/info";
     }
     
