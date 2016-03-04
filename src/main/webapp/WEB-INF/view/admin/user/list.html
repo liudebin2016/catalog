@@ -143,7 +143,12 @@ var jsPart = {
 		        		var f = "<a href='/admin/dict/subList.do?id="+row.id+"&label="+row.loginName+"&value="+row.createDate+"&description="+row.createDate+"'>权限配置</a> ";
 		        		var g = " &nbsp;&nbsp;&nbsp;&nbsp;";
 		        		var h = "<a href='javascript:void(0);' onclick='deleteUser("+obj+");'>删除</a> ";
-		        		return s + d  + h;
+		        		if(row.id == "1"){
+		        			return s
+		        		}else{
+		        			return s + d  + h;
+		        		}
+		        		
 		            }
 		        }
 		    ]],
