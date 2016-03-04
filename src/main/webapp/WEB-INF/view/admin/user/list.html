@@ -132,9 +132,9 @@ var jsPart = {
 		    method:"get",
 		    columns:[[    
 				{field:'id',title:'id',hidden:true},
-		        {field:'loginName',title:'用户帐号',width:220},
-		        {field:'officeName',title:'所属机构',width:230},
-		        {field:'createDate',title:'创建时间',width:220},
+		        {field:'loginName',title:'用户帐号',width:220,align:"center"},
+		        {field:'officeName',title:'所属机构',width:230,align:"center"},
+		        {field:'createDate',title:'创建时间',width:220,align:"center"},
 		        {field:'operator',title:'操作',width:220,align:"center",
 		        	formatter:function(value,row,index){
 		        		var obj=JSON.stringify(row);
