@@ -3,7 +3,9 @@ var cssPart = {
 %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
-
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -14,6 +16,8 @@ var cssPart = {
 var jsPart = {
 %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 
 function checkVal(){
@@ -230,6 +234,25 @@ $(document).ready(function(){
 		});
 	}
 	
+	$('#chargeOfficeId').combotree({    
+	    url: '/build/eTreeNode',    
+	    required: false,
+	    animate:false,
+        onClick: function(node){
+//         	alert(node.id+"/"+node.text);  // 在用户点击的时候提示
+     	}
+	});  
+	
+	
+	$('#implOfficeId').combotree({    
+	    url: '/build/eTreeNode',    
+	    required: false,
+	    animate:false,
+        onClick: function(node){
+//         	alert(node.id+"/"+node.text);  // 在用户点击的时候提示
+     	}
+	});
+	
 });
 
 //移除信息字段
@@ -263,6 +286,7 @@ function validNum(obj){
     }
     $(obj).focus();
 }
+
 </script>
 
 <%};%>
@@ -380,12 +404,12 @@ var htmlPart = {
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项主管单位</label>
-      <input id="chargeOfficeId" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="" value='${business==null?"":business.chargeOfficeId}'>
+      <input id="chargeOfficeId" style="width: 485px; height: 30px;" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="chargeOfficeId" placeholder="" value='${business==null?"":business.chargeOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">
       <label class="compile-form-title2 fl">业务事项实施单位</label>
-      <input id="implOfficeId" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="" value='${business==null?"":business.implOfficeId}'>
+      <input id="implOfficeId" onblur="validNum(this)" style="width: 485px; height: 30px;" class="form-control inp fl c-f-width485" type="text" name="implOfficeId" placeholder="" value='${business==null?"":business.implOfficeId}'>
     </div>
     <div class="mb20 clearfix"></div>
     <div class="c-formbox">

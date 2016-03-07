@@ -1,6 +1,9 @@
 <% var cssPart = { %>
 <link rel="stylesheet" href="/resources/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resources/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/resources/assets/jquery-easyui-1.4.4//demo/demo.css">
 <style type="text/css">
 
 </style>
@@ -9,6 +12,8 @@
 
 <% var jsPart = { %>
 <script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/resources/assets/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 
 function checkVal(){
@@ -108,6 +113,16 @@ $(document).ready(function(){
 	});
 	
 	$('#addField').html($('#infoField').val());
+	
+	$('#responseParty').combotree({    
+	    url: '/build/eTreeNode',    
+	    required: false,
+	    animate:false,
+        onClick: function(node){
+//         	alert(node.id+"/"+node.text);  // 在用户点击的时候提示
+     	}
+	});
+	
 });
 
 //移除信息字段
@@ -195,7 +210,7 @@ function validNum(obj){
 		<div class="clearfix"></div>
 		<div class="c-formbox">
 			<label class="compile-form-title2 fl">资源责任方</label>
-			<input id="responseParty" onblur="validNum(this)" class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="" value='${rsc==null?"":rsc.responseParty}'>
+			<input id="responseParty" onblur="validNum(this)" style="width: 485px; height: 30px;" class="form-control inp fl c-f-width485" type="text" name="responseParty" placeholder="" value='${rsc==null?"":rsc.responseParty}'>
 		</div>
 		<div class="mb20 clearfix"></div>
 		<div class="c-formbox">
