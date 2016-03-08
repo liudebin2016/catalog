@@ -182,7 +182,7 @@ var jsPart = {
 	}); */
 	 
 	 function submit(){
-		var loginName = $('#loginName').val();
+		var loginName = $.trim($('#loginName').val());
 		var password = $('#password').val();
 		var officeid = $("#officeId").val();
 		if($.trim(loginName) == ""){
