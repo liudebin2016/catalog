@@ -106,7 +106,7 @@ public class StatisticController extends BaseController {
     	System.out.println("通过Map.entrySet遍历key和value");
     	StringBuffer sb=new StringBuffer();
 	    for (Entry<String, List<String>> entry : sdf.entrySet()) {
-	    	sb.append("{name:'").append(entry.getKey()).append("',type:'line',stack: '总量',data:").append(entry.getValue().toString()).append("},");
+	    	sb.append("{name:'").append(entry.getKey()).append("',type:'line',data:").append(entry.getValue().toString()).append("},");
 	    }
 	    System.out.println(sb.toString());
     	String data=sb.toString();

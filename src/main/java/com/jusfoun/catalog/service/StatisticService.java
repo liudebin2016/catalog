@@ -120,7 +120,7 @@ public class StatisticService extends BaseService {
 		}
 		StringBuffer sb=new StringBuffer();
 		for (Entry<String, String[]> entry : sdf.entrySet()) {
-	    	sb.append("{name:'").append(entry.getKey()).append("',type:'line',stack: '总量',data:").append(Arrays.toString(entry.getValue())).append("},");
+	    	sb.append("{name:'").append(entry.getKey()).append("',type:'line',data:").append(Arrays.toString(entry.getValue())).append("},");
 	    }
 		System.out.println(sb.toString());
     	String data=sb.toString().replace("null", "0");

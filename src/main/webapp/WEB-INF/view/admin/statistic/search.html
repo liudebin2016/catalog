@@ -15,17 +15,31 @@ var jsPart = {
 <script type="text/javascript">
 
 function getHotword(type){
+	var hotWrdTO=$("#hotWrdTO li a");
+	switch(type){
+		case "week":hotWrdTO.eq(0).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");hotWrdTO.eq(1).attr("style","");hotWrdTO.eq(2).attr("style","");break;
+		case "month":hotWrdTO.eq(0).attr("style","");hotWrdTO.eq(1).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");hotWrdTO.eq(2).attr("style","");break;
+		case "year":hotWrdTO.eq(0).attr("style","");hotWrdTO.eq(1).attr("style","");hotWrdTO.eq(2).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");break;
+	}
 	$.getJSON("/admin/srh/hotwords.do",{type:type},function(data){
 		 var innerHtml="";
 		 $.each(data, function(i,item){
-			innerHtml+="<li>"+item.keyword+"</li>";
+			 if(item.keyword!="nil"){
+			 	innerHtml+="<li>"+item.keyword+"</li>";
+			 }
 		 });
 		 $("#hotwords").html(innerHtml);
 	});
 }
 
 function getHotOffice(type){
-	$.getJSON("/admin/srh/hotOffices.do",{type:"week"},function(data){
+	var hotOfcTO=$("#hotOfcTO li a");
+	switch(type){
+		case "week":hotOfcTO.eq(0).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");hotOfcTO.eq(1).attr("style","");hotOfcTO.eq(2).attr("style","");break;
+		case "month":hotOfcTO.eq(0).attr("style","");hotOfcTO.eq(1).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");hotOfcTO.eq(2).attr("style","");break;
+		case "year":hotOfcTO.eq(0).attr("style","");hotOfcTO.eq(1).attr("style","");hotOfcTO.eq(2).attr("style","border-bottom: 3px solid #0a75c0;color: #0a75c0;");break;
+	}
+	$.getJSON("/admin/srh/hotOffices.do",{type:type},function(data){
 		 var innerHtml="";
 		 $.each(data, function(i,item){
 			innerHtml+="<li>"+item.officeName+"</li>";
@@ -38,7 +52,6 @@ $(document).ready(function(){
 	getHotword("week");
 	getHotOffice("week");
 });
-
 
 </script>
 <%};%>
@@ -91,7 +104,7 @@ var htmlPart = {
                 	            saveAsImage : {show: true}
                 	        }
                 	    },
-                	    calculable : false,
+                	    calculable : true,
                 	    xAxis : [
                 	        {
                 	            type : 'category',
@@ -120,7 +133,7 @@ var htmlPart = {
     <li class = "chart-l mt20">
       <div class = "text-area">
         <p><span><span class = "fs30">T</span>OP10</span> 热词排行</p>
-        <ul  class = "time-option">
+        <ul id="hotWrdTO" class = "time-option">
           <li><a href="javascript:getHotword('week');">本周</a></li>
           <li><a href="javascript:getHotword('month');">本月</a></li>
           <li><a href="javascript:getHotword('year');">本年</a></li>
@@ -131,7 +144,7 @@ var htmlPart = {
     <li class = "chart-r mt20">
       <div class = "text-area">
         <p><span><span class = "fs30">T</span>OP10</span> 热门机构</p>
-        <ul class = "time-option">
+        <ul id="hotOfcTO" class = "time-option">
           <li><a href="javascript:getHotOffice('week');">本周</a></li>
           <li><a href="javascript:getHotOffice('month');">本月</a></li>
           <li><a href="javascript:getHotOffice('year');">本年</a></li>
