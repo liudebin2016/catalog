@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jusfoun.catalog.common.controller.BaseController;
 import com.jusfoun.catalog.common.entity.DataEntity;
 import com.jusfoun.catalog.common.mapper.JsonMapper;
+import com.jusfoun.catalog.common.servlet.ValidateCodeServlet;
+import com.jusfoun.catalog.common.tool.IdGenTool;
 import com.jusfoun.catalog.common.tool.ServletTool;
 import com.jusfoun.catalog.entity.Dict;
 import com.jusfoun.catalog.entity.Job;
@@ -170,6 +172,7 @@ public class UserContoller extends BaseController {
 //			delFlag = "success";
 //		}
 		systemService.updatePasswordById(Integer.parseInt(id), loginName, password);
+		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGenTool.uuid());
 		delFlag = "success";
 		return delFlag;
 	}
