@@ -39,7 +39,7 @@
 		    GROUP BY t.keyword
 		    ORDER BY kwCount DESC
 		) v
-		WHERE ROWNUM<![CDATA[<=]]>10
+		WHERE ROWNUM<![CDATA[<=]]>11
     </select>
     
     <!-- 热门机构 -->

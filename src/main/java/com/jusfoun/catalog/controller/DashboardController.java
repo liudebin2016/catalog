@@ -87,12 +87,17 @@ public class DashboardController extends BaseController{
 			@RequestParam(value = "search_type", required=true) int type,
 			@RequestParam(value = "officeId", required=false) Integer officeId) {
     	String ofclStr="{}";
-    	if(!StringUtils.isEmpty(value)){
+//    	if(!StringUtils.isEmpty(value)){
     		SearchLog log = new SearchLog();
-    		log.setKeyword(value);
+    		if(value==null||"".equals(value)){
+    			log.setKeyword("nil");
+    		}else{
+    			log.setKeyword(value);
+    		}
+    		
     		log.setSrhTime(new Date());
     		log.setSrhType(type);
-    		if(officeId!=null){
+    		if(officeId!=null&&!"".equals(officeId)){
     			log.setOfficeId(officeId);
     		}
     		searchLogService.save(log);
@@ -107,7 +112,7 @@ public class DashboardController extends BaseController{
     			office.setDuty(StringEscapeUtils.unescapeHtml4(office.getDuty().replaceAll(value.trim(), "&lt;span style='color:orange'&gt;"+value.trim()+"&lt;/span&gt;")));
     		}
     		ofclStr=JsonMapper.toJsonString(officeList);
-    	}
+//    	}
 		return ofclStr;
 	}
     
@@ -119,12 +124,16 @@ public class DashboardController extends BaseController{
     	String type=StringUtils.trim(request.getParameter("search_type"));
     	
     	String retVal="{\"total\":0,\"rows\":[]}";
-    	if(!StringUtils.isBlank(name)){
+//    	if(!StringUtils.isBlank(name)){
     		SearchLog log = new SearchLog();
-    		log.setKeyword(name);
+    		if(name==null||"".equals(name)){
+    			log.setKeyword("nil");
+    		}else{
+    			log.setKeyword(name);
+    		}
     		log.setSrhTime(new Date());
     		log.setSrhType(Integer.valueOf(type));
-    		if(officeId!=null){
+    		if(officeId!=null&&!"".equals(officeId)){
     			log.setOfficeId(Integer.valueOf(officeId));
     		}
     		searchLogService.save(log);
@@ -145,7 +154,7 @@ public class DashboardController extends BaseController{
     		StringBuffer sb=new StringBuffer();
     		sb.append("{\"total\":").append(jobCount).append(",\"rows\":").append(json).append("}");
     		retVal=sb.toString();
-    	}
+//    	}
     	return retVal;
     }
     
@@ -157,12 +166,16 @@ public class DashboardController extends BaseController{
     	String name=request.getParameter("name")==null?null:StringUtils.trim(request.getParameter("name"));
     	
     	String retVal="{\"total\":0,\"rows\":[]}";
-    	if(!StringUtils.isBlank(name)){
+//    	if(!StringUtils.isBlank(name)){
     		SearchLog log = new SearchLog();
-    		log.setKeyword(name);
+    		if(name==null||"".equals(name)){
+    			log.setKeyword("nil");
+    		}else{
+    			log.setKeyword(name);
+    		}
     		log.setSrhTime(new Date());
     		log.setSrhType(Integer.valueOf(type));
-    		if(officeId!=null){
+    		if(officeId!=null&&!"".equals(officeId)){
     			log.setOfficeId(Integer.valueOf(officeId));
     		}
     		searchLogService.save(log);
@@ -183,7 +196,7 @@ public class DashboardController extends BaseController{
     		StringBuffer sb=new StringBuffer();
     		sb.append("{\"total\":").append(bizCount).append(",\"rows\":").append(json).append("}");
     		retVal=sb.toString();
-    	}
+//    	}
     	return retVal;
     }
     
@@ -194,12 +207,16 @@ public class DashboardController extends BaseController{
     	String type=StringUtils.trim(request.getParameter("search_type"));
     	String name=request.getParameter("name")==null?null:StringUtils.trim(request.getParameter("name"));
     	String retVal="{\"total\":0,\"rows\":[]}";
-    	if(!StringUtils.isBlank(name)){
+    	//if(StringUtils.isNotBlank(name)){
     		SearchLog log = new SearchLog();
-    		log.setKeyword(name);
+    		if(name==null||"".equals(name)){
+    			log.setKeyword("nil");
+    		}else{
+    			log.setKeyword(name);
+    		}
     		log.setSrhTime(new Date());
     		log.setSrhType(Integer.valueOf(type));
-    		if(officeId!=null){
+    		if(officeId!=null&&!"".equals(officeId)){
     			log.setOfficeId(Integer.valueOf(officeId));
     		}
     		searchLogService.save(log);
@@ -220,7 +237,7 @@ public class DashboardController extends BaseController{
     		StringBuffer sb=new StringBuffer();
     		sb.append("{\"total\":").append(rscCount).append(",\"rows\":").append(json).append("}");
     		retVal=sb.toString();
-    	}
+    	//}
     	return retVal;
     }
     
@@ -230,9 +247,13 @@ public class DashboardController extends BaseController{
     	String type=StringUtils.trim(request.getParameter("search_type"));
     	String name=request.getParameter("name")==null?null:StringUtils.trim(request.getParameter("name"));
     	String retVal="{\"total\":0,\"rows\":[]}";
-    	if(!StringUtils.isBlank(name)){
+//    	if(!StringUtils.isBlank(name)){
     		SearchLog log = new SearchLog();
-    		log.setKeyword(name);
+    		if(name==null||"".equals(name)){
+    			log.setKeyword("nil");
+    		}else{
+    			log.setKeyword(name);
+    		}
     		log.setSrhTime(new Date());
     		log.setSrhType(Integer.valueOf(type));
     		searchLogService.save(log);
@@ -250,7 +271,7 @@ public class DashboardController extends BaseController{
     		StringBuffer sb=new StringBuffer();
     		sb.append("{\"total\":").append(rscCount).append(",\"rows\":").append(json).append("}");
     		retVal=sb.toString();
-    	}
+//    	}
     	return retVal;
     }
 }
