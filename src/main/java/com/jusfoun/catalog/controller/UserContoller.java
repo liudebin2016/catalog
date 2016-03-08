@@ -165,8 +165,10 @@ public class UserContoller extends BaseController {
 		String loginName = request.getParameter("loginName");
 		String delFlag="fail";
 		systemService.updatePasswordById(Integer.parseInt(id), loginName, password);
-		//request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGenTool.uuid());
-		//LoginController.isValidateCodeLogin(loginName, false, true);
+		/*request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGenTool.uuid());
+		LoginController.isValidateCodeLogin(loginName, false, true);*/
+		User user = userService.get(Integer.parseInt(id));
+		UserUtils.clearCache(user);
 		delFlag = "success";
 		return delFlag;
 	}
