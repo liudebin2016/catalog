@@ -63,10 +63,10 @@ var jsPart = {
 	    	treeObj.cancelSelectedNode();
 	    }
 	});
-	function showMenu() {
+	function showMenu() { // zheli 
 		var cityObj = $("#officeSel");
-		var cityOffset = $("#officeSel").offset();
-		$("#menuContent").css({left:(cityOffset.left+822) + "px", top:(cityOffset.top+348) + cityObj.outerHeight() + "px"}).slideDown("fast");
+		var cityOffset = $('#officeSel').next().find('input').first().offset();
+		$("#menuContent").css({left:(cityOffset.left-20) + "px", top:(cityOffset.top-132) + cityObj.outerHeight() + "px"}).slideDown("fast");
 		$("body").bind("mousedown", onBodyDown);
 	}
 	function hideMenu() {
