@@ -217,9 +217,6 @@ FROM (
 		)
 	</insert>
 	<insert id="createUser">
-		<selectKey resultType="int" keyProperty="id">  
-	  		 SELECT catalog_seq.currval  as id FROM DUAL  
-	    </selectKey> 
 		INSERT INTO sys_user(
 			company_id, 
 			office_id, 
