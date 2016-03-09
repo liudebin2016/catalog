@@ -83,12 +83,14 @@ var jsPart = {
 	function changPassword(row){
 		$("#win").dialog("open").dialog('setTitle', '修改密码');
 		var changePassword=$('#changePassword');
+		changePassword.show();
 		changePassword.form('clear');
 		changePassword.form('load', row);
 	}
 	function newUser(){
-		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
 		var fm=$('#fm');
+		fm.show();
+		$("#dlg").dialog("open").dialog('setTitle', '新增用户');
 		fm.form('clear');
 		$.post('../office/tree',function(obj){
 			// init tree
@@ -224,6 +226,10 @@ var jsPart = {
 		var loginName = $('#loginName1').val();
 		var password = $('#newPassword').val();
 		var id = $('#byid').val();
+		if($.trim(password) == ""){
+			$.messager.alert("警告","请输入新密码！");
+		    return false;
+		}
 		$.ajax({  
 	        url : '../user/editPassword.do',  
 	        type : "POST",
@@ -270,7 +276,7 @@ var htmlPart = {
   <table id="dict"></table>
   
   <div id="dlg" class="easyui-dialog" style="width: 450px; height: 280px; padding: 30px 35px;" closed="true" buttons="#dlg-buttons"> 
-       <form id="fm" method="post" method="post" action="/admin/user/createUser.do"> 
+       <form id="fm" method="post" method="post" action="/admin/user/createUser.do" style=" display:none;"> 
        <div class="fitem"> 
            <label style="width: 60px;">用户帐号：</label> 
        		<input name="id" type="hidden">
@@ -286,18 +292,19 @@ var htmlPart = {
            <input type="hidden" id="officeId" name="officeId"/>
        </div> 
        <div style="margin-top: 10px;text-align: center;">
-			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px">提交</a>
+			<a href="javascript:submit()" class="easyui-linkbutton" iconCls="icon-ok" style="width:100px;height:32px;margin-top: 10px;">提交</a>
 		</div>
        </form> 
    </div> 
 	<div id="win"  class="easyui-dialog" title="修改密码" style="width:300px;height:180px;" closed="true">  
-    <form id="changePassword" style="padding:10px 20px 10px 40px;" action="/admin/user/changePassword.do">
+    <form id="changePassword" style="padding:10px 20px 10px 40px;display: none;" action="/admin/user/changePassword.do">
     	<input type="hidden" id="byid" name="id"/>  
-        <p>帐号: <input type="text" name="loginName" id="loginName1" value="" autocomplete="off" readonly="readonly"></p>  
-        <p>密码: <input type="password" name="password" id="newPassword" value="" autocomplete="off"></p>  
+        <p style="margin-left: -10px;">帐号: <input type="text" name="loginName" id="loginName1" value="" autocomplete="off" readonly="readonly"></p>  
+        <div style="height: 10px;"></div>
+        <p style="margin-left: -10px;">密码: <input type="password" name="password" id="newPassword" value="" autocomplete="off"></p>  
         <div style="padding:5px;text-align:center;">  
-            <a href="javascript:editPassword()" class="easyui-linkbutton" icon="icon-ok">修改</a>  
-            <a href="javascript:cacelEditPassword()" class="easyui-linkbutton" icon="icon-cancel">取消</a>  
+            <a href="javascript:editPassword()" class="easyui-linkbutton" icon="icon-ok" style="    margin-left: -10px;margin-top: 10px;">修改</a>  
+            <a href="javascript:cacelEditPassword()" class="easyui-linkbutton" icon="icon-cancel" style="    margin-left: 30px;margin-top: 10px;">取消</a>  
         </div>  
     </form>  
 </div> 
