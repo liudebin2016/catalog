@@ -127,7 +127,15 @@ var jsPart = {
 				//{field:'ck',title:'全选',width:120,checkbox:true},  
 				{field:'id',title:'id',width:0,hidden:true}, 
 		        {field:'jobName',title:'岗位名称/职位',width:150,align:"center"},    
-		        {field:'jobDuty',title:'岗位职责',width:150,align:"center"},
+		        {field:'jobDuty',title:'岗位职责',width:150,align:"center",
+		        	formatter: function(value,row,index){
+						if(value == null || value == ""){
+							return "未知";
+		        		}else{
+		        			return value;
+		        		}
+					} 		
+		        },
 		        {field:'officeName',title:'所属单位',width:150,align:"center"},
 		        {field:'businessName',title:'相关业务',width:150,align:"center"},
 		        {field:'jobStatus',title:'当前状态',width:150,align:"center",
